@@ -46,8 +46,13 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     private ppService: PastperformanceService
   ) {
 
-    this.currentAccount = this.companyService.getTestCompany()
-
+    //this.currentAccount = this.companyService.getTestCompany()
+    //Need to use companyservice.getCompanyByID
+    let profileId: string;
+    this.route.params.subscribe(routeParams => profileId = routeParams["id"]);
+    this.companyService.getCompanyByID(profileId).toPromise().then(company => { this.currentAccount = company[0]; myCallback() });
+    //this.companyService.getCompanyByID(this.route.params["id"] ).toPromise().then(company => this.currentAccount = company)
+    var myCallback = () => {
     for (let i of this.currentAccount.leadership) {
       this.users.push(userService.getUserbyID(i.userid))
     }
@@ -75,6 +80,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
         this.CQAC.push('Type: ' + j.type + ', Awarded: ' + j.awarded + ', Expriation: ' + j.expiration)
       }
     }
+  }
   }
 
   ngOnInit() {
