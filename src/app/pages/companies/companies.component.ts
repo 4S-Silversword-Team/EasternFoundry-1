@@ -19,14 +19,8 @@ export class CompaniesComponent implements OnInit {
     private router: Router,
     private companyService: CompanyService
   ) {
-    // this.companies = this.companyService.getCompanies()
-    let cc: Company = new Company()
-    cc.id = '1'
-    cc.name = 'Eastern Foundry'
-    cc.avatar = '../../assets/img/company-account.png'
-    this.companies.push(cc)
-    this.companies.push(cc)
-    this.companies.push(cc)
+    this.companyService.getCompanies().then(val => this.companies = val )
+    
   }
 
   ngOnInit() {
