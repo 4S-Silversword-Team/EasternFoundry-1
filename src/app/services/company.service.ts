@@ -28,6 +28,12 @@ export class CompanyService {
     return response
   }
 
+  updateCompany(id: string, request: any): Observable<Company> {
+    var response = this.authHttp.put(environment.apiRoot + "company/" + id, request)
+    .map(response => <Company> response.json())
+    return response;
+  }
+
   getTestCompany(): Company {
     let temp: Company = new Company()
     temp.id = '1'

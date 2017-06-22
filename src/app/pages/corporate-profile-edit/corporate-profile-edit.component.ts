@@ -71,4 +71,10 @@ export class CorporateProfileEditComponent implements OnInit {
 
   }
 
+  updateCompany(model) {
+    //Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
+    delete model["_id"]
+    this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result))
+  }
+
 }
