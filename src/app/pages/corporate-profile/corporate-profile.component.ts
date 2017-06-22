@@ -175,7 +175,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   }
 
   editCompany() {
-    this.router.navigate(['corporate-profile-edit',this.currentAccount.id])
+    this.router.navigate(['corporate-profile-edit',this.currentAccount["_id"]])
   }
 
 }

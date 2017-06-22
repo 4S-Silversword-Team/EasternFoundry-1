@@ -46,8 +46,9 @@ export class CorporateProfileEditComponent implements OnInit {
     private ppService: PastperformanceService
   ) {
     if ( this.router.url !== 'corporate-profile-create' ) {
-      this.companyService.getCompanyByID(this.route.snapshot.params['id']) .subscribe(result => this.currentAccount =result)
-      this.currentAccount = this.companyService.getTestCompany()
+      this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result[0]; myCallback()})   //.subscribe(result => this.currentAccount =result).
+      //this.currentAccount = this.companyService.getTestCompany()
+      let myCallback = () => {
       for(let i of this.currentAccount.product) {
         this.products.push(productService.getProductbyID(i.productid))
       }
@@ -59,6 +60,7 @@ export class CorporateProfileEditComponent implements OnInit {
       for(let i of this.currentAccount.pastperformance) {
         this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
       }
+    }
     }
   }
 
