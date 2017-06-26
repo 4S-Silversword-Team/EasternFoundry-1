@@ -51,10 +51,13 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     let profileId: string;
     this.route.params.subscribe(routeParams => profileId = routeParams["id"]);
     this.companyService.getCompanyByID(profileId).toPromise().then(company => { this.currentAccount = company[0]; myCallback() });
-    //this.companyService.getCompanyByID(this.route.params["id"] ).toPromise().then(company => this.currentAccount = company)
+    // this.companyService.getCompanyByID(this.route.params["id"] ).toPromise().then(company => this.currentAccount = company)
     var myCallback = () => {
     for (let i of this.currentAccount.leadership) {
-      this.users.push(userService.getUserbyID(i.userid))
+      this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
+        this.users.push(result[0]);
+      });
+
     }
 
     for(let i of this.currentAccount.product) {

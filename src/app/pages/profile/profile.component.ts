@@ -30,10 +30,15 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
-    public location: Location  
+    public location: Location
   ) {
     this.currentUser.id = this.route.snapshot.params['id'];
-    this.currentUser = this.userService.getUserbyID(this.currentUser.id)
+
+    this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
+      this.currentUser = result[0];
+    });
+
+
     let index: number = 0
     this.availabilityData.values = []
     this.availabilityData.dates = []
@@ -46,7 +51,7 @@ export class ProfileComponent implements OnInit {
     for(let index of this.currentUser.strength) {
       this.strengthChartLabels.push(index.skill)
       temp.push(index.score)
-    }    
+    }
     for(let index of this.currentUser.availability) {
       this.availabilityData.dates.push(index.date)
       this.availabilityData.values.push(index.available)

@@ -10,6 +10,7 @@ import { CompaniesComponent } from './pages/companies/companies.component';
 import { CorporateProfileComponent } from './pages/corporate-profile/corporate-profile.component';
 import { CorporateProfileEditComponent } from './pages/corporate-profile-edit/corporate-profile-edit.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { ProfileEditComponent } from './pages/profile-edit/profile-edit.component';
 import { PastPerformanceComponent } from './pages/past-performance/past-performance.component';
 import { PastPerformanceEditComponent } from './pages/past-performance-edit/past-performance-edit.component';
 import { NoContentComponent } from './pages/no-content/no-content.component';
@@ -36,6 +37,7 @@ import { SelectorComponent } from './components/selector/selector.component';
     AppComponent,
     LoginComponent,
     ProfileComponent,
+    ProfileEditComponent,
     CorporateProfileComponent,
     PastPerformanceComponent,
     PastPerformanceEditComponent,
@@ -44,7 +46,7 @@ import { SelectorComponent } from './components/selector/selector.component';
     ColorCommentBoxComponent,
     ExpChartComponent,
     CareerComponent,
-    BarchartComponent,    
+    BarchartComponent,
     AvailablebarComponent, SelectorComponent, CompaniesComponent, CorporateProfileEditComponent
   ],
   imports: [

@@ -5,6 +5,6 @@
 
 export const environment = {
   production: false,
-  apiRoot: ' http://ec2-52-37-47-205.us-west-2.compute.amazonaws.com/',
+  apiRoot: ' http://localhost:80/',
   baseHref: '/'
 };
