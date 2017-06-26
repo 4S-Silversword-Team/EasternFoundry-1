@@ -58,7 +58,8 @@ export class CorporateProfileEditComponent implements OnInit {
       }
 
       for(let i of this.currentAccount.pastperformance) {
-        this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
+        //this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
+        ppService.getPastPerformancebyID(i.pastperformanceid).toPromise().then(res => this.pastperformances.push(res[0])) // Might try to continue the for loop before the promise resolves.
       }
     }
     }

@@ -18,7 +18,7 @@
             <div class="srow"><p class="left two-p" [style.line-height]="'25px'">Information<br>accuracy</p><rating [(ngModel)]="this.currentAccount.information_accuracy" [max]="5" class="right"></rating></div>
             <!--<div class="srow"><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">Service disable vetran owned</p></div>-->
         </div>
-    </div>    
+    </div>
   </div>
 
   <div class="leadership col-xs-12 clear">
@@ -34,7 +34,7 @@
               <p class="srow">{{ index.email }}</p>
               <button class="col-xs-8 col-xs-offset-2" (click)="toUserProfile(index.id)">More Information</button>
           </div>
-      </div>    
+      </div>
   </div>
 
   <div class="div-tab col-xs-12 clear">
@@ -52,7 +52,7 @@
       </div>
       <div class="row main" *ngIf='currentTab'>
           <div style="display: block" class="col-xs-12 col-sm-6">
-            <canvas baseChart          
+            <canvas baseChart
                     [data]="getProductChartData(index.id)"
                     [labels]="getProductChartLabel(index.id)"
                     [chartType]="'pie'"></canvas>
@@ -98,7 +98,7 @@
                   <p class="col-xs-12">DEFENSE</p>
                   <img src="./assets/img/defense.png" [style.width]="'100px'" [style.margin-left]="'10px'">
               </div>
-              <div class="left text-center" *ngFor='let jendex of index.customers.defense' [style.width]="'120px'">                  
+              <div class="left text-center" *ngFor='let jendex of index.customers.defense' [style.width]="'120px'">
                   <img src="{{jendex.avatar}}" [style.width]="'100px'" [style.margin-left]="'10px'">
                   <p class="col-xs-12">{{jendex.name}}</p>
               </div>
@@ -108,7 +108,7 @@
                   <p class="col-xs-12">CIVILIAN</p>
                   <img src="./assets/img/civilian.png" [style.width]="'100px'" [style.margin-left]="'10px'">
               </div>
-              <div class="left text-center" *ngFor='let jendex of index.customers.civilian' [style.width]="'120px'">                  
+              <div class="left text-center" *ngFor='let jendex of index.customers.civilian' [style.width]="'120px'">
                   <img src="{{jendex.avatar}}" [style.width]="'100px'" [style.margin-left]="'10px'">
                   <p class="col-xs-12">{{jendex.name}}</p>
               </div>
@@ -118,7 +118,7 @@
                   <p class="col-xs-12">COMMERCIA</p>
                   <img src="./assets/img/commercia.png" [style.width]="'100px'" [style.margin-left]="'10px'">
               </div>
-              <div class="left text-center" *ngFor='let jendex of index.customers.commercial' [style.width]="'120px'">                  
+              <div class="left text-center" *ngFor='let jendex of index.customers.commercial' [style.width]="'120px'">
                   <img src="{{jendex.avatar}}" [style.width]="'100px'" [style.margin-left]="'10px'">
                   <p class="col-xs-12">{{jendex.name}}</p>
               </div>
@@ -136,7 +136,7 @@
         <div class="col-xl-12 col-lg-6">
             <div class="capa-chart col-xs-12">
                 <app-bent-bars-chart width='300' height='300' divID='bbChart{{index.id}}' [values]='getServiceChartValue(index.id)'></app-bent-bars-chart>
-            </div>        
+            </div>
         </div>
         <div class="col-xs-12 col-lg-6 text-container">
             <div class="row">
@@ -165,10 +165,10 @@
                     <p class="col-xs-12">{{pp.title}}</p>
                     <p class="halfwidth left"><strong>Client</strong><br>{{pp.client}}</p>
                     <p class="halfwidth right"><strong>Project</strong><br>{{pp.topic}}</p>
-                    <button (click)='toPastPerformance(pp.id)'>More Information</button> 
+                    <button (click)='toPastPerformance(pp._id)'>More Information</button> 
                 </div>
             </div>
-        </div>           
+        </div>
       </div>
   </div>
 

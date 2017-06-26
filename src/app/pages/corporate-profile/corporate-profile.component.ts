@@ -66,7 +66,9 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     }
 
     for(let i of this.currentAccount.pastperformance) {
-      this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
+      //this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
+      ppService.getPastPerformancebyID(i.pastperformanceid).toPromise().then(res => {this.pastperformances.push(res[0])}) // Might try to continue the for loop before the promise resolves.
+      //let myCallback = () => {console.log(this.pastperformances);}
     }
 
     for(let i of this.users) {
