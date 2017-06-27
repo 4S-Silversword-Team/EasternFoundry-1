@@ -103,7 +103,7 @@
       <p class="fs-28 fc-title">INTERESTS</p>
       <p class="fs-28 fc-subtitle">INTERESTED IN</p>
       <div class="text-container text-left" [style.height] = "'300px'">
-        <input class="col-xs-12" [(ngModel)] = 'this.currentUser.interest'>
+        <textarea class="col-xs-12 interests" [(ngModel)] = 'this.currentUser.interest'></textarea>
       </div>
     </div>
   </div>
@@ -120,7 +120,7 @@
       <p class="col-xs-2">Title: </p><input class="col-xs-10" [(ngModel)] = 'job.detail.title'>
       <p class="col-xs-2">Time Period: </p><input class="col-xs-10" [(ngModel)] = 'job.detail.from'>
       <p class="col-xs-2">Company: </p><input class="col-xs-10" [(ngModel)] = 'job.detail.company'>
-      <p class="col-xs-2">Job Info: </p><input class="col-xs-10" [(ngModel)] = 'job.detail.career'>
+      <p class="col-xs-2">Job Info: </p><textarea class="col-xs-10 detailcareer" [(ngModel)] = 'job.detail.career'></textarea>
     </div>
   </div>
 

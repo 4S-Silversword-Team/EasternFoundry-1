@@ -157,6 +157,18 @@
 .career .div-title div{
   width: calc(100% - 235px);
 }
+.interests {
+  height: 100%;
+  color: black;
+}
+
+.detailcareer {
+  height: 100px;
+}
+
+input {
+  color: black;
+}
 
 .strength .div-title p{
   color: #198fcf;
