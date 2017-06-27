@@ -24,7 +24,6 @@ declare var Swiper: any;
   styleUrls: ['./corporate-profile.component.css']
 })
 export class CorporateProfileComponent implements OnInit, AfterViewInit {
-
   currentAccount: Company = new Company()
   users: User[] = []
   products: Product[] = []
@@ -51,14 +50,17 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     let profileId: string;
     this.route.params.subscribe(routeParams => profileId = routeParams["id"]);
     this.companyService.getCompanyByID(profileId).toPromise().then(company => { this.currentAccount = company[0]; myCallback() });
-    // this.companyService.getCompanyByID(this.route.params["id"] ).toPromise().then(company => this.currentAccount = company)
+    //this.companyService.getCompanyByID(this.route.params["id"] ).toPromise().then(company => this.currentAccount = company)
     var myCallback = () => {
-    for (let i of this.currentAccount.leadership) {
-      this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
-        this.users.push(result[0]);
-      });
+      for (let i of this.currentAccount.leadership) {
+        // this.userService.getUserbyID(i.userid).toPromise().then(user => { this.users.push(user[0])});
+        //i.userid just points to 1 and 2 which don't lead anywhere and there's only one user in the backend anyway so right now this is just hardcoded
+        this.userService.getUserbyID("59514f264bbbec2d8dc56ed7").toPromise().then(user => { this.users.push(user[0])});
 
-    }
+      }
+
+
+
 
     for(let i of this.currentAccount.product) {
       this.products.push(productService.getProductbyID(i.productid))

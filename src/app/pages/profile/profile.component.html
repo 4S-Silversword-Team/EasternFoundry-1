@@ -3,25 +3,25 @@
     <div class="basic-info col-xs-12">
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0" [style.height] = "'150px'">
-                <img class="avatar left" src="{{ currentUser.avatar }}" >
+                <img class="avatar left" src="{{ this.currentUser.avatar }}" >
                 <div class="right" [style.width] = "'calc(100% - 150px)'">
-                    <p class="col-xs-12 mt15" [style.height] = "'60px'">{{ currentUser.jobtitle }}</p>
-                    <p class="col-xs-12 mb15" [style.height] = "'60px'">{{ currentUser.office}}</p>         
+                    <p class="col-xs-12 mt15" [style.height] = "'60px'">{{ this.currentUser.jobtitle }}</p>
+                    <p class="col-xs-12 mb15" [style.height] = "'60px'">{{ this.currentUser.office}}</p>
                 </div>
-            </div>            
+            </div>
             <div id="user-contact" class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0">
-                <div><img src="../assets/img/glyphicon/email-1.png" class="left"><p class="left">{{ currentUser.email }}</p></div>
-                <div><img src="../assets/img/glyphicon/phone-2.png" class="left"><p class="left">{{ currentUser.contactNumber }}</p></div>
-                <div><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">{{ currentUser.city }}</p></div>
+                <div><img src="../assets/img/glyphicon/email-1.png" class="left"><p class="left">{{ this.currentUser.email }}</p></div>
+                <div><img src="../assets/img/glyphicon/phone-2.png" class="left"><p class="left">{{ this.currentUser.contactNumber }}</p></div>
+                <div><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">{{ this.currentUser.city }}</p></div>
             </div>
             <div id="user-info" class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0">
                 <div class="col-xs-12 col-md-6">
                     <p class="lh-30 left">Information<br>Updated</p>
-                    <p class="lh-60 right">{{ currentUser.lastupdated}}</p>
+                    <p class="lh-60 right">{{ this.currentUser.lastupdated}}</p>
                 </div>
                 <div class="col-xs-12 col-md-6">
                     <p class="lh-60 left">Information Accuracy</p>
-                    <rating [(ngModel)]="currentUser.information_accuracy" [max]="5" class="lh-60 right"></rating>
+                    <rating [(ngModel)]="this.currentUser.information_accuracy" [max]="5" class="lh-60 right"></rating>
                 </div>
             </div>
         </div>
@@ -31,19 +31,19 @@
     <div class="col-xs-12 col-md-6 text-center">
         <p class="fs-28 fc-title">CERTIFICATIONS, DEGREES</p>
         <p class="fs-28 fc-subtitle">AWARDS & CLEARANCES</p>
-        <div class="text-container text-left" [style.height] = "'300px'">            
-            <p *ngFor="let cert of currentUser.certificate">{{ 'Degree: ' + cert.degree + ',  Earned: ' + cert.dateEarned }}</p>
-            <p *ngFor="let deg of currentUser.degree">{{ 'Type: ' + deg.type + ', Concentration: ' + deg.concentration + ', From: ' + deg.school + ', Graduation: ' + deg.graduationDate }}</p>
-            <p *ngFor="let index of currentUser.clearance">{{ 'Type: ' + index.type + ', Awarded: ' + index.awarded + ', Expiraion: ' + index.expiration }}</p>
-            <p *ngFor="let index of currentUser.award">{{ 'Awarded: ' + index }}</p>
-        </div>        
+        <div class="text-container text-left" [style.height] = "'300px'">
+            <p *ngFor="let cert of this.currentUser.certificate">{{ 'Degree: ' + cert.degree + ',  Earned: ' + cert.dateEarned }}</p>
+            <p *ngFor="let deg of this.currentUser.degree">{{ 'Type: ' + deg.type + ', Concentration: ' + deg.concentration + ', From: ' + deg.school + ', Graduation: ' + deg.graduationDate }}</p>
+            <p *ngFor="let index of this.currentUser.clearance">{{ 'Type: ' + index.type + ', Awarded: ' + index.awarded + ', Expiraion: ' + index.expiration }}</p>
+            <p *ngFor="let index of this.currentUser.award">{{ 'Awarded: ' + index }}</p>
+        </div>
     </div>
     <div class="col-xs-12 col-md-6 text-center">
         <p class="fs-28 fc-title">INTERESTS</p>
         <p class="fs-28 fc-subtitle">INTERESTED IN</p>
         <div class="text-container text-left" [style.height] = "'300px'">
-            <p >{{ currentUser.interest }}</p>
-        </div>        
+            <p >{{ this.currentUser.interest }}</p>
+        </div>
     </div>
 </div>
 
@@ -56,16 +56,16 @@
     <div class="capa-main col-xs-12">
         <div class="col-xl-12 col-sm-6">
             <div class="capa-chart col-xs-12">
-                <app-bent-bars-chart width='300' height='300' divID='bbChart{{currentUser.id}}' [values]='getCapaChartValues()'></app-bent-bars-chart>
-            </div>        
+                <app-bent-bars-chart width='300' height='300' divID='bbChart{{this.currentUser.id}}' [values]='getCapaChartValues()'></app-bent-bars-chart>
+            </div>
         </div>
         <div class="col-xs-12 col-sm-6 text-container">
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <app-color-comment-box *ngFor='let feature of currentUser.capability' color='{{getCapaChartColor(feature.score)}}' text='{{feature.name}}' class="col-xs-12"></app-color-comment-box>
+                    <app-color-comment-box *ngFor='let feature of this.currentUser.capability' color='{{getCapaChartColor(feature.score)}}' text='{{feature.name}}' class="col-xs-12"></app-color-comment-box>
                 </div>
                 <div class="col-xs-12 col-md-6">
-                    <p *ngFor='let skill of currentUser.skill' ˀ>{{ skill }} </p>
+                    <p *ngFor='let skill of this.currentUser.skill' ˀ>{{ skill }} </p>
                 </div>
             </div>
         </div>
@@ -77,14 +77,14 @@
         <p>AGENCY EXPERIENCE</p>
         <div ></div>
     </div>
-    
+
     <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-container">
-        <app-color-comment-box *ngFor='let index of currentUser.agencyexperience.main.data' color='{{ expColors[index.title] }}' text='{{index.title}}' class="col-xs-12 col-sm-6 col-md-12"></app-color-comment-box>
+        <app-color-comment-box *ngFor='let index of this.currentUser.agencyexperience.main.data' color='{{ expColors[index.title] }}' text='{{index.title}}' class="col-xs-12 col-sm-6 col-md-12"></app-color-comment-box>
     </div>
-    
+
     <div class="exp-main col-xs-12">
         <div class="app-exp-chart left">
-            <p id="exp-main-title">{{currentUser.agencyexperience.main.title}}</p>
+            <p id="exp-main-title">{{this.currentUser.agencyexperience.main.title}}</p>
             <app-exp-chart width='500' height='500' divID='exp-main-chart' [values]='expMainValues()'></app-exp-chart>
         </div>
         <div class="app-exp-chart right">
@@ -104,7 +104,7 @@
         <p>CAREER</p>
         <div ></div>
     </div>
-    <career [Data]="currentUser.career" [current]="currentYear()"></career>
+    <career [Data]="this.currentUser.career" [current]="currentYear()"></career>
 </div>
 
 <div class="strength col-xs-12 clear">

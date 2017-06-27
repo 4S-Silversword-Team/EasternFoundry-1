@@ -32,37 +32,44 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     public location: Location
   ) {
-    this.currentUser.id = this.route.snapshot.params['id'];
-
+    // this.currentUser.id = this.route.snapshot.params['id'];
     this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
       this.currentUser = result[0];
+      myCallback()
     });
 
+    // this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
+    //   this.currentUser = result[0];
+    // });
+      //.subscribe(result => this.currentAccount =result).
+    var myCallback = () => {
 
-    let index: number = 0
-    this.availabilityData.values = []
-    this.availabilityData.dates = []
-    for (let exp of this.currentUser.agencyexperience.main.data) {
-      let color = index/this.currentUser.agencyexperience.main.data.length*155
-      color = Math.floor(color)
-      this.expColors[exp.title] = this.expColors[index++]
+      let index: number = 0
+      this.availabilityData.values = []
+      this.availabilityData.dates = []
+      for (let exp of this.currentUser.agencyexperience.main.data) {
+        let color = index / this.currentUser.agencyexperience.main.data.length * 155
+        color = Math.floor(color)
+        this.expColors[exp.title] = this.expColors[index++]
+      }
+      let temp: number[] = []
+      for (let index of this.currentUser.strength) {
+        this.strengthChartLabels.push(index.skill)
+        temp.push(index.score)
+      }
+      for (let index of this.currentUser.availability) {
+        this.availabilityData.dates.push(index.date)
+        this.availabilityData.values.push(index.available)
+      }
+      this.strengthChartDatas.push({data: temp, label: 'Strength'})
     }
-    let temp: number[] = []
-    for(let index of this.currentUser.strength) {
-      this.strengthChartLabels.push(index.skill)
-      temp.push(index.score)
-    }
-    for(let index of this.currentUser.availability) {
-      this.availabilityData.dates.push(index.date)
-      this.availabilityData.values.push(index.available)
-    }
-    this.strengthChartDatas.push({data: temp, label: 'Strength'})
+
   }
-
-
 
   ngOnInit() {
   }
+
+  //none of these next functions work right now because i guess currentUser is always going to be undefined outside of the promise where it's called, going to fix them later
 
   getCapaChartValues(): number[] {
     let temp: number[] = []
