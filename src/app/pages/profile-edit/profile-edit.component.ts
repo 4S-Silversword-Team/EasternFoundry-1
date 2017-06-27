@@ -19,6 +19,9 @@ export class ProfileEditComponent implements OnInit {
 
   currentUser: User = new User()
   name: String = "no"
+  customTrackBy(index: number, obj: any): any {
+    return  index;
+  }
   expColors: string[] = ['rgb(0,178,255)', 'rgb(69,199,255)', 'rgb(138,220,255)', 'rgb(198,241,255)' ];
   strengthChartDatas: any[] = []
   strengthChartLabels: string[] = []
@@ -62,6 +65,12 @@ export class ProfileEditComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  currentYear() {
+    let year = new Date().getFullYear()
+    return year;
+  }
+
 
   addEmployee() {
 
