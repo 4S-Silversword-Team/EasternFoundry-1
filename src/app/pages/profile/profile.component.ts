@@ -47,6 +47,9 @@ export class ProfileComponent implements OnInit {
       let index: number = 0
       this.availabilityData.values = []
       this.availabilityData.dates = []
+
+
+      // THIS DOESN'T WORK RIGHT NOW
       for (let exp of this.currentUser.agencyexperience.main.data) {
         let color = index / this.currentUser.agencyexperience.main.data.length * 155
         color = Math.floor(color)
@@ -68,8 +71,6 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  //none of these next functions work right now because i guess currentUser is always going to be undefined outside of the promise where it's called, going to fix them later
 
   getCapaChartValues(): number[] {
     let temp: number[] = []

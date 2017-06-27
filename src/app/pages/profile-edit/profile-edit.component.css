@@ -4,7 +4,6 @@
   padding-top: 50px;
   margin-bottom: 50px;
 }
-
 .avatar {
   width: 150px;
   height: 150px;
@@ -164,6 +163,10 @@
 
 .detailcareer {
   height: 100px;
+}
+.vertically-centered{
+  position: relative;
+  transform: translateY(75%);
 }
 
 input {
