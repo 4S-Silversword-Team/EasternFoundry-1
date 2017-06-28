@@ -36,7 +36,7 @@
             <p *ngFor="let cert of this.currentUser.certificate">{{ 'Degree: ' + cert.degree + ',  Earned: ' + cert.dateEarned }}</p>
             <p *ngFor="let deg of this.currentUser.degree">{{ 'Type: ' + deg.type + ', Concentration: ' + deg.concentration + ', From: ' + deg.school + ', Graduation: ' + deg.graduationDate }}</p>
             <p *ngFor="let index of this.currentUser.clearance">{{ 'Type: ' + index.type + ', Awarded: ' + index.awarded + ', Expiraion: ' + index.expiration }}</p>
-            <p *ngFor="let index of this.currentUser.award">{{ 'Awarded: ' + index }}</p>
+            <p *ngFor="let award of this.currentUser.award; let i = index; trackBy:customTrackBy">{{ 'Awarded: ' + this.currentUser.award[i] }}</p>
         </div>
     </div>
     <div class="col-xs-12 col-md-6 text-center">
@@ -108,6 +108,7 @@
     <career [Data]="this.currentUser.career" [current]="currentYear()"></career>
 </div>
 
+  <!--this does not work right now and i'm not sure why!-->
 <div class="strength col-xs-12 clear">
     <div class="div-title col-xs-12">
         <img src="./assets/img/profile/strength.png">

@@ -38,18 +38,11 @@ export class ProfileComponent implements OnInit {
       myCallback()
     });
 
-    // this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
-    //   this.currentUser = result[0];
-    // });
-      //.subscribe(result => this.currentAccount =result).
     var myCallback = () => {
 
       let index: number = 0
       this.availabilityData.values = []
       this.availabilityData.dates = []
-
-
-      // THIS DOESN'T WORK RIGHT NOW
       for (let exp of this.currentUser.agencyexperience.main.data) {
         let color = index / this.currentUser.agencyexperience.main.data.length * 155
         color = Math.floor(color)

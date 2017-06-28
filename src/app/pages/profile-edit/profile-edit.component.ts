@@ -103,6 +103,10 @@ export class ProfileEditComponent implements OnInit {
     );
   }
 
+  deleteDegree(i) {
+    this.currentUser.degree.splice(i, 1);
+  }
+
   addClearance() {
     this.currentUser.clearance.push(
       {
@@ -117,6 +121,10 @@ export class ProfileEditComponent implements OnInit {
     this.currentUser.award.push(
       ''
     );
+  }
+
+  deleteAward(i) {
+    this.currentUser.award.splice(i, 1);
   }
 
 
