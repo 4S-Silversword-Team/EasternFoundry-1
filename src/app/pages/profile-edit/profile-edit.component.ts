@@ -18,7 +18,7 @@ declare var $: any;
 export class ProfileEditComponent implements OnInit {
 
   currentUser: User = new User()
-  name: String = "no"
+  newSkill: string = ""
   customTrackBy(index: number, obj: any): any {
     return  index;
   }
@@ -64,6 +64,32 @@ export class ProfileEditComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  saveChanges() {
+    console.log("Saving changes does not yet do things!")
+  }
+
+  addSkill() {
+    if (this.newSkill !== "") {
+      this.currentUser.skill.push(this.newSkill);
+      this.newSkill = "";
+    };
+  }
+
+  addJob() {
+    this.currentUser.career.push(
+      {
+        year: 2015,
+        detail:
+          {
+            title: '',
+            from: '',
+            company: '',
+            career: ''
+          }
+      }
+    );
   }
 
   currentYear() {

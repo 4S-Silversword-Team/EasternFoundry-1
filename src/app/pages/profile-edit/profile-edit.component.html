@@ -136,13 +136,14 @@
       <div ></div>
     </div>
     <!--<career [Data]="this.currentUser.career" [current]="currentYear()"></career>-->
-    <div *ngFor="let job of this.currentUser.career">
+    <div *ngFor="let job of this.currentUser.career" class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 text-container">
       <p class="col-xs-12 text-center">Job</p>
-      <p class="col-xs-2 vertically-centered">Title: </p><input class="col-xs-9 left" [(ngModel)] = 'job.detail.title'>
-      <p class="col-xs-2 vertically-centered">Time Period: </p><input class="col-xs-9 left" [(ngModel)] = 'job.detail.from'>
-      <p class="col-xs-2 vertically-centered">Company: </p><input class="col-xs-9 left" [(ngModel)] = 'job.detail.company'>
-      <p class="col-xs-2">Job Info: </p><textarea class="col-xs-9 left detailcareer" [(ngModel)] = 'job.detail.career'></textarea>
+      <p class="col-xs-2 vertically-centered">Company: </p><input class="col-xs-9 left" placeholder="Who you worked for" [(ngModel)] = 'job.detail.company'>
+      <p class="col-xs-2 vertically-centered">Title: </p><input class="col-xs-9 left" placeholder="The title you held" [(ngModel)] = 'job.detail.title'>
+      <p class="col-xs-2 vertically-centered">From: </p><input class="col-xs-9 left" placeholder="The span of time you worked here" [(ngModel)] = 'job.detail.from'>
+      <p class="col-xs-2">Job Info: </p><textarea class="col-xs-9 left detailcareer" placeholder="A description of your responsibilities at this job" [(ngModel)] = 'job.detail.career'></textarea>
     </div>
+    <button class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4" (click)="addJob()">Add Job</button>
   </div>
 
   <div class="capabilities col-xs-12 clear">
@@ -152,15 +153,18 @@
       <div ></div>
     </div>
 
-    <div class="col-xs-12 text-center">
+    <div class="col-xs-4 col-xs-offset-4 text-center text-container">
 
-      <div *ngFor='let skill of this.currentUser.skill; let i = index; trackBy:customTrackBy'>
-        <input type="text" [(ngModel)] = 'this.currentUser.skill[i]'>
+      <div class="" *ngFor='let skill of this.currentUser.skill; let i = index; trackBy:customTrackBy'>
+        <input type="text" style="width: 100%" [(ngModel)] = 'this.currentUser.skill[i]'>
       </div>
-        <input type="text" placeholder="New Skill">
-
+        <input type="text" style="width: 100%" placeholder="New Skill" [(ngModel)] = 'this.newSkill'>
+      <button class="col-xs-12" (click)="addSkill()">Add Skill</button>
     </div>
   </div>
+
+
+  <button class="col-xs-4 col-xs-offset-4 save-button" (click)="saveChanges()">Save Changes</button>
 
   <!--<div class="capabilities col-xs-12 clear">-->
     <!--<div class="div-title col-xs-12">-->
@@ -228,24 +232,18 @@
 
   <!--</div>-->
 
-  <div class="availability col-xs-12 clear">
-    <div class="div-title col-xs-12">
-      <img src="./assets/img/profile/availability.png">
-      <p>AVAILABILITY</p>
-      <div ></div>
-    </div>
-    <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-container">
-      <app-color-comment-box color='#7f7f7f' text='unavilable' class="col-xs-12 col-sm-6 col-md-6"></app-color-comment-box>
-      <app-color-comment-box color='#0b6ec1' text='available' class="col-xs-12 col-sm-6 col-md-6"></app-color-comment-box>
-    </div>
-    <app-availablebar [values] = 'availabilityData.values' [dates] = 'availabilityData.dates'></app-availablebar>
-  </div>
-
-
-
-
-
-
+  <!--<div class="availability col-xs-12 clear">-->
+    <!--<div class="div-title col-xs-12">-->
+      <!--<img src="./assets/img/profile/availability.png">-->
+      <!--<p>AVAILABILITY</p>-->
+      <!--<div ></div>-->
+    <!--</div>-->
+    <!--<div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-container">-->
+      <!--<app-color-comment-box color='#7f7f7f' text='unavilable' class="col-xs-12 col-sm-6 col-md-6"></app-color-comment-box>-->
+      <!--<app-color-comment-box color='#0b6ec1' text='available' class="col-xs-12 col-sm-6 col-md-6"></app-color-comment-box>-->
+    <!--</div>-->
+    <!--<app-availablebar [values] = 'availabilityData.values' [dates] = 'availabilityData.dates'></app-availablebar>-->
+  <!--</div>-->
 
 <!--<div class="employee col-xs-12 clear">
     <div class="div-title col-xs-12">

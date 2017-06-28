@@ -173,8 +173,17 @@ input {
   color: black;
 }
 
+textarea {
+  color: black;
+}
+
 .strength .div-title p{
   color: #198fcf;
+}
+
+.save-button {
+  height: 50px;
+  background-color: forestgreen;
 }
 
 .strength .div-title div{
