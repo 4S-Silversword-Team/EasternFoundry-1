@@ -92,14 +92,46 @@ export class ProfileEditComponent implements OnInit {
     );
   }
 
+  addDegree() {
+    this.currentUser.degree.push(
+      {
+        type: '',
+        concentration: '',
+        school: '',
+        graduationDate: ''
+      }
+    );
+  }
+
+  addClearance() {
+    this.currentUser.clearance.push(
+      {
+        type: '',
+        awarded: '',
+        expiration: ''
+      }
+    );
+  }
+
+  addAward() {
+    this.currentUser.award.push(
+      ''
+    );
+  }
+
+
   currentYear() {
     let year = new Date().getFullYear()
     return year;
   }
 
-
-  addEmployee() {
-
+  updateProfile(model) {
+    // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
+    delete model["_id"]
+    this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
+    window.scrollTo(0, 0);
+    this.router.navigate(['user-profile', this.route.snapshot.params['id']]);
   }
+
 
 }

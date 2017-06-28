@@ -26,9 +26,18 @@ export class UserService {
   }
 
   getUserbyID(id: string): Observable<User> {
-    var response =  this.authHttp.get(environment.apiRoot + "profiles/" + id)
+    var response = this.authHttp.get(environment.apiRoot + "profiles/" + id)
       .map(response => <User> response.json())
     return response;
+  }
+
+  updateUser(id: string, request: any): Observable<User> {
+    var response = this.authHttp.put(environment.apiRoot + "profiles/" + id, request)
+      .map(response => <User> response.json())
+    return response;
+  }
+
+
 
 
     // let temp: User = new User()
@@ -235,6 +244,5 @@ export class UserService {
     //   temp.avatar = '../../assets/img/user-account2.png'
     // }
     // return temp
-  }
 
 }

@@ -120,4 +120,9 @@ export class ProfileComponent implements OnInit {
   back() {
     this.location.back()
   }
+
+  editProfile() {
+    this.router.navigate(['user-profile-edit', this.currentUser['_id']]);
+  }
+
 }

@@ -1,52 +1,33 @@
 <div class="container">
-  <!--<div class="btn-back" (click) = 'this.location.back()'></div>-->
+  <div class="btn-back" (click) = 'this.location.back()'></div>
   <div class="basic-info col-xs-12 clear">
     <div class="container">
       <div class="col-md-12">
         <img src="{{this.currentUser.avatar}}" class="avatar center-block">
         <div class="col-xs-12 srow info-input">
-          <div class="col-xs-3 srow info-img-input">
-            <img class="col-xs-1 left" src="../assets/img/glyphicon/email-1.png" class="left">
-            <p class="col-xs-1 left vertically-centered">Name</p>
-          </div>
+          <p class="col-xs-3 text-right vertically-centered">Name</p>
           <input class="col-xs-4 left" type="text" placeholder="User name." [(ngModel)] = 'this.currentUser.firstname'>
           <input class="col-xs-4 left" type="text" placeholder="User name." [(ngModel)] = 'this.currentUser.lastname'>
         </div>
         <div class="col-xs-12 srow info-input">
-          <div class="col-xs-3 srow info-img-input">
-            <img class="col-xs-1 left" src="../assets/img/glyphicon/email-1.png" class="left">
-            <p class="col-xs-1 left vertically-centered">Email</p>
-          </div>
+          <p class="col-xs-3 text-right vertically-centered">Email</p>
           <input class="col-xs-8 left" type="text" [(ngModel)] = 'this.currentUser.email'>
         </div>
         <div class="col-xs-12 srow info-input">
-          <div class="col-xs-3 srow info-img-input">
-            <img class="col-xs-1 left" src="../assets/img/glyphicon/phone-2.png" class="left">
-            <p class="col-xs-1 left vertically-centered">Contact</p>
-          </div>
+          <p class="col-xs-3 text-right vertically-centered">Contact Number</p>
           <input class="col-xs-8 left" type="number"  [(ngModel)] = 'this.currentUser.contactNumber'>
         </div>
         <div class="col-xs-12 srow info-input">
 
-        <div class="col-xs-3 srow info-img-input">
-            <img class="col-xs-1 left" src="../assets/img/glyphicon/post-1.png" class="left">
-            <p class="col-xs-1 left vertically-centered">City</p>
-          </div>
+          <p class="col-xs-3 text-right vertically-centered">City</p>
            <input class="col-xs-8 left" type="text"  [(ngModel)] = 'this.currentUser.city'>
         </div>
         <div class="col-xs-12 srow info-input">
-
-        <div class="col-xs-3 srow info-img-input">
-            <img class="col-xs-1 left" src="../assets/img/profile/state.png" class="left">
-            <p class="col-xs-1 left vertically-centered">State </p>
-          </div>
+          <p class="col-xs-3 text-right vertically-centered">State</p>
            <input class="col-xs-8 left" type="text"  [(ngModel)] = 'this.currentUser.state'>
         </div>
         <div class="col-xs-12 srow info-input">
-          <div class="col-xs-3 srow info-img-input">
-            <img class="col-xs-1 left" src="../assets/img/profile/zip.png" class="left">
-            <p class="col-xs-1 left vertically-centered">Zip</p>
-          </div>
+          <p class="col-xs-3 text-right vertically-centered">Zip</p>
           <input class="col-xs-8 left" type="number"  [(ngModel)] = 'this.currentUser.zip'>
         </div>
       </div>
@@ -90,36 +71,37 @@
     </div>
 
   <div class="certification col-xs-12">
+    <p class="col-xs-12 fs-28 fc-title">CERTIFICATIONS, DEGREES</p>
+    <p class="col-xs-12 fs-28 fc-subtitle">AWARDS & CLEARANCES</p>
     <div class="col-xs-12 col-md-6 text-center">
-      <p class="fs-28 fc-title">CERTIFICATIONS, DEGREES</p>
-      <p class="fs-28 fc-subtitle">AWARDS & CLEARANCES</p>
-      <div class="text-container text-left" [style.height] = "'450px'">
         <h3>Degrees</h3>
-        <div *ngFor="let degree of this.currentUser.degree">
+        <div class="text-container text-left" [style.height] = "'240px'" *ngFor="let degree of this.currentUser.degree">
+          <p class="text-center">Degree:</p>
           <p class="col-xs-4 vertically-centered">Type: </p><input class="col-xs-8" [(ngModel)] = 'degree.type'>
           <p class="col-xs-4 vertically-centered">Concentration: </p><input class="col-xs-8" [(ngModel)] = 'degree.concentration'>
           <p class="col-xs-4 vertically-centered">School: </p><input class="col-xs-8" [(ngModel)] = 'degree.school'>
           <p class="col-xs-4 vertically-centered">Graduation Date: </p><input class="col-xs-8" [(ngModel)] = 'degree.graduationDate'>
         </div>
+      <button class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4" (click)="addDegree()">Add Degree</button>
+    </div>
+    <div class="col-xs-12 col-md-6 text-center">
+      <h3>Clearances</h3>
+      <div class="text-container text-left" [style.height] = "'180px'" *ngFor="let index of this.currentUser.clearance">
+        <p class="col-xs-4 vertically-centered">Type: </p><input class="col-xs-8" [(ngModel)] = 'index.type'>
+        <p class="col-xs-4 vertically-centered">Awarded: </p><input class="col-xs-8" [(ngModel)] = 'index.awarded'>
+        <p class="col-xs-4 vertically-centered">Expiration: </p><input class="col-xs-8" [(ngModel)] = 'index.expiration'>
       </div>
-
-      <div class="text-container text-left" [style.height] = "'300px'">
-        <h3>Clearances</h3>
-        <div *ngFor="let index of this.currentUser.clearance">
-          <p class="col-xs-4 vertically-centered">Type: </p><input class="col-xs-8" [(ngModel)] = 'index.type'>
-          <p class="col-xs-4 vertically-centered">Awarded: </p><input class="col-xs-8" [(ngModel)] = 'index.awarded'>
-          <p class="col-xs-4 vertically-centered">Expiration: </p><input class="col-xs-8" [(ngModel)] = 'index.expiration'>
-        </div>
+      <button class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4" (click)="addClearance()">Add Clearance</button>
+    </div>
+    <div class="col-xs-12 col-md-6 text-center">
+      <h3>Awards</h3>
+      <div class="text-container text-left" [style.height] = "'95px'" *ngFor="let award of this.currentUser.award; let i = index; trackBy:customTrackBy">
+        <p class="col-xs-4 vertically-centered">Awarded: </p><input class="col-xs-8" [(ngModel)] = 'this.currentUser.award[i]'>
       </div>
-      <div class="text-container text-left" [style.height] = "'300px'">
-        <h3>Awards</h3>
-        <div *ngFor="let award of this.currentUser.award; let i = index; trackBy:customTrackBy">
-          <p class="col-xs-4 vertically-centered">Awarded: </p><input class="col-xs-8" [(ngModel)] = 'this.currentUser.award[i]'>
-        </div>
-      </div>
+      <button class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4" (click)="addAward()">Add Award</button>
+    </div>
 
         <!--<input *ngFor="let deg of this.currentUser.degree">{{ 'Type: ' + deg.type + ', Concentration: ' + deg.concentration + ', From: ' + deg.school + ', Graduation: ' + deg.graduationDate }}-->
-      </div>
     <div class="col-xs-12 col-md-6 text-center">
       <p class="fs-28 fc-title">INTERESTS</p>
       <p class="fs-28 fc-subtitle">INTERESTED IN</p>
@@ -146,7 +128,7 @@
     <button class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4" (click)="addJob()">Add Job</button>
   </div>
 
-  <div class="capabilities col-xs-12 clear">
+  <div class="career col-xs-12 clear">
     <div class="div-title col-xs-12">
       <img src="./assets/img/profile/capabilities-1.png">
       <p>SKILLS</p>
@@ -164,8 +146,8 @@
   </div>
 
 
-  <button class="col-xs-4 col-xs-offset-4 save-button" (click)="saveChanges()">Save Changes</button>
-
+  <div class="col-xs-6 col-xs-offset-3" style="margin-bottom: 1%"><button class="btn btn-primary btn-block" (click)="updateProfile(this.currentUser)">Update Profile</button></div>
+  <br>
   <!--<div class="capabilities col-xs-12 clear">-->
     <!--<div class="div-title col-xs-12">-->
       <!--<img src="./assets/img/profile/capabilities-1.png">-->
