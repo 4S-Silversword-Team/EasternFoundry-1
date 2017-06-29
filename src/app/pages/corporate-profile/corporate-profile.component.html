@@ -32,7 +32,7 @@
               <p class="srow">{{ index.firstname + ' ' + index.lastname}}</p>
               <p class="srow">{{ index.jobtitle }}</p>
               <p class="srow">{{ index.email }}</p>
-              <button class="col-xs-8 col-xs-offset-2" (click)="toUserProfile(index.id)">More Information</button>
+              <button class="col-xs-8 col-xs-offset-2" (click)="toUserProfile(index._id)">More Information</button>
           </div>
       </div>
   </div>
@@ -165,7 +165,7 @@
                     <p class="col-xs-12">{{pp.title}}</p>
                     <p class="halfwidth left"><strong>Client</strong><br>{{pp.client}}</p>
                     <p class="halfwidth right"><strong>Project</strong><br>{{pp.topic}}</p>
-                    <button (click)='toPastPerformance(pp._id)'>More Information</button> 
+                    <button (click)='toPastPerformance(pp._id)'>More Information</button>
                 </div>
             </div>
         </div>

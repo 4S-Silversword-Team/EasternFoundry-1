@@ -1,0 +1,226 @@
+/*styles for profile edit content only*/
+
+.basic-info {
+  padding-top: 50px;
+  margin-bottom: 50px;
+}
+.avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  border: 2px solid #757575;
+}
+
+.text-container {
+  background-color: whitesmoke;
+  border: 2px solid lightgray;
+  padding-top: 38px;
+  color: darkslategray;
+}
+
+.text-container textarea {
+  color: red;
+  width: 100%;
+  margin-top: 9px;
+}
+
+.side-button {
+  height: 35px;
+  width: 100%;
+  margin-bottom: 7px;
+  padding: 0 auto;
+  padding-top: 0px;
+}
+
+.button-row button {
+  margin-top: 5px;
+}
+
+#user-job {
+  padding-top: 15px;
+}
+
+#user-photo-job p:hover {
+  color: #4070c0;
+}
+
+#user-contact div {
+  height: 50px;
+  line-height: 50px;
+}
+
+#user-contact img {
+  height: 45px;
+  padding-left: 10px;
+  border-left: 4px solid #3e3e3e;
+}
+
+#user-contact div:hover img {
+  border-left: 4px solid #4373c3;
+}
+
+#user-contact div p {
+  width: 230px;
+  text-align: left;
+  margin-left: 10px;
+}
+
+#user-contact div:hover p {
+  color: #4373c3;
+}
+
+#user-info {
+  width: 300px;
+  height: 150px;
+}
+
+#user-info div {
+  width: 285px;
+  height: 65px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-left: 10px;
+  border-left: 4px solid #3e3e3e;
+}
+
+#user-info div:hover {
+  color: #4373c3;
+}
+
+#user-info-date {
+  line-height: 32px;
+}
+
+#user-info-accuracy {
+  line-height: 65px;
+}
+
+.certification {
+  width: 100%;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.div-title {
+  width: 100%;
+  display: inline-block;
+}
+
+.div-title * {
+  display: inline;
+}
+
+.div-title img {
+  width: 100px;
+  height: 90px;
+}
+
+.div-title p {
+  font-size: 28px;
+}
+
+.div-title div {
+  width: calc(100% - 320px);
+  height: 3px;
+  margin-bottom: 8px;
+  background-color: #827e7c;
+  display: inline-block;
+}
+
+.capa-main {
+  display: inline-block;
+}
+
+.capa-pre {
+  height: 300px;
+  padding: 100px 10px 100px 10px;
+  border-right: 3px solid #827e7c;
+  text-align: center;
+  margin: auto;
+}
+
+.capa-pre p {
+  color: #313131;
+  font-size: 24px;
+}
+
+.capa-chart {
+  width: 300px;
+  height: 300px;
+}
+
+.capabilities .text-container {
+  min-height: 300px;
+}
+
+.experience .div-title div{
+  width: calc(100% - 440px);
+}
+
+#exp-main-title {
+  text-align: center;
+  font-size: 40px;
+  font-weight: bold;
+  color: #2070be;
+}
+#exp-sub1-title {
+  text-align: center;
+  line-height: 255px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #2070be;
+}
+#exp-sub2-title {
+  text-align: center;
+  line-height: 255px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #2070be;
+}
+
+.career .div-title div{
+  width: calc(100% - 235px);
+}
+.interests {
+  height: 100%;
+  color: black;
+}
+
+.detailcareer {
+  height: 100px;
+}
+.vertically-centered{
+  position: relative;
+  transform: translateY(15px);
+}
+
+input {
+  color: black;
+}
+
+textarea {
+  color: black;
+}
+
+.strength .div-title p{
+  color: #198fcf;
+}
+
+.save-button {
+  height: 50px;
+  background-color: forestgreen;
+}
+
+.strength .div-title div{
+  background-color: #0e6daf;
+  width: calc(100% - 272px);
+}
+
+app-availablebar {
+  width: 560px;
+  height: 20px;
+  margin: auto;
+  margin-top: 50px;
+  margin-bottom: 100px;
+  display: inherit;
+}

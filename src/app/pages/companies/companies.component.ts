@@ -20,7 +20,7 @@ export class CompaniesComponent implements OnInit {
     private companyService: CompanyService
   ) {
     this.companyService.getCompanies().then(val => this.companies = val )
-    
+
   }
 
   ngOnInit() {

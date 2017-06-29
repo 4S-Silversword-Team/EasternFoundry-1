@@ -46,7 +46,8 @@ export class CorporateProfileEditComponent implements OnInit {
     private ppService: PastperformanceService
   ) {
     if ( this.router.url !== 'corporate-profile-create' ) {
-      this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result[0]; myCallback()})   //.subscribe(result => this.currentAccount =result).
+      this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result[0]; myCallback()});
+      //.subscribe(result => this.currentAccount =result).
       //this.currentAccount = this.companyService.getTestCompany()
       let myCallback = () => {
       for(let i of this.currentAccount.product) {
@@ -61,7 +62,7 @@ export class CorporateProfileEditComponent implements OnInit {
         //this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
         ppService.getPastPerformancebyID(i.pastperformanceid).toPromise().then(res => this.pastperformances.push(res[0])) // Might try to continue the for loop before the promise resolves.
       }
-    }
+    };
     }
   }
 
