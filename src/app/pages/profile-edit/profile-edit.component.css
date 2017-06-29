@@ -1,4 +1,4 @@
-/*styles for profile content only*/
+/*styles for profile edit content only*/
 
 .basic-info {
   padding-top: 50px;
@@ -9,6 +9,31 @@
   height: 150px;
   border-radius: 10px;
   border: 2px solid #757575;
+}
+
+.text-container {
+  background-color: whitesmoke;
+  border: 2px solid lightgray;
+  padding-top: 38px;
+  color: darkslategray;
+}
+
+.text-container textarea {
+  color: red;
+  width: 100%;
+  margin-top: 9px;
+}
+
+.side-button {
+  height: 35px;
+  width: 100%;
+  margin-bottom: 7px;
+  padding: 0 auto;
+  padding-top: 0px;
+}
+
+.button-row button {
+  margin-top: 5px;
 }
 
 #user-job {
@@ -166,7 +191,7 @@
 }
 .vertically-centered{
   position: relative;
-  transform: translateY(75%);
+  transform: translateY(15px);
 }
 
 input {

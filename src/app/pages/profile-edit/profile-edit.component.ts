@@ -127,6 +127,13 @@ export class ProfileEditComponent implements OnInit {
     this.currentUser.award.splice(i, 1);
   }
 
+  addCertificate() {
+    this.currentUser.certificate.push({
+      degree: '',
+      dateEarned: ''
+    });
+  }
+
 
   currentYear() {
     let year = new Date().getFullYear()
