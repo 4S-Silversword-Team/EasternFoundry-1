@@ -60,7 +60,7 @@ import { SelectorComponent } from './components/selector/selector.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(ROUTES)
+    RouterModule.forRoot(ROUTES, {useHash: true})
   ],
   providers: [],
   bootstrap: [AppComponent]
