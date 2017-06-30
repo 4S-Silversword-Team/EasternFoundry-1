@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
 
-import { Company } from '../../classes/company'
+import { Company } from '../../classes/company';
 
-import { CompanyService } from  '../../services/company.service'
+import { CompanyService } from '../../services/company.service';
 
 @Component({
   selector: 'app-companies',
@@ -13,13 +13,13 @@ import { CompanyService } from  '../../services/company.service'
 })
 export class CompaniesComponent implements OnInit {
 
-  companies: Company[] = []
+  companies: Company[] = [];
 
   constructor(
     private router: Router,
     private companyService: CompanyService
   ) {
-    this.companyService.getCompanies().then(val => this.companies = val )
+    this.companyService.getCompanies().then(val => this.companies = val );
 
   }
 
@@ -27,7 +27,7 @@ export class CompaniesComponent implements OnInit {
   }
 
   goTo(id: string) {
-    this.router.navigate(['corporate-profile',id])
+    this.router.navigate(['corporate-profile', id]);
   }
 
 }
