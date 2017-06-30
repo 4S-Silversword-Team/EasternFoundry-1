@@ -8,7 +8,7 @@
         <div class="col-xs-6 left" [style.border-right] = "'3px solid #757575'">
             <div class="col-xs-12 srow">
                 <p class="left lh-50">Title of PP</p>
-                <input type="text" placeholder="Past Performance" class="right" [style.width]="''+ppInputWidth+'px'">
+                <input type="text" placeholder="Past Performance" class="right" [style.width]="''+ppInputWidth+'px'" [(ngModel)] = 'this.currentPastPerformance.title'>
             </div>
             <div class="col-xs-12 srow">
                 <p class="left lh-50">Agency</p>

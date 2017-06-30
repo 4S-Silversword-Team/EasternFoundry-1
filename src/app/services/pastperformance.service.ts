@@ -16,8 +16,16 @@ export class PastperformanceService {
     this.authHttp = new AuthHttp(http)
   }
 
+  // getPastPerformances(): Promise<PastPerformance[]> {
+  //   var response = this.authHttp.get(environment.apiRoot + "pastperformance/" )
+  //     .map(response => <[PastPerformance]> response.json())
+  //
+  //   var pastPerformancePromise: Promise<[PastPerformance]> = response.toPromise();
+  //   return pastPerformancePromise
+  // }
+
   getPastPerformancebyID(id: string): Observable<PastPerformance> {
-    var response =  this.authHttp.get(environment.apiRoot + "PastPerformance/" + id)
+    var response =  this.authHttp.get(environment.apiRoot + "pastperformance/" + id)
     .map(response => <PastPerformance> response.json())
     return response
   }
