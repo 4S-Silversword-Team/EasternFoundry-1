@@ -46,4 +46,8 @@ export class PastPerformanceEditComponent implements OnInit {
 
   }
 
+  back() {
+    this.location.back()
+  }
+
 }
