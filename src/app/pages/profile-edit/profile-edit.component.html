@@ -83,7 +83,7 @@
     <div class="col-xs-11 col-xs-offset-1">
       <div class="col-xs-4">
         <p class="col-xs-12 text-left">Name</p>
-        <div class="col-xs-12" type="text" *ngFor="let certificate of this.currentUser.certificate; let i = index">
+        <div class="col-xs-12 " type="text" *ngFor="let certificate of this.currentUser.certificate; let i = index">
           <input class="col-xs-12" type="text" [(ngModel)] = 'certificate.degree'>
         </div>
       </div>
@@ -108,7 +108,7 @@
       <p>CLEARANCES</p>
       <div ></div>
     </div>
-    <div class="col-xs-12 text-center" *ngFor="let index of this.currentUser.clearance">
+    <div class="col-xs-12 text-center" *ngFor="let index of this.currentUser.clearance; let i = index">
       <div class="col-xs-10" style="padding-top: 2%">
         <div class="col-xs-4">
           <p class="col-xs-12 text-left">Type: </p>
@@ -124,7 +124,7 @@
         </div>
       </div>
       <div class="col-xs-2" style="padding-top: 4%">
-        <button class="col-xs-12" style="height: 12%; margin: 1%;">EDIT</button>
+        <button class="col-xs-12" style="height: 12%; margin: 1%;" (click)="deleteClearance(i)">DELETE</button>
         <button class="col-xs-12" style="height: 12%; margin: 1%;">SAVE</button>
       </div>
     </div>
@@ -141,6 +141,7 @@
       <div class="col-xs-10" style="padding-top: 2%">
         <div class="col-xs-6 text-left" *ngFor="let award of this.currentUser.award; let i = index; trackBy:customTrackBy">
           <input class="col-xs-12" [(ngModel)] = 'this.currentUser.award[i]'>
+          <button class="tiny-button-awards" (click)="deleteAward(i)"><div class="tiny-button-text">x</div></button>
         </div>
       </div>
       <div class="col-xs-2" style="padding-top: 4%">
@@ -158,7 +159,7 @@
       <div ></div>
     </div>
 
-    <div *ngFor="let job of this.currentUser.career; let i = index" class="col-xs-12 job" style="margin: 1%">
+    <div *ngFor="let job of this.currentUser.career; let i = index" class="col-xs-12 job text-container" style="margin: 1%">
       <p class="col-xs-12 left">Job {{i+1}}</p>
       <div class="col-xs-5">
         <p class="col-xs-5 col-md-4 vertically-centered">Title</p>
@@ -218,7 +219,7 @@
       <div class="button-row">
         <button class="col-xs-3">EDIT</button>
         <button class="col-xs-3" (click)="addJob()">ADD</button>
-        <button class="col-xs-3">DELETE</button>
+        <button class="col-xs-3" (click)="deleteJob(i)">DELETE</button>
         <button class="col-xs-3">SAVE</button>
       </div>
     </div>
@@ -235,90 +236,12 @@
 
       <div class="" *ngFor='let skill of this.currentUser.skill; let i = index; trackBy:customTrackBy'>
         <input type="text" style="width: 100%" [(ngModel)] = 'this.currentUser.skill[i]'>
+        <button class="tiny-button-skills" (click)="deleteSkill(i)"><div class="tiny-button-text">x</div></button>
       </div>
         <input type="text" class="col-xs-8" placeholder="New Skill" [(ngModel)] = 'this.newSkill'>
-      <button class="col-xs-4" style="height: 30px; margin-top: 10px; font-size: 16px" (click)="addSkill()">Add Skill</button>
+      <button class="col-xs-4" style="height: 30px; margin-top: 10px" (click)="addSkill()"><div style="margin-top: -5px">Add</div></button>
     </div>
   </div>
-
-
-  <div class="col-xs-6 col-xs-offset-3" style="margin-bottom: 1%"><button class="btn btn-primary btn-block" (click)="updateProfile(this.currentUser)">Update Profile</button></div>
-  <br>
-
-  <!--<div class="col-xs-12 col-md-6 text-center">-->
-    <!--<p class="fs-28 fc-title">INTERESTS</p>-->
-    <!--<p class="fs-28 fc-subtitle">INTERESTED IN</p>-->
-    <!--<div class="text-container text-left" [style.height] = "'300px'">-->
-      <!--<textarea class="col-xs-12 interests" [(ngModel)] = 'this.currentUser.interest'></textarea>-->
-    <!--</div>-->
-  <!--</div>-->
-
-
-  <!--<div class="capabilities col-xs-12 clear">-->
-    <!--<div class="div-title col-xs-12">-->
-      <!--<img src="./assets/img/profile/capabilities-1.png">-->
-      <!--<p>CAPABILITIES</p>-->
-      <!--<div ></div>-->
-    <!--</div>-->
-    <!--<div class="capa-main col-xs-12">-->
-      <!--<div class="col-xl-12 col-sm-6">-->
-        <!--<div class="capa-chart col-xs-12">-->
-          <!--<app-bent-bars-chart width='300' height='300' divID='bbChart{{this.currentUser.id}}' [values]='getCapaChartValues()'></app-bent-bars-chart>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--<div class="col-xs-12 col-sm-6 text-container">-->
-        <!--<div class="row">-->
-          <!--<div class="col-xs-12 col-md-6">-->
-            <!--<app-color-comment-box *ngFor='let feature of this.currentUser.capability' color='{{getCapaChartColor(feature.score)}}' text='{{feature.name}}' class="col-xs-12"></app-color-comment-box>-->
-          <!--</div>-->
-          <!--<div class="col-xs-12 col-md-6">-->
-            <!--<p *ngFor='let skill of this.currentUser.skill' ˀ>{{ skill }} </p>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
-  <!--<div class="experience col-xs-12 clear">-->
-    <!--<div class="div-title col-xs-12">-->
-      <!--<img src="./assets/img/profile/agency-3.png">-->
-      <!--<p>AGENCY EXPERIENCE</p>-->
-      <!--<div ></div>-->
-    <!--</div>-->
-
-    <!--<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-container">-->
-      <!--<app-color-comment-box *ngFor='let index of this.currentUser.agencyexperience.main.data' color='{{ expColors[index.title] }}' text='{{index.title}}' class="col-xs-12 col-sm-6 col-md-12"></app-color-comment-box>-->
-    <!--</div>-->
-
-    <!--<div class="exp-main col-xs-12">-->
-      <!--<div class="app-exp-chart left">-->
-        <!--<p id="exp-main-title">{{this.currentUser.agencyexperience.main.title}}</p>-->
-        <!--<app-exp-chart width='500' height='500' divID='exp-main-chart' [values]='expMainValues()'></app-exp-chart>-->
-      <!--</div>-->
-      <!--<div class="app-exp-chart right">-->
-        <!--<app-exp-chart id='sub1' width='250' height='250' divID='exp-sub1-chart' [values]='expSub1Values()' class="right"></app-exp-chart>-->
-        <!--<p id="exp-sub1-title" class="left">Office 1</p>-->
-      <!--</div>-->
-      <!--<div class="app-exp-chart left">-->
-        <!--<app-exp-chart id='sub2' width='250' height='250' divID='exp-sub2-chart' [values]='expSub2Values()' class="left"></app-exp-chart>-->
-        <!--<p id="exp-sub2-title" class="right">Office 2</p>-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
-
-  <!--<div class="strength col-xs-12 clear">-->
-    <!--<div class="div-title col-xs-12">-->
-      <!--<img src="./assets/img/profile/strength.png">-->
-      <!--<p>STRENGTH</p>-->
-      <!--<div ></div>-->
-    <!--</div>-->
-    <!--<canvas baseChart-->
-            <!--[datasets]="strengthChartDatas"-->
-            <!--[labels]="strengthChartLabels"-->
-            <!--[options]="{ scaleShowVerticalLines: true, responsive: true, scales: { yAxes: [{ticks: {beginAtZero: true }}]} }"-->
-            <!--[legend]="true"-->
-            <!--[chartType]="'bar'"></canvas>-->
-
-  <!--</div>-->
 
   <!--<div class="availability col-xs-12 clear">-->
     <!--<div class="div-title col-xs-12">-->
@@ -333,30 +256,15 @@
     <!--<app-availablebar [values] = 'availabilityData.values' [dates] = 'availabilityData.dates'></app-availablebar>-->
   <!--</div>-->
 
-<!--<div class="employee col-xs-12 clear">
-    <div class="div-title col-xs-12">
-        <img src="./assets/img/employee.png">
-        <p>EMPLOYEES</p>
-        <div></div>
-    </div>
-    <div class="container">
-      <div class="col-xs-12">
-        <div class="srow">
-            <span class="col-xs-6 col-sm-8 col-md-10 text-center" >Email</span>
-            <span class="col-xs-6 col-sm-4 col-md-2 text-center" >Leadership</span>
-        </div>
-        <div class="srow input-employee text-center">
-          <input class="col-xs-6 col-sm-8 col-md-10">
-          <div class="col-xs-6 col-sm-4 col-md-2 text-center">
-            <input type="checkbox" [style.height] = "'50px'" [style.margin]="'0'">
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-12 text-center">
-          <button class="mr20" (click) = 'addEmployee()'>ADD</button>
-          <button>REMOVE</button>
-      </div>
-    </div>
-</div>-->
+  <div class="col-xs-6 col-xs-offset-3" style="margin-bottom: 1%"><button class="btn btn-primary btn-block" (click)="updateProfile(this.currentUser)">Save Changes</button></div>
+  <br>
+
+  <!--<div class="col-xs-12 col-md-6 text-center">-->
+    <!--<p class="fs-28 fc-title">INTERESTS</p>-->
+    <!--<p class="fs-28 fc-subtitle">INTERESTED IN</p>-->
+    <!--<div class="text-container text-left" [style.height] = "'300px'">-->
+      <!--<textarea class="col-xs-12 interests" [(ngModel)] = 'this.currentUser.interest'></textarea>-->
+    <!--</div>-->
+  <!--</div>-->
 
 </div>

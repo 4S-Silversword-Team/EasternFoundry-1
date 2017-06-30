@@ -20,6 +20,7 @@ export class ProfileComponent implements OnInit {
   expColors: string[] = ['rgb(0,178,255)', 'rgb(69,199,255)', 'rgb(138,220,255)', 'rgb(198,241,255)' ];
   strengthChartDatas: any[] = []
   strengthChartLabels: string[] = []
+  promiseFinished: boolean = false
   availabilityData: any = {
     values: [],
     dates: []
@@ -32,14 +33,16 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     public location: Location
   ) {
-    // this.currentUser.id = this.route.snapshot.params['id'];
+
+    // this.currentUser = this.userService.getTempUser();
+
+
     this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
       this.currentUser = result[0];
       myCallback()
     });
 
     var myCallback = () => {
-
       let index: number = 0
       this.availabilityData.values = []
       this.availabilityData.dates = []
@@ -58,6 +61,7 @@ export class ProfileComponent implements OnInit {
         this.availabilityData.values.push(index.available)
       }
       this.strengthChartDatas.push({data: temp, label: 'Strength'})
+      this.promiseFinished = true;
     }
 
   }
@@ -65,9 +69,9 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
   }
 
-  getCapaChartValues(): number[] {
+  getCapaChartValues(tempUser: User): number[] {
     let temp: number[] = []
-    for (let index of this.currentUser.capability) {
+    for (let index of tempUser.capability) {
       temp.push(index.score)
     }
     return temp
@@ -81,25 +85,25 @@ export class ProfileComponent implements OnInit {
     return temp
   }
 
-  expMainValues(): number[] {
+  expMainValues(tempUser: User): number[] {
     let temp: number[] = []
-    for( let exp of this.currentUser.agencyexperience.main.data) {
+    for( let exp of tempUser.agencyexperience.main.data) {
       temp.push(exp.score)
     }
     return temp
   }
 
-  expSub1Values(): number[] {
+  expSub1Values(tempUser: User): number[] {
     let temp: number[] = []
-    for( let exp of this.currentUser.agencyexperience.office1.data) {
+    for( let exp of tempUser.agencyexperience.office1.data) {
       temp.push(exp.score)
     }
     return temp
   }
 
-  expSub2Values(): number[] {
+  expSub2Values(tempUser: User): number[] {
     let temp: number[] = []
-    for( let exp of this.currentUser.agencyexperience.office2.data) {
+    for( let exp of tempUser.agencyexperience.office2.data) {
       temp.push(exp.score)
     }
     return temp

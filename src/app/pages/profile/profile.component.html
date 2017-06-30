@@ -36,7 +36,7 @@
             <p *ngFor="let cert of this.currentUser.certificate">{{ 'Degree: ' + cert.degree + ',  Earned: ' + cert.dateEarned }}</p>
             <p *ngFor="let deg of this.currentUser.degree">{{ 'Type: ' + deg.type + ', Concentration: ' + deg.concentration + ', From: ' + deg.school + ', Graduation: ' + deg.graduationDate }}</p>
             <p *ngFor="let index of this.currentUser.clearance">{{ 'Type: ' + index.type + ', Awarded: ' + index.awarded + ', Expiraion: ' + index.expiration }}</p>
-            <p *ngFor="let award of this.currentUser.award; let i = index; trackBy:customTrackBy">{{ 'Awarded: ' + this.currentUser.award[i] }}</p>
+            <p *ngFor="let award of this.currentUser.award">{{ 'Awarded: ' + award }}</p>
         </div>
     </div>
     <div class="col-xs-12 col-md-6 text-center">
@@ -56,8 +56,8 @@
     </div>
     <div class="capa-main col-xs-12">
         <div class="col-xl-12 col-sm-6">
-            <div class="capa-chart col-xs-12">
-                <app-bent-bars-chart width='300' height='300' divID='bbChart{{this.currentUser.id}}' [values]='getCapaChartValues()'></app-bent-bars-chart>
+            <div class="capa-chart col-xs-12" *ngIf="this.promiseFinished">
+                <app-bent-bars-chart width='300' height='300' divID='bbChart{{this.currentUser.id}}' [values]='getCapaChartValues(this.currentUser)'></app-bent-bars-chart>
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 text-container">
@@ -66,7 +66,7 @@
                     <app-color-comment-box *ngFor='let feature of this.currentUser.capability' color='{{getCapaChartColor(feature.score)}}' text='{{feature.name}}' class="col-xs-12"></app-color-comment-box>
                 </div>
                 <div class="col-xs-12 col-md-6">
-                    <p *ngFor='let skill of this.currentUser.skill' ˀ>{{ skill }} </p>
+                    <p *ngFor='let skill of this.currentUser.skill'>{{ skill }} </p>
                 </div>
             </div>
         </div>
@@ -79,21 +79,21 @@
         <div ></div>
     </div>
 
-    <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-container">
+    <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-container" *ngIf="this.promiseFinished">
         <app-color-comment-box *ngFor='let index of this.currentUser.agencyexperience.main.data' color='{{ expColors[index.title] }}' text='{{index.title}}' class="col-xs-12 col-sm-6 col-md-12"></app-color-comment-box>
     </div>
 
-    <div class="exp-main col-xs-12">
+    <div class="exp-main col-xs-12" *ngIf="this.promiseFinished">
         <div class="app-exp-chart left">
             <p id="exp-main-title">{{this.currentUser.agencyexperience.main.title}}</p>
-            <app-exp-chart width='500' height='500' divID='exp-main-chart' [values]='expMainValues()'></app-exp-chart>
+            <app-exp-chart width='500' height='500' divID='exp-main-chart' [values]='expMainValues(this.currentUser)'></app-exp-chart>
         </div>
         <div class="app-exp-chart right">
-            <app-exp-chart id='sub1' width='250' height='250' divID='exp-sub1-chart' [values]='expSub1Values()' class="right"></app-exp-chart>
+            <app-exp-chart id='sub1' width='250' height='250' divID='exp-sub1-chart' [values]='expSub1Values(this.currentUser)' class="right"></app-exp-chart>
             <p id="exp-sub1-title" class="left">Office 1</p>
         </div>
         <div class="app-exp-chart left">
-            <app-exp-chart id='sub2' width='250' height='250' divID='exp-sub2-chart' [values]='expSub2Values()' class="left"></app-exp-chart>
+            <app-exp-chart id='sub2' width='250' height='250' divID='exp-sub2-chart' [values]='expSub2Values(this.currentUser)' class="left"></app-exp-chart>
             <p id="exp-sub2-title" class="right">Office 2</p>
         </div>
     </div>
@@ -109,7 +109,7 @@
 </div>
 
   <!--this does not work right now and i'm not sure why!-->
-<div class="strength col-xs-12 clear">
+<div class="strength col-xs-12 clear" *ngIf="this.promiseFinished">
     <div class="div-title col-xs-12">
         <img src="./assets/img/profile/strength.png">
         <p>STRENGTH</p>
@@ -131,7 +131,7 @@
         <div ></div>
     </div>
     <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-container">
-        <app-color-comment-box color='#7f7f7f' text='unavilable' class="col-xs-12 col-sm-6 col-md-6"></app-color-comment-box>
+        <app-color-comment-box color='#7f7f7f' text='unavailable' class="col-xs-12 col-sm-6 col-md-6"></app-color-comment-box>
         <app-color-comment-box color='#0b6ec1' text='available' class="col-xs-12 col-sm-6 col-md-6"></app-color-comment-box>
     </div>
      <app-availablebar [values] = 'availabilityData.values' [dates] = 'availabilityData.dates'></app-availablebar>

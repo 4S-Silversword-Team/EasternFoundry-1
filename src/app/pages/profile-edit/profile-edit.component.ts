@@ -77,6 +77,10 @@ export class ProfileEditComponent implements OnInit {
     };
   }
 
+  deleteSkill(i) {
+    this.currentUser.skill.splice(i, 1);
+  }
+
   addJob() {
     this.currentUser.career.push(
       {
@@ -91,6 +95,11 @@ export class ProfileEditComponent implements OnInit {
       }
     );
   }
+
+  deleteJob(i) {
+    this.currentUser.career.splice(i, 1);
+  }
+
 
   addDegree() {
     this.currentUser.degree.push(
@@ -116,6 +125,11 @@ export class ProfileEditComponent implements OnInit {
       }
     );
   }
+
+  deleteClearance(i) {
+    this.currentUser.clearance.splice(i, 1);
+  }
+
 
   addAward() {
     this.currentUser.award.push(

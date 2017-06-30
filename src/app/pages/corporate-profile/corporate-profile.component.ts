@@ -57,6 +57,9 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
         //i.userid just points to 1 and 2 which don't lead anywhere and there's only one user in the backend anyway so right now this is just hardcoded
         this.userService.getUserbyID("59514f264bbbec2d8dc56ed7").toPromise().then(user => { this.users.push(user[0])});
 
+
+
+
       }
 
 
