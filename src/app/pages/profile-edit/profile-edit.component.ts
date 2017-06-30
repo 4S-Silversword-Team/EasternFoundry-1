@@ -148,6 +148,10 @@ export class ProfileEditComponent implements OnInit {
     });
   }
 
+  deleteCertificate(i) {
+    this.currentUser.certificate.splice(i, 1);
+  }
+
 
   currentYear() {
     let year = new Date().getFullYear()

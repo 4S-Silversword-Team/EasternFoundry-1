@@ -93,13 +93,13 @@
           <input class="col-xs-12" type="text" [(ngModel)] = 'certificate.dateEarned'>
         </div>
       </div>
-      <div class="col-xs-3 col-xs-offset-1" style="padding-top: 1%; height: 100%">
-        <button class="col-xs-12" style="height: 14%; margin: 1%;">EDIT</button>
-        <button class="col-xs-12" style="height: 14%; margin: 1%;" (click)="addCertificate()">ADD</button>
-        <button class="col-xs-12" style="height: 14%; margin: 1%;">DELETE</button>
-        <button class="col-xs-12" style="height: 14%; margin: 1%;">SAVE</button>
+      <div class="col-xs-3 col-xs-offset-1" style="padding-top: 1%; height: 100%; margin-top: 20px">
+        <div *ngFor="let certificate of this.currentUser.certificate; let i = index">
+          <button class="col-xs-12 side-button" (click)="deleteCertificate(i)">DELETE</button>
+        </div>
       </div>
     </div>
+    <button class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4" (click)="addCertificate()">Add Certificate</button>
   </div>
 
   <div class="certification col-xs-12">
@@ -149,7 +149,7 @@
         <button class="col-xs-12" style="height: 12%; margin: 1%;">SAVE</button>
       </div>
     </div>
-    <button class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4" (click)="addAward()">Add Award</button>
+    <button class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4" (click)="addAward()" style="margin-top: 5px">Add Award</button>
   </div>
 
   <div class="career col-xs-12 clear">
@@ -232,14 +232,14 @@
       <div ></div>
     </div>
 
-    <div class="col-xs-4 col-xs-offset-4 text-center text-container">
+    <div class="col-xs-4 col-xs-offset-4 text-center text-container" style="padding-top: 15px">
 
       <div class="" *ngFor='let skill of this.currentUser.skill; let i = index; trackBy:customTrackBy'>
         <input type="text" style="width: 100%" [(ngModel)] = 'this.currentUser.skill[i]'>
         <button class="tiny-button-skills" (click)="deleteSkill(i)"><div class="tiny-button-text">x</div></button>
       </div>
         <input type="text" class="col-xs-8" placeholder="New Skill" [(ngModel)] = 'this.newSkill'>
-      <button class="col-xs-4" style="height: 30px; margin-top: 10px" (click)="addSkill()"><div style="margin-top: -5px">Add</div></button>
+      <button class="col-xs-4" style="height: 30px; margin-top: 10px" (click)="addSkill()"><div style="margin-top: -5px">ADD</div></button>
     </div>
   </div>
 
