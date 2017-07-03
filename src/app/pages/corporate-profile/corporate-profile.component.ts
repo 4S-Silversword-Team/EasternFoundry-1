@@ -31,8 +31,8 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   pastperformances: PastPerformance[] = [];
   currentPP = 0;
   CQAC: string[] = [];
-
   currentTab = true;
+  promiseFinished: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -53,18 +53,8 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     // this.companyService.getCompanyByID(this.route.params["id"] ).toPromise().then(company => this.currentAccount = company)
     const myCallback = () => {
       for (const i of this.currentAccount.leadership) {
-        // this.userService.getUserbyID(i.userid).toPromise().then(user => { this.users.push(user[0])});
-        // i.userid just points to 1 and 2 which don't lead anywhere and there's
-        // only one user in the backend anyway so right now this is just hardcoded
-        this.userService.getUserbyID('59514f264bbbec2d8dc56ed7').toPromise().then(user => { this.users.push(user[0]); });
-
-
-
-
+        this.userService.getUserbyID(i.userid).toPromise().then(user => { this.users.push(user[0]); myCallback2();});
       }
-
-
-
 
     for (const i of this.currentAccount.product) {
       this.products.push(productService.getProductbyID(i.productid));
@@ -76,23 +66,22 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
 
     for (const i of this.currentAccount.pastperformance) {
       // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
-
-
-      ppService.getPastPerformancebyID(i.pastperformanceid).toPromise().then(res => {this.pastperformances.push(res[0]); }); // Might try to continue the for loop before the promise resolves.
+      this.ppService.getPastPerformancebyID(i.pastperformanceid).toPromise().then(res => {this.pastperformances.push(res[0])}); // Might try to continue the for loop before the promise resolves.
       // let myCallback = () => {console.log(this.pastperformances);}
     }
-
-    for (const i of this.users) {
-      for (const j of i.certificate) {
-        this.CQAC.push('Degree: ' + j.degree + ', DateEarned: ' + j.dateEarned);
+    const myCallback2 = () => {
+      for (const i of this.users) {
+        for (const j of i.certificate) {
+          this.CQAC.push('Degree: ' + j.degree + ', DateEarned: ' + j.dateEarned);
+        }
+        for (const j of i.award) {
+          this.CQAC.push('Awarded: ' + j);
+        }
+        for (const j of i.clearance) {
+          this.CQAC.push('Type: ' + j.type + ', Awarded: ' + j.awarded + ', Expriation: ' + j.expiration);
+        }
       }
-      for (const j of i.award) {
-        this.CQAC.push('Awarded: ' + j);
-      }
-      for (const j of i.clearance) {
-        this.CQAC.push('Type: ' + j.type + ', Awarded: ' + j.awarded + ', Expriation: ' + j.expiration);
-      }
-    }
+    };
   };
   }
 

@@ -71,8 +71,8 @@
           </div>
       </div>
       <div class="row main" *ngIf='currentTab'>
-          <button class="col-xs-12 col-sm-5">More Information</button>
-          <button class="col-xs-12 col-sm-5 col-sm-offset-2">View Demo</button>
+         <a href="{{index.moreinfolink}}"><button class="col-xs-12 col-sm-5">More Information</button></a>
+        <a href="{{index.viewdemolink}}"><button class="col-xs-12 col-sm-5 col-sm-offset-2">View Demo</button></a>
       </div>
       <div class="ad-service div-title col-xs-12" *ngIf='currentTab'>
           <img src="./assets/img/service.png">
@@ -80,11 +80,11 @@
           <div></div>
       </div>
       <div class="ad-service main" *ngIf='currentTab'>
-          <div class="col-xs-12 col-sm-4"><p class="col-xs-11">Provide Trainig?</p><input type="checkbox" class="col-xs-1" checked='{{index.training}}'>
+          <div class="col-xs-12 col-sm-4"><p class="col-xs-11">Provide Training?</p><input type="checkbox" class="col-xs-1" [attr.checked]="index.training ? true : null">
           </div>
-          <div class="col-xs-12 col-sm-4"><p class="col-xs-11">Product Customization?</p><input type="checkbox" class="col-xs-1" checked='{{index.customization}}'>
+          <div class="col-xs-12 col-sm-4"><p class="col-xs-11">Product Customization?</p><input type="checkbox" class="col-xs-1" [attr.checked]="index.customization ? true : null">
           </div>
-          <div class="col-xs-12 col-sm-4"><p class="col-xs-11">Ongoing Maintenance</p><input type="checkbox" class="col-xs-1" checked='{{index.maintenance}}'>
+          <div class="col-xs-12 col-sm-4"><p class="col-xs-11">Ongoing Maintenance</p><input type="checkbox" class="col-xs-1" [attr.checked]="index.maintenance ? true : null">
           </div>
       </div>
       <div class="customer div-title col-xs-12" *ngIf='currentTab'>
@@ -151,7 +151,8 @@
     </div>
   </div>
 
-  <div class="performance col-xs-12 clear">
+
+  <div class="performance col-xs-12 clear" >
       <div class="div-title col-xs-12">
           <img src="./assets/img/performance.png">
           <p>PAST PERFORMANCE</p>

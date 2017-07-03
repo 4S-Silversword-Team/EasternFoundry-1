@@ -6,7 +6,6 @@ import { Location } from '@angular/common';
 import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
 
-
 declare var $: any;
 
 @Component({
@@ -19,9 +18,6 @@ export class ProfileEditComponent implements OnInit {
 
   currentUser: User = new User()
   newSkill: string = ""
-  customTrackBy(index: number, obj: any): any {
-    return  index;
-  }
   expColors: string[] = ['rgb(0,178,255)', 'rgb(69,199,255)', 'rgb(138,220,255)', 'rgb(198,241,255)' ];
   strengthChartDatas: any[] = []
   strengthChartLabels: string[] = []
@@ -30,6 +26,9 @@ export class ProfileEditComponent implements OnInit {
     dates: []
   }
 
+  customTrackBy(index: number, obj: any): any {
+    return  index;
+  }
 
   // currentAccount: Company = new Company()
   // products: Product[] = []
@@ -52,14 +51,10 @@ export class ProfileEditComponent implements OnInit {
     public location: Location
   ) {
     // this.currentUser = this.userService.getUserbyID(this.route.snapshot.params['id'])
-
-
     if (this.router.url !== 'user-profile-create') {
       this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
         this.currentUser = result[0];
       });
-
-
     }
   }
 
@@ -67,7 +62,7 @@ export class ProfileEditComponent implements OnInit {
   }
 
   saveChanges() {
-    console.log("Saving changes does not yet do things!")
+    console.log("This button doesn't do anything!")
   }
 
   addSkill() {
@@ -164,6 +159,7 @@ export class ProfileEditComponent implements OnInit {
     this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
     window.scrollTo(0, 0);
     this.router.navigate(['user-profile', this.route.snapshot.params['id']]);
+
   }
 
 

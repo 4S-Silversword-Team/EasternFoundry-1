@@ -1,0 +1,87 @@
+{
+    "id": 1,
+    "name": "Jimbo Inc!",
+    "email": "jimbo@jimothy.zone",
+    "avatar": "../../assets/img/company-account.png",
+    "contactnumber": "202-555-8998",
+    "address": "Arlington, VA",
+    "information_accuracy": 5,
+    "lastupdated": "Feb, 2017",
+    "leadership": [
+        {
+            "userid": "59514f264bbbec2d8dc56ed7"
+        },
+        {
+            "userid": "59514f264bbbec2d8dc56ed7"
+        }
+    ],
+    "product": [
+        {
+            "productid": 1
+        },
+        {
+            "productid": 2
+        }
+    ],
+    "service": [
+        {
+            "serviceid": 1
+        },
+        {
+            "serviceid": 2
+        }
+    ],
+    "pastperformance": [
+        {
+            "pastperformanceid": "595695dbbdfdc463e9831dab"
+        },
+        {
+            "pastperformanceid": "59569d64bdfdc463e9831dac"
+        }
+    ],
+    "agency_experience": [
+        {
+            "title": "Years agency experience",
+            "score": 90
+        },
+        {
+            "title": "$ (M) of agency revenue",
+            "score": 12
+        },
+        {
+            "title": "Proposals written",
+            "score": 14
+        }
+    ],
+    "vehicles": [
+        {
+            "type": "Vehicle type 1",
+            "quantity": 3
+        },
+        {
+            "type": "Vehicle type 2",
+            "quantity": 13
+        },
+        {
+            "type": "Vehicle type 3",
+            "quantity": 22
+        }
+    ],
+    "schedule": [
+        {
+            "date": "Dec, 2016",
+            "content": "Schedule 1"
+        },
+        {
+            "date": "Feb, 2017",
+            "content": "Schedule 2"
+        },
+        {
+            "date": "Jul, 2017",
+            "content": "Schedule 3"
+        }
+    ],
+    "city": "Washington",
+    "state": "DC",
+    "zip": "111112"
+}

@@ -1,0 +1,79 @@
+{
+  "id": "1",
+  "title": "Energy app Development and Deployment",
+  "client": "Air Force",
+  "topic": "App Development",
+  "startdate": "Jan, 2016",
+  "enddate": "Dec, 2016",
+  "cleard": false,
+  "location": "Metro DC",
+  "FTE": "8",
+  "value": "$4M",
+  "rating": "Exceptional",
+  "description": "Description lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog",
+  "avatar": "./assets/img/pp1.png",
+  "employees": [
+    {
+      "title": "App developer1",
+      "stillwith": true
+    },
+    {
+      "title": "App developer2",
+      "stillwith": false
+    },
+    {
+      "title": "Web developer",
+      "stillwith": true
+    },
+    {
+      "title": "Program Manager",
+      "stillwith": true
+    }
+  ],
+  "synopsis": "Synopsis lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog",
+  "technical": "Synopsis lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog",
+  "management": "Synopsis lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog",
+  "other": "Synopsis lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog"
+}
+
+//     temp.title = 'Assessing USAF Quality Assurance Process'
+//     temp.topic = 'Computer System Analyics'
+//     temp.avatar = './assets/img/pp2.png'
+
+{
+  "id": "2",
+  "title": "Assessing USAF Quality Assurance Process",
+  "client": "Air Force",
+  "topic": "Computer System Analyics",
+  "startdate": "Jan, 2016",
+  "enddate": "Dec, 2016",
+  "cleard": false,
+  "location": "Metro DC",
+  "FTE": "8",
+  "value": "$4M",
+  "rating": "Exceptional",
+  "description": "Description lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog",
+  "avatar": "./assets/img/pp2.png",
+  "employees": [
+    {
+      "title": "App developer1",
+      "stillwith": true
+    },
+    {
+      "title": "App developer2",
+      "stillwith": false
+    },
+    {
+      "title": "Web developer",
+      "stillwith": true
+    },
+    {
+      "title": "Program Manager",
+      "stillwith": true
+    }
+  ],
+  "synopsis": "Synopsis lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog",
+  "technical": "Synopsis lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog",
+  "management": "Synopsis lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog",
+  "other": "Synopsis lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog"
+}

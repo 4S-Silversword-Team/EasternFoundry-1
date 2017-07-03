@@ -28,7 +28,7 @@
         <input class="col-xs-9 left" type="email" [(ngModel)] = 'this.currentUser.email'>
 
         <p class="col-xs-3 text-right" style="transform: translateY(10%)">Contact Number</p>
-        <input class="col-xs-9 left" type="tel"  [(ngModel)] = 'this.currentUser.contactNumber'>
+        <input class="col-xs-9 left" type="tel" maxlength="10" [(ngModel)] = 'this.currentUser.contactNumber'>
 
         <p class="col-xs-3 text-right vertically-centered">City</p>
         <input class="col-xs-9 left" type="text"  [(ngModel)] = 'this.currentUser.city'>
@@ -37,7 +37,7 @@
         <input class="col-xs-9 left" type="text"  [(ngModel)] = 'this.currentUser.state'>
 
         <p class="col-xs-3 text-right vertically-centered">Zip</p>
-        <input class="col-xs-9 left" type="number"  [(ngModel)] = 'this.currentUser.zip'>
+        <input class="col-xs-9 left" type="number" max="99999" maxlength="5" [(ngModel)] = 'this.currentUser.zip'>
       </div>
 
     </div>
