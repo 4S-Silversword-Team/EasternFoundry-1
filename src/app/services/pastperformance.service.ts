@@ -22,6 +22,11 @@ export class PastperformanceService {
     return response
   }
 
+  updatePP(id: string, request: any): Observable<PastPerformance>{
+    var response = this.authHttp.put(environment.apiRoot + "PastPerformance/" + id, request)
+    .map(response => <PastPerformance> response.json())
+    return response;
+  }
   // getPastPerformancebyID(id: string): PastPerformance {
   //   let temp: PastPerformance = new PastPerformance()
   //   temp.id = '1'
