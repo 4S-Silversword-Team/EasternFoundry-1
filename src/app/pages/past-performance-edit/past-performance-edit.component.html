@@ -82,10 +82,10 @@
         <div></div>
     </div>
     <div [style.width]="''+writeWidth+'px'">
-        <div class="text-container col-xs-12" [style.height]="'200px'"><p class="col-xs-12">Synopisis</p><textarea></textarea></div>
-        <div class="text-container col-xs-6" [style.height]="'300px'"><p class="col-xs-12">Technical Challenge, approach and outcome</p><textarea></textarea></div>
-        <div class="text-container col-xs-6" [style.height]="'300px'"><p class="col-xs-12">Management Challenge, approach and outcome</p><textarea></textarea></div>
-        <div class="text-container col-xs-12" [style.height]="'200px'"><p class="col-xs-12">Other</p><textarea></textarea></div>
+        <div class="text-container col-xs-12" [style.height]="'200px'"><p class="col-xs-12">Synopsis</p><textarea [(ngModel)] = 'this.currentPastPerformance.synopsis'></textarea></div>
+        <div class="text-container col-xs-6" [style.height]="'300px'"><p class="col-xs-12">Technical Challenge, approach and outcome</p><textarea [(ngModel)] = 'this.currentPastPerformance.technical'></textarea></div>
+        <div class="text-container col-xs-6" [style.height]="'300px'"><p class="col-xs-12">Management Challenge, approach and outcome</p><textarea [(ngModel)] = 'this.currentPastPerformance.management'></textarea></div>
+        <div class="text-container col-xs-12" [style.height]="'200px'"><p class="col-xs-12">Other</p><textarea [(ngModel)] = 'this.currentPastPerformance.other'></textarea></div>
     </div>
 </div>
 
