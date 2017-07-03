@@ -21,7 +21,7 @@ export const ROUTES: Routes = [
   { path: 'past-performance/:id', component: PastPerformanceComponent},
   { path: 'user-profile-edit/:id',      component: ProfileEditComponent },
   { path: 'corporate-profile-edit/:id', component: CorporateProfileEditComponent },
-  { path: 'past-performance-edit/:id', component: PastPerformanceComponent},
+  { path: 'past-performance-edit/:id', component: PastPerformanceEditComponent},
   { path: 'user-profile-create',      component: ProfileComponent },
   { path: 'corporate-profile-create', component: CorporateProfileComponent },
   { path: 'past-performance-create', component: PastPerformanceEditComponent},
