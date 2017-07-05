@@ -51,7 +51,7 @@ export class CorporateProfileEditComponent implements OnInit {
       // this.currentAccount = this.companyService.getTestCompany()
       const myCallback = () => {
         for (const i of this.currentAccount.product) {
-          this.products.push(productService.getProductbyID(i.productid));
+          this.productService.getProductbyID(i.productid).toPromise().then(res => {this.products.push(res[0])});
         }
 
         for (const i of this.currentAccount.service) {
@@ -138,8 +138,10 @@ export class CorporateProfileEditComponent implements OnInit {
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     delete model['_id'];
     this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
-    for (const i of this.products) {
-      this.productService.updateProduct(i.id, model).toPromise().then(result => console.log(result));
+    for (const i of this.currentAccount.product) {
+      let productModel = this.products[this.currentAccount.product.indexOf(i)]
+      delete productModel['_id'];
+      this.productService.updateProduct(i.productid, productModel).toPromise().then(result => console.log(result));
     }
     window.scrollTo(0, 0);
     this.router.navigate(['corporate-profile', this.route.snapshot.params['id']]);
