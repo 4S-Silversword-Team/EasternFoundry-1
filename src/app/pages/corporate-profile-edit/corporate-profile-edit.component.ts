@@ -112,6 +112,27 @@ export class CorporateProfileEditComponent implements OnInit {
     product.customers.commercial.splice(i, 1);
   }
 
+  addFeature(service) {
+    service.feature.push(
+      {
+        title: '',
+        score: ''
+      }
+    );
+  }
+
+  deleteFeature(service, i) {
+    service.feature.splice(i, 1);
+  }
+
+  addSkill(service) {
+    service.skills.push('');
+  }
+
+  deleteSkill(service, i) {
+    service.skills.splice(i, 1);
+  }
+
 
   updateCompany(model) {
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
