@@ -57,7 +57,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
       }
 
     for (const i of this.currentAccount.product) {
-      this.products.push(productService.getProductbyID(i.productid));
+      this.productService.getProductbyID(i.productid).toPromise().then(res => {this.products.push(res[0])});
     }
 
     for (const i of this.currentAccount.service) {
