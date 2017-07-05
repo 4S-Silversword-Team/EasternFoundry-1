@@ -60,7 +60,7 @@ export class CorporateProfileEditComponent implements OnInit {
 
         for (const i of this.currentAccount.pastperformance) {
           // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
-          ppService.getPastPerformancebyID(i.pastperformanceid).toPromise().then(res => this.pastperformances.push(res[0])); // Might try to continue the for loop before the promise resolves.
+          this.ppService.getPastPerformancebyID(i.pastperformanceid).toPromise().then(res => this.pastperformances.push(res[0])); // Might try to continue the for loop before the promise resolves.
         }
       };
     }
@@ -142,6 +142,11 @@ export class CorporateProfileEditComponent implements OnInit {
       let productModel = this.products[this.currentAccount.product.indexOf(i)]
       delete productModel['_id'];
       this.productService.updateProduct(i.productid, productModel).toPromise().then(result => console.log(result));
+    }
+    for (const i of this.currentAccount.service) {
+      let serviceModel = this.services[this.currentAccount.service.indexOf(i)]
+      delete serviceModel['_id'];
+      this.serviceService.updateService(i.serviceid, serviceModel).toPromise().then(result => console.log(result));
     }
     window.scrollTo(0, 0);
     this.router.navigate(['corporate-profile', this.route.snapshot.params['id']]);

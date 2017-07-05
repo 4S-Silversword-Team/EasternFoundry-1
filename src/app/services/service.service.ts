@@ -17,9 +17,15 @@ export class ServiceService {
   }
 
   getService(id: string): Observable<Service> {
-    var response =  this.authHttp.get(environment.apiRoot + "/user/" + id)
+    var response =  this.authHttp.get(environment.apiRoot + "services/" + id)
     .map(response => <Service> response.json())
     return response
+  }
+
+  updateService(id: string, request: any): Observable<Service> {
+    var response = this.authHttp.put(environment.apiRoot + "services/" + id, request)
+      .map(response => <Service> response.json())
+    return response;
   }
 
   getServicebyID(id: string): Observable<Service> {
