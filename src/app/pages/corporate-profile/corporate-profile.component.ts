@@ -78,7 +78,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
           this.CQAC.push('Awarded: ' + j);
         }
         for (const j of i.clearance) {
-          this.CQAC.push('Type: ' + j.type + ', Awarded: ' + j.awarded + ', Expriation: ' + j.expiration);
+          this.CQAC.push('Type: ' + j.type + ', Awarded: ' + j.awarded + ', Expiration: ' + j.expiration);
         }
       }
     };
