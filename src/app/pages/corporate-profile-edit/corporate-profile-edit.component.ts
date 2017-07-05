@@ -50,19 +50,19 @@ export class CorporateProfileEditComponent implements OnInit {
       // .subscribe(result => this.currentAccount =result).
       // this.currentAccount = this.companyService.getTestCompany()
       const myCallback = () => {
-      for (const i of this.currentAccount.product) {
-        this.products.push(productService.getProductbyID(i.productid));
-      }
+        for (const i of this.currentAccount.product) {
+          this.productService.getProductbyID(i.productid).toPromise().then(res => {this.products.push(res[0])});
+        }
 
-      for (const i of this.currentAccount.service) {
-        this.services.push(serviceService.getServicebyID(i.serviceid));
-      }
+        for (const i of this.currentAccount.service) {
+          this.serviceService.getServicebyID(i.serviceid).toPromise().then(res => {this.services.push(res[0])});
+        }
 
-      for (const i of this.currentAccount.pastperformance) {
-        // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
-        ppService.getPastPerformancebyID(i.pastperformanceid).toPromise().then(res => this.pastperformances.push(res[0])); // Might try to continue the for loop before the promise resolves.
-      }
-    };
+        for (const i of this.currentAccount.pastperformance) {
+          // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
+          this.ppService.getPastPerformancebyID(i.pastperformanceid).toPromise().then(res => this.pastperformances.push(res[0])); // Might try to continue the for loop before the promise resolves.
+        }
+      };
     }
   }
 
@@ -73,10 +73,81 @@ export class CorporateProfileEditComponent implements OnInit {
 
   }
 
+  addDefense(product) {
+    product.customers.defense.push(
+      {
+        name: '',
+        avatar: ''
+      }
+    );
+  }
+
+  deleteDefense(product, i) {
+    product.customers.defense.splice(i, 1);
+  }
+
+  addCivilian(product) {
+    product.customers.civilian.push(
+      {
+        name: '',
+        avatar: ''
+      }
+    );
+  }
+
+  deleteCivilian(product, i) {
+    product.customers.civilian.splice(i, 1);
+  }
+
+  addCommercial(product) {
+    product.customers.commercial.push(
+      {
+        name: '',
+        avatar: ''
+      }
+    );
+  }
+
+  deleteCommercial(product, i) {
+    product.customers.commercial.splice(i, 1);
+  }
+
+  addFeature(service) {
+    service.feature.push(
+      {
+        title: '',
+        score: ''
+      }
+    );
+  }
+
+  deleteFeature(service, i) {
+    service.feature.splice(i, 1);
+  }
+
+  addSkill(service) {
+    service.skills.push('');
+  }
+
+  deleteSkill(service, i) {
+    service.skills.splice(i, 1);
+  }
+
+
   updateCompany(model) {
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     delete model['_id'];
     this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
+    for (const i of this.currentAccount.product) {
+      let productModel = this.products[this.currentAccount.product.indexOf(i)]
+      delete productModel['_id'];
+      this.productService.updateProduct(i.productid, productModel).toPromise().then(result => console.log(result));
+    }
+    for (const i of this.currentAccount.service) {
+      let serviceModel = this.services[this.currentAccount.service.indexOf(i)]
+      delete serviceModel['_id'];
+      this.serviceService.updateService(i.serviceid, serviceModel).toPromise().then(result => console.log(result));
+    }
     window.scrollTo(0, 0);
     this.router.navigate(['corporate-profile', this.route.snapshot.params['id']]);
   }

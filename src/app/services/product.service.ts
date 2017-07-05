@@ -17,12 +17,25 @@ export class ProductService {
   }
 
   getProduct(id: string): Observable<Product> {
-    var response =  this.authHttp.get(environment.apiRoot + "/product/" + id)
+    var response =  this.authHttp.get(environment.apiRoot + "products/" + id)
     .map(response => <Product> response.json())
     return response
   }
 
-  getProductbyID(id: string): Product {
+  updateProduct(id: string, request: any): Observable<Product> {
+    var response = this.authHttp.put(environment.apiRoot + "products/" + id, request)
+      .map(response => <Product> response.json())
+    return response;
+  }
+
+  getProductbyID(id: string): Observable<Product> {
+    var response =  this.authHttp.get(environment.apiRoot + "products/" + id )
+      .map(response => <Product> response.json())
+    return response
+  }
+
+
+  getTempProduct(id: string): Product {
     let temp: Product = new Product()
     temp.id = '1'
     temp.name = 'product 1'

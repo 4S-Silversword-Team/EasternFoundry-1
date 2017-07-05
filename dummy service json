@@ -1,0 +1,65 @@
+{
+  "id": "1",
+  "name": "Computer and Mathematical",
+  "feature": [
+    {
+      "title": "Computer Programmers",
+      "score": 80
+    },{
+      "title": "Computer System Analysts",
+      "score": 88
+    },{
+      "title": "SoftwareDev Applications",
+      "score": 40
+    },{
+      "title": "Web Developers",
+      "score": 12
+    },{
+      "title": "UI Desingers",
+      "score": 91
+    }
+  ],
+  "skills": [
+    "Javascript",
+    "jQuery",
+    "Angular",
+    "React",
+    "ES5",
+    "ES6",
+    "ES7",
+    "ES 2015",
+    "HTML/DHTML",
+    "AJAX/XHR",
+    "ASP",
+    "JSP",
+    "JAVA",
+    "C#",
+    "Objective-c",
+    "Swift 1",
+    "Swift 3",
+    "SQL"
+  ]
+}
+
+//NUMBER TWO
+
+{
+  "id": "2",
+  "name": "MANAGEMENT",
+  "feature": [
+    {
+      "title": "Scl and Cmty Service Mgrs",
+      "score": 90
+    },{
+      "title": "Admin Srvcs Mgrs",
+      "score": 68
+    },{
+      "title": "Managers, All other",
+      "score": 38
+    }
+  ],
+  "skills": [
+    "PMP",
+    "Scrum"
+  ]
+}

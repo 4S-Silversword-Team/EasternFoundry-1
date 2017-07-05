@@ -1,0 +1,147 @@
+{
+  "id": "1",
+  "name": "product 1",
+  "feature": [
+    {
+      "name": "feature 1",
+      "score": 10
+    },{
+      "name": "feature 2",
+      "score": 20
+    },{
+      "name": "feature 3",
+      "score": 30
+    },{
+      "name": "feature 4",
+      "score": 18
+    },{
+      "name": "feature 5",
+      "score": 60
+    }
+  ],
+  "description": "the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog  the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog",
+  "moreinfolink": "",
+  "viewdemolink": "",
+  "customization": true,
+  "training": false,
+  "maintenance": true,
+  "customers": {
+    "defense": [
+      {
+        "avatar": "./assets/img/customer1.png",
+        "name": "customer 1"
+      },{
+        "avatar": "./assets/img/customer2.png",
+        "name": "customer 2"
+      },{
+        "avatar": "./assets/img/customer3.png",
+        "name": "customer 3"
+      },{
+        "avatar": "./assets/img/customer4.png",
+        "name": "customer 4"
+      }
+    ],
+    "civilian": [
+      {
+        "avatar": "./assets/img/customer5.png",
+        "name": "customer 1"
+      },{
+        "avatar": "./assets/img/customer2.png",
+        "name": "customer 2"
+      },{
+        "avatar": "./assets/img/customer3.png",
+        "name": "customer 3"
+      }
+    ],
+    "commercial": [
+      {
+        "avatar": "./assets/img/customer6.png",
+        "name": "customer 1"
+      },{
+        "avatar": "./assets/img/customer2.png",
+        "name": "customer 2"
+      }
+    ]
+  }
+}
+
+//PRODUCT 2:
+
+{
+  "id": "2",
+  "name": "product 2",
+  "feature": [
+  {
+    "name": "feature 1",
+    "score": 10
+  },{
+    "name": "feature 2",
+    "score": 20
+  },{
+    "name": "feature 3",
+    "score": 30
+  },{
+    "name": "feature 4",
+    "score": 18
+  },{
+    "name": "feature 5",
+    "score": 60
+  },{
+    "name": "feature 6",
+    "score": 10
+  },{
+    "name": "feature 7",
+    "score": 20
+  },{
+    "name": "feature 8",
+    "score": 30
+  },{
+    "name": "feature 9",
+    "score": 18
+  },{
+    "name": "feature 10",
+    "score": 60
+  }
+  ],
+  "description": "Second the the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog  the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog",
+  "moreinfolink": "",
+  "viewdemolink": "",
+  "customization": true,
+  "training": false,
+  "maintenance": true,
+  "customers": {
+    "defense": [
+      {
+        "avatar": "./assets/img/customer2.png",
+        "name": "customer 1"
+      },{
+        "avatar": "./assets/img/customer6.png",
+        "name": "customer 2"
+      },{
+        "avatar": "./assets/img/customer4.png",
+        "name": "customer 3"
+      },{
+        "avatar": "./assets/img/customer5.png",
+        "name": "customer 4"
+      }
+    ],
+    "civilian": [
+      {
+        "avatar": "./assets/img/customer5.png",
+        "name": "customer 1"
+      },{
+        "avatar": "./assets/img/customer2.png",
+        "name": "customer 2"
+      }
+    ],
+    "commercial": [
+      {
+        "avatar": "./assets/img/customer6.png",
+        "name": "customer 1"
+      },{
+        "avatar": "./assets/img/customer2.png",
+        "name": "customer 2"
+      }
+    ]
+  }
+}
