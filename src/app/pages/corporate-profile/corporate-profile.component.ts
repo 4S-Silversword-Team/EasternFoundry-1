@@ -61,7 +61,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     }
 
     for (const i of this.currentAccount.service) {
-      this.services.push(serviceService.getServicebyID(i.serviceid));
+      this.serviceService.getServicebyID(i.serviceid).toPromise().then(res => {this.services.push(res[0])});
     }
 
     for (const i of this.currentAccount.pastperformance) {

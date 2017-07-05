@@ -22,10 +22,16 @@ export class ServiceService {
     return response
   }
 
-  getServicebyID(id: string): Service {
+  getServicebyID(id: string): Observable<Service> {
+    var response = this.authHttp.get(environment.apiRoot + "services/" + id)
+      .map(response => <Service> response.json())
+    return response;
+  }
+
+  getTempService(id: string): Service {
     let temp: Service = new Service()
     temp.id = '1'
-    temp.name = 'Cmoputer and Mathematical'
+    temp.name = 'Computer and Mathematical'
     temp.feature = [
       {
         title: 'Computer Programmers',
