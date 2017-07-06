@@ -20,7 +20,7 @@
             </div>
             <div class="col-xs-12 srow">
                 <p class="left lh-50">Cleared</p>
-                <selector [(ngModel)]="this.currentPastPerformance.cleard" [items]='clearedType' [width] = 'ppInputWidth' class="right"></selector>
+                <input type="checkbox" [(ngModel)] = "this.currentPastPerformance.cleard" name="cleard" class="right">
             </div>
             <div class="col-xs-12">
                 <p class="left lh-50">Image</p>
@@ -31,16 +31,16 @@
         </div>
         <div class="col-xs-6 right">
             <div class="col-xs-12 srow">
-                <p class="left lh-25">Functional<br>area in PP</p>
-                <input type="text" placeholder="Functional area in PP" class="right" [style.width]="''+ppInputWidth+'px'">
+                <p class="left lh-25">Rating</p>
+                <input type="text" [(ngModel)] = "this.currentPastPerformance.rating" placeholder="Rating" class="right" [style.width]="''+ppInputWidth+'px'">
             </div>
             <div class="col-xs-12 srow">
                 <p class="left lh-50">Start Date</p>
-                <selector [items]='agencyType' [width] = 'ppInputWidth' class="right"></selector>
+                <input [(ngModel)]="this.currentPastPerformance.startdate" placeholder="Start Date" [style.width] = "''+ppInputWidth+'px'" class="right">
             </div>
             <div class="col-xs-12 srow">
                 <p class="left lh-50">End Date</p>
-                <selector [items]='agencyType' [width] = 'ppInputWidth' class="right"></selector>
+                <input [(ngModel)]="this.currentPastPerformance.enddate" placeholder="End Date" [style.width] = "''+ppInputWidth+'px'" class="right">
             </div>
             <div class="col-xs-12 srow">
                 <!--<p class="left lh-50">Rating</p>
@@ -48,15 +48,15 @@
             </div>
             <div class="col-xs-12 srow mt15">
                 <p class="left lh-25">Location<br>(zipcode)</p>
-                <input type="text" placeholder="Your zipcode" class="right" [style.width]="''+ppInputWidth+'px'">
+                <input type="text" [(ngModel)] = "this.currentPastPerformance.location" placeholder="Your zipcode" class="right" [style.width]="''+ppInputWidth+'px'">
             </div>
             <div class="col-xs-12 srow mt15">
                 <p class="left lh-25">Value of work<br>done ($)</p>
-                <selector [items]='agencyType' [width] = 'ppInputWidth' class="right"></selector>
+                <input type="text" [(ngModel)] = "this.currentPastPerformance.value" placeholder="Value in $" class="right" [style.width]="''+ppInputWidth+'px'">
             </div>
             <div class="col-xs-12 srow mt15">
                 <p class="left lh-50"># of FTE</p>
-                <selector [items]='agencyType' [width] = 'ppInputWidth' class="right"></selector>
+                <input type="text" [(ngModel)] = "this.currentPastPerformance.FTE" placeholder="FTE" class="right" [style.width]="''+ppInputWidth+'px'">
             </div>
         </div>
     </div>
@@ -69,8 +69,21 @@
         <div></div>
     </div>
     <div [style.width]="''+employeeWidth+'px'">
-        <selector [items]='agencyType' [width] = 'employeeWidth'></selector>
-        <div class="text-container" [style.height]="'300px'"><textarea></textarea></div>
+        <!--<selector [items]='agencyType' [width] = 'employeeWidth'></selector>
+        <div class="text-container" [style.height]="'300px'"><textarea></textarea></div>-->
+        <table *ngFor=" let employee of this.currentPastPerformance.employees; let i = index">
+          <!--<div>{{employee.title}}  {{employee.stillwith}}  {{i}}</div>-->
+          <tr>
+            <td>
+              <p>Title</p>
+              <input type="text" [(ngModel)] = "this.currentPastPerformance.employees[i].title" placeholder="title">
+            </td>
+
+            <td>
+              <p>Still with?</p>
+              <input type="checkbox" [(ngModel)] = "this.currentPastPerformance.employees[i].stillwith" name="stillwith">
+          </td>
+        </table>
     </div>
 </div>
 
@@ -81,14 +94,14 @@
         <div></div>
     </div>
     <div [style.width]="''+writeWidth+'px'">
-        <div class="text-container col-xs-12" [style.height]="'200px'"><p class="col-xs-12">Synopisis</p><textarea></textarea></div>
-        <div class="text-container col-xs-6" [style.height]="'300px'"><p class="col-xs-12">Technical Challenge, approach and outcome</p><textarea></textarea></div>
-        <div class="text-container col-xs-6" [style.height]="'300px'"><p class="col-xs-12">Management Challenge, approach and outcome</p><textarea></textarea></div>
-        <div class="text-container col-xs-12" [style.height]="'200px'"><p class="col-xs-12">Other</p><textarea></textarea></div>
+        <div class="text-container col-xs-12" [style.height]="'200px'"><textarea [(ngModel)] = "this.currentPastPerformance.synopsis"></textarea></div>
+        <div class="text-container col-xs-6" [style.height]="'300px'"><textarea [(ngModel)] = "this.currentPastPerformance.technical"></textarea></div>
+        <div class="text-container col-xs-6" [style.height]="'300px'"><textarea [(ngModel)] = "this.currentPastPerformance.management"><textarea></textarea></div>
+        <div class="text-container col-xs-12" [style.height]="'200px'"><textarea [(ngModel)] = "this.currentPastPerformance.other"></textarea></div>
     </div>
 </div>
 
-<div class="relates-to col-xs-12 clear">
+<!--<div class="relates-to col-xs-12 clear">
     <div class="div-title col-xs-12">
         <img src="./assets/img/profile/capabilities-1.png">
         <p>CAPABILITIES THIS PP RELATES TO</p>
@@ -99,6 +112,7 @@
         <div class="col-xs-6 srow"><input type="text" placeholder="Capability 2" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
         <div class="col-xs-6 srow"><input type="text" placeholder="Capability 3" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
         <div class="col-xs-6 srow"><input type="text" placeholder="Capability 4" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
-        <div class="col-xs-12" [style.margin]="'auto'"><button (click)="updatePP(this.currentPastPerformance)" class="right">save</button></div>
+
     </div>
-</div>
+</div>-->
+<div class="col-xs-12" [style.margin]="'auto'"><button style="margin-top: 1.5em" class="center-block" (click)="updatePP(this.currentPastPerformance)">Save</button></div>
