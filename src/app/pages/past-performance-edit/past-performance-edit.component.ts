@@ -52,5 +52,11 @@ export class PastPerformanceEditComponent implements OnInit {
     window.scrollTo(0, 0);
     this.router.navigate(['past-performance', this.route.snapshot.params['id']]);
   }
+  addEmployee(modelEmployees: Array<Object>){
+    modelEmployees.push({title: "", stillwith: false})
+  }
+  deleteArrayIndex(modelArray: Array<Object>, i: number){
+    modelArray.splice(i, 1);
+  }
 
 }

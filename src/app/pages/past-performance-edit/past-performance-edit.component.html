@@ -75,15 +75,19 @@
           <!--<div>{{employee.title}}  {{employee.stillwith}}  {{i}}</div>-->
           <tr>
             <td>
+              <button (click)="deleteArrayIndex(this.currentPastPerformance.employees, i)" style="width: 1.5em; height: 1.75em; margin-top: 1.5em; margin-right: 1em;">X</button>
+            </td>
+            <td>
               <p>Title</p>
               <input type="text" [(ngModel)] = "this.currentPastPerformance.employees[i].title" placeholder="title">
             </td>
 
             <td>
               <p>Still with?</p>
-              <input type="checkbox" [(ngModel)] = "this.currentPastPerformance.employees[i].stillwith" name="stillwith">
+              <input style="margin-top:.75em; margin-left:1em" type="checkbox" [(ngModel)] = "this.currentPastPerformance.employees[i].stillwith" name="stillwith">
           </td>
         </table>
+        <div class="col-xs-12" [style.margin]="'auto'"><button class="center-block" (click)="addEmployee(this.currentPastPerformance.employees)">Add</button></div>
     </div>
 </div>
 
