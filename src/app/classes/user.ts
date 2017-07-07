@@ -1,84 +1,149 @@
 export class User {
-    id: string
-    firstname: string
-    lastname: string
-    avatar: string
-    jobtitle: string
-    office: string
-    employer: string
-    email: string
-    contactNumber: string
+  id: string
+  firstName: string
+  lastName: string
+  cell: string
+  office: string
+  userName: string
+  avatar: string
+  disabled: boolean
+  gender: string
+  workeligibility: [
+    {
+      CountryCode: string,
+      Permanent: boolean
+    }
+    ]
+  email: [
+    {
+      Address: string,
+      Label: string
+    }
+    ]
+  address: {
     city: string
     state: string
     zip: string
-    lastupdated: string
-    information_accuracy: number
-    degree: [
-        {
-            type: string,
-            concentration: string,
-            school: string,
-            graduationDate: string
-        }
-    ]
-    certificate: [
-        {
-            degree: string,
-            dateEarned: string
-        }
-    ]
-    clearance: [
-        {
-            type: string,
-            awarded: string,
-            expiration: string
-        }
-    ]
-    award: [string]
-    capability: [
-        {
-            name: string,
-            score: number
-        }
-    ]
-    skill: [string]
-    interest: string
-    agencyexperience: {
-        main: {
-            title: string,
-            data: any[]
-        },
-        office1: {
-            title: string,
-            data: any[]
-        },
-        office2: {
-            title:string,
-            data: any[]
-        }
+  }
+  phone: [
+    {
+      Number: string,
+      Label: string
     }
-    career: [
-        {
-            year: number,
-            detail:
-            {
-                title: string,
-                from: string,
-                company: string,
-                career: string
-            }
-        }
     ]
-    strength: [
+  education: [
+    {
+      School: string,
+      ReferenceLocation: {
+        CountryCode: string,
+        CountrySubDivisionCode: string,
+        CityName: string
+      },
+      EducationLevel: [
         {
-            skill: string,
-            score: number
+          Name: string
         }
-    ]
-    availability: [
+        ],
+      AttendanceStatusCode: string,
+      AttendanceEndDate: string,
+      EducationScore: [string],
+      DegreeType: [
         {
-            date: string
-            available: boolean
+          Name: string
         }
+        ],
+      DegreeDate: string,
+      MajorProgramName: [string],
+      MinorProgramName: [string],
+      Comment: string
+    }
     ]
+  positionHistory: [
+    {
+      Employer: string,
+      PositionTitle: string,
+      ReferenceLocation: {
+        CountryCode: string,
+        CountrySubDivisionCode: string,
+        CityName: string,
+      },
+      StartDate: string,
+      CurrentIndicator: boolean,
+      Industry: {
+        Name: string,
+      }
+      Description: string,
+    }
+    ]
+  personcompetency: [
+    {
+      CompetencyName: string,
+      CompetencyLevel: string
+    }
+    ]
+  Certification: [
+    {
+      CertificationName: string,
+      DateEarned: string
+    }
+    ]
+  License: [
+    {
+      LicenseName: string
+    }
+    ]
+  EmploymentReferences: [
+    {
+      RefereeTypeCode: string,
+      FormattedName: string,
+      PositionTitle: string,
+      PreferredPhone: string,
+      PreferredEmail: string
+    }
+    ]
+
+  lastupdated: string
+  information_accuracy: number
+  clearance: [
+    {
+      type: string,
+      awarded: string,
+      expiration: string
+    }
+    ]
+  award: [string]
+  capability: [
+    {
+      name: string,
+      score: number
+    }
+    ]
+  skill: [string]
+  interest: string
+  agencyexperience: {
+    main: {
+      title: string,
+      data: any[]
+    },
+    office1: {
+      title: string,
+      data: any[]
+    },
+    office2: {
+      title: string,
+      data: any[]
+    }
+  }
+  strength: [
+    {
+      skill: string,
+      score: number
+    }
+  ]
+  availability: [
+    {
+      date: string
+      available: boolean
+    }
+  ];
 }

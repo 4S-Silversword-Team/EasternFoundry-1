@@ -11,8 +11,8 @@
                 </div>
             </div>
             <div id="user-contact" class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0">
-                <div><img src="../assets/img/glyphicon/email-1.png" class="left"><p class="left">{{ this.currentUser.email }}</p></div>
-                <div><img src="../assets/img/glyphicon/phone-2.png" class="left"><p class="left">{{ this.currentUser.contactNumber }}</p></div>
+                <div><img src="../assets/img/glyphicon/email-1.png" class="left"><p class="left">{{ this.currentUser.userName }}</p></div>
+                <div><img src="../assets/img/glyphicon/phone-2.png" class="left"><p class="left">{{ this.currentUser.cell }}</p></div>
                 <div><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">{{ this.currentUser.city }}</p></div>
             </div>
             <div id="user-info" class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0">
@@ -35,7 +35,7 @@
         <div class="text-container text-left" [style.height] = "'300px'">
             <p *ngFor="let cert of this.currentUser.certificate">{{ 'Degree: ' + cert.degree + ',  Earned: ' + cert.dateEarned }}</p>
             <p *ngFor="let deg of this.currentUser.degree">{{ 'Type: ' + deg.type + ', Concentration: ' + deg.concentration + ', From: ' + deg.school + ', Graduation: ' + deg.graduationDate }}</p>
-            <p *ngFor="let index of this.currentUser.clearance">{{ 'Type: ' + index.type + ', Awarded: ' + index.awarded + ', Expiraion: ' + index.expiration }}</p>
+            <p *ngFor="let index of this.currentUser.clearance">{{ 'Type: ' + index.type + ', Awarded: ' + index.awarded + ', Expiration: ' + index.expiration }}</p>
             <p *ngFor="let award of this.currentUser.award">{{ 'Awarded: ' + award }}</p>
         </div>
     </div>

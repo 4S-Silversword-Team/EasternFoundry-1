@@ -17,7 +17,7 @@ declare var $: any;
 export class ProfileEditComponent implements OnInit {
 
   currentUser: User = new User()
-  newSkill: string = ""
+  newSkill: string = ''
   expColors: string[] = ['rgb(0,178,255)', 'rgb(69,199,255)', 'rgb(138,220,255)', 'rgb(198,241,255)' ];
   strengthChartDatas: any[] = []
   strengthChartLabels: string[] = []
@@ -62,13 +62,13 @@ export class ProfileEditComponent implements OnInit {
   }
 
   saveChanges() {
-    console.log("This button doesn't do anything!")
+    console.log('This button doesnt do anything!')
   }
 
   addSkill() {
-    if (this.newSkill !== "") {
+    if (this.newSkill !== '') {
       this.currentUser.skill.push(this.newSkill);
-      this.newSkill = "";
+      this.newSkill = '';
     };
   }
 
@@ -77,38 +77,62 @@ export class ProfileEditComponent implements OnInit {
   }
 
   addJob() {
-    this.currentUser.career.push(
+    this.currentUser.positionHistory.push(
       {
-        year: 2015,
-        detail:
-          {
-            title: '',
-            from: '',
-            company: '',
-            career: ''
-          }
+        Employer: '',
+        PositionTitle: '',
+        ReferenceLocation: {
+          CountryCode: '',
+          CountrySubDivisionCode: '',
+          CityName: ''
+        },
+        StartDate: '',
+        CurrentIndicator: false,
+        Industry: {
+          Name: ''
+        },
+        Description: ''
       }
     );
   }
 
   deleteJob(i) {
-    this.currentUser.career.splice(i, 1);
+    this.currentUser.positionHistory.splice(i, 1);
   }
 
 
   addDegree() {
-    this.currentUser.degree.push(
+    this.currentUser.education.push(
       {
-        type: '',
-        concentration: '',
-        school: '',
-        graduationDate: ''
+        School: '',
+        ReferenceLocation: {
+          CountryCode: '',
+          CountrySubDivisionCode: '',
+          CityName: ''
+        },
+        EducationLevel: [
+          {
+            Name: ''
+          }
+        ],
+        AttendanceStatusCode: '',
+        AttendanceEndDate: '',
+        EducationScore: [''],
+        DegreeType: [
+          {
+            Name: ''
+          }
+        ],
+        DegreeDate: '',
+        MajorProgramName: [''],
+        MinorProgramName: [''],
+        Comment: ''
       }
     );
   }
 
   deleteDegree(i) {
-    this.currentUser.degree.splice(i, 1);
+    this.currentUser.education.splice(i, 1);
   }
 
   addClearance() {
@@ -137,14 +161,14 @@ export class ProfileEditComponent implements OnInit {
   }
 
   addCertificate() {
-    this.currentUser.certificate.push({
-      degree: '',
-      dateEarned: ''
+    this.currentUser.Certification.push({
+      CertificationName: '',
+      DateEarned: ''
     });
   }
 
   deleteCertificate(i) {
-    this.currentUser.certificate.splice(i, 1);
+    this.currentUser.Certification.splice(i, 1);
   }
 
 
@@ -155,7 +179,7 @@ export class ProfileEditComponent implements OnInit {
 
   updateProfile(model) {
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
-    delete model["_id"]
+    delete model['_id']
     this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
     window.scrollTo(0, 0);
     this.router.navigate(['user-profile', this.route.snapshot.params['id']]);

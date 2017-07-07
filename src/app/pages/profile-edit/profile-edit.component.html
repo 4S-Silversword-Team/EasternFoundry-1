@@ -7,9 +7,9 @@
       </div>
       <div id="20" class="col-xs-10 col-xs-offset-1 col-lg-5 col-lg-offset-0">
         <p class="col-xs-4 text-right vertically-centered">First Name</p>
-        <input class="col-xs-8 left" type="text" placeholder="Your first name" [(ngModel)] = 'this.currentUser.firstname'>
+        <input class="col-xs-8 left" type="text" placeholder="Your first name" [(ngModel)] = 'this.currentUser.firstName'>
         <p class="col-xs-4 text-right vertically-centered">Last Name</p>
-        <input class="col-xs-8 left" type="text" placeholder="Your last name" [(ngModel)] = 'this.currentUser.lastname'>
+        <input class="col-xs-8 left" type="text" placeholder="Your last name" [(ngModel)] = 'this.currentUser.lastName'>
         <p class="col-xs-4 text-right vertically-centered">Title</p>
         <input class="col-xs-8 left" type="text" placeholder="Your current job title" [(ngModel)] = 'this.currentUser.jobtitle'>
         <p class="col-xs-4 text-right vertically-centered">Employer</p>
@@ -28,7 +28,7 @@
         <input class="col-xs-9 left" type="email" [(ngModel)] = 'this.currentUser.email'>
 
         <p class="col-xs-3 text-right" style="transform: translateY(10%)">Contact Number</p>
-        <input class="col-xs-9 left" type="tel" maxlength="10" [(ngModel)] = 'this.currentUser.contactNumber'>
+        <input class="col-xs-9 left" type="tel" maxlength="10" [(ngModel)] = 'this.currentUser.phone[0].Number'>
 
         <p class="col-xs-3 text-right vertically-centered">City</p>
         <input class="col-xs-9 left" type="text"  [(ngModel)] = 'this.currentUser.city'>
