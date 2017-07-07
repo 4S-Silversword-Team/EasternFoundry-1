@@ -4,7 +4,7 @@ export class User {
   lastName: string
   cell: string
   office: string
-  userName: string
+  username: string
   avatar: string
   disabled: boolean
   gender: string
@@ -58,8 +58,9 @@ export class User {
       Comment: string
     }
     ]
-  positionHistory: [
+  positionhistory: [
     {
+      Year: number,
       Employer: string,
       PositionTitle: string,
       ReferenceLocation: {
@@ -68,6 +69,7 @@ export class User {
         CityName: string,
       },
       StartDate: string,
+      EndDate: string,
       CurrentIndicator: boolean,
       Industry: {
         Name: string,

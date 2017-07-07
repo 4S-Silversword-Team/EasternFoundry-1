@@ -77,8 +77,9 @@ export class ProfileEditComponent implements OnInit {
   }
 
   addJob() {
-    this.currentUser.positionHistory.push(
+    this.currentUser.positionhistory.push(
       {
+        Year: this.currentYear(),
         Employer: '',
         PositionTitle: '',
         ReferenceLocation: {
@@ -87,6 +88,7 @@ export class ProfileEditComponent implements OnInit {
           CityName: ''
         },
         StartDate: '',
+        EndDate: '',
         CurrentIndicator: false,
         Industry: {
           Name: ''
@@ -97,7 +99,7 @@ export class ProfileEditComponent implements OnInit {
   }
 
   deleteJob(i) {
-    this.currentUser.positionHistory.splice(i, 1);
+    this.currentUser.positionhistory.splice(i, 1);
   }
 
 
