@@ -6,8 +6,9 @@
             <div class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0" [style.height] = "'150px'">
                 <img class="avatar left" src="{{ this.currentUser.avatar }}" >
                 <div class="right" [style.width] = "'calc(100% - 150px)'">
-                    <p class="col-xs-12 mt15" [style.height] = "'60px'">{{ this.currentUser.positionhistory[0].PositionTitle }}</p>
-                    <p class="col-xs-12 mb15" [style.height] = "'60px'">{{ this.currentUser.positionhistory[0].Employer}}</p>
+                    <p class="col-xs-12 mt15" [style.height] = "'40px'">{{ this.currentUser.firstName }} {{this.currentUser.lastName}}</p>
+                    <p class="col-xs-12 mt15" [style.height] = "'40px'">{{ this.currentUser.positionhistory[0].PositionTitle }}</p>
+                    <p class="col-xs-12 mb15" [style.height] = "'40px'">{{ this.currentUser.positionhistory[0].Employer}}</p>
                 </div>
             </div>
             <div id="user-contact" class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0">

@@ -61,6 +61,10 @@ export class ProfileComponent implements OnInit {
         this.availabilityData.values.push(index.available)
       }
       this.strengthChartDatas.push({data: temp, label: 'Strength'})
+      for (let job of this.currentUser.positionhistory) {
+        job.Year = +job.StartDate.slice(0, 4);
+      }
+
       this.promiseFinished = true;
     }
 

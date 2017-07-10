@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 
 import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
+import {isUndefined} from "util";
 
 declare var $: any;
 
@@ -55,6 +56,36 @@ export class ProfileEditComponent implements OnInit {
       this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
         this.currentUser = result[0];
       });
+    };
+    if (typeof this.currentUser.education === 'undefined') {
+      console.log('this works');
+      this.currentUser.education = [
+        {
+          School: 'My University',
+          ReferenceLocation: {
+            CountryCode: 'US',
+            CountrySubDivisionCode: 'MyState',
+            CityName: 'MyTown'
+          },
+          EducationLevel: [
+            {
+              Name: 'bachelors'
+            }
+          ],
+          AttendanceStatusCode: 'Prior',
+          AttendanceEndDate: '2002-05-01',
+          EducationScore: ['4.0'],
+          DegreeType: [
+            {
+              Name: 'Bachelor'
+            }
+          ],
+          DegreeDate: '2002-05-01',
+          MajorProgramName: ['Computer Science'],
+          MinorProgramName: ['Business'],
+          Comment: 'Comment Here'
+        }
+      ];
     }
   }
 
@@ -67,13 +98,16 @@ export class ProfileEditComponent implements OnInit {
 
   addSkill() {
     if (this.newSkill !== '') {
-      this.currentUser.skill.push(this.newSkill);
+      this.currentUser.personcompetency.push({
+        CompetencyName: this.newSkill,
+        CompetencyLevel: 'good'
+      });
       this.newSkill = '';
     };
   }
 
   deleteSkill(i) {
-    this.currentUser.skill.splice(i, 1);
+    this.currentUser.personcompetency.splice(i, 1);
   }
 
   addJob() {
@@ -163,14 +197,14 @@ export class ProfileEditComponent implements OnInit {
   }
 
   addCertificate() {
-    this.currentUser.Certification.push({
+    this.currentUser.certification.push({
       CertificationName: '',
       DateEarned: ''
     });
   }
 
   deleteCertificate(i) {
-    this.currentUser.Certification.splice(i, 1);
+    this.currentUser.certification.splice(i, 1);
   }
 
 

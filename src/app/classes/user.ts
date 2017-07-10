@@ -83,7 +83,7 @@ export class User {
       CompetencyLevel: string
     }
     ]
-  Certification: [
+  certification: [
     {
       CertificationName: string,
       DateEarned: string

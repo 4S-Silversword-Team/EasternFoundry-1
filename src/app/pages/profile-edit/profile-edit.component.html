@@ -11,9 +11,9 @@
         <p class="col-xs-4 text-right vertically-centered">Last Name</p>
         <input class="col-xs-8 left" type="text" placeholder="Your last name" [(ngModel)] = 'this.currentUser.lastName'>
         <p class="col-xs-4 text-right vertically-centered">Title</p>
-        <input class="col-xs-8 left" type="text" placeholder="Your current job title" [(ngModel)] = 'this.currentUser.jobtitle'>
+        <input class="col-xs-8 left" type="text" placeholder="Your current job title" [(ngModel)] = 'this.currentUser.positionhistory[0].PositionTitle'>
         <p class="col-xs-4 text-right vertically-centered">Employer</p>
-        <input class="col-xs-8 left" type="text" placeholder="Your current employer" [(ngModel)] = 'this.currentUser.office'>
+        <input class="col-xs-8 left" type="text" placeholder="Your current employer" [(ngModel)] = 'this.currentUser.positionhistory[0].Employer'>
       </div>
       <!--<div><img src="../assets/img/glyphicon/phone-2.png" class="left"><p class="left">{{ this.currentUser.contactNumber }}</p></div>-->
       <!--<div><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">{{ this.currentUser.city }}</p></div>-->
@@ -28,7 +28,7 @@
         <input class="col-xs-9 left" type="email" [(ngModel)] = 'this.currentUser.username'>
 
         <p class="col-xs-3 text-right" style="transform: translateY(10%)">Contact Number</p>
-        <input class="col-xs-9 left" type="tel" maxlength="10" [(ngModel)] = 'this.currentUser.phone[0].Number'>
+        <input class="col-xs-9 left" type="tel" maxlength="10" [(ngModel)] = 'this.currentUser.cell'>
 
         <p class="col-xs-3 text-right vertically-centered">City</p>
         <input class="col-xs-9 left" type="text"  [(ngModel)] = 'this.currentUser.address.city'>
@@ -83,18 +83,18 @@
     <div class="col-xs-11 col-xs-offset-1">
       <div class="col-xs-4">
         <p class="col-xs-12 text-left">Name</p>
-        <div class="col-xs-12 " type="text" *ngFor="let certificate of this.currentUser.Certification; let i = index">
+        <div class="col-xs-12 " type="text" *ngFor="let certificate of this.currentUser.certification; let i = index">
           <input class="col-xs-12" type="text" [(ngModel)] = 'certificate.CertificationName'>
         </div>
       </div>
       <div class="col-xs-4">
         <p class="col-xs-12 text-left">Date Earned</p>
-        <div class="col-xs-12" type="text" *ngFor="let certificate of this.currentUser.Certification; let i = index">
+        <div class="col-xs-12" type="text" *ngFor="let certificate of this.currentUser.certification; let i = index">
           <input class="col-xs-12" type="text" [(ngModel)] = 'certificate.DateEarned'>
         </div>
       </div>
       <div class="col-xs-3 col-xs-offset-1" style="padding-top: 1%; height: 100%; margin-top: 20px">
-        <div *ngFor="let certificate of this.currentUser.Certification; let i = index">
+        <div *ngFor="let certificate of this.currentUser.certification; let i = index">
           <button class="col-xs-12 side-button" (click)="deleteCertificate(i)">DELETE</button>
         </div>
       </div>
@@ -234,8 +234,8 @@
 
     <div class="col-xs-4 col-xs-offset-4 text-center text-container" style="padding-top: 15px">
 
-      <div class="" *ngFor='let skill of this.currentUser.skill; let i = index; trackBy:customTrackBy'>
-        <input type="text" style="width: 100%" [(ngModel)] = 'this.currentUser.skill[i]'>
+      <div class="" *ngFor='let skill of this.currentUser.personcompetency; let i = index; trackBy:customTrackBy'>
+        <input type="text" style="width: 100%" [(ngModel)] = 'this.currentUser.personcompetency[i].CompetencyName'>
         <button class="tiny-button-skills" (click)="deleteSkill(i)"><div class="tiny-button-text">x</div></button>
       </div>
         <input type="text" class="col-xs-8" placeholder="New Skill" [(ngModel)] = 'this.newSkill'>
