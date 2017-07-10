@@ -1,0 +1,42 @@
+{
+  "id": "1",
+  "name": "Defense Web Application",
+  "feature": [
+    {
+      "name": "RESTful APIs",
+      "score": 90
+    },
+    {
+      "name": "Low latency",
+      "score": 85
+    },
+    {
+      "name": "Buzzwordy features",
+      "score": 100
+    }
+  ],
+  "description": "Major web application supporting national security efforts.",
+  "moreinfolink": "http://www.github.com",
+  "viewdemolink": "http://www.youtube.com",
+  "customization": true,
+  "training": false,
+  "maintenance": true,
+  "customers": {
+    "defense": [
+      {
+        "avatar": "",
+        "name": "Navy"
+      },
+      {
+        "avatar": "",
+        "name": "Air Force"
+      },
+      {
+        "avatar": "",
+        "name": "National Security Agency"
+      }
+    ],
+    "civilian": [],
+    "commercial": []
+  }
+}
