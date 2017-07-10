@@ -16,13 +16,13 @@ export class ProductService {
     this.authHttp = new AuthHttp(http)
   }
 
-  getProduct(id: string): Observable<Product> {
-    var response =  this.authHttp.get(environment.apiRoot + "/product/" + id)
-    .map(response => <Product> response.json())
-    return response
+  getProductbyID(id: string): Observable<Product> {
+    var response =  this.authHttp.get(environment.apiRoot + "products/" + id)
+    .map(response => <Product> response.json());
+    return response;
   }
 
-  getProductbyID(id: string): Product {
+  getSampleProduct(id: string): Product {
     let temp: Product = new Product()
     temp.id = '1'
     temp.name = 'product 1'
@@ -164,4 +164,11 @@ export class ProductService {
     return temp
   }
 
+  updateProduct(id: string, request: any): Observable<Product> {
+    var response = this.authHttp.put(environment.apiRoot + "products/" + id, request)
+      .map(response => <Product> response.json());
+    return response;
+  }
+
 }
+
