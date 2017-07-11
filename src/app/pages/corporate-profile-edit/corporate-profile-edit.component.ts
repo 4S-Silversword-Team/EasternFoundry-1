@@ -77,15 +77,19 @@ export class CorporateProfileEditComponent implements OnInit {
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     delete model['_id'];
     this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
+    for (const i of this.currentAccount.product) {
+      const productModel = this.products[this.currentAccount.product.indexOf(i)]
+      delete productModel['_id'];
+      this.productService.updateProduct(i.productid, productModel).toPromise().then(result => console.log(result));
+    }
+    for (const i of this.currentAccount.service) {
+      const serviceModel = this.services[this.currentAccount.service.indexOf(i)]
+      delete serviceModel['_id'];
+      this.serviceService.updateService(i.serviceid, serviceModel).toPromise().then(result => console.log(result));
+    }
     window.scrollTo(0, 0);
     this.router.navigate(['corporate-profile', this.route.snapshot.params['id']]);
   }
 
-  updateProduct(model) {
-    const id = model['_id'];
-    this.productService.updateProduct(id, model).toPromise().then(result => console.log(result));
-    window.scrollTo(0, 0);
-    this.router.navigate(['corporate-profile', this.route.snapshot.params['id']]);
-  }
 
 }
