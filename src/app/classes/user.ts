@@ -19,7 +19,7 @@ export class User {
       Address: string,
       Label: string
     }
-    ]
+  ]
   address: {
     city: string
     state: string
@@ -30,7 +30,7 @@ export class User {
       Number: string,
       Label: string
     }
-    ]
+  ]
   education: [
     {
       School: string,

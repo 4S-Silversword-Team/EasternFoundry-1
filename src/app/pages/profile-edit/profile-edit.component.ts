@@ -57,36 +57,6 @@ export class ProfileEditComponent implements OnInit {
         this.currentUser = result[0];
       });
     };
-    if (typeof this.currentUser.education === 'undefined') {
-      console.log('this works');
-      this.currentUser.education = [
-        {
-          School: 'My University',
-          ReferenceLocation: {
-            CountryCode: 'US',
-            CountrySubDivisionCode: 'MyState',
-            CityName: 'MyTown'
-          },
-          EducationLevel: [
-            {
-              Name: 'bachelors'
-            }
-          ],
-          AttendanceStatusCode: 'Prior',
-          AttendanceEndDate: '2002-05-01',
-          EducationScore: ['4.0'],
-          DegreeType: [
-            {
-              Name: 'Bachelor'
-            }
-          ],
-          DegreeDate: '2002-05-01',
-          MajorProgramName: ['Computer Science'],
-          MinorProgramName: ['Business'],
-          Comment: 'Comment Here'
-        }
-      ];
-    }
   }
 
   ngOnInit() {
@@ -197,6 +167,7 @@ export class ProfileEditComponent implements OnInit {
   }
 
   addCertificate() {
+    console.log(this.currentUser.certification[0].CertificationName)
     this.currentUser.certification.push({
       CertificationName: '',
       DateEarned: ''

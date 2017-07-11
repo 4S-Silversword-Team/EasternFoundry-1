@@ -72,7 +72,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     }
     const myCallback2 = () => {
       for (const i of this.users) {
-        for (const j of i.Certification) {
+        for (const j of i.certification) {
           this.CQAC.push('Degree: ' + j.CertificationName + ', DateEarned: ' + j.DateEarned);
         }
         for (const j of i.award) {
