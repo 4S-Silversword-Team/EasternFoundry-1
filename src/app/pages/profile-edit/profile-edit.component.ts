@@ -26,6 +26,7 @@ export class ProfileEditComponent implements OnInit {
     values: [],
     dates: []
   }
+  promiseFinished: boolean = false
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -55,6 +56,8 @@ export class ProfileEditComponent implements OnInit {
     if (this.router.url !== 'user-profile-create') {
       this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
         this.currentUser = result[0];
+        this.promiseFinished = true;
+
       });
     };
   }
@@ -167,7 +170,6 @@ export class ProfileEditComponent implements OnInit {
   }
 
   addCertificate() {
-    console.log(this.currentUser.certification[0].CertificationName)
     this.currentUser.certification.push({
       CertificationName: '',
       DateEarned: ''

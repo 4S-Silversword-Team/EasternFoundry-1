@@ -5,13 +5,13 @@
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0" [style.height] = "'150px'">
                 <img class="avatar left" src="{{ this.currentUser.avatar }}" >
-                <div class="right" [style.width] = "'calc(100% - 150px)'">
+                <div class="right" [style.width] = "'calc(100% - 150px)'" *ngIf = this.promiseFinished>
                     <p class="col-xs-12 mt15" [style.height] = "'40px'">{{ this.currentUser.firstName }} {{this.currentUser.lastName}}</p>
                     <p class="col-xs-12 mt15" [style.height] = "'40px'">{{ this.currentUser.positionhistory[0].PositionTitle }}</p>
                     <p class="col-xs-12 mb15" [style.height] = "'40px'">{{ this.currentUser.positionhistory[0].Employer}}</p>
                 </div>
             </div>
-            <div id="user-contact" class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0">
+            <div id="user-contact" class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0" *ngIf = this.promiseFinished>
                 <div><img src="../assets/img/glyphicon/email-1.png" class="left"><p class="left">{{ this.currentUser.username }}</p></div>
                 <div><img src="../assets/img/glyphicon/phone-2.png" class="left"><p class="left">{{ this.currentUser.cell }}</p></div>
                 <div><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">{{ this.currentUser.address.city }}, {{ this.currentUser.address.state }}</p></div>
