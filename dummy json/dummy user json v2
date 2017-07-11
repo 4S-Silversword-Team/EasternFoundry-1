@@ -20,7 +20,6 @@
       "Label": "personal"
     },
     {
-      "Address": "me@yyy.com",
       "Label": "work"
     }
   ],
@@ -135,7 +134,7 @@
       "CompetencyLevel": "good"
     }
   ],
-  "Certification": [
+  "certification": [
     {
       "CertificationName": "C++ Certification",
       "DateEarned": "Jan 2013"
