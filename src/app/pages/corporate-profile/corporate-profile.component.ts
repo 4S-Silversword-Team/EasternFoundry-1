@@ -72,14 +72,14 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     }
     const myCallback2 = () => {
       for (const i of this.users) {
-        for (const j of i.certificate) {
-          this.CQAC.push('Degree: ' + j.degree + ', DateEarned: ' + j.dateEarned);
+        for (const j of i.certification) {
+          this.CQAC.push('Degree: ' + j.CertificationName + ', DateEarned: ' + j.DateEarned);
         }
         for (const j of i.award) {
           this.CQAC.push('Awarded: ' + j);
         }
         for (const j of i.clearance) {
-          this.CQAC.push('Type: ' + j.type + ', Awarded: ' + j.awarded + ', Expriation: ' + j.expiration);
+          this.CQAC.push('Type: ' + j.type + ', Awarded: ' + j.awarded + ', Expiration: ' + j.expiration);
         }
       }
     };

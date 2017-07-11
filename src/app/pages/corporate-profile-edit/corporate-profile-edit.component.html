@@ -229,7 +229,7 @@
       </div>
       <div class="col-xs-12 col-sm-6 srow info-input" *ngFor='let skill of service.skills; let i = index'>
         <p class="left">Skill</p>
-        <input class="right" value="{{skill}}">
+        <input class="right" [(ngModel)]='service.skills[i]'>
         <button class="tiny-button-skills" (click)="deleteSkill(service, i)"><div class="tiny-button-text">x</div></button>
       </div>
       <div class="col-xs-12 text-center   mt20   mb20">

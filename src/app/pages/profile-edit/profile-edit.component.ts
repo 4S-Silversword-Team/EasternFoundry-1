@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 
 import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
+import {isUndefined} from "util";
 
 declare var $: any;
 
@@ -17,7 +18,7 @@ declare var $: any;
 export class ProfileEditComponent implements OnInit {
 
   currentUser: User = new User()
-  newSkill: string = ""
+  newSkill: string = ''
   expColors: string[] = ['rgb(0,178,255)', 'rgb(69,199,255)', 'rgb(138,220,255)', 'rgb(198,241,255)' ];
   strengthChartDatas: any[] = []
   strengthChartLabels: string[] = []
@@ -25,6 +26,7 @@ export class ProfileEditComponent implements OnInit {
     values: [],
     dates: []
   }
+  promiseFinished: boolean = false
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -54,61 +56,92 @@ export class ProfileEditComponent implements OnInit {
     if (this.router.url !== 'user-profile-create') {
       this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
         this.currentUser = result[0];
+        this.promiseFinished = true;
+
       });
-    }
+    };
   }
 
   ngOnInit() {
   }
 
   saveChanges() {
-    console.log("This button doesn't do anything!")
+    console.log('This button doesnt do anything!')
   }
 
   addSkill() {
-    if (this.newSkill !== "") {
-      this.currentUser.skill.push(this.newSkill);
-      this.newSkill = "";
+    if (this.newSkill !== '') {
+      this.currentUser.personcompetency.push({
+        CompetencyName: this.newSkill,
+        CompetencyLevel: 'good'
+      });
+      this.newSkill = '';
     };
   }
 
   deleteSkill(i) {
-    this.currentUser.skill.splice(i, 1);
+    this.currentUser.personcompetency.splice(i, 1);
   }
 
   addJob() {
-    this.currentUser.career.push(
+    this.currentUser.positionhistory.push(
       {
-        year: 2015,
-        detail:
-          {
-            title: '',
-            from: '',
-            company: '',
-            career: ''
-          }
+        Year: this.currentYear(),
+        Employer: '',
+        PositionTitle: '',
+        ReferenceLocation: {
+          CountryCode: '',
+          CountrySubDivisionCode: '',
+          CityName: ''
+        },
+        StartDate: '',
+        EndDate: '',
+        CurrentIndicator: false,
+        Industry: {
+          Name: ''
+        },
+        Description: ''
       }
     );
   }
 
   deleteJob(i) {
-    this.currentUser.career.splice(i, 1);
+    this.currentUser.positionhistory.splice(i, 1);
   }
 
 
   addDegree() {
-    this.currentUser.degree.push(
+    this.currentUser.education.push(
       {
-        type: '',
-        concentration: '',
-        school: '',
-        graduationDate: ''
+        School: '',
+        ReferenceLocation: {
+          CountryCode: '',
+          CountrySubDivisionCode: '',
+          CityName: ''
+        },
+        EducationLevel: [
+          {
+            Name: ''
+          }
+        ],
+        AttendanceStatusCode: '',
+        AttendanceEndDate: '',
+        EducationScore: [''],
+        DegreeType: [
+          {
+            Name: ''
+          }
+        ],
+        DegreeDate: '',
+        MajorProgramName: [''],
+        MinorProgramName: [''],
+        Comment: ''
       }
     );
   }
 
   deleteDegree(i) {
-    this.currentUser.degree.splice(i, 1);
+    this.currentUser.education.splice(i, 1);
   }
 
   addClearance() {
@@ -137,14 +170,14 @@ export class ProfileEditComponent implements OnInit {
   }
 
   addCertificate() {
-    this.currentUser.certificate.push({
-      degree: '',
-      dateEarned: ''
+    this.currentUser.certification.push({
+      CertificationName: '',
+      DateEarned: ''
     });
   }
 
   deleteCertificate(i) {
-    this.currentUser.certificate.splice(i, 1);
+    this.currentUser.certification.splice(i, 1);
   }
 
 
@@ -155,7 +188,7 @@ export class ProfileEditComponent implements OnInit {
 
   updateProfile(model) {
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
-    delete model["_id"]
+    delete model['_id']
     this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
     window.scrollTo(0, 0);
     this.router.navigate(['user-profile', this.route.snapshot.params['id']]);
