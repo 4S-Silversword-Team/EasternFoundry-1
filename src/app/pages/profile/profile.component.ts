@@ -42,12 +42,12 @@ export class ProfileComponent implements OnInit {
       myCallback()
     });
 
-    var myCallback = () => {
+    const myCallback = () => {
       let index: number = 0
       this.availabilityData.values = []
       this.availabilityData.dates = []
-      for (let exp of this.currentUser.agencyexperience.main.data) {
-        let color = index / this.currentUser.agencyexperience.main.data.length * 155
+      for (let exp of this.currentUser.agencyExperience.main.data) {
+        let color = index / this.currentUser.agencyExperience.main.data.length * 155
         color = Math.floor(color)
         this.expColors[exp.title] = this.expColors[index++]
       }
@@ -61,8 +61,8 @@ export class ProfileComponent implements OnInit {
         this.availabilityData.values.push(index.available)
       }
       this.strengthChartDatas.push({data: temp, label: 'Strength'})
-      for (let job of this.currentUser.positionhistory) {
-        job.Year = +job.StartDate.slice(0, 4);
+      for (let job of this.currentUser.positionHistory) {
+        job.year = +job.startDate.slice(0, 4);
       }
 
       this.promiseFinished = true;
@@ -91,7 +91,7 @@ export class ProfileComponent implements OnInit {
 
   expMainValues(tempUser: User): number[] {
     let temp: number[] = []
-    for( let exp of tempUser.agencyexperience.main.data) {
+    for( let exp of tempUser.agencyExperience.main.data) {
       temp.push(exp.score)
     }
     return temp
@@ -99,7 +99,7 @@ export class ProfileComponent implements OnInit {
 
   expSub1Values(tempUser: User): number[] {
     let temp: number[] = []
-    for( let exp of tempUser.agencyexperience.office1.data) {
+    for( let exp of tempUser.agencyExperience.office1.data) {
       temp.push(exp.score)
     }
     return temp
@@ -107,7 +107,7 @@ export class ProfileComponent implements OnInit {
 
   expSub2Values(tempUser: User): number[] {
     let temp: number[] = []
-    for( let exp of tempUser.agencyexperience.office2.data) {
+    for( let exp of tempUser.agencyExperience.office2.data) {
       temp.push(exp.score)
     }
     return temp

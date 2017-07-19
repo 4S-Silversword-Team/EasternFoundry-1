@@ -7,17 +7,18 @@ export class User {
   username: string
   avatar: string
   disabled: boolean
+  anonymize: boolean
   gender: string
-  workeligibility: [
+  workEligibility: [
     {
-      CountryCode: string,
-      Permanent: boolean
+      countryCode: string,
+      permanent: boolean
     }
     ]
   email: [
     {
-      Address: string,
-      Label: string
+      address: string,
+      label: string
     }
   ]
   address: {
@@ -27,88 +28,87 @@ export class User {
   }
   phone: [
     {
-      Number: string,
-      Label: string
+      number: string,
+      label: string
     }
   ]
   education: [
     {
-      School: string,
-      ReferenceLocation: {
-        CountryCode: string,
-        CountrySubDivisionCode: string,
-        CityName: string
+      school: string,
+      referenceLocation: {
+        countryCode: string,
+        countrySubDivisionCode: string,
+        cityName: string
       },
-      EducationLevel: [
+      educationLevel: [
         {
-          Name: string
+          name: string
         }
         ],
-      AttendanceStatusCode: string,
-      AttendanceEndDate: string,
-      EducationScore: [string],
-      DegreeType: [
+      attendanceStatusCode: string,
+      attendanceEndDate: string,
+      educationScore: [string],
+      degreeType: [
         {
-          Name: string
+          name: string
         }
         ],
-      DegreeDate: string,
-      MajorProgramName: [string],
-      MinorProgramName: [string],
-      Comment: string
+      degreeDate: string,
+      majorProgramName: [string],
+      minorProgramName: [string],
+      comment: string
     }
     ]
-  positionhistory: [
+  positionHistory: [
     {
-      Year: number,
-      Employer: string,
-      PositionTitle: string,
-      ReferenceLocation: {
-        CountryCode: string,
-        CountrySubDivisionCode: string,
-        CityName: string,
+      year: number,
+      employer: string,
+      positionTitle: string,
+      referenceLocation: {
+        countryCode: string,
+        countrySubDivisionCode: string,
+        cityName: string,
       },
-      StartDate: string,
-      EndDate: string,
-      CurrentIndicator: boolean,
-      Industry: {
-        Name: string,
+      startDate: string,
+      endDate: string,
+      currentIndicator: boolean,
+      industry: {
+        name: string,
       }
-      Description: string,
+      description: string,
     }
     ]
-  personcompetency: [
+  personCompetency: [
     {
-      CompetencyName: string,
-      CompetencyLevel: string
+      competencyName: string,
+      competencyLevel: string
     }
     ]
   certification: [
     {
-      CertificationName: string,
-      DateEarned: string
+      certificationName: string,
+      dateEarned: string
     }
     ]
-  License: [
+  license: [
     {
-      LicenseName: string
+      licenseName: string
     }
     ]
-  EmploymentReferences: [
+  employmentReferences: [
     {
-      RefereeTypeCode: string,
-      FormattedName: string,
-      PositionTitle: string,
-      PreferredPhone: string,
-      PreferredEmail: string
+      refereeTypeCode: string,
+      formattedName: string,
+      positionTitle: string,
+      preferredPhone: string,
+      preferredEmail: string
     }
     ]
-
-  lastupdated: string
-  information_accuracy: number
+  lastUpdated: string
+  informationAccuracy: number
   clearance: [
     {
-      type: string,
+      clearanceType: string,
       awarded: string,
       expiration: string
     }
@@ -122,7 +122,7 @@ export class User {
     ]
   skill: [string]
   interest: string
-  agencyexperience: {
+  agencyExperience: {
     main: {
       title: string,
       data: any[]

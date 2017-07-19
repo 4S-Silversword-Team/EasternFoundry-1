@@ -3,9 +3,9 @@ export class PastPerformance {
     title: string
     client: string
     topic: string
-    startdate: string
-    enddate: string
-    cleard: boolean
+    startDate: string
+    endDate: string
+    cleared: boolean
     location: string
     FTE: string
     value: string
@@ -15,7 +15,7 @@ export class PastPerformance {
     employees: [
         {
             title: string,
-            stillwith: boolean
+            stillWith: boolean
         }
     ]
     synopsis: string
