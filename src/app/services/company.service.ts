@@ -43,7 +43,7 @@ export class CompanyService {
     temp.contactnumber = '(202) 725-7483'
     temp.address = 'Washington, DC'
     temp.information_accuracy = 5
-    temp.lastupdated = 'Dec, 2016'
+    temp.lastUpdated = 'Dec, 2016'
     temp.leadership = [
       {userid: '1'},
       {userid: '2'}

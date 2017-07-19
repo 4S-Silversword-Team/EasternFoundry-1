@@ -8,7 +8,7 @@ export class Company {
     state: string;
     zip: string;
     address: string;
-    lastupdated: string;
+    lastUpdated: string;
     information_accuracy: number;
     leadership: [
         {userid: string}
