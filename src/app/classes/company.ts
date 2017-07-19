@@ -27,7 +27,7 @@ export class Company {
     ];
     vehicles: [
         {
-            type: string
+            vehicleType: string
             quantity: number
         }
     ];

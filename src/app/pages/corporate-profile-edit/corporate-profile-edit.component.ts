@@ -46,7 +46,7 @@ export class CorporateProfileEditComponent implements OnInit {
     private ppService: PastperformanceService
   ) {
     if ( this.router.url !== 'corporate-profile-create' ) {
-      this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result[0]; myCallback(); });
+      this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result; myCallback(); });
       // .subscribe(result => this.currentAccount =result).
       // this.currentAccount = this.companyService.getTestCompany()
       const myCallback = () => {

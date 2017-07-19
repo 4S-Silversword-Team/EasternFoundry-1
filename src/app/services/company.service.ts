@@ -80,15 +80,15 @@ export class CompanyService {
     ]
     temp.vehicles = [
       {
-        type: 'Vehicle type 1',
+        vehicleType: 'Vehicle type 1',
         quantity: 3
       },
       {
-        type: 'Vehicle type 2',
+        vehicleType: 'Vehicle type 2',
         quantity: 6
       },
       {
-        type: 'Vehicle type 3',
+        vehicleType: 'Vehicle type 3',
         quantity: 10
       }
     ]
