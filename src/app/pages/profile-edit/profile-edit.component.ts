@@ -77,71 +77,71 @@ export class ProfileEditComponent implements OnInit {
 
   addSkill() {
     if (this.newSkill !== '') {
-      this.currentUser.personcompetency.push({
-        CompetencyName: this.newSkill,
-        CompetencyLevel: 'good'
+      this.currentUser.personCompetency.push({
+        competencyName: this.newSkill,
+        competencyLevel: 'good'
       });
       this.newSkill = '';
     };
   }
 
   deleteSkill(i) {
-    this.currentUser.personcompetency.splice(i, 1);
+    this.currentUser.personCompetency.splice(i, 1);
   }
 
   addJob() {
-    this.currentUser.positionhistory.push(
+    this.currentUser.positionHistory.push(
       {
-        Year: this.currentYear(),
-        Employer: '',
-        PositionTitle: '',
-        ReferenceLocation: {
-          CountryCode: '',
-          CountrySubDivisionCode: '',
-          CityName: ''
+        year: this.currentYear(),
+        employer: '',
+        positionTitle: '',
+        referenceLocation: {
+          countryCode: '',
+          countrySubDivisionCode: '',
+          cityName: ''
         },
-        StartDate: '',
-        EndDate: '',
-        CurrentIndicator: false,
-        Industry: {
-          Name: ''
+        startDate: '',
+        endDate: '',
+        currentIndicator: false,
+        industry: {
+          name: ''
         },
-        Description: ''
+        description: ''
       }
     );
   }
 
   deleteJob(i) {
-    this.currentUser.positionhistory.splice(i, 1);
+    this.currentUser.positionHistory.splice(i, 1);
   }
 
 
   addDegree() {
     this.currentUser.education.push(
       {
-        School: '',
-        ReferenceLocation: {
-          CountryCode: '',
-          CountrySubDivisionCode: '',
-          CityName: ''
+        school: '',
+        referenceLocation: {
+          countryCode: '',
+          countrySubDivisionCode: '',
+          cityName: ''
         },
-        EducationLevel: [
+        educationLevel: [
           {
-            Name: ''
+            name: ''
           }
         ],
-        AttendanceStatusCode: '',
-        AttendanceEndDate: '',
-        EducationScore: [''],
-        DegreeType: [
+        attendanceStatusCode: '',
+        attendanceEndDate: '',
+        educationScore: [''],
+        degreeType: [
           {
-            Name: ''
+            name: ''
           }
         ],
-        DegreeDate: '',
-        MajorProgramName: [''],
-        MinorProgramName: [''],
-        Comment: ''
+        degreeDate: '',
+        majorProgramName: [''],
+        minorProgramName: [''],
+        comment: ''
       }
     );
   }
@@ -153,7 +153,7 @@ export class ProfileEditComponent implements OnInit {
   addClearance() {
     this.currentUser.clearance.push(
       {
-        type: '',
+        clearanceType: '',
         awarded: '',
         expiration: ''
       }
@@ -177,8 +177,8 @@ export class ProfileEditComponent implements OnInit {
 
   addCertificate() {
     this.currentUser.certification.push({
-      CertificationName: '',
-      DateEarned: ''
+      certificationName: '',
+      dateEarned: ''
     });
   }
 
@@ -188,7 +188,7 @@ export class ProfileEditComponent implements OnInit {
 
 
   currentYear() {
-    let year = new Date().getFullYear()
+    const year = new Date().getFullYear()
     return year;
   }
 

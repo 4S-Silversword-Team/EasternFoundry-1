@@ -26,17 +26,18 @@
                 <div class="col-xs-12 div-info">
                     <img src="./assets/img/profile/availability.png" class="left">
                     <p class="col-xs-6 text-left" [style.line-height]="'50px'">Start date</p>
-                    <p class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.startdate }}</p>
+                    <p class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.startDate }}</p>
                 </div>
                 <div class="col-xs-12 div-info">
                     <img src="./assets/img/profile/availability.png" class="left">
                     <p class="col-xs-6 text-left" [style.line-height]="'50px'">End date</p>
-                    <p class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.enddate }}</p>
+                    <p class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.endDate }}</p>
                 </div>
                 <div class="col-xs-12 div-info">
                     <img src="./assets/img/profile/clearances.png" class="left">
                     <p class="col-xs-6 text-left" [style.line-height]="'50px'">Cleared</p>
-                    <p class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.cleard? 'Yes' : 'No' }}</p>
+                    <p class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.cleared? 'Yes'
+                      : 'No' }}</p>
                 </div>
                 <div class="col-xs-12 div-info">
                     <img src="./assets/img/location.png" class="left">
@@ -71,7 +72,8 @@
     </div>
     <div>
         <div class="text-container col-xs-6 left" [style.height]="'250px'">
-            <div class="col-xs-12" *ngFor='let index of currentPastPerformance.employees'>{{ '' +  index.title +  ((index.stillwith == true) ?' (Still with company)':'')}}</div>
+            <div class="col-xs-12" *ngFor='let index of currentPastPerformance.employees'>{{ '' + index.title +
+              ((index.stillWith == true) ?' (Still with company)':'')}}</div>
         </div>
         <div class="col-xs-6 mt10 mb10" [style.overflow] = "'hidden'" [style.max-width] = "'100%'" [style.height]="'250px'" [style.border-radius]="'5px'"><img src="{{ currentPastPerformance.avatar }}" [style.height]="'250px'" [style.border-radius]="'5px'" [style.border] = "'2px solid #333'" [style.margin] = "'0 auto'"></div>
     </div>

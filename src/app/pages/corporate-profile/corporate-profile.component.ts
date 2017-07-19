@@ -53,33 +53,33 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     // this.companyService.getCompanyByID(this.route.params["id"] ).toPromise().then(company => this.currentAccount = company)
     const myCallback = () => {
       for (const i of this.currentAccount.leadership) {
-        this.userService.getUserbyID(i.userid).toPromise().then(user => { this.users.push(user[0]); myCallback2();});
+        this.userService.getUserbyID(i.userId).toPromise().then(user => { this.users.push(user[0]); myCallback2();});
       }
 
     for (const i of this.currentAccount.product) {
-      this.productService.getProductbyID(i.productid).toPromise().then(res => {this.products.push(res[0])});
+      this.productService.getProductbyID(i.productId).toPromise().then(res => {this.products.push(res[0])});
     }
 
 
     for (const i of this.currentAccount.service) {
-      this.serviceService.getServicebyID(i.serviceid).toPromise().then(res => {this.services.push(res[0])});
+      this.serviceService.getServicebyID(i.serviceId).toPromise().then(res => {this.services.push(res[0])});
     }
 
-    for (const i of this.currentAccount.pastperformance) {
-      // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
-      this.ppService.getPastPerformancebyID(i.pastperformanceid).toPromise().then(res => {this.pastperformances.push(res[0])}); // Might try to continue the for loop before the promise resolves.
+    for (const i of this.currentAccount.pastPerformance) {
+      // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastPerformanceId))
+      this.ppService.getPastPerformancebyID(i.pastPerformanceId).toPromise().then(res => {this.pastperformances.push(res[0])}); // Might try to continue the for loop before the promise resolves.
       // let myCallback = () => {console.log(this.pastperformances);}
     }
     const myCallback2 = () => {
       for (const i of this.users) {
         for (const j of i.certification) {
-          this.CQAC.push('Degree: ' + j.CertificationName + ', DateEarned: ' + j.DateEarned);
+          this.CQAC.push('Degree: ' + j.certificationName + ', DateEarned: ' + j.dateEarned);
         }
         for (const j of i.award) {
           this.CQAC.push('Awarded: ' + j);
         }
         for (const j of i.clearance) {
-          this.CQAC.push('Type: ' + j.type + ', Awarded: ' + j.awarded + ', Expiration: ' + j.expiration);
+          this.CQAC.push('Type: ' + j.clearanceType + ', Awarded: ' + j.awarded + ', Expiration: ' + j.expiration);
         }
       }
     };

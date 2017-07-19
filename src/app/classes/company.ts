@@ -3,31 +3,31 @@ export class Company {
     name: string;
     email: string;
     avatar: string;
-    contactnumber: string;
+    contactNumber: string;
     city: string;
     state: string;
     zip: string;
     address: string;
-    lastupdated: string;
-    information_accuracy: number;
+    lastUpdated: string;
+    informationAccuracy: number;
     leadership: [
-        {userid: string}
+        {userId: string}
     ];
     product: [
-        {productid: string}
+        {productId: string}
     ];
     service: [
-        {serviceid: string}
+        {serviceId: string}
     ];
-    pastperformance: [
-        {pastperformanceid: string}
+    pastPerformance: [
+        {pastPerformanceId: string}
     ];
-    agencyexperience: [
+    agencyExperience: [
         {title: string, score: number}
     ];
     vehicles: [
         {
-            type: string
+            vehicleType: string
             quantity: number
         }
     ];

@@ -40,27 +40,27 @@ export class CompanyService {
     temp.name = 'Eastern Foundry'
     temp.email = 'eastern@foundry.com'
     temp.avatar = '../../assets/img/company-account.png'
-    temp.contactnumber = '(202) 725-7483'
+    temp.contactNumber = '(202) 725-7483'
     temp.address = 'Washington, DC'
-    temp.information_accuracy = 5
-    temp.lastupdated = 'Dec, 2016'
+    temp.informationAccuracy = 5
+    temp.lastUpdated = 'Dec, 2016'
     temp.leadership = [
-      {userid: '1'},
-      {userid: '2'}
+      {userId: '1'},
+      {userId: '2'}
     ]
     temp.product = [
-      {productid: '1'},
-      {productid: '2'}
+      {productId: '1'},
+      {productId: '2'}
     ]
     temp.service = [
-      {serviceid: '1'},
-      {serviceid: '2'}
+      {serviceId: '1'},
+      {serviceId: '2'}
     ]
-    temp.pastperformance = [
-      {pastperformanceid: '1'},
-      {pastperformanceid: '2'}
+    temp.pastPerformance = [
+      {pastPerformanceId: '1'},
+      {pastPerformanceId: '2'}
     ]
-    temp.agencyexperience = [
+    temp.agencyExperience = [
       {
         title: 'Years Agency experience',
         score: 90
@@ -80,15 +80,15 @@ export class CompanyService {
     ]
     temp.vehicles = [
       {
-        type: 'Vehicle type 1',
+        vehicleType: 'Vehicle vehicleType 1',
         quantity: 3
       },
       {
-        type: 'Vehicle type 2',
+        vehicleType: 'Vehicle vehicleType 2',
         quantity: 6
       },
       {
-        type: 'Vehicle type 3',
+        vehicleType: 'Vehicle vehicleType 3',
         quantity: 10
       }
     ]

@@ -48,7 +48,7 @@ export class UserService {
 
 
   getBlankUser(): User {
-    let temp: User = new User();
+    const temp: User = new User();
     temp.firstName = '';
     temp.lastName = '';
     temp.cell = '';
@@ -56,18 +56,18 @@ export class UserService {
     temp.username = '';
     temp.avatar = '';
     temp.disabled = false;
-    temp.dateofbirth = '';
+    temp.anonymize = false;
     temp.gender = '';
-    temp.workeligibility = [
+    temp.workEligibility = [
       {
-        CountryCode: '',
-        Permanent: true
+        countryCode: '',
+        permanent: true
       }
     ];
     temp.email = [
       {
-        Address: '',
-        Label: ''
+        address: '',
+        label: ''
       }
     ];
     temp.address = {
@@ -77,99 +77,99 @@ export class UserService {
     };
     temp.phone = [
       {
-        Number: '',
-        Label: 'cell'
+        number: '',
+        label: 'cell'
       },
       {
-        Number: '',
-        Label: 'mobile'
+        number: '',
+        label: 'mobile'
       },
       {
-        Number: '',
-        Label: 'work'
+        number: '',
+        label: 'work'
       },
       {
-        Number: '',
-        Label: 'other'
+        number: '',
+        label: 'other'
       }
     ];
     temp.education = [
       {
-        School: '',
-        ReferenceLocation: {
-          CountryCode: '',
-          CountrySubDivisionCode: '',
-          CityName: ''
+        school: '',
+        referenceLocation: {
+          countryCode: '',
+          countrySubDivisionCode: '',
+          cityName: ''
         },
-        EducationLevel: [
+        educationLevel: [
           {
-            Name: ''
+            name: ''
           }
         ],
-        AttendanceStatusCode: 'Prior',
-        AttendanceEndDate: '',
-        EducationScore: ['4.0'],
-        DegreeType: [
+        attendanceStatusCode: 'Prior',
+        attendanceEndDate: '',
+        educationScore: ['4.0'],
+        degreeType: [
           {
-            Name: ''
+            name: ''
           }
         ],
-        DegreeDate: '',
-        MajorProgramName: [''],
-        MinorProgramName: [''],
-        Comment: ''
+        degreeDate: '',
+        majorProgramName: [''],
+        minorProgramName: [''],
+        comment: ''
       }
     ];
-      temp.positionhistory = [
+      temp.positionHistory = [
       {
-        Year: 2016,
-        Employer: '',
-        PositionTitle: '',
-        ReferenceLocation: {
-          CountryCode: '',
-          CountrySubDivisionCode: '',
-          CityName: ''
+        year: 2016,
+        employer: '',
+        positionTitle: '',
+        referenceLocation: {
+          countryCode: '',
+          countrySubDivisionCode: '',
+          cityName: ''
         },
-        StartDate: '',
-        EndDate: '',
-        CurrentIndicator: true,
-        Industry: {
-          Name: ''
+        startDate: '',
+        endDate: '',
+        currentIndicator: true,
+        industry: {
+          name: ''
         },
-        Description: ''
+        description: ''
       }
     ];
-      temp.personcompetency = [
+      temp.personCompetency = [
       {
-        CompetencyName: '',
-        CompetencyLevel: ''
+        competencyName: '',
+        competencyLevel: ''
       }
     ];
       temp.certification = [
       {
-        CertificationName: '',
-        DateEarned: ''
+        certificationName: '',
+        dateEarned: ''
       }
     ];
-      temp.License = [
+      temp.license = [
       {
-        LicenseName: ''
+        licenseName: ''
       }
     ];
-      temp.EmploymentReferences = [
+      temp.employmentReferences = [
       {
-        RefereeTypeCode: '',
-        FormattedName: '',
-        PositionTitle: '',
-        PreferredPhone: '',
-        PreferredEmail: ''
+        refereeTypeCode: '',
+        formattedName: '',
+        positionTitle: '',
+        preferredPhone: '',
+        preferredEmail: ''
       }
     ];
-      temp.lastupdated = '';
-      temp.information_accuracy = 5;
+      temp.lastUpdated = '';
+      temp.informationAccuracy = 5;
       temp.clearance = [
       {
-        type: '',
+        clearanceType: '',
         awarded: '',
         expiration: ''
       }
@@ -183,7 +183,7 @@ export class UserService {
     ];
       temp.skill = [''];
       temp.interest = 'Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog';
-      temp.agencyexperience = {
+      temp.agencyExperience = {
       main: {
         title: '',
           data: [
