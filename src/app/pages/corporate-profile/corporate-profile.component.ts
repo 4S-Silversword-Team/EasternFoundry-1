@@ -49,7 +49,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     // Need to use companyservice.getCompanyByID
     let profileId: string;
     this.route.params.subscribe(routeParams => profileId = routeParams['id']);
-    this.companyService.getCompanyByID(profileId).toPromise().then(company => { this.currentAccount = company[0]; myCallback(); });
+    this.companyService.getCompanyByID(profileId).toPromise().then(company => { this.currentAccount = company; myCallback(); });
     // this.companyService.getCompanyByID(this.route.params["id"] ).toPromise().then(company => this.currentAccount = company)
     const myCallback = () => {
       for (const i of this.currentAccount.leadership) {
