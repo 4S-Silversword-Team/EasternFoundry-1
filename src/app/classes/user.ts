@@ -7,6 +7,7 @@ export class User {
   username: string
   avatar: string
   disabled: boolean
+  dateofbirth: string
   gender: string
   workeligibility: [
     {

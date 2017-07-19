@@ -18,6 +18,7 @@ declare var $: any;
 export class ProfileEditComponent implements OnInit {
 
   currentUser: User = new User()
+  creatingNewUser = false
   newSkill: string = ''
   expColors: string[] = ['rgb(0,178,255)', 'rgb(69,199,255)', 'rgb(138,220,255)', 'rgb(198,241,255)' ];
   strengthChartDatas: any[] = []
@@ -53,12 +54,17 @@ export class ProfileEditComponent implements OnInit {
     public location: Location
   ) {
     // this.currentUser = this.userService.getUserbyID(this.route.snapshot.params['id'])
-    if (this.router.url !== 'user-profile-create') {
-      this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
+    if (this.router.url !== '/user-profile-create') {
+      console.log(this.router.url);
+        this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
         this.currentUser = result[0];
         this.promiseFinished = true;
-
       });
+    } else {
+      this.currentUser = this.userService.getBlankUser();
+      this.creatingNewUser = true;
+      console.log(this.creatingNewUser);
+      this.promiseFinished = true;
     };
   }
 
@@ -188,10 +194,13 @@ export class ProfileEditComponent implements OnInit {
 
   updateProfile(model) {
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
-    delete model['_id']
-    this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
-    window.scrollTo(0, 0);
-    this.router.navigate(['user-profile', this.route.snapshot.params['id']]);
+    if (this.creatingNewUser === false) {
+      delete model['_id']
+      this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
+      window.scrollTo(0, 0);
+      this.router.navigate(['user-profile', this.route.snapshot.params['id']]);
+    } else {
+    }
 
   }
 
