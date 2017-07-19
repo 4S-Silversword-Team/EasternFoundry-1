@@ -45,7 +45,19 @@ export class PastPerformanceEditComponent implements OnInit {
   uploadImage() {
 
   }
-
+  updatePP(model) {
+    // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
+    delete model['_id'];
+    this.pastPerformanceService.updatePP(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
+    window.scrollTo(0, 0);
+    this.router.navigate(['past-performance', this.route.snapshot.params['id']]);
+  }
+  addEmployee(modelEmployees: Array<Object>){
+    modelEmployees.push({title: "", stillwith: false})
+  }
+  deleteArrayIndex(modelArray: Array<Object>, i: number){
+    modelArray.splice(i, 1);
+  }
   back() {
     this.location.back()
   }
