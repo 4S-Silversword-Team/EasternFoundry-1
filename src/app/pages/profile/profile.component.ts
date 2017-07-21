@@ -46,11 +46,16 @@ export class ProfileComponent implements OnInit {
       let index: number = 0
       this.availabilityData.values = []
       this.availabilityData.dates = []
-      for (let exp of this.currentUser.agencyexperience.main.data) {
-        let color = index / this.currentUser.agencyexperience.main.data.length * 155
-        color = Math.floor(color)
-        this.expColors[exp.title] = this.expColors[index++]
+      for (let job of this.currentUser.positionHistory) {
+        for (let exp of job.agencyExperience) {
+          for (let data of exp.main.data) {
+            let color = index / exp.main.data.length * 155
+            color = Math.floor(color)
+            this.expColors[exp.main.title] = this.expColors[index++]
+          }
+        }
       }
+
       let temp: number[] = []
       for (let index of this.currentUser.strength) {
         this.strengthChartLabels.push(index.skill)
@@ -61,7 +66,7 @@ export class ProfileComponent implements OnInit {
         this.availabilityData.values.push(index.available)
       }
       this.strengthChartDatas.push({data: temp, label: 'Strength'})
-      for (let job of this.currentUser.positionhistory) {
+      for (let job of this.currentUser.positionHistory) {
         job.Year = +job.StartDate.slice(0, 4);
       }
 
@@ -91,24 +96,40 @@ export class ProfileComponent implements OnInit {
 
   expMainValues(tempUser: User): number[] {
     let temp: number[] = []
-    for( let exp of tempUser.agencyexperience.main.data) {
-      temp.push(exp.score)
+    for (let job of this.currentUser.positionHistory) {
+      for (let exp of job.agencyExperience) {
+        for (let data of exp.main.data) {
+          temp.push(data.score)
+        }
+      }
     }
     return temp
   }
 
   expSub1Values(tempUser: User): number[] {
     let temp: number[] = []
-    for( let exp of tempUser.agencyexperience.office1.data) {
-      temp.push(exp.score)
+    for (let job of this.currentUser.positionHistory) {
+      for (let exp of job.agencyExperience) {
+        for (let office of exp.offices) {
+          for (let data of office.data) {
+            temp.push(data.score)
+          }
+        }
+      }
     }
     return temp
   }
 
   expSub2Values(tempUser: User): number[] {
     let temp: number[] = []
-    for( let exp of tempUser.agencyexperience.office2.data) {
-      temp.push(exp.score)
+    for (let job of this.currentUser.positionHistory) {
+      for (let exp of job.agencyExperience) {
+        for (let office of exp.offices) {
+          for (let data of office.data) {
+            temp.push(data.score)
+          }
+        }
+      }
     }
     return temp
   }

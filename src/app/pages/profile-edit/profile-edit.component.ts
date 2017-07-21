@@ -18,7 +18,6 @@ declare var $: any;
 export class ProfileEditComponent implements OnInit {
 
   currentUser: User = new User()
-  creatingNewUser = false
   newSkill: string = ''
   expColors: string[] = ['rgb(0,178,255)', 'rgb(69,199,255)', 'rgb(138,220,255)', 'rgb(198,241,255)' ];
   strengthChartDatas: any[] = []
@@ -55,17 +54,12 @@ export class ProfileEditComponent implements OnInit {
   ) {
     // this.currentUser = this.userService.getUserbyID(this.route.snapshot.params['id'])
     if (this.router.url !== '/user-profile-create') {
-      console.log(this.router.url);
         this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
         this.currentUser = result[0];
+        console.log(result[0]);
         this.promiseFinished = true;
       });
-    } else {
-      this.currentUser = this.userService.getBlankUser();
-      this.creatingNewUser = true;
-      console.log(this.creatingNewUser);
-      this.promiseFinished = true;
-    };
+    }
   }
 
   ngOnInit() {
@@ -77,7 +71,7 @@ export class ProfileEditComponent implements OnInit {
 
   addSkill() {
     if (this.newSkill !== '') {
-      this.currentUser.personcompetency.push({
+      this.currentUser.personCompetency.push({
         CompetencyName: this.newSkill,
         CompetencyLevel: 'good'
       });
@@ -86,11 +80,11 @@ export class ProfileEditComponent implements OnInit {
   }
 
   deleteSkill(i) {
-    this.currentUser.personcompetency.splice(i, 1);
+    this.currentUser.personCompetency.splice(i, 1);
   }
 
   addJob() {
-    this.currentUser.positionhistory.push(
+    this.currentUser.positionHistory.push(
       {
         Year: this.currentYear(),
         Employer: '',
@@ -106,13 +100,40 @@ export class ProfileEditComponent implements OnInit {
         Industry: {
           Name: ''
         },
+        isGovernment: false,
+        agencyExperience: [
+         {
+            main: {
+              title: '',
+              data: [
+                {
+                    title: '',
+                    score: 50
+                }
+              ]
+            },
+            offices: [
+              {
+                title: '',
+                data: [
+                  {
+                      title: '',
+                      score: 50
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        isPM: false,
+        isKO: false,
         Description: ''
       }
     );
   }
 
   deleteJob(i) {
-    this.currentUser.positionhistory.splice(i, 1);
+    this.currentUser.positionHistory.splice(i, 1);
   }
 
 
@@ -194,14 +215,10 @@ export class ProfileEditComponent implements OnInit {
 
   updateProfile(model) {
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
-    if (this.creatingNewUser === false) {
-      delete model['_id']
-      this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
-      window.scrollTo(0, 0);
-      this.router.navigate(['user-profile', this.route.snapshot.params['id']]);
-    } else {
-    }
-
+    delete model['_id']
+    this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
+    window.scrollTo(0, 0);
+    this.router.navigate(['user-profile', this.route.snapshot.params['id']]);
   }
 
 

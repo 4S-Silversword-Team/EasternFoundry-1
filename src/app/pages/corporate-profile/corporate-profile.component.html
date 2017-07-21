@@ -15,7 +15,7 @@
         </div>
         <div class="right">
             <div class="srow"><p class="left two-p" [style.line-height]="'25px'">Information<br>updated</p><p class="right two-p" [style.text-align]="'right'">{{ this.currentAccount.lastupdated }}</p></div>
-            <div class="srow"><p class="left two-p" [style.line-height]="'25px'">Information<br>accuracy</p><rating [(ngModel)]="this.currentAccount.information_accuracy" [max]="5" class="right"></rating></div>
+            <div class="srow"><p class="left two-p" [style.line-height]="'25px'">Information<br>accuracy</p><rating [(ngModel)]="this.currentAccount.informationAccuracy" [max]="5" class="right"></rating></div>
             <!--<div class="srow"><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">Service disable vetran owned</p></div>-->
         </div>
     </div>
@@ -30,7 +30,7 @@
           <div class="halfwidth left" *ngFor='let index of users'>
               <img src='{{ index.avatar }}' class="left avatar" [style.width]="'150px'">
               <p class="srow">{{ index.firstName + ' ' + index.lastName}}</p>
-              <p class="srow">{{ index.positionhistory[0].PositionTitle }}</p>
+              <p class="srow">{{ index.positionHistory[0].PositionTitle }}</p>
               <p class="srow">{{ index.username }}</p>
               <button class="col-xs-8 col-xs-offset-2" (click)="toUserProfile(index._id)">More Information</button>
           </div>

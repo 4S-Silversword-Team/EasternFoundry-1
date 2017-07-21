@@ -11,9 +11,9 @@
         <p class="col-xs-4 text-right vertically-centered">Last Name</p>
         <input class="col-xs-8 left" type="text" placeholder="Your last name" [(ngModel)] = 'this.currentUser.lastName'>
         <p class="col-xs-4 text-right vertically-centered">Title</p>
-        <input class="col-xs-8 left" type="text" placeholder="Your current job title" [(ngModel)] = 'this.currentUser.positionhistory[0].PositionTitle'>
+        <input class="col-xs-8 left" type="text" placeholder="Your current job title" [(ngModel)] = 'this.currentUser.positionHistory[0].PositionTitle'>
         <p class="col-xs-4 text-right vertically-centered">Employer</p>
-        <input class="col-xs-8 left" type="text" placeholder="Your current employer" [(ngModel)] = 'this.currentUser.positionhistory[0].Employer'>
+        <input class="col-xs-8 left" type="text" placeholder="Your current employer" [(ngModel)] = 'this.currentUser.positionHistory[0].Employer'>
       </div>
       <!--<div><img src="../assets/img/glyphicon/phone-2.png" class="left"><p class="left">{{ this.currentUser.contactNumber }}</p></div>-->
       <!--<div><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">{{ this.currentUser.city }}</p></div>-->
@@ -149,7 +149,7 @@
       <div ></div>
     </div>
 
-    <div *ngFor="let job of this.currentUser.positionhistory; let i = index" class="col-xs-12 job text-container" style="margin: 1%">
+    <div *ngFor="let job of this.currentUser.positionHistory; let i = index" class="col-xs-12 job text-container" style="margin: 1%">
       <p class="col-xs-12 left">Job {{i+1}}</p>
       <div class="col-xs-5">
         <p class="col-xs-5 col-md-4 vertically-centered">Title</p>
@@ -162,50 +162,45 @@
       <div class="col-xs-7">
         <textarea class="col-xs-12 left" rows="9" placeholder="Description:" [(ngModel)] = 'job.Description'></textarea>
       </div>
-      <div class="col-xs-2">
-        <p>If you WERE a government employee</p>
-      </div>
-      <div class="col-xs-10">
-        <p class="col-xs-6 col-xs-offset-6">How would you characterize your relationships at each agency/office?</p>
-        <p class="col-xs-2 vertically-centered">Agency</p>
-        <input class="col-xs-5">
-        <input class="col-xs-5">
-        <p class="col-xs-2 vertically-centered">Office</p>
-        <input class="col-xs-5">
-        <input class="col-xs-5">
-        <p class="col-xs-3 col-xs-offset-4">Were you a PM?</p>
-        <input type="checkbox" class="col-xs-1">
-        <p class="col-xs-3">Were you a warranted KO?</p>
-        <input type="checkbox" class="col-xs-1">
-      </div>
-      <div class="col-xs-2">
-        <p>If you were NOT a government employee</p>
-      </div>
-      <div class="col-xs-10">
+      <div class="col-xs-10 col-xs-offset-2">
         <p class="col-xs-2 vertically-centered">Employer</p>
         <input class="col-xs-10" [(ngModel)] = 'job.Employer'>
-        <p class="col-xs-2">Which government agencies did you work with (if any)?</p>
-        <div class="col-xs-10">
-          <p class="col-xs-3 vertically-centered">Agency 1</p>
-            <input class="col-xs-4" type="text" [(ngModel)] = 'this.currentUser.agencyexperience.main.title'>
-            <input class="col-xs-5" type="text">
-            <p class="col-xs-3 vertically-centered">Office 1</p>
-            <input class="col-xs-4" type="text" [(ngModel)] = 'this.currentUser.agencyexperience.office1.title'>
-            <input class="col-xs-5" type="text">
-            <p class="col-xs-3 vertically-centered">Office 2</p>
-            <input class="col-xs-4" type="text" [(ngModel)] = 'this.currentUser.agencyexperience.office2.title'>
-            <input class="col-xs-5" type="text">
-            <p class="col-xs-3 vertically-centered">Agency 2</p>
-            <input class="col-xs-4" type="text">
-            <input class="col-xs-5" type="text">
-            <p class="col-xs-3 vertically-centered">Office 1</p>
-            <input class="col-xs-4" type="text">
-            <input class="col-xs-5" type="text">
-            <p class="col-xs-3 vertically-centered">Office 2</p>
-            <input class="col-xs-4" type="text">
+      </div>
+      <div class="col-xs-3">
+        <div class="col-xs-12">
+          <p class="col-xs-8">Were you a government employee?</p>
+          <input type="checkbox" class="col-xs-4" [(ngModel)] = 'job.isGovernment'>
+        </div>
+      </div>
+      <div class="col-xs-9" *ngIf = 'job.isGovernment'>
+        <p class="col-xs-6 col-xs-offset-6">How would you characterize your relationships at each agency/office?</p>
+        <div class="col-xs-12" *ngFor="let agency of job.agencyExperience; let i = index; trackBy:customTrackBy">
+          <p class="col-xs-3 vertically-centered">Agency {{i + 1}}</p>
+          <input class="col-xs-4" type="text" [(ngModel)] = 'agency.main.title'>
+          <input class="col-xs-5" type="text">
+          <div class="col-xs-11 col-xs-offset-1" *ngFor="let office of agency.offices; let i = index; trackBy:customTrackBy">
+            <p class="col-xs-3 vertically-centered">Office {{i + 1}}</p>
+            <input class="col-xs-4" type="text" [(ngModel)] = 'office.title'>
             <input class="col-xs-5" type="text">
           </div>
         </div>
+        <p class="col-xs-3 col-xs-offset-4">Were you a PM?</p>
+        <input type="checkbox" class="col-xs-1" [(ngModel)] = 'job.isPM'>
+        <p class="col-xs-3">Were you a warranted KO?</p>
+        <input type="checkbox" class="col-xs-1" [(ngModel)] = 'job.isKO'>
+      </div>
+      <div class="col-xs-9" *ngIf = 'job.isGovernment == false'>
+        <div class="col-xs-12" *ngFor="let agency of job.agencyExperience; let i = index; trackBy:customTrackBy">
+          <p class="col-xs-3 vertically-centered">Agency {{i + 1}}</p>
+          <input class="col-xs-4" type="text" [(ngModel)] = 'agency.main.title'>
+          <input class="col-xs-5" type="text">
+          <div class="col-xs-11 col-xs-offset-1" *ngFor="let office of agency.offices; let i = index; trackBy:customTrackBy">
+            <p class="col-xs-3 vertically-centered">Office {{i + 1}}</p>
+            <input class="col-xs-4" type="text" [(ngModel)] = 'office.title'>
+            <input class="col-xs-5" type="text">
+          </div>
+        </div>
+      </div>
       <div class="button-row">
         <button class="col-xs-3 col-xs-offset-3" (click)="addJob()">ADD</button>
         <button class="col-xs-3" (click)="deleteJob(i)">DELETE</button>
@@ -222,8 +217,8 @@
 
     <div class="col-xs-4 col-xs-offset-4 text-center text-container" style="padding-top: 15px">
 
-      <div class="" *ngFor='let skill of this.currentUser.personcompetency; let i = index; trackBy:customTrackBy'>
-        <input type="text" style="width: 100%" [(ngModel)] = 'this.currentUser.personcompetency[i].CompetencyName'>
+      <div class="" *ngFor="let skill of this.currentUser.personCompetency; let i = index; trackBy:customTrackBy">
+        <input type="text" style="width: 100%" [(ngModel)] = 'this.currentUser.personCompetency[i].CompetencyName'>
         <button class="tiny-button-skills" (click)="deleteSkill(i)"><div class="tiny-button-text">x</div></button>
       </div>
         <input type="text" class="col-xs-8" placeholder="New Skill" [(ngModel)] = 'this.newSkill'>

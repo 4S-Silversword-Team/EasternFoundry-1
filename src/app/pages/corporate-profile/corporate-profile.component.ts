@@ -53,21 +53,21 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     // this.companyService.getCompanyByID(this.route.params["id"] ).toPromise().then(company => this.currentAccount = company)
     const myCallback = () => {
       for (const i of this.currentAccount.leadership) {
-        this.userService.getUserbyID(i.userid).toPromise().then(user => { this.users.push(user[0]); myCallback2();});
+        this.userService.getUserbyID(i.userId).toPromise().then(user => { this.users.push(user[0]); myCallback2();});
       }
 
     for (const i of this.currentAccount.product) {
-      this.productService.getProductbyID(i.productid).toPromise().then(res => {this.products.push(res[0])});
+      this.productService.getProductbyID(i.productId).toPromise().then(res => {this.products.push(res[0])});
     }
 
 
     for (const i of this.currentAccount.service) {
-      this.serviceService.getServicebyID(i.serviceid).toPromise().then(res => {this.services.push(res[0])});
+      this.serviceService.getServicebyID(i.serviceId).toPromise().then(res => {this.services.push(res[0])});
     }
 
-    for (const i of this.currentAccount.pastperformance) {
+    for (const i of this.currentAccount.pastPerformance) {
       // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
-      this.ppService.getPastPerformancebyID(i.pastperformanceid).toPromise().then(res => {this.pastperformances.push(res[0])}); // Might try to continue the for loop before the promise resolves.
+      this.ppService.getPastPerformancebyID(i.pastPerformanceId).toPromise().then(res => {this.pastperformances.push(res[0])}); // Might try to continue the for loop before the promise resolves.
       // let myCallback = () => {console.log(this.pastperformances);}
     }
     const myCallback2 = () => {

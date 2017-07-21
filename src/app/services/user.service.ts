@@ -56,9 +56,9 @@ export class UserService {
     temp.username = '';
     temp.avatar = '';
     temp.disabled = false;
-    temp.dateofbirth = '';
+    temp.dateOfBirth = '';
     temp.gender = '';
-    temp.workeligibility = [
+    temp.workEligibility = [
       {
         CountryCode: '',
         Permanent: true
@@ -120,7 +120,7 @@ export class UserService {
         Comment: ''
       }
     ];
-      temp.positionhistory = [
+      temp.positionHistory = [
       {
         Year: 2016,
         Employer: '',
@@ -136,10 +136,37 @@ export class UserService {
         Industry: {
           Name: ''
         },
+        isGovernment: false,
+        agencyExperience: [
+         {
+            main: {
+              title: '',
+              data: [
+                {
+                    title: '',
+                    score: 50
+                }
+              ]
+            },
+            offices: [
+              {
+                title: '',
+                data: [
+                  {
+                      title: '',
+                      score: 50
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        isPM: false,
+        isKO: false,
         Description: ''
       }
     ];
-      temp.personcompetency = [
+      temp.personCompetency = [
       {
         CompetencyName: '',
         CompetencyLevel: ''
@@ -165,8 +192,8 @@ export class UserService {
         PreferredEmail: ''
       }
     ];
-      temp.lastupdated = '';
-      temp.information_accuracy = 5;
+      temp.lastUpdated = '';
+      temp.informationAccuracy = 5;
       temp.clearance = [
       {
         type: '',
@@ -181,71 +208,8 @@ export class UserService {
         score: 30
       }
     ];
-      temp.skill = [''];
-      temp.interest = 'Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog';
-      temp.agencyexperience = {
-      main: {
-        title: '',
-          data: [
-          {
-            title: 'Years Agency experience',
-            score: 90
-          },
-          {
-            title: '$ (M) of agency revenue',
-            score: 48
-          },
-          {
-            title: 'Proposals written',
-            score: 100
-          },
-          {
-            title: 'Relationships',
-            score: 30
-          }
-        ]},
-      office1: {
-        title: '',
-          data: [
-          {
-            title: 'Years Agency experience',
-            score: 90
-          },
-          {
-            title: '$ (M) of agency revenue',
-              score: 48
-          },
-          {
-            title: 'Proposals written',
-              score: 100
-          },
-          {
-            title: 'Relationships',
-            score: 30
-          }
-        ]},
-        office2: {
-          title: '',
-          data: [
-            {
-              title: 'Years Agency experience',
-              score: 90
-            },
-            {
-              title: '$ (M) of agency revenue',
-              score: 48
-            },
-            {
-              title: 'Proposals written',
-              score: 100
-            },
-            {
-              title: 'Relationships',
-              score: 30
-            }
-          ]}
-
-      };
+    temp.skill = [''];
+    temp.interest = 'Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog';
     temp.strength = [
       {
         skill: 'human resource management',
