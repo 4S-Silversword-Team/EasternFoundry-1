@@ -56,7 +56,26 @@ export class ProfileEditComponent implements OnInit {
     if (this.router.url !== '/user-profile-create') {
         this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
         this.currentUser = result[0];
-        console.log(result[0]);
+        function stringToBool(val) {
+          return (val + '').toLowerCase() === 'true';
+        };
+
+        //right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
+        //i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
+        if (typeof this.currentUser.disabled === "string") {
+          this.currentUser.disabled = stringToBool(this.currentUser.disabled)
+        }
+        for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
+          if (typeof this.currentUser.positionHistory[i].isGovernment === "string") {
+            this.currentUser.positionHistory[i].isGovernment = stringToBool(this.currentUser.positionHistory[i].isGovernment)
+          }
+          if (typeof this.currentUser.positionHistory[i].isPM === "string") {
+            this.currentUser.positionHistory[i].isPM = stringToBool(this.currentUser.positionHistory[i].isPM)
+          }
+          if (typeof this.currentUser.positionHistory[i].isKO === "string") {
+            this.currentUser.positionHistory[i].isKO = stringToBool(this.currentUser.positionHistory[i].isKO)
+          }
+        }
         this.promiseFinished = true;
       });
     }
@@ -205,6 +224,42 @@ export class ProfileEditComponent implements OnInit {
 
   deleteCertificate(i) {
     this.currentUser.certification.splice(i, 1);
+  }
+
+  addAgency(job) {
+    job.agencyExperience.push({
+      main: {
+        title: '',
+        data: [{
+          title: 'Years Agency Experience',
+          score: 100
+        }]
+      },
+      offices: [{
+        title: '',
+        data: [{
+          title: 'Years Agency Experience',
+          score: 100
+        }]
+      }]
+    });
+  }
+
+  deleteAgency(job, i) {
+    job.agencyExperience.splice(i, 1);
+  }
+  addOffice(agency) {
+    agency.offices.push({
+      title: '',
+      data: [{
+        title: 'Years Agency Experience',
+        score: 100
+      }]
+    });
+  }
+
+  deleteOffice(agency, i) {
+    agency.offices.splice(i, 1);
   }
 
 

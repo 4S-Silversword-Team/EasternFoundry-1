@@ -70,6 +70,27 @@ export class ProfileComponent implements OnInit {
         job.Year = +job.StartDate.slice(0, 4);
       }
 
+      function stringToBool(val) {
+        return (val + '').toLowerCase() === 'true';
+      };
+
+      //right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
+      //i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
+      if (typeof this.currentUser.disabled === "string") {
+        this.currentUser.disabled = stringToBool(this.currentUser.disabled)
+      }
+      for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
+        if (typeof this.currentUser.positionHistory[i].isGovernment === "string") {
+          this.currentUser.positionHistory[i].isGovernment = stringToBool(this.currentUser.positionHistory[i].isGovernment)
+        }
+        if (typeof this.currentUser.positionHistory[i].isPM === "string") {
+          this.currentUser.positionHistory[i].isPM = stringToBool(this.currentUser.positionHistory[i].isPM)
+        }
+        if (typeof this.currentUser.positionHistory[i].isKO === "string") {
+          this.currentUser.positionHistory[i].isKO = stringToBool(this.currentUser.positionHistory[i].isKO)
+        }
+      }
+
       this.promiseFinished = true;
     }
 
@@ -94,28 +115,18 @@ export class ProfileComponent implements OnInit {
     return temp
   }
 
-  expMainValues(tempUser: User): number[] {
+  expMainValues(tempUser: User, jobNum, agencyNum): number[] {
     let temp: number[] = []
-    for (let job of this.currentUser.positionHistory) {
-      for (let exp of job.agencyExperience) {
-        for (let data of exp.main.data) {
-          temp.push(data.score)
-        }
-      }
+    for (let data of this.currentUser.positionHistory[jobNum].agencyExperience[agencyNum].main.data) {
+      temp.push(data.score)
     }
     return temp
   }
 
-  expSub1Values(tempUser: User): number[] {
+  expSub1Values(tempUser: User, jobNum, agencyNum, officeNum): number[] {
     let temp: number[] = []
-    for (let job of this.currentUser.positionHistory) {
-      for (let exp of job.agencyExperience) {
-        for (let office of exp.offices) {
-          for (let data of office.data) {
-            temp.push(data.score)
-          }
-        }
-      }
+    for (let data of this.currentUser.positionHistory[jobNum].agencyExperience[agencyNum].offices[officeNum].data) {
+      temp.push(data.score)
     }
     return temp
   }

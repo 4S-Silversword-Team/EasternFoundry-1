@@ -1,11 +1,11 @@
 <div class="container">
   <div class="btn-edit" (click) = 'editProfile()'>Edit</div>
   <div class="btn-back" (click) = 'this.location.back()'></div>
-    <div class="basic-info col-xs-12">
+    <div class="basic-info col-xs-12" *ngIf = this.promiseFinished>
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0" [style.height] = "'150px'">
-                <img class="avatar left" src="{{ this.currentUser.avatar }}" >
-                <div class="right" [style.width] = "'calc(100% - 150px)'" *ngIf = this.promiseFinished>
+                <img class="avatar left" src="{{ this.currentUser.avatar }}">
+                <div class="right" [style.width] = "'calc(100% - 150px)'">
                     <p class="col-xs-12 mt15" [style.height] = "'40px'">{{ this.currentUser.firstName }} {{this.currentUser.lastName}}</p>
                     <p class="col-xs-12 mt15" [style.height] = "'40px'">{{
                       this.currentUser.positionHistory[0].PositionTitle }}</p>
@@ -13,7 +13,7 @@
                       this.currentUser.positionHistory[0].Employer}}</p>
                 </div>
             </div>
-            <div id="user-contact" class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0" *ngIf = this.promiseFinished>
+            <div id="user-contact" class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0">
                 <div><img src="../assets/img/glyphicon/email-1.png" class="left"><p class="left">{{ this.currentUser.username }}</p></div>
                 <div><img src="../assets/img/glyphicon/phone-2.png" class="left"><p class="left">{{ this.currentUser.cell }}</p></div>
                 <div><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">{{ this.currentUser.address.city }}, {{ this.currentUser.address.state }}</p></div>
@@ -36,7 +36,7 @@
         <p class="fs-28 fc-title">CERTIFICATIONS, DEGREES</p>
         <p class="fs-28 fc-subtitle">AWARDS & CLEARANCES</p>
         <div class="text-container text-left" [style.height] = "'300px'">
-            <p *ngFor="let cert of this.currentUser.certification">{{ 'Degree: ' + cert.certificationName + ',  Earned: ' + cert.dateEarned }}</p>
+            <p *ngFor="let cert of this.currentUser.certification">{{ 'Degree: ' + cert.CertificationName + ',  Earned: ' + cert.DateEarned }}</p>
             <p *ngFor="let deg of this.currentUser.education">{{ 'Type: ' + deg.DegreeType[0].Name + ', Concentration: ' + deg.MajorProgramName[0] + ', From: ' + deg.School + ', Graduation: ' + deg.AttendanceEndDate }}</p>
             <p *ngFor="let index of this.currentUser.clearance">{{ 'Type: ' + index.type + ', Awarded: ' + index.awarded + ', Expiration: ' + index.expiration }}</p>
             <p *ngFor="let award of this.currentUser.award">{{ 'Awarded: ' + award }}</p>
@@ -83,24 +83,32 @@
     </div>
 
     <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-container" *ngIf="this.promiseFinished">
-        <app-color-comment-box *ngFor="let index of this.currentUser.agencyExperience.main.data" color='{{ expColors[index.title] }}' text='{{index.title}}' class="col-xs-12 col-sm-6 col-md-12"></app-color-comment-box>
+      <div class="" *ngFor='let job of this.currentUser.positionHistory'>
+        <div class="" *ngFor='let agency of job.agencyExperience'>
+          <p>{{agency.main.title}}</p>
+          <app-color-comment-box *ngFor="let index of agency.main.data" color='{{ expColors[index.title] }}' text='{{index.title}}' class="col-xs-12 col-sm-6 col-md-12"></app-color-comment-box>
+        </div>
+      </div>
     </div>
-
-    <div class="exp-main col-xs-12" *ngIf="this.promiseFinished">
-        <div class="app-exp-chart left">
-            <p id="exp-main-title">{{this.currentUser.agencyExperience.main.title}}</p>
-            <app-exp-chart width='500' height='500' divID='exp-main-chart' [values]='expMainValues(this.currentUser)'></app-exp-chart>
+    <div class="" *ngFor='let job of this.currentUser.positionHistory; let i = index'>
+      <div class="exp-main col-xs-12" *ngIf="this.promiseFinished">
+        <div class="" *ngFor='let agency of job.agencyExperience; let x = index'>
+          <div class="app-exp-chart left">
+              <p id="exp-main-title">{{agency.main.title}}</p>
+              <app-exp-chart width='500' height='500' divID='exp-main-chart' [values]='expMainValues(this.currentUser, i, x)'></app-exp-chart>
+          </div>
+          <div class="app-exp-chart right" *ngFor='let office of agency.offices; let y = index'>
+              <app-exp-chart id='sub1' width='250' height='250' divID='exp-sub1-chart' [values]='expSub1Values(this.currentUser, i, x, y)' class="right"></app-exp-chart>
+              <p id="exp-sub1-title" class="left">{{office.title}}</p>
+          </div>
+          <!-- <div class="app-exp-chart left">
+              <app-exp-chart id='sub2' width='250' height='250' divID='exp-sub2-chart' [values]='expSub2Values(this.currentUser)' class="left"></app-exp-chart>
+              <p id="exp-sub2-title" class="right">Office 2</p>
+          </div> -->
         </div>
-        <div class="app-exp-chart right">
-            <app-exp-chart id='sub1' width='250' height='250' divID='exp-sub1-chart' [values]='expSub1Values(this.currentUser)' class="right"></app-exp-chart>
-            <p id="exp-sub1-title" class="left">Office 1</p>
-        </div>
-        <div class="app-exp-chart left">
-            <app-exp-chart id='sub2' width='250' height='250' divID='exp-sub2-chart' [values]='expSub2Values(this.currentUser)' class="left"></app-exp-chart>
-            <p id="exp-sub2-title" class="right">Office 2</p>
-        </div>
+      </div>
     </div>
-</div>
+  </div>
 
 <div class="career col-xs-12 clear">
     <div class="div-title col-xs-12">
