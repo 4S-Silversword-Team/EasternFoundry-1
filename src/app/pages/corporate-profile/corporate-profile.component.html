@@ -2,7 +2,7 @@
     <div class="btn-edit" (click) = 'editCompany()'>Edit</div>
     <div class="btn-back" (click) = 'this.location.back()'></div>
   <div class="basic-info col-xs-12 clear">
-    <div class="col-xs-12 srow div-title">
+    <div class="col-xs-12 srow div-title" *ngIf = this.promiseFinished>
         <p class="left">{{ this.currentAccount.name }}</p>
         <div></div>
     </div>

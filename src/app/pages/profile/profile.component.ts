@@ -39,7 +39,7 @@ export class ProfileComponent implements OnInit {
 
     this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
       this.currentUser = result[0];
-      myCallback()
+      myCallback();
     });
 
     var myCallback = () => {

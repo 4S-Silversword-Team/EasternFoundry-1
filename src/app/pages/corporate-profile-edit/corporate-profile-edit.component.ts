@@ -46,21 +46,21 @@ export class CorporateProfileEditComponent implements OnInit {
     private ppService: PastperformanceService
   ) {
     if ( this.router.url !== 'corporate-profile-create' ) {
-      this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result[0]; myCallback(); });
+      this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result; myCallback(); });
       // .subscribe(result => this.currentAccount =result).
       // this.currentAccount = this.companyService.getTestCompany()
       const myCallback = () => {
       for (const i of this.currentAccount.product) {
-        productService.getProductbyID(i.productId).toPromise().then(res => {this.products.push(res[0])});
+        productService.getProductbyID(i.productId).toPromise().then(res => {this.products.push(res)});
       }
 
       for (const i of this.currentAccount.service) {
-        this.serviceService.getServicebyID(i.serviceId).toPromise().then(res => {this.services.push(res[0])});
+        this.serviceService.getServicebyID(i.serviceId).toPromise().then(res => {this.services.push(res)});
       }
 
       for (const i of this.currentAccount.pastPerformance) {
         // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
-        ppService.getPastPerformancebyID(i.pastPerformanceId).toPromise().then(res => this.pastperformances.push(res[0])); // Might try to continue the for loop before the promise resolves.
+        ppService.getPastPerformancebyID(i.pastPerformanceId).toPromise().then(res => this.pastperformances.push(res)); // Might try to continue the for loop before the promise resolves.
       }
     };
     }

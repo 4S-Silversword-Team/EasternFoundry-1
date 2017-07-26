@@ -23,9 +23,9 @@ export class CompanyService {
   }
 
   getCompanyByID(id: string): Observable<Company> {
-    var response =  this.authHttp.get(environment.apiRoot + "company/" + id )
-    .map(response => <Company> response.json())
-    return response
+    var response = this.authHttp.get(environment.apiRoot + "company/" + id)
+      .map(response => <Company> response.json())
+    return response;
   }
 
   updateCompany(id: string, request: any): Observable<Company> {
