@@ -125,7 +125,7 @@ export class User {
   informationAccuracy: number
   clearance: [
     {
-      type: string,
+      clearanceType: string,
       awarded: string,
       expiration: string
     }

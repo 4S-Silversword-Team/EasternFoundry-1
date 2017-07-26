@@ -55,7 +55,7 @@ export class ProfileEditComponent implements OnInit {
     // this.currentUser = this.userService.getUserbyID(this.route.snapshot.params['id'])
     if (this.router.url !== '/user-profile-create') {
         this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
-        this.currentUser = result[0];
+        this.currentUser = result;
         function stringToBool(val) {
           return (val + '').toLowerCase() === 'true';
         };
@@ -193,7 +193,7 @@ export class ProfileEditComponent implements OnInit {
   addClearance() {
     this.currentUser.clearance.push(
       {
-        type: '',
+        clearanceType: '',
         awarded: '',
         expiration: ''
       }

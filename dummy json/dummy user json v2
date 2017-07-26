@@ -273,7 +273,8 @@
                 "Name": "services"
             },
             "isGovernment": false,
-            "agencyExperience": {
+            "agencyExperience": [
+            	{
                 "main": {
                     "title": "Air Force",
                     "data": [
@@ -338,8 +339,9 @@
                             }
                         ]
                     }
-                ]
-            },
+        		]
+        	}
+            ],
             "isPM": false,
             "isKO": false,
             "Description": "* Used Python to programmatically query the Amazon Products API, compiling data to show competitiveness of shop pricing * Mechanical and sales work"
@@ -468,7 +470,7 @@
     "informationAccuracy": 4.5,
     "clearance": [
         {
-            "type": "clearance type 1",
+            "clearanceType": "clearance type 1",
             "awarded": "Dec, 2013",
             "expiration": "Dec, 2016"
         }

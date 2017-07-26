@@ -52,8 +52,4 @@ export class PastPerformanceComponent implements OnInit {
   ngOnInit() {
   }
 
-  editPastPerformance() {
-    this.router.navigate(['past-performance-edit', this.currentPastPerformance['_id']]);
-  }
-
 }

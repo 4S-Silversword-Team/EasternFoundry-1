@@ -51,7 +51,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     // this.companyService.getCompanyByID(this.route.params["id"] ).toPromise().then(company => this.currentAccount = company)
     const myCallback = () => {
       for (const i of this.currentAccount.leadership) {
-        this.userService.getUserbyID(i.userId).toPromise().then(user => { this.users.push(user[0]); myCallback2();});
+        this.userService.getUserbyID(i.userId).toPromise().then(user => { this.users.push(user); myCallback2();});
       }
 
     for (const i of this.currentAccount.product) {
@@ -78,7 +78,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
           this.CQAC.push('Awarded: ' + j);
         }
         for (const j of i.clearance) {
-          this.CQAC.push('Type: ' + j.type + ', Awarded: ' + j.awarded + ', Expiration: ' + j.expiration);
+          this.CQAC.push('Type: ' + j.clearanceType + ', Awarded: ' + j.awarded + ', Expiration: ' + j.expiration);
         }
       }
     };

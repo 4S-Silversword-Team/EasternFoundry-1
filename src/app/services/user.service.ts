@@ -196,7 +196,7 @@ export class UserService {
       temp.informationAccuracy = 5;
       temp.clearance = [
       {
-        type: '',
+        clearanceType: '',
         awarded: '',
         expiration: ''
       }

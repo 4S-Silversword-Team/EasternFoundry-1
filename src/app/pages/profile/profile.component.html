@@ -38,7 +38,7 @@
         <div class="text-container text-left" [style.height] = "'300px'">
             <p *ngFor="let cert of this.currentUser.certification">{{ 'Degree: ' + cert.CertificationName + ',  Earned: ' + cert.DateEarned }}</p>
             <p *ngFor="let deg of this.currentUser.education">{{ 'Type: ' + deg.DegreeType[0].Name + ', Concentration: ' + deg.MajorProgramName[0] + ', From: ' + deg.School + ', Graduation: ' + deg.AttendanceEndDate }}</p>
-            <p *ngFor="let index of this.currentUser.clearance">{{ 'Type: ' + index.type + ', Awarded: ' + index.awarded + ', Expiration: ' + index.expiration }}</p>
+            <p *ngFor="let index of this.currentUser.clearance">{{ 'Type: ' + index.clearanceType + ', Awarded: ' + index.awarded + ', Expiration: ' + index.expiration }}</p>
             <p *ngFor="let award of this.currentUser.award">{{ 'Awarded: ' + award }}</p>
         </div>
     </div>
