@@ -1,40 +1,40 @@
 export class Company {
-    id: string;
-    name: string;
-    email: string;
-    avatar: string;
-    contactnumber: string;
-    city: string;
-    state: string;
-    zip: string;
-    address: string;
-    lastupdated: string;
-    information_accuracy: number;
+    id: string
+    name: string
+    email: string
+    avatar: string
+    contactNumber: string
+    city: string
+    state: string
+    zip: string
+    address: string
+    lastUpdated: string
+    informationAccuracy: number
     leadership: [
-        {userid: string}
-    ];
+        {userId: string}
+    ]
     product: [
-        {productid: string}
-    ];
+        {productId: string}
+    ]
     service: [
-        {serviceid: string}
-    ];
-    pastperformance: [
-        {pastperformanceid: string}
-    ];
-    agencyexperience: [
+        {serviceId: string}
+    ]
+    pastPerformance: [
+        {pastPerformanceId: string}
+    ]
+    agencyExperience: [
         {title: string, score: number}
-    ];
+    ]
     vehicles: [
         {
-            type: string
+            vehicleType: string
             quantity: number
         }
-    ];
+    ]
     schedule: [
         {
             date: string,
             content: string
         }
-    ];
+    ]
 }

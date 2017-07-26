@@ -6,6 +6,7 @@ import { CorporateProfileComponent } from './pages/corporate-profile/corporate-p
 import { CorporateProfileEditComponent } from './pages/corporate-profile-edit/corporate-profile-edit.component'
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ProfileEditComponent } from './pages/profile-edit/profile-edit.component';
+import { ProfileCreateComponent } from './pages/profile-create/profile-create.component';
 import { PastPerformanceComponent } from './pages/past-performance/past-performance.component';
 import { PastPerformanceEditComponent } from './pages/past-performance-edit/past-performance-edit.component';
 import { NoContentComponent } from './pages/no-content/no-content.component';
@@ -22,7 +23,7 @@ export const ROUTES: Routes = [
   { path: 'user-profile-edit/:id',      component: ProfileEditComponent },
   { path: 'corporate-profile-edit/:id', component: CorporateProfileEditComponent },
   { path: 'past-performance-edit/:id', component: PastPerformanceEditComponent},
-  { path: 'user-profile-create',      component: ProfileComponent },
+  { path: 'user-profile-create',      component: ProfileCreateComponent },
   { path: 'corporate-profile-create', component: CorporateProfileComponent },
   { path: 'past-performance-create', component: PastPerformanceEditComponent},
   { path: '**',    component: NoContentComponent },

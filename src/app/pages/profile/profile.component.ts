@@ -38,19 +38,24 @@ export class ProfileComponent implements OnInit {
 
 
     this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
-      this.currentUser = result[0];
-      myCallback()
+      this.currentUser = result;
+      myCallback();
     });
 
     var myCallback = () => {
       let index: number = 0
       this.availabilityData.values = []
       this.availabilityData.dates = []
-      for (let exp of this.currentUser.agencyexperience.main.data) {
-        let color = index / this.currentUser.agencyexperience.main.data.length * 155
-        color = Math.floor(color)
-        this.expColors[exp.title] = this.expColors[index++]
+      for (let job of this.currentUser.positionHistory) {
+        for (let exp of job.agencyExperience) {
+          for (let data of exp.main.data) {
+            let color = index / exp.main.data.length * 155
+            color = Math.floor(color)
+            this.expColors[exp.main.title] = this.expColors[index++]
+          }
+        }
       }
+
       let temp: number[] = []
       for (let index of this.currentUser.strength) {
         this.strengthChartLabels.push(index.skill)
@@ -61,8 +66,29 @@ export class ProfileComponent implements OnInit {
         this.availabilityData.values.push(index.available)
       }
       this.strengthChartDatas.push({data: temp, label: 'Strength'})
-      for (let job of this.currentUser.positionhistory) {
+      for (let job of this.currentUser.positionHistory) {
         job.Year = +job.StartDate.slice(0, 4);
+      }
+
+      function stringToBool(val) {
+        return (val + '').toLowerCase() === 'true';
+      };
+
+      //right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
+      //i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
+      if (typeof this.currentUser.disabled === "string") {
+        this.currentUser.disabled = stringToBool(this.currentUser.disabled)
+      }
+      for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
+        if (typeof this.currentUser.positionHistory[i].isGovernment === "string") {
+          this.currentUser.positionHistory[i].isGovernment = stringToBool(this.currentUser.positionHistory[i].isGovernment)
+        }
+        if (typeof this.currentUser.positionHistory[i].isPM === "string") {
+          this.currentUser.positionHistory[i].isPM = stringToBool(this.currentUser.positionHistory[i].isPM)
+        }
+        if (typeof this.currentUser.positionHistory[i].isKO === "string") {
+          this.currentUser.positionHistory[i].isKO = stringToBool(this.currentUser.positionHistory[i].isKO)
+        }
       }
 
       this.promiseFinished = true;
@@ -89,26 +115,32 @@ export class ProfileComponent implements OnInit {
     return temp
   }
 
-  expMainValues(tempUser: User): number[] {
+  expMainValues(tempUser: User, jobNum, agencyNum): number[] {
     let temp: number[] = []
-    for( let exp of tempUser.agencyexperience.main.data) {
-      temp.push(exp.score)
+    for (let data of this.currentUser.positionHistory[jobNum].agencyExperience[agencyNum].main.data) {
+      temp.push(data.score)
     }
     return temp
   }
 
-  expSub1Values(tempUser: User): number[] {
+  expSub1Values(tempUser: User, jobNum, agencyNum, officeNum): number[] {
     let temp: number[] = []
-    for( let exp of tempUser.agencyexperience.office1.data) {
-      temp.push(exp.score)
+    for (let data of this.currentUser.positionHistory[jobNum].agencyExperience[agencyNum].offices[officeNum].data) {
+      temp.push(data.score)
     }
     return temp
   }
 
   expSub2Values(tempUser: User): number[] {
     let temp: number[] = []
-    for( let exp of tempUser.agencyexperience.office2.data) {
-      temp.push(exp.score)
+    for (let job of this.currentUser.positionHistory) {
+      for (let exp of job.agencyExperience) {
+        for (let office of exp.offices) {
+          for (let data of office.data) {
+            temp.push(data.score)
+          }
+        }
+      }
     }
     return temp
   }

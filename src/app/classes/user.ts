@@ -1,5 +1,4 @@
 export class User {
-  id: string
   firstName: string
   lastName: string
   cell: string
@@ -7,8 +6,9 @@ export class User {
   username: string
   avatar: string
   disabled: boolean
+  dateOfBirth: string
   gender: string
-  workeligibility: [
+  workEligibility: [
     {
       CountryCode: string,
       Permanent: boolean
@@ -43,7 +43,7 @@ export class User {
         {
           Name: string
         }
-        ],
+      ],
       AttendanceStatusCode: string,
       AttendanceEndDate: string,
       EducationScore: [string],
@@ -58,7 +58,7 @@ export class User {
       Comment: string
     }
     ]
-  positionhistory: [
+  positionHistory: [
     {
       Year: number,
       Employer: string,
@@ -73,26 +73,43 @@ export class User {
       CurrentIndicator: boolean,
       Industry: {
         Name: string,
-      }
-      Description: string,
+      },
+      isGovernment: boolean,
+      agencyExperience: [
+        {
+          main: {
+            title: string,
+            data: any[]
+          },
+          offices: [
+            {
+              title: string,
+              data: any[]
+            }
+          ]
+        }
+      ],
+      isPM: boolean,
+      isKO: boolean,
+      Description: string
     }
     ]
-  personcompetency: [
-    {
-      CompetencyName: string,
-      CompetencyLevel: string
-    }
+  personCompetency: [
+      {
+        CompetencyName: string,
+        CompetencyLevel: string
+      }
     ]
   certification: [
-    {
-      CertificationName: string,
-      DateEarned: string
-    }
+      {
+        CertificationName: string,
+        DateEarned: string
+      }
     ]
   License: [
-    {
-      LicenseName: string
-    }
+      {
+        LicenseName: string
+      }
     ]
   EmploymentReferences: [
     {
@@ -104,11 +121,11 @@ export class User {
     }
     ]
 
-  lastupdated: string
-  information_accuracy: number
+  lastUpdated: string
+  informationAccuracy: number
   clearance: [
     {
-      type: string,
+      clearanceType: string,
       awarded: string,
       expiration: string
     }
@@ -122,20 +139,6 @@ export class User {
     ]
   skill: [string]
   interest: string
-  agencyexperience: {
-    main: {
-      title: string,
-      data: any[]
-    },
-    office1: {
-      title: string,
-      data: any[]
-    },
-    office2: {
-      title: string,
-      data: any[]
-    }
-  }
   strength: [
     {
       skill: string,

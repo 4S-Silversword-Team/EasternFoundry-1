@@ -53,13 +53,32 @@ export class ProfileEditComponent implements OnInit {
     public location: Location
   ) {
     // this.currentUser = this.userService.getUserbyID(this.route.snapshot.params['id'])
-    if (this.router.url !== 'user-profile-create') {
-      this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
-        this.currentUser = result[0];
-        this.promiseFinished = true;
+    if (this.router.url !== '/user-profile-create') {
+        this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
+        this.currentUser = result;
+        function stringToBool(val) {
+          return (val + '').toLowerCase() === 'true';
+        };
 
+        //right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
+        //i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
+        if (typeof this.currentUser.disabled === "string") {
+          this.currentUser.disabled = stringToBool(this.currentUser.disabled)
+        }
+        for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
+          if (typeof this.currentUser.positionHistory[i].isGovernment === "string") {
+            this.currentUser.positionHistory[i].isGovernment = stringToBool(this.currentUser.positionHistory[i].isGovernment)
+          }
+          if (typeof this.currentUser.positionHistory[i].isPM === "string") {
+            this.currentUser.positionHistory[i].isPM = stringToBool(this.currentUser.positionHistory[i].isPM)
+          }
+          if (typeof this.currentUser.positionHistory[i].isKO === "string") {
+            this.currentUser.positionHistory[i].isKO = stringToBool(this.currentUser.positionHistory[i].isKO)
+          }
+        }
+        this.promiseFinished = true;
       });
-    };
+    }
   }
 
   ngOnInit() {
@@ -71,7 +90,7 @@ export class ProfileEditComponent implements OnInit {
 
   addSkill() {
     if (this.newSkill !== '') {
-      this.currentUser.personcompetency.push({
+      this.currentUser.personCompetency.push({
         CompetencyName: this.newSkill,
         CompetencyLevel: 'good'
       });
@@ -80,11 +99,11 @@ export class ProfileEditComponent implements OnInit {
   }
 
   deleteSkill(i) {
-    this.currentUser.personcompetency.splice(i, 1);
+    this.currentUser.personCompetency.splice(i, 1);
   }
 
   addJob() {
-    this.currentUser.positionhistory.push(
+    this.currentUser.positionHistory.push(
       {
         Year: this.currentYear(),
         Employer: '',
@@ -100,13 +119,40 @@ export class ProfileEditComponent implements OnInit {
         Industry: {
           Name: ''
         },
+        isGovernment: false,
+        agencyExperience: [
+         {
+            main: {
+              title: '',
+              data: [
+                {
+                    title: '',
+                    score: 50
+                }
+              ]
+            },
+            offices: [
+              {
+                title: '',
+                data: [
+                  {
+                      title: '',
+                      score: 50
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        isPM: false,
+        isKO: false,
         Description: ''
       }
     );
   }
 
   deleteJob(i) {
-    this.currentUser.positionhistory.splice(i, 1);
+    this.currentUser.positionHistory.splice(i, 1);
   }
 
 
@@ -147,7 +193,7 @@ export class ProfileEditComponent implements OnInit {
   addClearance() {
     this.currentUser.clearance.push(
       {
-        type: '',
+        clearanceType: '',
         awarded: '',
         expiration: ''
       }
@@ -180,6 +226,42 @@ export class ProfileEditComponent implements OnInit {
     this.currentUser.certification.splice(i, 1);
   }
 
+  addAgency(job) {
+    job.agencyExperience.push({
+      main: {
+        title: '',
+        data: [{
+          title: 'Years Agency Experience',
+          score: 100
+        }]
+      },
+      offices: [{
+        title: '',
+        data: [{
+          title: 'Years Agency Experience',
+          score: 100
+        }]
+      }]
+    });
+  }
+
+  deleteAgency(job, i) {
+    job.agencyExperience.splice(i, 1);
+  }
+  addOffice(agency) {
+    agency.offices.push({
+      title: '',
+      data: [{
+        title: 'Years Agency Experience',
+        score: 100
+      }]
+    });
+  }
+
+  deleteOffice(agency, i) {
+    agency.offices.splice(i, 1);
+  }
+
 
   currentYear() {
     let year = new Date().getFullYear()
@@ -192,7 +274,6 @@ export class ProfileEditComponent implements OnInit {
     this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
     window.scrollTo(0, 0);
     this.router.navigate(['user-profile', this.route.snapshot.params['id']]);
-
   }
 
 

@@ -1,0 +1,37 @@
+<div class="form-container">
+  <h2>Register</h2>
+  <form method="post" encType="multipart/form-data">
+    <div class="form-group">
+      <label for="firstName">First name</label>
+      <input type="text" name="firstName" id="firstName" class="form-control" [(ngModel)]='this.userParam.firstName' required />
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last name</label>
+      <input type="text" name="lastName" id="lastName" class="form-control" [(ngModel)]='this.userParam.lastName' required />
+    </div>
+    <div class="form-group">
+      <label for="cell">Cell #</label>
+      <input type="text" name="cell" id="cell" class="form-control" [(ngModel)]='this.userParam.cell' />
+    </div>
+    <div class="form-group">
+      <label for="office">Office #</label>
+      <input type="text" name="office" id="office" class="form-control" [(ngModel)]='this.userParam.office' />
+    </div>
+    <div class="form-group">
+      <label for="username">Email (Your user name is your email)</label>
+      <input type="text" name="username" id="username" class="form-control" [(ngModel)]='this.userParam.username' required />
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" class="form-control" required />
+    </div>
+    <div class="form-group">
+      <label for="resume">Resume</label>
+      <input type="file" name="resume" id="resume" class="form-control" [(ngModel)]='this.userParam.resume' required />
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary" (click)="registerUser()">Register</button>
+      <a href="/login" class="btn btn-link">Cancel</a>
+    </div>
+  </form>
+</div>

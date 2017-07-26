@@ -1,72 +1,14 @@
 {
-    "id": 1,
     "name": "Jimbo Inc!",
     "email": "jimbo@jimothy.zone",
     "avatar": "../../assets/img/company-account.png",
-    "contactnumber": "202-555-8998",
-    "address": "Arlington, VA",
-    "information_accuracy": 5,
-    "lastupdated": "Feb, 2017",
-    "leadership": [
-        {
-            "userid": "59514f264bbbec2d8dc56ed7"
-        },
-        {
-            "userid": "59514f264bbbec2d8dc56ed7"
-        }
-    ],
-    "product": [
-        {
-            "productid": "595d091509c3022b56f5372a"
-        },
-        {
-            "productid": "595d092c09c3022b56f5372b"
-        }
-    ],
-    "service": [
-        {
-            "serviceid": "595d29a31b325b445e3a0236"
-        },
-        {
-            "serviceid": "595d29ae1b325b445e3a0237"
-        }
-    ],
-    "pastperformance": [
-        {
-            "pastperformanceid": "595695dbbdfdc463e9831dab"
-        },
-        {
-            "pastperformanceid": "59569d64bdfdc463e9831dac"
-        }
-    ],
-    "agency_experience": [
-        {
-            "title": "Years agency experience",
-            "score": 90
-        },
-        {
-            "title": "$ (M) of agency revenue",
-            "score": 12
-        },
-        {
-            "title": "Proposals written",
-            "score": 14
-        }
-    ],
-    "vehicles": [
-        {
-            "type": "Vehicle type 1",
-            "quantity": 3
-        },
-        {
-            "type": "Vehicle type 2",
-            "quantity": 13
-        },
-        {
-            "type": "Vehicle type 3",
-            "quantity": 22
-        }
-    ],
+    "contactNumber": "202-555-8998",
+    "city": "Arlington",
+    "state": "VA",
+    "zip": "12345",
+    "address": "211112 Street",
+    "lastUpdated": "Feb, 2017",
+    "informationAccuracy": 5,
     "schedule": [
         {
             "date": "Dec, 2016",
@@ -81,7 +23,64 @@
             "content": "Schedule 3"
         }
     ],
-    "city": "Washington",
-    "state": "DC",
-    "zip": "11112"
+    "vehicles": [
+        {
+            "vehicleType": "Vehicle type 1",
+            "quantity": 3
+        },
+        {
+            "vehicleType": "Vehicle type 2",
+            "quantity": 13
+        },
+        {
+            "vehicleType": "Vehicle type 3",
+            "quantity": 22
+        }
+    ],
+    "agencyExperience": [
+        {
+            "title": "Years agency experience",
+            "score": 90
+        },
+        {
+            "title": "$ (M) of agency revenue",
+            "score": 12
+        },
+        {
+            "title": "Proposals written",
+            "score": 14
+        }
+    ],
+    "pastPerformance": [
+        {
+            "pastPerformanceId": "596fa3d90098230340303ee2"
+        },
+        {
+            "pastPerformanceId": "596fa3e50098230340303ee7"
+        }
+    ],
+    "service": [
+        {
+            "serviceId": "596fa3790098230340303ed8"
+        },
+        {
+            "serviceId": "596fa3830098230340303ede"
+        }
+    ],
+    "product": [
+        {
+            "productId": "596fa33c0098230340303eb6"
+        },
+        {
+            "productId": "596fa3460098230340303ec5"
+        }
+    ],
+    "leadership": [
+        {
+            "userId": "5978ae90ad3fed32a21c094e"
+        },
+        {
+            "userId": "5978ae90ad3fed32a21c094e"
+        }
+    ]
 }

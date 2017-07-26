@@ -36,7 +36,7 @@ export class PastPerformanceComponent implements OnInit {
   ) {
     this.currentPastPerformance.id = this.route.snapshot.params['id']
     //this.currentPastPerformance = this.pastPerformanceService.getPastPerformancebyID(this.currentPastPerformance.id)
-    this.pastPerformanceService.getPastPerformancebyID(this.currentPastPerformance.id).toPromise().then(res => this.currentPastPerformance = res[0])
+    this.pastPerformanceService.getPastPerformancebyID(this.currentPastPerformance.id).toPromise().then(res => this.currentPastPerformance = res)
 
   }
 
@@ -50,10 +50,6 @@ export class PastPerformanceComponent implements OnInit {
 
 
   ngOnInit() {
-  }
-
-  editPastPerformance() {
-    this.router.navigate(['past-performance-edit', this.currentPastPerformance['_id']]);
   }
 
 }
