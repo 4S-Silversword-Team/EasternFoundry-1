@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
 
-declare let $: any;
+declare var $: any;
 
 @Component({
   selector: 'app-profile-create',

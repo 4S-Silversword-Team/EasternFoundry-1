@@ -5,11 +5,11 @@ export class Product {
         {
             name: string,
             score: number
-        }        
+        }
     ]
     description: string
-    moreinfolink: string
-    viewdemolink: string
+    moreInfoLink: string
+    viewDemoLink: string
     customization: boolean
     training: boolean
     maintenance: boolean

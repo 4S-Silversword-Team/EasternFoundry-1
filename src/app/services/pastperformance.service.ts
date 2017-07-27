@@ -17,7 +17,7 @@ export class PastperformanceService {
   }
 
   // getPastPerformances(): Promise<PastPerformance[]> {
-  //   var response = this.authHttp.get(environment.apiRoot + "pastperformance/" )
+  //   var response = this.authHttp.get(environment.apiRoot + "pastPerformance/" )
   //     .map(response => <[PastPerformance]> response.json())
   //
   //   var pastPerformancePromise: Promise<[PastPerformance]> = response.toPromise();
@@ -25,7 +25,7 @@ export class PastperformanceService {
   // }
 
   getPastPerformancebyID(id: string): Observable<PastPerformance> {
-    var response =  this.authHttp.get(environment.apiRoot + "pastperformance/" + id)
+    var response =  this.authHttp.get(environment.apiRoot + "pastPerformance/" + id)
     .map(response => <PastPerformance> response.json())
     return response
   }
@@ -35,15 +35,16 @@ export class PastperformanceService {
     .map(response => <PastPerformance> response.json())
     return response;
   }
+
   // getPastPerformancebyID(id: string): PastPerformance {
   //   let temp: PastPerformance = new PastPerformance()
   //   temp.id = '1'
   //   temp.title = 'Energy app Development and Deployment'
   //   temp.client = 'Air Force'
   //   temp.topic = 'App Development'
-  //   temp.startdate = 'Jan, 2016'
-  //   temp.enddate = 'Dec, 2016'
-  //   temp.cleard = false
+  //   temp.startDate = 'Jan, 2016'
+  //   temp.endDate = 'Dec, 2016'
+  //   temp.cleared = false
   //   temp.location = 'Metro DC'
   //   temp.FTE = '8'
   //   temp.value = '$4M'
@@ -53,19 +54,19 @@ export class PastperformanceService {
   //   temp.employees = [
   //     {
   //       title: 'App developer1',
-  //       stillwith: true
+  //       stillWith: true
   //     },
   //     {
   //       title: 'App developer2',
-  //       stillwith: false
+  //       stillWith: false
   //     },
   //     {
   //       title: 'Web developer',
-  //       stillwith: true
+  //       stillWith: true
   //     },
   //     {
   //       title: 'Program Manager',
-  //       stillwith: true
+  //       stillWith: true
   //     }
   //   ]
   //   temp.synopsis = 'Synopsis lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog lorem the quick brown fox jumps over the lazy dog'

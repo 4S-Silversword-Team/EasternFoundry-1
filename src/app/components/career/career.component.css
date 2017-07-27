@@ -52,8 +52,13 @@ h1 {
 }
 
 .hidden {
-    display: none;
     transition: all .5s ease-in-out;
+    display: none;
+
+}
+
+.career-year:active ~ .hidden {
+  display: block !important;
 }
 
 .career-year {
