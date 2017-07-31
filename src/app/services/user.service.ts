@@ -95,15 +95,15 @@ export class UserService {
     ];
     temp.education = [
       {
-        school: '',
-        referenceLocation: {
-          countryCode: '',
-          countrySubDivisionCode: '',
-          cityName: ''
+        School: '',
+        ReferenceLocation: {
+          CountryCode: '',
+          CountrySubDivisionCode: '',
+          CityName: ''
         },
-        educationLevel: [
+        EducationLevel: [
           {
-            name: ''
+            Name: ''
           }
         ],
         AttendanceStatusCode: 'Prior',
@@ -111,24 +111,24 @@ export class UserService {
         EducationScore: ['4.0'],
         DegreeType: [
           {
-            name: ''
+            Name: ''
           }
         ],
-        degreeDate: '',
-        majorProgramName: [''],
-        minorProgramName: [''],
-        comment: ''
+        DegreeDate: '',
+        MajorProgramName: [''],
+        MinorProgramName: [''],
+        Comment: ''
       }
     ];
       temp.positionHistory = [
       {
         Year: 2016,
-        employer: '',
+        Employer: '',
         PositionTitle: '',
-        referenceLocation: {
-          countryCode: '',
-          countrySubDivisionCode: '',
-          cityName: ''
+        ReferenceLocation: {
+          CountryCode: '',
+          CountrySubDivisionCode: '',
+          CityName: ''
         },
         StartDate: '',
         EndDate: '',
@@ -183,13 +183,13 @@ export class UserService {
         LicenseName: ''
       }
     ];
-      temp.employmentReferences = [
+      temp.references = [
       {
-        refereeTypeCode: '',
-        formattedName: '',
-        positionTitle: '',
-        preferredPhone: '',
-        preferredEmail: ''
+        RefereeTypeCode: '',
+        FormattedName: '',
+        PositionTitle: '',
+        PreferredPhone: '',
+        PreferredEmail: ''
       }
     ];
       temp.lastUpdated = '';

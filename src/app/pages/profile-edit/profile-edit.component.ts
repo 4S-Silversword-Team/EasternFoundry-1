@@ -106,12 +106,12 @@ export class ProfileEditComponent implements OnInit {
     this.currentUser.positionHistory.push(
       {
         Year: this.currentYear(),
-        employer: '',
+        Employer: '',
         PositionTitle: '',
-        referenceLocation: {
-          countryCode: '',
-          countrySubDivisionCode: '',
-          cityName: ''
+        ReferenceLocation: {
+          CountryCode: '',
+          CountrySubDivisionCode: '',
+          CityName: ''
         },
         StartDate: '',
         EndDate: '',
@@ -159,15 +159,15 @@ export class ProfileEditComponent implements OnInit {
   addDegree() {
     this.currentUser.education.push(
       {
-        school: '',
-        referenceLocation: {
-          countryCode: '',
-          countrySubDivisionCode: '',
-          cityName: ''
+        School: '',
+        ReferenceLocation: {
+          CountryCode: '',
+          CountrySubDivisionCode: '',
+          CityName: ''
         },
-        educationLevel: [
+        EducationLevel: [
           {
-            name: ''
+            Name: ''
           }
         ],
         AttendanceStatusCode: '',
@@ -175,13 +175,13 @@ export class ProfileEditComponent implements OnInit {
         EducationScore: [''],
         DegreeType: [
           {
-            name: ''
+            Name: ''
           }
         ],
-        degreeDate: '',
-        majorProgramName: [''],
-        minorProgramName: [''],
-        comment: ''
+        DegreeDate: '',
+        MajorProgramName: [''],
+        MinorProgramName: [''],
+        Comment: ''
       }
     );
   }
@@ -264,7 +264,7 @@ export class ProfileEditComponent implements OnInit {
 
 
   currentYear() {
-    const year = new Date().getFullYear()
+    let year = new Date().getFullYear()
     return year;
   }
 

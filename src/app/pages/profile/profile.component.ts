@@ -39,17 +39,16 @@ export class ProfileComponent implements OnInit {
 
     this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
       this.currentUser = result;
-      console.log(this.currentUser)
       myCallback();
     });
 
-    const myCallback = () => {
+    var myCallback = () => {
       let index: number = 0
       this.availabilityData.values = []
       this.availabilityData.dates = []
       for (let job of this.currentUser.positionHistory) {
         for (let exp of job.agencyExperience) {
-          for (let data of exp.main.data) { //assigns variable to iterate over data but never uses it? -marc
+          for (let data of exp.main.data) {
             let color = index / exp.main.data.length * 155
             color = Math.floor(color)
             this.expColors[exp.main.title] = this.expColors[index++]

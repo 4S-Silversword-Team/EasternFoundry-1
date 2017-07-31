@@ -33,15 +33,15 @@ export class User {
   ]
   education: [
     {
-      school: string,
-      referenceLocation: {
-        countryCode: string,
-        countrySubDivisionCode: string,
-        cityName: string
+      School: string,
+      ReferenceLocation: {
+        CountryCode: string,
+        CountrySubDivisionCode: string,
+        CityName: string
       },
-      educationLevel: [
+      EducationLevel: [
         {
-          name: string
+          Name: string
         }
       ],
       AttendanceStatusCode: string,
@@ -49,24 +49,24 @@ export class User {
       EducationScore: [string],
       DegreeType: [
         {
-          name: string
+          Name: string
         }
-        ],
-      degreeDate: string,
-      majorProgramName: [string],
-      minorProgramName: [string],
-      comment: string
+      ],
+      DegreeDate: string,
+      MajorProgramName: [string],
+      MinorProgramName: [string],
+      Comment: string
     }
     ]
   positionHistory: [
     {
       Year: number,
-      employer: string,
+      Employer: string,
       PositionTitle: string,
-      referenceLocation: {
-        countryCode: string,
-        countrySubDivisionCode: string,
-        cityName: string,
+      ReferenceLocation: {
+        CountryCode: string,
+        CountrySubDivisionCode: string,
+        CityName: string,
       },
       StartDate: string,
       EndDate: string,
@@ -111,13 +111,13 @@ export class User {
         LicenseName: string
       }
     ]
-  employmentReferences: [
+  references: [
     {
-      refereeTypeCode: string,
-      formattedName: string,
-      positionTitle: string,
-      preferredPhone: string,
-      preferredEmail: string
+      RefereeTypeCode: string,
+      FormattedName: string,
+      PositionTitle: string,
+      PreferredPhone: string,
+      PreferredEmail: string
     }
     ]
 
