@@ -48,7 +48,7 @@ export class UserService {
 
 
   getBlankUser(): User {
-    let temp: User = new User();
+    const temp: User = new User();
     temp.firstName = '';
     temp.lastName = '';
     temp.cell = '';
@@ -60,14 +60,14 @@ export class UserService {
     temp.gender = '';
     temp.workEligibility = [
       {
-        CountryCode: '',
-        Permanent: true
+        countryCode: '',
+        permanent: true
       }
     ];
     temp.email = [
       {
-        Address: '',
-        Label: ''
+        address: '',
+        label: ''
       }
     ];
     temp.address = {
@@ -77,33 +77,33 @@ export class UserService {
     };
     temp.phone = [
       {
-        Number: '',
-        Label: 'cell'
+        number: '',
+        label: 'cell'
       },
       {
-        Number: '',
-        Label: 'mobile'
+        number: '',
+        label: 'mobile'
       },
       {
-        Number: '',
-        Label: 'work'
+        number: '',
+        label: 'work'
       },
       {
-        Number: '',
-        Label: 'other'
+        number: '',
+        label: 'other'
       }
     ];
     temp.education = [
       {
-        School: '',
-        ReferenceLocation: {
-          CountryCode: '',
-          CountrySubDivisionCode: '',
-          CityName: ''
+        school: '',
+        referenceLocation: {
+          countryCode: '',
+          countrySubDivisionCode: '',
+          cityName: ''
         },
-        EducationLevel: [
+        educationLevel: [
           {
-            Name: ''
+            name: ''
           }
         ],
         AttendanceStatusCode: 'Prior',
@@ -111,24 +111,24 @@ export class UserService {
         EducationScore: ['4.0'],
         DegreeType: [
           {
-            Name: ''
+            name: ''
           }
         ],
-        DegreeDate: '',
-        MajorProgramName: [''],
-        MinorProgramName: [''],
-        Comment: ''
+        degreeDate: '',
+        majorProgramName: [''],
+        minorProgramName: [''],
+        comment: ''
       }
     ];
       temp.positionHistory = [
       {
         Year: 2016,
-        Employer: '',
+        employer: '',
         PositionTitle: '',
-        ReferenceLocation: {
-          CountryCode: '',
-          CountrySubDivisionCode: '',
-          CityName: ''
+        referenceLocation: {
+          countryCode: '',
+          countrySubDivisionCode: '',
+          cityName: ''
         },
         StartDate: '',
         EndDate: '',
@@ -183,13 +183,13 @@ export class UserService {
         LicenseName: ''
       }
     ];
-      temp.EmploymentReferences = [
+      temp.employmentReferences = [
       {
-        RefereeTypeCode: '',
-        FormattedName: '',
-        PositionTitle: '',
-        PreferredPhone: '',
-        PreferredEmail: ''
+        refereeTypeCode: '',
+        formattedName: '',
+        positionTitle: '',
+        preferredPhone: '',
+        preferredEmail: ''
       }
     ];
       temp.lastUpdated = '';

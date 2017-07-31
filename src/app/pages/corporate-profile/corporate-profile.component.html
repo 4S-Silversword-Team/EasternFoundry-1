@@ -10,11 +10,12 @@
         <img id="company-photo" src='{{ this.currentAccount.avatar }}' class="left avatar">
         <div class="left">
             <div class="srow"><img src="../assets/img/glyphicon/email-1.png" class="left"><p class="left">{{ this.currentAccount.email }}</p></div>
-            <div class="srow"><img src="../assets/img/glyphicon/phone-2.png" class="left"><p class="left">{{ this.currentAccount.contactnumber }}</p></div>
+            <div class="srow"><img src="../assets/img/glyphicon/phone-2.png" class="left"><p class="left">{{
+              this.currentAccount.contactNumber }}</p></div>
             <div class="srow"><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">{{ this.currentAccount.address }} | {{ this.currentAccount.city }}, {{ this.currentAccount.state }}</p></div>
         </div>
         <div class="right">
-            <div class="srow"><p class="left two-p" [style.line-height]="'25px'">Information<br>updated</p><p class="right two-p" [style.text-align]="'right'">{{ this.currentAccount.lastupdated }}</p></div>
+            <div class="srow"><p class="left two-p" [style.line-height]="'25px'">Information<br>updated</p><p class="right two-p" [style.text-align]="'right'">{{ this.currentAccount.lastUpdated }}</p></div>
             <div class="srow"><p class="left two-p" [style.line-height]="'25px'">Information<br>accuracy</p><rating [(ngModel)]="this.currentAccount.informationAccuracy" [max]="5" class="right"></rating></div>
             <!--<div class="srow"><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">Service disable vetran owned</p></div>-->
         </div>
@@ -72,8 +73,8 @@
           </div>
       </div>
       <div class="row main" *ngIf='currentTab'>
-         <a href="{{index.moreinfolink}}"><button class="col-xs-12 col-sm-5">More Information</button></a>
-        <a href="{{index.viewdemolink}}"><button class="col-xs-12 col-sm-5 col-sm-offset-2">View Demo</button></a>
+         <a href="{{index.moreInfoLink}}"><button class="col-xs-12 col-sm-5">More Information</button></a>
+        <a href="{{index.viewDemoLink}}"><button class="col-xs-12 col-sm-5 col-sm-offset-2">View Demo</button></a>
       </div>
       <div class="ad-service div-title col-xs-12" *ngIf='currentTab'>
           <img src="./assets/img/service.png">
@@ -201,7 +202,7 @@
       <div class="row main">
           <div class="col-xs-12 text-container">
               <div class="col-xs-12" [style.overflow] = "'auto'" [style.max-height]="'250px'">
-                   <h5 *ngFor='let index of currentAccount.vehicles'>{{index.type + ': ' + index.quantity}}</h5>
+                   <h5 *ngFor='let index of currentAccount.vehicles'>{{index.vehicleType + ': ' + index.quantity}}</h5>
               </div>
           </div>
       </div>

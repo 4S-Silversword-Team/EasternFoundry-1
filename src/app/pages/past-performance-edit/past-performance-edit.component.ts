@@ -33,7 +33,7 @@ export class PastPerformanceEditComponent implements OnInit {
     public location: Location
   ) {
     if ( this.router.url !== 'past-performance-create' ) {
-      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => this.currentPastPerformance = res[0] );
+      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => this.currentPastPerformance = res );
       //this.pastPerformanceService.dumbMethod()
       //console.log(this.pastPerformanceService)
     }
@@ -57,6 +57,9 @@ export class PastPerformanceEditComponent implements OnInit {
   }
   deleteArrayIndex(modelArray: Array<Object>, i: number){
     modelArray.splice(i, 1);
+  }
+  back() {
+    this.location.back()
   }
 
 }

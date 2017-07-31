@@ -10,14 +10,14 @@ export class User {
   gender: string
   workEligibility: [
     {
-      CountryCode: string,
-      Permanent: boolean
+      countryCode: string,
+      permanent: boolean
     }
     ]
   email: [
     {
-      Address: string,
-      Label: string
+      address: string,
+      label: string
     }
   ]
   address: {
@@ -27,21 +27,21 @@ export class User {
   }
   phone: [
     {
-      Number: string,
-      Label: string
+      number: string,
+      label: string
     }
   ]
   education: [
     {
-      School: string,
-      ReferenceLocation: {
-        CountryCode: string,
-        CountrySubDivisionCode: string,
-        CityName: string
+      school: string,
+      referenceLocation: {
+        countryCode: string,
+        countrySubDivisionCode: string,
+        cityName: string
       },
-      EducationLevel: [
+      educationLevel: [
         {
-          Name: string
+          name: string
         }
       ],
       AttendanceStatusCode: string,
@@ -49,24 +49,24 @@ export class User {
       EducationScore: [string],
       DegreeType: [
         {
-          Name: string
+          name: string
         }
         ],
-      DegreeDate: string,
-      MajorProgramName: [string],
-      MinorProgramName: [string],
-      Comment: string
+      degreeDate: string,
+      majorProgramName: [string],
+      minorProgramName: [string],
+      comment: string
     }
     ]
   positionHistory: [
     {
       Year: number,
-      Employer: string,
+      employer: string,
       PositionTitle: string,
-      ReferenceLocation: {
-        CountryCode: string,
-        CountrySubDivisionCode: string,
-        CityName: string,
+      referenceLocation: {
+        countryCode: string,
+        countrySubDivisionCode: string,
+        cityName: string,
       },
       StartDate: string,
       EndDate: string,
@@ -111,13 +111,13 @@ export class User {
         LicenseName: string
       }
     ]
-  EmploymentReferences: [
+  employmentReferences: [
     {
-      RefereeTypeCode: string,
-      FormattedName: string,
-      PositionTitle: string,
-      PreferredPhone: string,
-      PreferredEmail: string
+      refereeTypeCode: string,
+      formattedName: string,
+      positionTitle: string,
+      preferredPhone: string,
+      preferredEmail: string
     }
     ]
 

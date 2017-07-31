@@ -45,8 +45,8 @@ export class ProductService {
       }
     ]
     temp.description = 'the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog  the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog'
-    temp.moreinfolink = ''
-    temp.viewdemolink = ''
+    temp.moreInfoLink = ''
+    temp.viewDemoLink = ''
     temp.customization = true
     temp.training = false
     temp.maintenance = true
