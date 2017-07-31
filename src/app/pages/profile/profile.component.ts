@@ -57,9 +57,9 @@ export class ProfileComponent implements OnInit {
       }
 
       let temp: number[] = []
-      for (let index of this.currentUser.strength) {
-        this.strengthChartLabels.push(index.skill)
-        temp.push(index.score)
+      for (let index of this.currentUser.abilities) {
+        this.strengthChartLabels.push(index[0])
+        temp.push(+index[1])
       }
       for (let index of this.currentUser.availability) {
         this.availabilityData.dates.push(index.date)
@@ -101,8 +101,8 @@ export class ProfileComponent implements OnInit {
 
   getCapaChartValues(tempUser: User): number[] {
     let temp: number[] = []
-    for (let index of tempUser.capability) {
-      temp.push(index.score)
+    for (let index of tempUser.skills) {
+      temp.push(+index[1])
     }
     return temp
   }

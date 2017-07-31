@@ -150,5 +150,57 @@ export class User {
       date: string
       available: boolean
     }
-  ];
+  ]
+  occupations: [
+    {
+      score: number
+      title: string
+      code: string
+      version: string
+    }
+  ]
+  general_work_activities: [
+    {
+      score: number
+      guid: string
+      code: string
+      version: string
+    }
+  ]
+  intermediate_work_activities: [
+    {
+      score: number
+      guid: string
+      code: string
+      version: string
+    }
+  ]
+  detailed_work_activities: [
+    {
+      score: number
+      guid: string
+      code: string
+      version: string
+    }
+  ]
+  workplace_essentials: [
+    [string]
+  ]
+  knowledges: [
+    [string]
+  ]
+  skills: [
+    [string]
+  ]
+  abilities: [
+    [string]
+  ]
+  tools: [
+    {
+      title: string
+      category: string
+      classification: string
+      score: number
+    }
+  ]
 }

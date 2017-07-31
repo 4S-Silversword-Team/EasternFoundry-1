@@ -63,12 +63,6 @@
     ],
     "capability": [
         {
-            "name": "",
-            "score": 50
-        }
-    ],
-    "capability": [
-        {
             "name": "web developer",
             "score": 30
         },
