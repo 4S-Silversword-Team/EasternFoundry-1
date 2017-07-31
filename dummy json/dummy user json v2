@@ -1,367 +1,188 @@
 {
-    "firstName": "Name",
-    "lastName": "McNamerson",
-    "cell": "555-678-9191",
-    "office": "555-456-1919",
-    "username": "email@email.zone",
+    "firstName": "Default",
+    "lastName": "Business Boy",
+    "cell": "1234567890",
+    "office": "1234567890",
+    "username": "email@email.com",
     "avatar": "../../assets/img/user-account1.png",
     "disabled": false,
-    "dateOfBirth": "1998-01-01",
+    "dateOfBirth": "01/01/0001",
     "gender": "Male",
-    "workEligibility": [
+    "lastUpdated": "Dec, 2016",
+    "informationAccuracy": 5,
+    "interest": "Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog",
+    "availability": [
         {
-            "CountryCode": "US",
-            "Permanent": "true"
+            "date": "Feb, 17",
+            "available": true
+        },
+        {
+            "date": "Mar, 17",
+            "available": true
+        },
+        {
+            "date": "Apr, 17",
+            "available": true
+        },
+        {
+            "date": "May, 17",
+            "available": true
+        },
+        {
+            "date": "Jun, 17",
+            "available": false
+        },
+        {
+            "date": "Jul, 17",
+            "available": true
+        },
+        {
+            "date": "Aug, 17",
+            "available": true
         }
     ],
-    "email": [
+    "strength": [
         {
-            "Address": "me@yyy.com",
-            "Label": "personal"
+            "skill": "human resource management",
+            "score": 90
         },
         {
-            "Address": "me@yyy.com",
-            "Label": "work"
+            "skill": "web developer",
+            "score": 30
+        },
+        {
+            "skill": "CEO",
+            "score": 95
         }
     ],
-    "address": {
-        "city": "Washington",
-        "state": "DC",
-        "zip": "20001"
-    },
-    "phone": [
+    "skill": [
+        "Javascript",
+        "HTML",
+        "ES6",
+        "Human Resource Management"
+    ],
+    "capability": [
         {
-            "Number": "1234567890",
-            "Label": "personal"
+            "name": "web developer",
+            "score": 30
         },
         {
-            "Number": "",
-            "Label": "mobile"
+            "name": "human resource manager",
+            "score": 90
         },
         {
-            "Number": "",
-            "Label": "work"
-        },
-        {
-            "Number": "",
-            "Label": "other"
+            "name": "CEO",
+            "score": 95
         }
     ],
-    "education": [
+    "award": [
+        "award 21",
+        "award 2"
+    ],
+    "clearance": [
         {
-            "School": "My University",
-            "ReferenceLocation": {
-                "CountryCode": "US",
-                "CountrySubDivisionCode": "MyState",
-                "CityName": "MyTown"
-            },
-            "EducationLevel": [
-                {
-                    "Name": "bachelors"
-                }
-            ],
-            "AttendanceStatusCode": "Prior",
-            "AttendanceEndDate": "2002-05-01",
-            "EducationScore": [
-                "4.0"
-            ],
-            "DegreeType": [
-                {
-                    "Name": "Bachelor"
-                }
-            ],
-            "DegreeDate": "2002-05-01",
-            "MajorProgramName": [
-                "Computer Science"
-            ],
-            "MinorProgramName": [
-                "Business"
-            ],
-            "Comment": "It Was A Degree."
+            "clearanceType": "clearance type 1",
+            "awarded": "Dec, 2013",
+            "expiration": "Dec, 2016"
+        }
+    ],
+    "references": [
+        {
+            "RefereeTypeCode": "Professional",
+            "FormattedName": "",
+            "PositionTitle": "",
+            "PreferredPhone": "",
+            "PreferredEmail": ""
+        }
+    ],
+    "license": [
+        {
+            "LicenseName": "Coding License"
+        }
+    ],
+    "certification": [
+        {
+            "CertificationName": "C++ Certification",
+            "DateEarned": "Jan 2013"
+        }
+    ],
+    "personCompetency": [
+        {
+            "CompetencyName": "Active Server Pages",
+            "CompetencyLevel": "good"
+        },
+        {
+            "CompetencyName": "Desktop Computer",
+            "CompetencyLevel": "good"
+        },
+        {
+            "CompetencyName": "e-Commerce",
+            "CompetencyLevel": "good"
+        },
+        {
+            "CompetencyName": "HyperText Markup Language",
+            "CompetencyLevel": "good"
+        },
+        {
+            "CompetencyName": "JIRA",
+            "CompetencyLevel": "good"
+        },
+        {
+            "CompetencyName": "Magento",
+            "CompetencyLevel": "good"
+        },
+        {
+            "CompetencyName": "Microsoft ASP.Net",
+            "CompetencyLevel": "good"
+        },
+        {
+            "CompetencyName": "Microsoft SQL Server",
+            "CompetencyLevel": "good"
+        },
+        {
+            "CompetencyName": "MongoDB",
+            "CompetencyLevel": "good"
+        },
+        {
+            "CompetencyName": "PostgreSQL",
+            "CompetencyLevel": "good"
+        },
+        {
+            "CompetencyName": "Pricing",
+            "CompetencyLevel": "good"
+        },
+        {
+            "CompetencyName": "Query",
+            "CompetencyLevel": "good"
+        },
+        {
+            "CompetencyName": "Sales",
+            "CompetencyLevel": "good"
+        },
+        {
+            "CompetencyName": "Security",
+            "CompetencyLevel": "good"
+        },
+        {
+            "CompetencyName": "Software",
+            "CompetencyLevel": "good"
+        },
+        {
+            "CompetencyName": "Structured Query Language",
+            "CompetencyLevel": "good"
         }
     ],
     "positionHistory": [
         {
-            "Year": 2016,
-            "Employer": "4S - Silversword Software Services LLC",
+            "Employer": "Dept. Of Agriculture",
             "PositionTitle": "Software Developer",
-            "ReferenceLocation": {
-                "CountryCode": "US",
-                "CountrySubDivisionCode": "VA",
-                "CityName": "Arlington"
-            },
             "StartDate": "2016-09-01",
-            "EndDate": "Current",
-            "CurrentIndicator": "true",
-            "Industry": {
-                "Name": "information technology"
-            },
-            "isGovernment": false,
-            "agencyExperience": [
-                {
-                  "main": {
-                      "title": "Air Force",
-                      "data": [
-                          {
-                              "title": "Years Agency experience",
-                              "score": 90
-                          },
-                          {
-                              "title": "$ (M) of agency revenue",
-                              "score": 48
-                          },
-                          {
-                              "title": "Proposals written",
-                              "score": 100
-                          },
-                          {
-                              "title": "Relationships",
-                              "score": 30
-                          }
-                      ]
-                  },
-                  "offices": [
-                      {
-                          "title": "office1",
-                          "data": [
-                              {
-                                  "title": "Years Agency experience",
-                                  "score": 90
-                              },
-                              {
-                                  "title": "$ (M) of agency revenue",
-                                  "score": 48
-                              },
-                              {
-                                  "title": "Proposals written",
-                                  "score": 100
-                              },
-                              {
-                                  "title": "Relationships",
-                                  "score": 30
-                              }
-                          ]
-                      },
-                      {
-                          "title": "office2",
-                          "data": [
-                              {
-                                  "title": "Years Agency experience",
-                                  "score": 90
-                              },
-                              {
-                                  "title": "$ (M) of agency revenue",
-                                  "score": 48
-                              },
-                              {
-                                  "title": "Proposals written",
-                                  "score": 100
-                              },
-                              {
-                                  "title": "Relationships",
-                                  "score": 30
-                              }
-                          ]
-                      }
-                  ]
-                }
-            ],
+            "CurrentIndicator": true,
+            "Description": "in federal healthcare application- ASP.NET, Python * Wrote RESTful API services with ASP.NET, SQL Server, and MarkLogic * Wrote tools to schedule and track AWS resources using Python 3, Flask, and the AWS Boto 3 API * Configured Amazon Web Services instances, subnets, security groups, and VPCs * Helped plan sprints and create tickets in Jira",
+            "isGovernment": true,
+            "Year": 2016,
             "isPM": false,
             "isKO": false,
-            "Description": "in federal healthcare application- ASP.NET, Python * Wrote RESTful API services with ASP.NET, SQL Server, and MarkLogic * Wrote tools to schedule and track AWS resources using Python 3, Flask, and the AWS Boto 3 API * Configured Amazon Web Services instances, subnets, security groups, and VPCs * Helped plan sprints and create tickets in Jira"
-        },
-        {
-            "Year": 2015,
-            "Employer": "PNC Bank",
-            "PositionTitle": "Branch Sales and Service Associate",
-            "ReferenceLocation": {
-                "CountryCode": "US",
-                "CountrySubDivisionCode": "MD",
-                "CityName": "Elkridge"
-            },
-            "StartDate": "2015-06-01",
-            "EndDate": "2016-06-01",
-            "Industry": {
-                "Name": "sales"
-            },
-            "isGovernment": false,
-            "agencyExperience": [
-            	{
-                "main": {
-                    "title": "Air Force",
-                    "data": [
-                        {
-                            "title": "Years Agency experience",
-                            "score": 90
-                        },
-                        {
-                            "title": "$ (M) of agency revenue",
-                            "score": 48
-                        },
-                        {
-                            "title": "Proposals written",
-                            "score": 100
-                        },
-                        {
-                            "title": "Relationships",
-                            "score": 30
-                        }
-                    ]
-                },
-                "offices": [
-                    {
-                        "title": "office1",
-                        "data": [
-                            {
-                                "title": "Years Agency experience",
-                                "score": 90
-                            },
-                            {
-                                "title": "$ (M) of agency revenue",
-                                "score": 48
-                            },
-                            {
-                                "title": "Proposals written",
-                                "score": 100
-                            },
-                            {
-                                "title": "Relationships",
-                                "score": 30
-                            }
-                        ]
-                    },
-                    {
-                        "title": "office2",
-                        "data": [
-                            {
-                                "title": "Years Agency experience",
-                                "score": 90
-                            },
-                            {
-                                "title": "$ (M) of agency revenue",
-                                "score": 48
-                            },
-                            {
-                                "title": "Proposals written",
-                                "score": 100
-                            },
-                            {
-                                "title": "Relationships",
-                                "score": 30
-                            }
-                        ]
-                    }
-        		]
-        	}
-            ],
-            "isPM": false,
-            "isKO": false,
-            "Description": "* Documented customer sales interactions and account issues * Sold over $1.8M of deposit accounts, secured and unsecured loans * Managed up to $40,000 of currency daily * Conducted monthly audits of fellow branch staff"
-        },
-        {
-            "Year": 2011,
-            "Employer": "Race Pace Bicycles",
-            "PositionTitle": "Sales Associate, Shop Mechanic",
-            "ReferenceLocation": {
-                "CountryCode": "US",
-                "CountrySubDivisionCode": "MD",
-                "CityName": "Baltimore"
-            },
-            "StartDate": "2011-03-01",
-            "EndDate": "2015-01-01",
-            "Industry": {
-                "Name": "services"
-            },
-            "isGovernment": false,
-            "agencyExperience": [
-            	{
-                "main": {
-                    "title": "Air Force",
-                    "data": [
-                        {
-                            "title": "Years Agency experience",
-                            "score": 90
-                        },
-                        {
-                            "title": "$ (M) of agency revenue",
-                            "score": 48
-                        },
-                        {
-                            "title": "Proposals written",
-                            "score": 100
-                        },
-                        {
-                            "title": "Relationships",
-                            "score": 30
-                        }
-                    ]
-                },
-                "offices": [
-                    {
-                        "title": "office1",
-                        "data": [
-                            {
-                                "title": "Years Agency experience",
-                                "score": 90
-                            },
-                            {
-                                "title": "$ (M) of agency revenue",
-                                "score": 48
-                            },
-                            {
-                                "title": "Proposals written",
-                                "score": 100
-                            },
-                            {
-                                "title": "Relationships",
-                                "score": 30
-                            }
-                        ]
-                    },
-                    {
-                        "title": "office2",
-                        "data": [
-                            {
-                                "title": "Years Agency experience",
-                                "score": 90
-                            },
-                            {
-                                "title": "$ (M) of agency revenue",
-                                "score": 48
-                            },
-                            {
-                                "title": "Proposals written",
-                                "score": 100
-                            },
-                            {
-                                "title": "Relationships",
-                                "score": 30
-                            }
-                        ]
-                    }
-        		]
-        	}
-            ],
-            "isPM": false,
-            "isKO": false,
-            "Description": "* Used Python to programmatically query the Amazon Products API, compiling data to show competitiveness of shop pricing * Mechanical and sales work"
-        },
-        {
-            "Year": 2017,
-            "Employer": "Job Inc.",
-            "PositionTitle": "Work Expert At Working",
-            "ReferenceLocation": {
-                "CountryCode": "",
-                "CountrySubDivisionCode": "",
-                "CityName": ""
-            },
-            "StartDate": "2008-01-03",
-            "EndDate": "2011-02-02",
-            "CurrentIndicator": false,
-            "Industry": {
-                "Name": ""
-            },
-            "isGovernment": false,
             "agencyExperience": [
             	{
                 "main": {
@@ -431,117 +252,160 @@
                 ]
             }
             ],
+            "Industry": {
+                "Name": "information technology"
+            },
+            "ReferenceLocation": {
+                "CountryCode": "US",
+                "CountrySubDivisionCode": "VA",
+                "CityName": "Arlington"
+            }
+        },
+        {
+            "Employer": "PNC Bank",
+            "PositionTitle": "Branch Sales and Service Associate",
+            "StartDate": "2015-06-01",
+            "EndDate": "2016-06-01",
+            "Description": "* Documented customer sales interactions and account issues * Sold over $1.8M of deposit accounts, secured and unsecured loans * Managed up to $40,000 of currency daily * Conducted monthly audits of fellow branch staff",
+            "isGovernment": false,
+            "Year": 2015,
             "isPM": false,
             "isKO": false,
-            "Description": "testing if this will populate into the careers thing properly"
+            "agencyExperience": [
+                {
+                    "offices": [
+                        {
+                            "title": "",
+                            "data": [
+                                {
+                                    "title": "",
+                                    "score": 50
+                                }
+                            ]
+                        }
+                    ],
+                    "main": {
+                        "title": "",
+                        "data": [
+                            {
+                                "title": "",
+                                "score": 50
+                            }
+                        ]
+                    }
+                }
+            ],
+            "Industry": {
+                "Name": "sales"
+            },
+            "ReferenceLocation": {
+                "CountryCode": "US",
+                "CountrySubDivisionCode": "MD",
+                "CityName": "Elkridge"
+            }
+        },
+        {
+            "Employer": "Dept. Of The Interior",
+            "PositionTitle": "Sales Associate, Shop Mechanic",
+            "StartDate": "2011-03-01",
+            "EndDate": "2015-01-01",
+            "Description": "* Used Python to programmatically query the Amazon Products API, compiling data to show competitiveness of shop pricing * Mechanical and sales work",
+            "isGovernment": true,
+            "Year": 2011,
+            "isPM": false,
+            "isKO": false,
+            "agencyExperience": [
+                {
+                    "offices": [
+                        {
+                            "title": "",
+                            "data": [
+                                {
+                                    "title": "",
+                                    "score": 50
+                                }
+                            ]
+                        }
+                    ],
+                    "main": {
+                        "title": "",
+                        "data": [
+                            {
+                                "title": "",
+                                "score": 50
+                            }
+                        ]
+                    }
+                }
+            ],
+            "Industry": {
+                "Name": "services"
+            },
+            "ReferenceLocation": {
+                "CountryCode": "US",
+                "CountrySubDivisionCode": "MD",
+                "CityName": "Baltimore"
+            }
         }
     ],
-    "personCompetency": [
+    "education": [
         {
-            "CompetencyName": "C++",
-            "CompetencyLevel": "expert"
-        },
-        {
-            "CompetencyName": "Java",
-            "CompetencyLevel": "good"
+            "School": "",
+            "AttendanceStatusCode": "",
+            "AttendanceEndDate": "",
+            "DegreeDate": "",
+            "Comment": "",
+            "MinorProgramName": [
+                ""
+            ],
+            "MajorProgramName": [
+                ""
+            ],
+            "DegreeType": [
+                {
+                    "Name": ""
+                }
+            ],
+            "EducationScore": [
+                ""
+            ],
+            "EducationLevel": [
+                {
+                    "Name": ""
+                }
+            ],
+            "ReferenceLocation": {
+                "CountryCode": "",
+                "CountrySubDivisionCode": "",
+                "CityName": ""
+            }
         }
     ],
-    "certification": [
+    "phone": [
         {
-            "CertificationName": "C++ Certification",
-            "DateEarned": "Jan 2013"
+            "Number": "443 616-7004",
+            "Label": "personal"
         }
     ],
-    "License": [
+    "address": {
+        "city": "",
+        "state": "",
+        "zip": ""
+    },
+    "email": [
         {
-            "LicenseName": "Coding License"
+            "Address": "",
+            "Label": "personal"
+        },
+        {
+            "Address": "",
+            "Label": "work"
         }
     ],
-    "EmploymentReferences": [
+    "workEligibility": [
         {
-            "RefereeTypeCode": "Professional",
-            "FormattedName": "",
-            "PositionTitle": "",
-            "PreferredPhone": "",
-            "PreferredEmail": ""
-        }
-    ],
-    "lastUpdated": "Dec, 2016",
-    "informationAccuracy": 4.5,
-    "clearance": [
-        {
-            "clearanceType": "clearance type 1",
-            "awarded": "Dec, 2013",
-            "expiration": "Dec, 2016"
-        }
-    ],
-    "award": [
-        "award 21",
-        "award 2"
-    ],
-    "capability": [
-        {
-            "name": "web developer",
-            "score": 30
-        },
-        {
-            "name": "human resource manager",
-            "score": 90
-        },
-        {
-            "name": "CEO",
-            "score": 95
-        }
-    ],
-    "skill": [
-        "Javascript",
-        "HTML",
-        "ES6",
-        "Human Resource Management"
-    ],
-    "interest": "Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog Lorem the quick brown fox jumps over lazy dog",
-    "strength": [
-        {
-            "skill": "human resource management",
-            "score": 90
-        },
-        {
-            "skill": "web developer",
-            "score": 30
-        },
-        {
-            "skill": "CEO",
-            "score": 95
-        }
-    ],
-    "availability": [
-        {
-            "date": "Feb, 17",
-            "available": true
-        },
-        {
-            "date": "Mar, 17",
-            "available": true
-        },
-        {
-            "date": "Apr, 17",
-            "available": true
-        },
-        {
-            "date": "May, 17",
-            "available": true
-        },
-        {
-            "date": "Jun, 17",
-            "available": false
-        },
-        {
-            "date": "Jul, 17",
-            "available": true
-        },
-        {
-            "date": "Aug, 17",
-            "available": true
+            "CountryCode": "US",
+            "Permanent": true
         }
     ]
 }

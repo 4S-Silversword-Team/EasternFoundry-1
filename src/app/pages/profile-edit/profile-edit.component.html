@@ -53,16 +53,16 @@
         <div class="text-left text-container" [style.height] = "'260px'" *ngFor="let degree of this.currentUser.education; let i = index">
           <div class="col-xs-6 col-md-5">
             <p class="col-xs-6 col-md-5 vertically-centered">Type: </p>
-            <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.degreeType[0].name'>
+            <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.DegreeType[0].Name'>
             <p class="col-xs-6 col-md-5 vertically-centered">Concentration: </p>
-            <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.majorProgramName'>
+            <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.MajorProgramName'>
             <p class="col-xs-6 col-md-5 vertically-centered">School: </p>
-            <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.school'>
+            <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.School'>
             <p class="col-xs-6 col-md-5 vertically-centered">Graduation Date: </p>
-            <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.attendanceEndDate'>
+            <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.AttendanceEndDate'>
           </div>
           <div class="col-xs-3 col-md-5">
-            <textarea name="" id="" rows="8" placeholder="Description:" [(ngModel)] = 'degree.comment'></textarea>
+            <textarea name="" id="" rows="8" placeholder="Description:" [(ngModel)] = 'degree.Comment'></textarea>
           </div>
           <div class="col-xs-3 col-md-2" style="padding-top: 7px; height: 100%">
             <button class="col-xs-12 side-button" (click)="addDegree()">ADD</button>
@@ -85,10 +85,10 @@
 
     <div class="col-xs-11 col-xs-offset-1" type="text" *ngFor="let certificate of this.currentUser.certification; let i = index">
       <div class="col-xs-4">
-        <input class="col-xs-11" type="text" [(ngModel)] = 'certificate.certificationName'>
+        <input class="col-xs-11" type="text" [(ngModel)] = 'certificate.CertificationName'>
       </div>
       <div class="col-xs-4">
-        <input class="col-xs-11" type="text" [(ngModel)] = 'certificate.dateEarned'>
+        <input class="col-xs-11" type="text" [(ngModel)] = 'certificate.DateEarned'>
       </div>
         <div class="col-xs-3 col-xs-offset-1" style="padding-top: 1%; height: 100%; margin-top: 20px">
           <button class="col-xs-12 side-button" style="height: 12%; margin-top: -24px" (click)="deleteCertificate(i)">DELETE</button>
@@ -107,7 +107,7 @@
       <div class="col-xs-10" style="padding-top: 2%">
         <div class="col-xs-4">
           <p class="col-xs-12 text-left">Type: </p>
-          <input class="col-xs-12" [(ngModel)] = 'index.clearanceType'>
+          <input class="col-xs-12" [(ngModel)] = 'index.type'>
         </div>
         <div class="col-xs-4 text-left">
           <p class="col-xs-12">Awarded: </p>
@@ -153,14 +153,14 @@
       <p class="col-xs-12 left">Job {{i+1}}</p>
       <div class="col-xs-5">
         <p class="col-xs-5 col-md-4 vertically-centered">Title</p>
-        <input class="col-xs-7 col-md-8 left" placeholder="The title you held" [(ngModel)] = 'job.positionTitle'>
+        <input class="col-xs-7 col-md-8 left" placeholder="The title you held" [(ngModel)] = 'job.PositionTitle'>
         <p class="col-xs-5 col-md-4 vertically-centered">End Date</p>
-        <input class="col-xs-7 col-md-8 left" placeholder="" [(ngModel)] = 'job.endDate'>
+        <input class="col-xs-7 col-md-8 left" placeholder="" [(ngModel)] = 'job.EndDate'>
         <p class="col-xs-5 col-md-4 vertically-centered">Start Date</p>
-        <input class="col-xs-7 col-md-8 left" placeholder="" [(ngModel)] = 'job.startDate'>
+        <input class="col-xs-7 col-md-8 left" placeholder="" [(ngModel)] = 'job.StartDate'>
       </div>
       <div class="col-xs-7">
-        <textarea class="col-xs-12 left" rows="9" placeholder="Description:" [(ngModel)] = 'job.description'></textarea>
+        <textarea class="col-xs-12 left" rows="9" placeholder="Description:" [(ngModel)] = 'job.Description'></textarea>
       </div>
       <div class="col-xs-10 col-xs-offset-2">
         <p class="col-xs-2 vertically-centered">Employer</p>
