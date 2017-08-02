@@ -37,4 +37,7 @@ export class Company {
             content: string
         }
     ]
+    userProfileProxies : [
+      any
+    ]
 }

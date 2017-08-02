@@ -25,6 +25,7 @@ export class CorporateProfileEditComponent implements OnInit {
   currentAccount: Company = new Company();
   products: Product[] = [];
   services: Service[] = [];
+  userProfiles: any[] = [];
   pastperformances: PastPerformance[] = [];
   infoInputWidth: number = 350;
 
@@ -61,6 +62,13 @@ export class CorporateProfileEditComponent implements OnInit {
       for (const i of this.currentAccount.pastPerformance) {
         // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
         ppService.getPastPerformancebyID(i.pastPerformanceId).toPromise().then(res => this.pastperformances.push(res)); // Might try to continue the for loop before the promise resolves.
+      }
+      for (const i of this.currentAccount.userProfileProxies) {
+        this.userProfiles.push({
+          "name": i.userProfile.firstName + " " + i.userProfile.lastName,
+          "userId": i.userProfile._id,
+          "proxyId": i._id
+        })
       }
     };
     }
