@@ -73,7 +73,11 @@ export class CorporateProfileEditComponent implements OnInit {
         this.userProfiles.push({
           "name": i.userProfile.firstName + " " + i.userProfile.lastName,
           "userId": i.userProfile._id,
-          "proxyId": i._id
+          "proxyId": i._id,
+          "username": i.userProfile.username,
+          "startDate": new Date(i.startDate).toDateString(),
+          "endDate": new Date(i.endDate).toDateString(),
+          "stillAffiliated": i.stillAffiliated
         })
       }
       this.userService.getUsers().then(res => {
@@ -101,6 +105,11 @@ export class CorporateProfileEditComponent implements OnInit {
     }
     console.log(request);
     this.companyUserProxyService.addCompanyUserProxy(request);
+  }
+
+  deleteEmployee(proxyId){
+    console.log(proxyId)
+    this.companyUserProxyService.deleteCompanyUserProxy(proxyId)
   }
 
   updateCompany(model) {
