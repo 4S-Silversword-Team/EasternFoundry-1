@@ -28,6 +28,13 @@ export class ServiceService {
     return response;
   }
 
+  createService(request: any): Observable<Service> {
+    var response = this.authHttp.post(environment.apiRoot + "services/add", request)
+      .map(response => <Service> response.json());
+    return response;
+  }
+
+
   getServicebyID(id: string): Observable<Service> {
     var response = this.authHttp.get(environment.apiRoot + "services/" + id)
       .map(response => <Service> response.json())

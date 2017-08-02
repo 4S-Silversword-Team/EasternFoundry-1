@@ -34,6 +34,13 @@ export class CompanyService {
     return response;
   }
 
+  createCompany(request: any): Observable<Company> {
+    var response = this.authHttp.post(environment.apiRoot + "company/add", request)
+      .map(response => <Company> response.json());
+    return response;
+  }
+
+
   getEmptyCompany(): Company {
     let temp: Company = new Company()
     temp.id = '1'
@@ -41,6 +48,9 @@ export class CompanyService {
     temp.email = ''
     temp.avatar = '../../assets/img/company-account.png'
     temp.contactNumber = ''
+    temp.city = ''
+    temp.state = ''
+    temp.zip = ''
     temp.address = 'Washington, DC'
     temp.informationAccuracy = 5
     temp.lastUpdated = 'Dec, 2016'
