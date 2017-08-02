@@ -12,6 +12,7 @@ import { ProductService } from '../../services/product.service';
 import { ServiceService } from '../../services/service.service';
 import { PastperformanceService } from '../../services/pastperformance.service';
 import { UserService } from '../../services/user.service'
+import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
 
 declare var $: any;
 
@@ -19,7 +20,7 @@ declare var $: any;
   selector: 'app-corporate-profile-edit',
   templateUrl: './corporate-profile-edit.component.html',
   styleUrls: ['./corporate-profile-edit.component.css'],
-  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService]
+  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, CompanyUserProxyService]
 })
 export class CorporateProfileEditComponent implements OnInit {
 
@@ -28,6 +29,7 @@ export class CorporateProfileEditComponent implements OnInit {
   services: Service[] = [];
   userProfiles: any[] = [];
   userProfilesAll: any[] = [];
+  newUserSelected: string;
   pastperformances: PastPerformance[] = [];
   infoInputWidth: number = 350;
 
@@ -48,6 +50,7 @@ export class CorporateProfileEditComponent implements OnInit {
     private serviceService: ServiceService,
     private ppService: PastperformanceService,
     private userService: UserService,
+    private companyUserProxyService: CompanyUserProxyService
   ) {
     if ( this.router.url !== 'corporate-profile-create' ) {
       this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result; myCallback(); });
@@ -81,15 +84,23 @@ export class CorporateProfileEditComponent implements OnInit {
         })
       })
     };
-
     }
   }
 
   ngOnInit() {
   }
 
-  addEmployee() {
+  addEmployee(employeeId) {
 
+    let request = {
+      "userProfile": employeeId,
+      "company": this.route.snapshot.params['id'],
+      "startDate": "01/01/2001",
+      "endDate": "01/02/2001",
+      "stillAffiliated": false
+    }
+    console.log(request);
+    this.companyUserProxyService.addCompanyUserProxy(request);
   }
 
   updateCompany(model) {
