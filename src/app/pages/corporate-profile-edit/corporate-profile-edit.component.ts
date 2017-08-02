@@ -69,24 +69,7 @@ export class CorporateProfileEditComponent implements OnInit {
         // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
         ppService.getPastPerformancebyID(i.pastPerformanceId).toPromise().then(res => this.pastperformances.push(res)); // Might try to continue the for loop before the promise resolves.
       }
-      for (const i of this.currentAccount.userProfileProxies) {
-        this.userProfiles.push({
-          "name": i.userProfile.firstName + " " + i.userProfile.lastName,
-          "userId": i.userProfile._id,
-          "proxyId": i._id,
-          "username": i.userProfile.username,
-          "startDate": new Date(i.startDate).toDateString(),
-          "endDate": new Date(i.endDate).toDateString(),
-          "stillAffiliated": i.stillAffiliated
-        })
-      }
-      this.userService.getUsers().then(res => {
-        this.userProfilesAll = res.filter((user) => {
-          return !this.userProfiles.map(function(employee) {
-            return employee.userId;
-          }).includes(user._id)
-        })
-      })
+      this.refreshEmployees();
     };
     }
   }
@@ -104,12 +87,36 @@ export class CorporateProfileEditComponent implements OnInit {
       "stillAffiliated": false
     }
     console.log(request);
-    this.companyUserProxyService.addCompanyUserProxy(request);
+    this.companyUserProxyService.addCompanyUserProxy(request).then(() =>
+    this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result; this.refreshEmployees(); }));
   }
 
   deleteEmployee(proxyId){
     console.log(proxyId)
-    this.companyUserProxyService.deleteCompanyUserProxy(proxyId)
+    this.companyUserProxyService.deleteCompanyUserProxy(proxyId).then(() =>
+    this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result; this.refreshEmployees(); }));
+  }
+
+  refreshEmployees() {
+    this.userProfiles = []
+    for (const i of this.currentAccount.userProfileProxies) {
+      this.userProfiles.push({
+        "name": i.userProfile.firstName + " " + i.userProfile.lastName,
+        "userId": i.userProfile._id,
+        "proxyId": i._id,
+        "username": i.userProfile.username,
+        "startDate": new Date(i.startDate).toDateString(),
+        "endDate": new Date(i.endDate).toDateString(),
+        "stillAffiliated": i.stillAffiliated
+      })
+    }
+    this.userService.getUsers().then(res => {
+      this.userProfilesAll = res.filter((user) => {
+        return !this.userProfiles.map(function(employee) {
+          return employee.userId;
+        }).includes(user._id)
+      })
+    })
   }
 
   updateCompany(model) {

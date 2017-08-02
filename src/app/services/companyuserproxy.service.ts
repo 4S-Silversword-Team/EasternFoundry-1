@@ -33,12 +33,10 @@ export class CompanyUserProxyService {
     .map(response => <CompanyUserProxy> response.json())
     return response;
   }
-  addCompanyUserProxy(request: any): void {
-    this.authHttp.post(environment.apiRoot + "companyuserproxy/add", request).toPromise().then(res => console.log(res));
-    return null;
+  addCompanyUserProxy(request: any): Promise<Response> {
+    return this.authHttp.post(environment.apiRoot + "companyuserproxy/add", request).toPromise();
   }
-  deleteCompanyUserProxy(id: string): void {
-    this.authHttp.delete(environment.apiRoot + "companyuserproxy/" + id).toPromise().then(res => console.log(res))
-    return null;
+  deleteCompanyUserProxy(id: string): Promise<Response> {
+    return this.authHttp.delete(environment.apiRoot + "companyuserproxy/" + id).toPromise();
   }
 }
