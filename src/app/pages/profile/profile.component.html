@@ -65,8 +65,8 @@
         </div>
         <div class="col-xs-12 col-sm-6 text-container">
             <div class="row">
-                <div class="col-xs-12 col-md-6">
-                    <app-color-comment-box *ngFor='let feature of this.currentUser.skills' color='{{getCapaChartColor(+feature[1])}}' text='{{feature[0]}}' class="col-xs-12"></app-color-comment-box>
+                <div class="col-xs-12 col-md-8">
+                    <app-color-comment-box *ngFor='let feature of this.currentUser.occupations' color='{{getCapaChartColor(feature.score)}}' text='{{feature.title}}' class="col-xs-12"></app-color-comment-box>
                 </div>
                 <div class="col-xs-12 col-md-6">
                     <p *ngFor='let skill of this.currentUser.skill'>{{ skill }} </p>
@@ -86,7 +86,7 @@
       <div class="" *ngFor='let job of this.currentUser.positionHistory'>
         <div class="" *ngFor='let agency of job.agencyExperience; let i = index'>
           <p>{{agency.main.title}}</p>
-          <app-color-comment-box *ngFor="let index of agency.main.data" color='{{ expColors[i] }}' text='{{index.score}}' class="col-xs-12 col-sm-6 col-md-12"></app-color-comment-box>
+          <app-color-comment-box *ngFor="let index of agency.main.data" color='{{ expColors[i] }}' text='{{index.title}}' class="col-xs-12 col-sm-6 col-md-12"></app-color-comment-box>
         </div>
       </div>
     </div>

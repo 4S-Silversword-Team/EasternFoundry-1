@@ -90,7 +90,9 @@ export class ProfileComponent implements OnInit {
           this.currentUser.positionHistory[i].isKO = stringToBool(this.currentUser.positionHistory[i].isKO)
         }
       }
-
+      if (this.currentUser.education[0].DegreeType[0] == null) {
+        this.currentUser.education[0].DegreeType.push({Name: ''})
+      }
       this.promiseFinished = true;
     }
 
@@ -99,10 +101,18 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
   }
 
+  // getCapaChartValues(tempUser: User): number[] {
+  //   let temp: number[] = []
+  //   for (let index of tempUser.skills) {
+  //     temp.push(+index[1])
+  //   }
+  //   return temp
+  // }
+
   getCapaChartValues(tempUser: User): number[] {
     let temp: number[] = []
-    for (let index of tempUser.skills) {
-      temp.push(+index[1])
+    for (let index of tempUser.occupations) {
+      temp.push(index.score)
     }
     return temp
   }

@@ -64,6 +64,9 @@ export class CorporateProfileEditComponent implements OnInit {
       }
     };
     }
+    else {
+      this.currentAccount = companyService.getEmptyCompany();
+    }
   }
 
   ngOnInit() {
@@ -71,6 +74,66 @@ export class CorporateProfileEditComponent implements OnInit {
 
   addEmployee() {
 
+  }
+
+  addProduct() {
+    this.products.push(
+      {
+        id: "1",
+        name: "product 1",
+        feature: [
+          {
+            name: "feature 1",
+            score: 10
+          }
+        ],
+        description: "",
+        moreInfoLink: "",
+        viewDemoLink: "",
+        customization: true,
+        training: false,
+        maintenance: true,
+        customers: {
+          defense: [
+            {
+              avatar: "./assets/img/customer1.png",
+              name: "customer 1"
+            }
+          ],
+          civilian: [
+            {
+              avatar: "./assets/img/customer5.png",
+              name: "customer 1"
+            }
+          ],
+          commercial: [
+            {
+              avatar: "./assets/img/customer6.png",
+              name: "customer 1"
+            }
+          ]
+        }
+      }
+    );
+  }
+
+  addService() {
+    this.services.push(
+      {
+        id: "1",
+        name: "Service",
+        feature: [
+          {
+            title: "",
+            score: 0
+          }
+        ],
+        skills: [
+          "",
+          ""
+        ]
+      }
+    )
   }
 
   updateCompany(model) {

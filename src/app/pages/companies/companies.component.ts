@@ -30,4 +30,8 @@ export class CompaniesComponent implements OnInit {
     this.router.navigate(['corporate-profile', id]);
   }
 
+  newCompany() {
+    this.router.navigate(['corporate-profile-create']);
+  }
+
 }
