@@ -86,15 +86,21 @@ export class CorporateProfileEditComponent implements OnInit {
       "endDate": "01/02/2001",
       "stillAffiliated": false
     }
-    console.log(request);
     this.companyUserProxyService.addCompanyUserProxy(request).then(() =>
     this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }));
   }
 
   deleteEmployee(proxyId){
-    console.log(proxyId)
     this.companyUserProxyService.deleteCompanyUserProxy(proxyId).then(() =>
     this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }));
+  }
+
+  updateEmployee(proxyId,key, value){
+    let req = {};
+    req[key] = value;
+    this.companyUserProxyService.updateCompanyUserProxies(proxyId, req).toPromise().then(() =>
+    // this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }))
+    {});
   }
 
   refreshEmployees() {
