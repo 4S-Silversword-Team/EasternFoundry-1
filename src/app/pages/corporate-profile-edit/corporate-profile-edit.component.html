@@ -58,6 +58,7 @@
   </div>
 </div>
 
+<!-- TODO: This employee section is not responsive for phones. Need to deal with overlapping text. -->
 <div class="employees col-xs-12 clear">
   <div class="div-title col-xs-12">
     <img src="./assets/img/employee.png">
@@ -78,12 +79,12 @@
       <div  *ngFor='let employee of this.userProfiles'>
       <div class="srow">
         <span class="col-xs-1 col-sm-1 col-md-1 text-center" ><button class="col-xs-2 col-sm-2 col-md-2 text-center" (click)="deleteEmployee(employee.proxyId)">X</button></span>
-          <span class="col-xs-2 col-sm-2 col-md-2 text-center" >{{employee.name}}</span>
+          <span class="col-xs-2 col-sm-2 col-md-2 text-center text-nowrap" >{{employee.name}}</span>
           <span class="col-xs-2 col-sm-2 col-md-2 text-center" >{{employee.username}}</span>
-          <span class="col-xs-2 col-sm-2 col-md-2 text-center" >{{employee.startDate}}</span>
-          <span class="col-xs-2 col-sm-2 col-md-2 text-center" >{{employee.endDate}}</span>
-          <span class="col-xs-2 col-sm-2 col-md-2 text-center" >{{employee.stillAffiliated}}</span>
-          <span class="col-xs-1 col-sm-1 col-md-1 text-center" ></span>
+          <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" onblur="(this.type='text')" onfocus="(this.type='date')" placeholder="{{employee.startDate}}"></span>
+          <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" onblur="(this.type='text')" onfocus="(this.type='date')" placeholder="{{employee.endDate}}"></span>
+          <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input type="checkbox" [(ngModel)]="employee.stillAffiliated" /></span>
+          <span class="col-xs-1 col-sm-1 col-md-1 text-center text-nowrap" ></span>
       </div>
     </div>
     <select class="form-control" [(ngModel)]="this.newUserSelected">
