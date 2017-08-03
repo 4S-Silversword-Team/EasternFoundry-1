@@ -19,6 +19,7 @@ export class PastPerformanceEditComponent implements OnInit {
   agencyType: string[] = ['Pro', 'Amature'];
   officeType: string[] = ['Pro', 'Amature'];
   clearedType: string[] = ['true', 'false'];
+  userProfiles: any[] = [];
 
   ppImage: string;
   ppInputWidth: number = 300;
@@ -33,9 +34,21 @@ export class PastPerformanceEditComponent implements OnInit {
     public location: Location
   ) {
     if ( this.router.url !== 'past-performance-create' ) {
-      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => this.currentPastPerformance = res );
-      //this.pastPerformanceService.dumbMethod()
-      //console.log(this.pastPerformanceService)
+      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; myCallback() });
+      let myCallback = () => {
+        for (const i of this.currentPastPerformance.userProfileProxies){
+          this.userProfiles.push({
+            "name": i.user.firstName + " " + i.user.lastName,
+            "userId": i.user._id,
+            "proxyId": i._id,
+            "startDate": i.startDate,
+            "endDate": i.endDate,
+            "stillAffiliated": i.stillAffiliated,
+            "role": i.role
+          })
+        }
+      }
+
     }
   }
 
