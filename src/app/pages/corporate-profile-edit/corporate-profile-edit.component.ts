@@ -88,13 +88,13 @@ export class CorporateProfileEditComponent implements OnInit {
     }
     console.log(request);
     this.companyUserProxyService.addCompanyUserProxy(request).then(() =>
-    this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result; this.refreshEmployees(); }));
+    this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }));
   }
 
   deleteEmployee(proxyId){
     console.log(proxyId)
     this.companyUserProxyService.deleteCompanyUserProxy(proxyId).then(() =>
-    this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result; this.refreshEmployees(); }));
+    this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }));
   }
 
   refreshEmployees() {
