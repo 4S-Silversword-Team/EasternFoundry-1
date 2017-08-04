@@ -134,9 +134,10 @@
     <div class="col-xs-12" *ngFor='let employee of this.userProfiles'>
         <li>{{employee.name}} {{employee.userId}}</li>
     </div>
-    <select>
-      <option *ngFor="let user of this.allCompanyEmployees" value={{user._id}}>{{user.lastName}} {{user._id}}</option>
+    <select class="form-control" [(ngModel)]="this.newUserSelected">
+      <option *ngFor="let user of this.allCompanyEmployees" value={{user._id}}>{{user.firstName}} {{user.lastName}}: {{user.username}}</option>
     </select>
+    <input type="button" value="Add employee" (click)="addEmployee(this.newUserSelected)" />
 
 
   </ul>

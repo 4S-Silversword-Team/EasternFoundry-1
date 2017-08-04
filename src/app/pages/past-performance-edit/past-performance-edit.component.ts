@@ -5,14 +5,14 @@ import { Location } from '@angular/common'
 
 import { PastPerformance } from '../../classes/past-performance'
 import { UserService } from '../../services/user.service'
-import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
 import { CompanyService } from '../../services/company.service'
+import { UserPastPerformanceProxyService } from '../../services/userpastperformanceproxy.service'
 
 
 
 @Component({
   selector: 'app-past-performance-edit',
-  providers: [PastperformanceService, UserService, CompanyUserProxyService, CompanyService],
+  providers: [PastperformanceService, UserService, CompanyService, UserPastPerformanceProxyService],
   templateUrl: './past-performance-edit.component.html',
   styleUrls: ['./past-performance-edit.component.css']
 })
@@ -25,6 +25,7 @@ export class PastPerformanceEditComponent implements OnInit {
   clearedType: string[] = ['true', 'false'];
   userProfiles: any[] = [];
   allCompanyEmployees: any[] = [];
+  newUserSelected: string;
 
   ppImage: string;
   ppInputWidth: number = 300;
@@ -38,49 +39,49 @@ export class PastPerformanceEditComponent implements OnInit {
     private router: Router,
     public location: Location,
     private userService: UserService,
-    private companyUserProxyService: CompanyUserProxyService,
-    private companyService: CompanyService
+    private companyService: CompanyService,
+    private userPastPerformanceProxyService: UserPastPerformanceProxyService
   ) {
     if ( this.router.url !== 'past-performance-create' ) {
-      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; myCallback(); myCallback2() });
-      let myCallback = () => {
-        for (const i of this.currentPastPerformance.userProfileProxies){
-          this.userProfiles.push({
-            "name": i.user.firstName + " " + i.user.lastName,
-            "userId": i.user._id,
-            "proxyId": i._id,
-            "startDate": i.startDate,
-            "endDate": i.endDate,
-            "stillAffiliated": i.stillAffiliated,
-            "role": i.role
-          })
-        }
-      }
-
-      let myCallback2 = () => {
-      var allCompanyEmployees = [];
-
-      for (const companyProxy of this.currentPastPerformance.companyProxies) {
-        var myCompany;
-
-        this.companyService.getCompanyByID(companyProxy.company._id).toPromise().then((res) => {myCompany = res; (() => {
-          for (const userProfileProxy of myCompany.userProfileProxies) {
-            allCompanyEmployees.push(userProfileProxy.userProfile)
-          }
-          this.allCompanyEmployees = allCompanyEmployees.filter((employee) => {
-            return !this.currentPastPerformance.userProfileProxies.map((userProxy) => userProxy.user._id).includes(employee._id)
-          })
-        })()});
-
-      }
-    }
-
-
+      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2() });
     }
   }
 
   ngOnInit() {
   }
+
+  myCallback() {
+    this.userProfiles = [];
+    for (const i of this.currentPastPerformance.userProfileProxies){
+      this.userProfiles.push({
+        "name": i.user.firstName + " " + i.user.lastName,
+        "userId": i.user._id,
+        "proxyId": i._id,
+        "startDate": i.startDate,
+        "endDate": i.endDate,
+        "stillAffiliated": i.stillAffiliated,
+        "role": i.role
+      })
+    }
+  }
+
+  myCallback2() {
+    this.allCompanyEmployees = [];
+  var allCompanyEmployees = [];
+
+  for (const companyProxy of this.currentPastPerformance.companyProxies) {
+    var myCompany;
+
+    this.companyService.getCompanyByID(companyProxy.company._id).toPromise().then((res) => {myCompany = res; (() => {
+      for (const userProfileProxy of myCompany.userProfileProxies) {
+        allCompanyEmployees.push(userProfileProxy.userProfile)
+      }
+      this.allCompanyEmployees = allCompanyEmployees.filter((employee) => {
+        return !this.currentPastPerformance.userProfileProxies.map((userProxy) => userProxy.user._id).includes(employee._id)
+      })
+    })()});
+  }
+}
 
   uploadImage() {
 
@@ -92,9 +93,24 @@ export class PastPerformanceEditComponent implements OnInit {
     window.scrollTo(0, 0);
     this.router.navigate(['past-performance', this.route.snapshot.params['id']]);
   }
-  addEmployee(modelEmployees: Array<Object>){
-    modelEmployees.push({title: "", stillwith: false})
+  addEmployee(employeeId) {
+    let request = {
+        "user": employeeId,
+        "pastPerformance": this.route.snapshot.params['id'],
+        "startDate": "01/01/2001",
+        "endDate": "01/02/2001",
+        "stillAffiliated": false,
+        "role": "programmer"
+    }
+    console.log(request)
+    this.userPastPerformanceProxyService.addUserPPProxy(request).then(() => {
+      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2() });
+    })
   }
+
+  // addEmployee(modelEmployees: Array<Object>){
+  //   modelEmployees.push({title: "", stillwith: false})
+  // }
   deleteArrayIndex(modelArray: Array<Object>, i: number){
     modelArray.splice(i, 1);
   }
