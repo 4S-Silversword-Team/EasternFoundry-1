@@ -76,29 +76,31 @@
         <table style="margin-top: 1em" *ngFor=" let employee of this.userProfiles">
 	          <tr>
 	            <td>
-	              <button (click)="deleteEmployee(employee.proxyId)" style="width: 1.5em; height: 1.75em; margin-top: 1.5em; margin-right: 1em;">X</button>
+	              <button (click)="deleteEmployee(employee.proxyId)" style="width: 1.5em; height: 1.75em; margin-right: 1em;">X</button>
 	            </td>
 	            <td>
 	              <p>Name</p>
 	              <span>{{employee.name}}</span>
 	            </td>
+              <!-- <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" onblur="(this.type='text')" onfocus="(this.type='date')" placeholder="{{employee.startDate}}"></span> -->
+
               <td>
 	              <p>Start Date</p>
-	              <span>{{employee.startDate}}</span>
+	              <span><input onblur="(this.type='text')" onfocus="(this.type='date')" placeholder="{{employee.startDate}}"></span>
 	            </td>
               <td>
 	              <p>End Date</p>
-	              <span>{{employee.endDate}}</span>
+	              <span><input onblur="(this.type='text')" onfocus="(this.type='date')" placeholder="{{employee.endDate}}"></span>
 	            </td>
 
 	            <td>
 	              <p>Still Affiliated?</p>
-                <span>{{employee.stillAffiliated}}</span>
+                <span><input type="checkbox" [(ngModel)]="employee.stillAffiliated" /></span>
 	              <!-- <input style="margin-top:.75em; margin-left:1em" type="checkbox" [(ngModel)] = "this.currentPastPerformance.employees[i].stillWith" name="stillWith"> -->
 	          </td>
             <td>
               <p>Role</p>
-              <span>{{employee.role}}</span>
+              <span><input type="text" [(ngModel)]="employee.role" /></span>
             </td>
 
 	        </table>
@@ -106,7 +108,7 @@
             <option *ngFor="let user of this.allCompanyEmployees" value={{user._id}}>{{user.firstName}} {{user.lastName}}: {{user.username}}</option>
           </select>
 
-        <div class="col-xs-12" [style.margin]="'auto'"><button class="center-block" (click)="addEmployee(this.newUserSelected)">Add</button></div>
+        <div class="col-xs-12" [style.margin]="'auto'" [style.margin-top]="'1em'"><button class="center-block" (click)="addEmployee(this.newUserSelected)">Add</button></div>
 
     </div>
 </div>

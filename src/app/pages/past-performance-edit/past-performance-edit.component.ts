@@ -57,8 +57,8 @@ export class PastPerformanceEditComponent implements OnInit {
         "name": i.user.firstName + " " + i.user.lastName,
         "userId": i.user._id,
         "proxyId": i._id,
-        "startDate": i.startDate,
-        "endDate": i.endDate,
+        "startDate": new Date(i.startDate).toDateString(),
+        "endDate": new Date(i.endDate).toDateString(),
         "stillAffiliated": i.stillAffiliated,
         "role": i.role
       })
