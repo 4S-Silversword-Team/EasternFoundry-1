@@ -108,6 +108,12 @@ export class PastPerformanceEditComponent implements OnInit {
     })
   }
 
+  deleteEmployee(proxyId){
+    this.userPastPerformanceProxyService.deleteUserPPProxy(proxyId).then(() => {
+      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2() });
+    })
+  }
+
   // addEmployee(modelEmployees: Array<Object>){
   //   modelEmployees.push({title: "", stillwith: false})
   // }
