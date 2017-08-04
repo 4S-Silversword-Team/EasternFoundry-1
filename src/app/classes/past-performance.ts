@@ -22,4 +22,10 @@ export class PastPerformance {
     technical: string
     management: string
     other: string
+    userProfileProxies: [
+      any
+    ]
+    companyProxies: [
+      any
+    ]
 }

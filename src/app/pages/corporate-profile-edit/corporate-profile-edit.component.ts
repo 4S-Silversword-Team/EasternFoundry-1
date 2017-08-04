@@ -11,6 +11,8 @@ import { CompanyService } from '../../services/company.service';
 import { ProductService } from '../../services/product.service';
 import { ServiceService } from '../../services/service.service';
 import { PastperformanceService } from '../../services/pastperformance.service';
+import { UserService } from '../../services/user.service'
+import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
 
 declare var $: any;
 
@@ -18,13 +20,16 @@ declare var $: any;
   selector: 'app-corporate-profile-edit',
   templateUrl: './corporate-profile-edit.component.html',
   styleUrls: ['./corporate-profile-edit.component.css'],
-  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService]
+  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, CompanyUserProxyService]
 })
 export class CorporateProfileEditComponent implements OnInit {
 
   currentAccount: Company = new Company();
   products: Product[] = [];
   services: Service[] = [];
+  userProfiles: any[] = [];
+  userProfilesAll: any[] = [];
+  newUserSelected: string;
   pastperformances: PastPerformance[] = [];
   infoInputWidth: number = 350;
 
@@ -43,7 +48,9 @@ export class CorporateProfileEditComponent implements OnInit {
     private companyService: CompanyService,
     private productService: ProductService,
     private serviceService: ServiceService,
-    private ppService: PastperformanceService
+    private ppService: PastperformanceService,
+    private userService: UserService,
+    private companyUserProxyService: CompanyUserProxyService
   ) {
     if ( this.router.url !== 'corporate-profile-create' ) {
       this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result; myCallback(); });
@@ -62,6 +69,7 @@ export class CorporateProfileEditComponent implements OnInit {
         // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
         ppService.getPastPerformancebyID(i.pastPerformanceId).toPromise().then(res => this.pastperformances.push(res)); // Might try to continue the for loop before the promise resolves.
       }
+      this.refreshEmployees();
     };
     }
   }
@@ -69,8 +77,52 @@ export class CorporateProfileEditComponent implements OnInit {
   ngOnInit() {
   }
 
-  addEmployee() {
+  addEmployee(employeeId) {
 
+    let request = {
+      "userProfile": employeeId,
+      "company": this.route.snapshot.params['id'],
+      "startDate": "01/01/2001",
+      "endDate": "01/02/2001",
+      "stillAffiliated": false
+    }
+    this.companyUserProxyService.addCompanyUserProxy(request).then(() =>
+    this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }));
+  }
+
+  deleteEmployee(proxyId){
+    this.companyUserProxyService.deleteCompanyUserProxy(proxyId).then(() =>
+    this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }));
+  }
+
+  updateEmployee(proxyId,key, value){
+    let req = {};
+    req[key] = value;
+    this.companyUserProxyService.updateCompanyUserProxies(proxyId, req).toPromise().then(() =>
+    // this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }))
+    {});
+  }
+
+  refreshEmployees() {
+    this.userProfiles = []
+    for (const i of this.currentAccount.userProfileProxies) {
+      this.userProfiles.push({
+        "name": i.userProfile.firstName + " " + i.userProfile.lastName,
+        "userId": i.userProfile._id,
+        "proxyId": i._id,
+        "username": i.userProfile.username,
+        "startDate": new Date(i.startDate).toDateString(),
+        "endDate": new Date(i.endDate).toDateString(),
+        "stillAffiliated": i.stillAffiliated
+      })
+    }
+    this.userService.getUsers().then(res => {
+      this.userProfilesAll = res.filter((user) => {
+        return !this.userProfiles.map(function(employee) {
+          return employee.userId;
+        }).includes(user._id)
+      })
+    })
   }
 
   updateCompany(model) {

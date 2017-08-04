@@ -58,31 +58,42 @@
   </div>
 </div>
 
-<!--<div class="employee col-xs-12 clear">
-    <div class="div-title col-xs-12">
-        <img src="./assets/img/employee.png">
-        <p>EMPLOYEES</p>
-        <div></div>
-    </div>
-    <div class="container">
-      <div class="col-xs-12">
-        <div class="srow">
-            <span class="col-xs-6 col-sm-8 col-md-10 text-center" >Email</span>
-            <span class="col-xs-6 col-sm-4 col-md-2 text-center" >Leadership</span>
-        </div>
-        <div class="srow input-employee text-center">
-          <input class="col-xs-6 col-sm-8 col-md-10">
-          <div class="col-xs-6 col-sm-4 col-md-2 text-center">
-            <invehicleTypetype="checkbox" [style.height] = "'50px'" [style.margin]="'0'">
-          </div>
-        </div>
+<!-- TODO: This employee section is not responsive for phones. Need to deal with overlapping text. -->
+<div class="employees col-xs-12 clear">
+  <div class="div-title col-xs-12">
+    <img src="./assets/img/employee.png">
+    <p>EMPLOYEES</p>
+    <div></div>
+  </div>
+  <div class="container">
+    <div class="col-xs-12">
+      <div class="srow">
+        <span class="col-xs-1 col-sm-1 col-md-1 text-center" ></span>
+          <span class="col-xs-2 col-sm-2 col-md-2 text-center" >Name</span>
+          <span class="col-xs-2 col-sm-2 col-md-2 text-center" >Email</span>
+          <span class="col-xs-2 col-sm-2 col-md-2 text-center" >Started</span>
+          <span class="col-xs-2 col-sm-2 col-md-2 text-center" >Ended</span>
+          <span class="col-xs-2 col-sm-2 col-md-2 text-center" >Affiliated?</span>
+          <span class="col-xs-1 col-sm-1 col-md-1 text-center" ></span>
       </div>
-      <div class="col-xs-12 text-center">
-          <button class="mr20" (click) = 'addEmployee()'>ADD</button>
-          <button>REMOVE</button>
+      <div  *ngFor='let employee of this.userProfiles'>
+      <div class="srow">
+        <span class="col-xs-1 col-sm-1 col-md-1 text-center" ><button class="col-xs-2 col-sm-2 col-md-2 text-center" (click)="deleteEmployee(employee.proxyId)">X</button></span>
+          <span class="col-xs-2 col-sm-2 col-md-2 text-center text-nowrap" >{{employee.name}}</span>
+          <span class="col-xs-2 col-sm-2 col-md-2 text-center" >{{employee.username}}</span>
+          <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" (change)="updateEmployee(employee.proxyId,'startDate',employee.startDate)" [(ngModel)]="employee.startDate" onblur="(this.type='text')" onfocus="(this.type='date')"></span>
+          <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" (change)="updateEmployee(employee.proxyId,'endDate',employee.endDate)" [(ngModel)]="employee.endDate" onblur="(this.type='text')" onfocus="(this.type='date')"></span>
+          <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input type="checkbox" (change)="updateEmployee(employee.proxyId,'stillAffiliated',employee.stillAffiliated)" [(ngModel)]="employee.stillAffiliated" /></span>
+          <span class="col-xs-1 col-sm-1 col-md-1 text-center text-nowrap" ></span>
       </div>
     </div>
-</div>-->
+    <select class="form-control" [(ngModel)]="this.newUserSelected">
+        <option *ngFor="let user of this.userProfilesAll" value={{user._id}}>{{user.firstName + " " + user.lastName + ": " + user.username }}</option>
+    </select>
+    <input type="button" value="Add employee" (click)="addEmployee(this.newUserSelected)"/>
+    </div>
+  </div>
+</div>
 
 <div class="products col-xs-12 clear">
   <div class="div-title col-xs-12">
