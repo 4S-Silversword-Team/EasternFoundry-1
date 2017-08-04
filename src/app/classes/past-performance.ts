@@ -25,4 +25,7 @@ export class PastPerformance {
     userProfileProxies: [
       any
     ]
+    companyProxies: [
+      any
+    ]
 }

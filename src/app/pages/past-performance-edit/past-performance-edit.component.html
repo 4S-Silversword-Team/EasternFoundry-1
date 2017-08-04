@@ -130,10 +130,15 @@
     <div></div>
   </div>
   <div class="container">
+    <ul>
     <div class="col-xs-12" *ngFor='let employee of this.userProfiles'>
-      <ul>
-        <li>{{employee.name}}</li>
-      </ul>
+        <li>{{employee.name}} {{employee.userId}}</li>
     </div>
+    <select>
+      <option *ngFor="let user of this.allCompanyEmployees" value={{user._id}}>{{user.lastName}} {{user._id}}</option>
+    </select>
+
+
+  </ul>
   </div>
 </div>

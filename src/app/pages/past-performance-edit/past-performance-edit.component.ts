@@ -4,11 +4,15 @@ import { PastperformanceService } from '../../services/pastperformance.service';
 import { Location } from '@angular/common'
 
 import { PastPerformance } from '../../classes/past-performance'
+import { UserService } from '../../services/user.service'
+import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
+import { CompanyService } from '../../services/company.service'
+
 
 
 @Component({
   selector: 'app-past-performance-edit',
-  providers: [PastperformanceService],
+  providers: [PastperformanceService, UserService, CompanyUserProxyService, CompanyService],
   templateUrl: './past-performance-edit.component.html',
   styleUrls: ['./past-performance-edit.component.css']
 })
@@ -20,6 +24,7 @@ export class PastPerformanceEditComponent implements OnInit {
   officeType: string[] = ['Pro', 'Amature'];
   clearedType: string[] = ['true', 'false'];
   userProfiles: any[] = [];
+  allCompanyEmployees: any[] = [];
 
   ppImage: string;
   ppInputWidth: number = 300;
@@ -31,10 +36,13 @@ export class PastPerformanceEditComponent implements OnInit {
     private pastPerformanceService: PastperformanceService,
     private route: ActivatedRoute,
     private router: Router,
-    public location: Location
+    public location: Location,
+    private userService: UserService,
+    private companyUserProxyService: CompanyUserProxyService,
+    private companyService: CompanyService
   ) {
     if ( this.router.url !== 'past-performance-create' ) {
-      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; myCallback() });
+      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; myCallback(); myCallback2() });
       let myCallback = () => {
         for (const i of this.currentPastPerformance.userProfileProxies){
           this.userProfiles.push({
@@ -48,6 +56,25 @@ export class PastPerformanceEditComponent implements OnInit {
           })
         }
       }
+
+      let myCallback2 = () => {
+      var allCompanyEmployees = [];
+
+      for (const companyProxy of this.currentPastPerformance.companyProxies) {
+        var myCompany;
+
+        this.companyService.getCompanyByID(companyProxy.company._id).toPromise().then((res) => {myCompany = res; (() => {
+          for (const userProfileProxy of myCompany.userProfileProxies) {
+            allCompanyEmployees.push(userProfileProxy.userProfile)
+          }
+          this.allCompanyEmployees = allCompanyEmployees.filter((employee) => {
+            return !this.currentPastPerformance.userProfileProxies.map((userProxy) => userProxy.user._id).includes(employee._id)
+          })
+        })()});
+
+      }
+    }
+
 
     }
   }
