@@ -114,6 +114,14 @@ export class PastPerformanceEditComponent implements OnInit {
     })
   }
 
+  updateEmployee(proxyId,key, value){
+  let req = {};
+  req[key] = value;
+  this.userPastPerformanceProxyService.updateUserPPProxies(proxyId, req).toPromise().then(() =>
+  {});
+}
+
+
   // addEmployee(modelEmployees: Array<Object>){
   //   modelEmployees.push({title: "", stillwith: false})
   // }
