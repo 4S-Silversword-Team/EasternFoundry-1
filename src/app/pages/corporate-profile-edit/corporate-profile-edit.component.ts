@@ -133,7 +133,7 @@ export class CorporateProfileEditComponent implements OnInit {
   addProduct() {
     this.products.push(
       {
-        id: "1",
+        _id: "1",
         name: "product 1",
         feature: [
           {
@@ -174,7 +174,7 @@ export class CorporateProfileEditComponent implements OnInit {
   addService() {
     this.services.push(
       {
-        id: "1",
+        _id: "1",
         name: "Service",
         feature: [
           {
@@ -193,13 +193,32 @@ export class CorporateProfileEditComponent implements OnInit {
   updateCompany(model) {
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     if (this.creatingNew == true) {
+      delete model['_id'];
+      //this is the code to create the new products/services - it creates them, but it doesn't link them to the company because i can't figure out how to get the _id immediately after creation
+      //
+      // var serviceDone = false
       // for (const i of this.products) {
       //   const productModel = i
-      //   this.productService.createProduct(productModel).toPromise().then(result => console.log(result));
-      // }
-      // for (const i of this.services) {
-      //   const serviceModel = i
-      //   this.serviceService.createService(serviceModel).toPromise().then(result => console.log(result));
+      //   delete productModel['_id'];
+      //   this.productService.createProduct(productModel).toPromise().then(result => {
+      //     console.log('product result id is: ' + result)
+      //     if (this.currentAccount.product[0] == null) {
+      //       this.currentAccount.product[0] = {productId: String(result._id)}
+      //     } else {
+      //       this.currentAccount.product.push({productId: String(result._id)})
+      //     }
+      //     if (serviceDone == false) {
+      //       for (const i of this.services) {
+      //         const serviceModel = i
+      //         delete serviceModel['_id'];
+      //         this.serviceService.createService(serviceModel).toPromise().then(result => {
+      //           console.log('service result id is: ' + result._id)
+      //           this.currentAccount.service.push({serviceId: String(result._id)})
+      //         });
+      //       }
+      //       serviceDone = true;
+      //     }
+      //   });
       // }
       this.companyService.createCompany(model).toPromise().then(result => {
         console.log(result)

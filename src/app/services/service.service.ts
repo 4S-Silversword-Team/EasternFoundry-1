@@ -30,10 +30,9 @@ export class ServiceService {
 
   createService(request: any): Observable<Service> {
     var response = this.authHttp.post(environment.apiRoot + "services/add", request)
-      .map(response => <Service> response.json());
+      .map(response => <Service> JSON.parse(JSON.stringify(response)));
     return response;
   }
-
 
   getServicebyID(id: string): Observable<Service> {
     var response = this.authHttp.get(environment.apiRoot + "services/" + id)
@@ -43,7 +42,7 @@ export class ServiceService {
 
   getTempService(id: string): Service {
     let temp: Service = new Service()
-    temp.id = '1'
+    temp._id = '1'
     temp.name = 'Computer and Mathematical'
     temp.feature = [
       {
@@ -83,26 +82,6 @@ export class ServiceService {
       'Swift 3',
       'SQL'
     ]
-    if(id == '2') {
-      temp.id = '2'
-      temp.name = 'MANAGEMENT'
-      temp.feature = [
-        {
-          title: 'Scl and Cmty Service Mgrs',
-          score: 90
-        },{
-          title: 'Admin Srvcs Mgrs',
-          score: 68
-        },{
-          title: 'Managers, All other',
-          score: 38
-        }
-      ]
-      temp.skills = [
-        'PMP',
-        'Scrum'
-      ]
-    }
     return temp;
   }
 

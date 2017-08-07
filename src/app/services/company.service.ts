@@ -36,14 +36,14 @@ export class CompanyService {
 
   createCompany(request: any): Observable<Company> {
     var response = this.authHttp.post(environment.apiRoot + "company/add", request)
-      .map(response => <Company> response.json());
+      .map(response => <Company> JSON.parse(JSON.stringify(response)));
     return response;
   }
 
 
   getEmptyCompany(): Company {
     let temp: Company = new Company()
-    temp.id = '1'
+    temp._id = '1'
     temp.name = ''
     temp.email = ''
     temp.avatar = '../../assets/img/company-account.png'

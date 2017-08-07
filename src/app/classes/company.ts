@@ -1,5 +1,5 @@
 export class Company {
-    id: string
+    _id: string
     name: string
     email: string
     avatar: string
