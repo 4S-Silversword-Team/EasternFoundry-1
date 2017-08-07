@@ -38,6 +38,22 @@
       </div>
   </div>
 
+  <div class="leadership col-xs-12 clear">
+      <div class="col-xs-12 srow div-title">
+          <p class="left">EMPLOYEES</p>
+          <div></div>
+      </div>
+      <div class="main clear">
+          <div class="halfwidth left" *ngFor='let index of this.currentAccount.userProfileProxies'>
+              <img src='{{ index.userProfile.avatar }}' class="left avatar" [style.width]="'150px'">
+              <p class="srow">{{ index.userProfile.firstName + ' ' + index.userProfile.lastName}}</p>
+              <p class="srow">{{ index.userProfile.positionHistory[0].PositionTitle }}</p>
+              <p class="srow">{{ index.userProfile.username }}</p>
+              <button class="col-xs-8 col-xs-offset-2" (click)="toUserProfile(index._id)">More Information</button>
+          </div>
+      </div>
+  </div>
+
   <div class="div-tab col-xs-12 clear">
       <div [style.width] = "'80%'" [style.margin-left]="'10%'">
           <div class="halfwidth left" id="serviceTab" (click)='showService()'>Services</div>
