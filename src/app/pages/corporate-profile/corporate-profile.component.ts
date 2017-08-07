@@ -128,7 +128,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   getServiceChartValue(id: string): number[] {
     const temp: number[] = [];
     for (const i of this.services) {
-      if (i.id === id) {
+      if (i._id === id) {
         for (const j of i.feature) {
           temp.push(j.score);
         }
@@ -148,7 +148,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   getProductChartData(id: string): number[] {
     const temp: number[] = [];
     for (const i of this.products) {
-      if (i.id === id) {
+      if (i._id === id) {
         for (const j of i.feature) {
           temp.push(j.score);
         }
@@ -160,7 +160,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   getProductChartLabel(id: string): string[] {
     const temp: string[] = [];
     for (const i of this.products) {
-      if (i.id === id) {
+      if (i._id === id) {
         for (const j of i.feature) {
           temp.push(j.name);
         }

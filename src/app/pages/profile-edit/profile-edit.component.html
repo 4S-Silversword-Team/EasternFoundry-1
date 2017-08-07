@@ -162,45 +162,42 @@
       <div class="col-xs-7">
         <textarea class="col-xs-12 left" rows="9" placeholder="Description:" [(ngModel)] = 'job.Description'></textarea>
       </div>
-      <div class="col-xs-10 col-xs-offset-2">
-        <p class="col-xs-2 vertically-centered">Employer</p>
-        <input class="col-xs-10" [(ngModel)] = 'job.Employer'>
-      </div>
       <div class="col-xs-3">
-        <div class="col-xs-12">
-          <p class="col-xs-8">Were you a government employee?</p>
-          <input type="checkbox" class="col-xs-4" [(ngModel)] = 'job.isGovernment'>
-        </div>
+        <p class="col-xs-8">Were you a government employee?</p>
+        <input type="checkbox" class="col-xs-4" [(ngModel)] = 'job.isGovernment'>
       </div>
       <div class="col-xs-9" *ngIf = 'job.isGovernment'>
-        <p class="col-xs-offset-1">How would you characterize your relationships at each agency/office?</p>
-        <div class="col-xs-12" *ngFor="let agency of job.agencyExperience; let i = index; trackBy:customTrackBy">
-          <p class="col-xs-3 vertically-centered">Agency {{i + 1}}</p>
-          <input class="col-xs-4" type="text" [(ngModel)] = 'agency.main.title'>
-          <input class="col-xs-5" type="text">
-          <button class="tiny-button-skills" (click)="deleteAgency(job, i)" style="margin-top: 9px; margin-right: -5px"><div class="tiny-button-text">x</div></button>
-          <div class="col-xs-12" *ngFor="let office of agency.offices; let i = index; trackBy:customTrackBy">
+        <div class="col-xs-12">
+          <p class="col-xs-2 vertically-centered">Agency</p>
+          <input class="col-xs-10" [(ngModel)] = 'job.Employer'>
+        </div>
+        <p class="col-xs-5 col-xs-offset-7">How would you characterize your relationships at each agency/office?</p>
+        <div class="col-xs-12" >
+          <div class="col-xs-12" style="margin-left: 15px" *ngFor="let office of job.agencyExperience[0].offices; let i = index; trackBy:customTrackBy">
             <p class="col-xs-3 vertically-centered">Office {{i + 1}}</p>
             <input class="col-xs-4" type="text" [(ngModel)] = 'office.title'>
             <input class="col-xs-5" type="text">
-            <button class="tiny-button-skills" (click)="deleteOffice(agency, i)" style="margin-top: 9px; margin-right: -5px"><div class="tiny-button-text">x</div></button>
+            <button class="tiny-button-skills" (click)="deleteOffice(job.agencyExperience[0], i)" style="margin-top: 9px; margin-right: -5px"><div class="tiny-button-text">x</div></button>
           </div>
-          <button class="col-xs-2 col-xs-offset-10" (click)="addOffice(agency)">Add Office</button>
+          <button class="col-xs-2 col-xs-offset-10" (click)="addOffice(job.agencyExperience[0])">Add Office</button>
         </div>
         <p class="col-xs-3 col-xs-offset-4">Were you a PM?</p>
         <input type="checkbox" class="col-xs-1" [(ngModel)] = 'job.isPM'>
         <p class="col-xs-3">Were you a warranted KO?</p>
         <input type="checkbox" class="col-xs-1" [(ngModel)] = 'job.isKO'>
-        <button class="col-xs-3 col-xs-offset-6" (click)="addAgency(job)">Add Agency</button>
       </div>
       <div class="col-xs-9" *ngIf = 'job.isGovernment == false'>
-        <p class="col-xs-offset-1">Which government agencies did you work with (if any)?</p>
+        <div class="col-xs-12">
+          <p class="col-xs-2 vertically-centered">Employer</p>
+          <input class="col-xs-10" [(ngModel)] = 'job.Employer'>
+        </div>
+        <p class="col-xs-5 col-xs-offset-7">Which government agencies did you work with (if any)?</p>
         <div class="col-xs-12" *ngFor="let agency of job.agencyExperience; let i = index; trackBy:customTrackBy">
           <p class="col-xs-3 vertically-centered">Agency {{i + 1}}</p>
           <input class="col-xs-4" type="text" [(ngModel)] = 'agency.main.title'>
           <input class="col-xs-5" type="text">
           <button class="tiny-button-skills" (click)="deleteAgency(job, i)" style="margin-top: 9px; margin-right: -5px"><div class="tiny-button-text">x</div></button>
-          <div class="col-xs-12" *ngFor="let office of agency.offices; let i = index; trackBy:customTrackBy">
+          <div class="col-xs-12" style="margin-left: 15px" *ngFor="let office of agency.offices; let i = index; trackBy:customTrackBy">
             <p class="col-xs-3 vertically-centered">Office {{i + 1}}</p>
             <input class="col-xs-4" type="text" [(ngModel)] = 'office.title'>
             <input class="col-xs-5" type="text">

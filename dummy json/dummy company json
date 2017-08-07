@@ -9,6 +9,19 @@
     "address": "211112 Street",
     "lastUpdated": "Feb, 2017",
     "informationAccuracy": 5,
+    "__v": 2,
+    "userProfileProxies": [
+      {
+          "type": "597f86b54b2aa97e42d62cc8",
+          "ref": "companyUserProxy"
+      }
+    ],
+    "pastPerformanceProxies": [
+    	{
+          "type": "596fa3d90098230340303ee2",
+          "ref": "userPastPerformanceProxy"
+    	}
+	],
     "schedule": [
         {
             "date": "Dec, 2016",
@@ -51,30 +64,9 @@
             "score": 14
         }
     ],
-    "pastPerformance": [
-        {
-            "pastPerformanceId": "596fa3d90098230340303ee2"
-        },
-        {
-            "pastPerformanceId": "596fa3e50098230340303ee7"
-        }
-    ],
-    "service": [
-        {
-            "serviceId": "596fa3790098230340303ed8"
-        },
-        {
-            "serviceId": "596fa3830098230340303ede"
-        }
-    ],
-    "product": [
-        {
-            "productId": "596fa33c0098230340303eb6"
-        },
-        {
-            "productId": "596fa3460098230340303ec5"
-        }
-    ],
+    "pastPerformance": [],
+    "service": [],
+    "product": [],
     "leadership": [
         {
             "userId": "5978ae90ad3fed32a21c094e"

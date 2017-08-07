@@ -75,6 +75,13 @@ export class ProfileEditComponent implements OnInit {
           if (typeof this.currentUser.positionHistory[i].isKO === "string") {
             this.currentUser.positionHistory[i].isKO = stringToBool(this.currentUser.positionHistory[i].isKO)
           }
+          if ( this.currentUser.positionHistory[i].EndDate == null) {
+            this.currentUser.positionHistory[i].EndDate = "Current"
+          }
+
+        }
+        if (this.currentUser.education[0].DegreeType[0] == null) {
+          this.currentUser.education[0].DegreeType.push({Name: ''})
         }
         this.promiseFinished = true;
       });
@@ -269,6 +276,11 @@ export class ProfileEditComponent implements OnInit {
   }
 
   updateProfile(model) {
+    for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
+      if (this.currentUser.positionHistory[i].isGovernment) {
+        this.currentUser.positionHistory[i].agencyExperience[0].main.title = this.currentUser.positionHistory[i].Employer
+      }
+    }
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     delete model['_id']
     this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));

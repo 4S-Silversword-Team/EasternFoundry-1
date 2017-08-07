@@ -38,7 +38,7 @@ export class CorporateProfileEditComponent implements OnInit {
   clearedType: string[] = ['Pro', 'Amature'];
   ppImage: string;
   ppInputWidth: number = 300;
-
+  creatingNew: boolean = false;
   writeWidth: number = 800;
 
   constructor(
@@ -52,7 +52,7 @@ export class CorporateProfileEditComponent implements OnInit {
     private userService: UserService,
     private companyUserProxyService: CompanyUserProxyService
   ) {
-    if ( this.router.url !== 'corporate-profile-create' ) {
+    if ( this.router.url !== '/corporate-profile-create' ) {
       this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result; myCallback(); });
       // .subscribe(result => this.currentAccount =result).
       // this.currentAccount = this.companyService.getTestCompany()
@@ -71,6 +71,11 @@ export class CorporateProfileEditComponent implements OnInit {
       }
       this.refreshEmployees();
     };
+    }
+    else {
+      console.log('New Account!')
+      this.currentAccount = companyService.getEmptyCompany();
+      this.creatingNew = true;
     }
   }
 
@@ -125,22 +130,117 @@ export class CorporateProfileEditComponent implements OnInit {
     })
   }
 
+  addProduct() {
+    this.products.push(
+      {
+        _id: "1",
+        name: "product 1",
+        feature: [
+          {
+            name: "feature 1",
+            score: 10
+          }
+        ],
+        description: "",
+        moreInfoLink: "",
+        viewDemoLink: "",
+        customization: true,
+        training: false,
+        maintenance: true,
+        customers: {
+          defense: [
+            {
+              avatar: "./assets/img/customer1.png",
+              name: "customer 1"
+            }
+          ],
+          civilian: [
+            {
+              avatar: "./assets/img/customer5.png",
+              name: "customer 1"
+            }
+          ],
+          commercial: [
+            {
+              avatar: "./assets/img/customer6.png",
+              name: "customer 1"
+            }
+          ]
+        }
+      }
+    );
+  }
+
+  addService() {
+    this.services.push(
+      {
+        _id: "1",
+        name: "Service",
+        feature: [
+          {
+            title: "",
+            score: 0
+          }
+        ],
+        skills: [
+          "",
+          ""
+        ]
+      }
+    )
+  }
+
   updateCompany(model) {
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
-    delete model['_id'];
-    this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
-    for (const i of this.currentAccount.product) {
-      const productModel = this.products[this.currentAccount.product.indexOf(i)]
-      delete productModel['_id'];
-      this.productService.updateProduct(i.productId, productModel).toPromise().then(result => console.log(result));
+    if (this.creatingNew == true) {
+      delete model['_id'];
+      //this is the code to create the new products/services - it creates them, but it doesn't link them to the company because i can't figure out how to get the _id immediately after creation
+      //
+      // var serviceDone = false
+      // for (const i of this.products) {
+      //   const productModel = i
+      //   delete productModel['_id'];
+      //   this.productService.createProduct(productModel).toPromise().then(result => {
+      //     console.log('product result id is: ' + result)
+      //     if (this.currentAccount.product[0] == null) {
+      //       this.currentAccount.product[0] = {productId: String(result._id)}
+      //     } else {
+      //       this.currentAccount.product.push({productId: String(result._id)})
+      //     }
+      //     if (serviceDone == false) {
+      //       for (const i of this.services) {
+      //         const serviceModel = i
+      //         delete serviceModel['_id'];
+      //         this.serviceService.createService(serviceModel).toPromise().then(result => {
+      //           console.log('service result id is: ' + result._id)
+      //           this.currentAccount.service.push({serviceId: String(result._id)})
+      //         });
+      //       }
+      //       serviceDone = true;
+      //     }
+      //   });
+      // }
+      this.companyService.createCompany(model).toPromise().then(result => {
+        console.log(result)
+        window.scrollTo(0, 0);
+        this.router.navigate(['companies']);
+      });
+    } else {
+      for (const i of this.currentAccount.product) {
+        const productModel = this.products[this.currentAccount.product.indexOf(i)]
+        delete productModel['_id'];
+        this.productService.updateProduct(i.productId, productModel).toPromise().then(result => console.log(result));
+      }
+      for (const i of this.currentAccount.service) {
+        const serviceModel = this.services[this.currentAccount.service.indexOf(i)]
+        delete serviceModel['_id'];
+        this.serviceService.updateService(i.serviceId, serviceModel).toPromise().then(result => console.log(result));
+      }
+      delete model['_id'];
+      this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
+      window.scrollTo(0, 0);
+      this.router.navigate(['corporate-profile', this.route.snapshot.params['id']]);
     }
-    for (const i of this.currentAccount.service) {
-      const serviceModel = this.services[this.currentAccount.service.indexOf(i)]
-      delete serviceModel['_id'];
-      this.serviceService.updateService(i.serviceId, serviceModel).toPromise().then(result => console.log(result));
-    }
-    window.scrollTo(0, 0);
-    this.router.navigate(['corporate-profile', this.route.snapshot.params['id']]);
   }
 
 
