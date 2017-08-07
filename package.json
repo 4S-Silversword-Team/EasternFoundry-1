@@ -14,7 +14,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/cli": "1.2.6",
+    "@angular/cli": "1.0.0",
     "@angular/common": "^4.3.3",
     "@angular/compiler": "^4.3.3",
     "@angular/compiler-cli": "^4.3.3",
@@ -34,6 +34,7 @@
     "codelyzer": "~2.0.0",
     "core-js": "^2.5.0",
     "d3": "^4.10.0",
+    "enhanced-resolve": "^3.3.0",
     "http-server": "^0.10.0",
     "jasmine-core": "~2.5.2",
     "jasmine-spec-reporter": "~3.2.0",
