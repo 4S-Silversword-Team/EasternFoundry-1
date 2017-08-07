@@ -45,7 +45,7 @@
             </div>
             <div class="col-xs-12 srow">
                 <p class="left lh-50">Rating</p>
-                <rating [(ngModel)]="rate" [max]="5" [readonly]="isReadonly" class="right srow" [style.line-height]="'50px'"></rating>
+                <rating [(ngModel)]="this.currentPastPerformance.rating" [max]="5" [readonly]="isReadonly" class="right srow" [style.line-height]="'50px'"></rating>
             </div>
             <div class="col-xs-12 srow mt15">
                 <p class="left lh-25">Location<br>(zipcode)</p>
@@ -63,7 +63,7 @@
     </div>
 </div>
 
-<div class="employee col-xs-12 clear">
+<div *ngIf="!this.createMode" class="employee col-xs-12 clear">
     <div class="div-title col-xs-12">
         <img src="./assets/img/employee.png">
         <p>EMPLOYEES</p>
