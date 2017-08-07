@@ -50,7 +50,7 @@
       <div ></div>
     </div>
     <div class="col-xs-12 col-md-12 text-center">
-        <div class="text-left text-container" [style.height] = "'260px'" *ngFor="let degree of this.currentUser.education; let i = index">
+        <div class="text-left text-container" style="padding-bottom: 14em" [style.height] = "'260px'" *ngFor="let degree of this.currentUser.education; let i = index">
           <div class="col-xs-6 col-md-5">
             <p class="col-xs-6 col-md-5 vertically-centered">Type: </p>
             <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.DegreeType[0].Name'>
