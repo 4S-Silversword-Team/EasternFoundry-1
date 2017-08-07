@@ -100,6 +100,34 @@ export class CorporateProfileEditComponent implements OnInit {
     this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }));
   }
 
+  switchLeadership(employeeId) {
+    var idFound = false;
+    for (var i = 0; i < this.currentAccount.leadership.length; i++) {
+      if (employeeId == this.currentAccount.leadership[i].userId) {
+        this.currentAccount.leadership.splice(i, 1);
+        idFound = true;
+      }
+    }
+    if (idFound == false) {
+      this.currentAccount.leadership.push(employeeId)
+    }
+  }
+
+  isLeadership(employeeId) {
+    var idFound = false;
+    for (var i = 0; i < this.currentAccount.leadership.length; i++) {
+      if (employeeId == this.currentAccount.leadership[i].userId) {
+        idFound = true;
+      }
+    }
+    if (idFound == true) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+
   updateEmployee(proxyId,key, value){
     let req = {};
     req[key] = value;

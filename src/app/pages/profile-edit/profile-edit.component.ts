@@ -280,6 +280,12 @@ export class ProfileEditComponent implements OnInit {
       if (this.currentUser.positionHistory[i].isGovernment) {
         this.currentUser.positionHistory[i].agencyExperience[0].main.title = this.currentUser.positionHistory[i].Employer
       }
+      for (var x = 0; x < this.currentUser.positionHistory[i].agencyExperience.length; x++) {
+        const endDate = +this.currentUser.positionHistory[i].EndDate.slice(0, 4);
+        const startDate = +this.currentUser.positionHistory[i].StartDate.slice(0, 4);
+        const yearsWorked = (endDate - startDate)
+        this.currentUser.positionHistory[i].agencyExperience[0].main.data[0].score = yearsWorked
+      }
     }
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     delete model['_id']
