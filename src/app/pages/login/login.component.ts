@@ -11,7 +11,7 @@ import { UserService } from '../../services/user.service'
 export class LoginComponent implements OnInit {
 
   authError: boolean = false
-  username: string
+  email: string
   password: string
 
 
@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   }
 
   logIn() {
-    this.auth.doLogin(this.username, this.password)
-    this.authError = this.auth.isLoggedIn()
+    this.auth.doLogin(this.email, this.password)
+    this.authError = this.auth.isLoggedIn() //TODO: Implement flash message correctly
   }
 }

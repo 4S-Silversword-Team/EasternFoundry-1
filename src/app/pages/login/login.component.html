@@ -1,10 +1,10 @@
 <div class="main">
   <div class="alert alert-danger" [class.hidden] = '!authError'>
-    <strong>Warning!</strong> Please input valid username and password.
+    <strong>Warning!</strong> Please input valid email and password.
   </div>
-  <div class="input-group">    
+  <div class="input-group">
     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-    <input id="text" type="text" class="form-control" placeholder="Username" [(ngModel)]='username'>
+    <input id="text" type="text" class="form-control" placeholder="Email" [(ngModel)]='email'>
   </div>
   <div class="input-group">
     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>

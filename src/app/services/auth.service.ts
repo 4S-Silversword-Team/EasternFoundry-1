@@ -36,30 +36,35 @@ export class AuthService {
     this.authHttp = new AuthHttp(http)
 
     // check if the user is logged or if token is expired. If true then login
-    if (this.isLoggedIn()) {
+    if (!this.isLoggedIn()) {
       this.router.navigateByUrl("/login")
     } else { // else if already logged in go to corporate profile page
       this.router.navigateByUrl("/companies")
     }
   }
 
-  doLogin(username, password) {
+  doLogin(email, password) {
     let body = {
-      username: username,
+      email: email,
       password: password
     }
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-
-    this.http.post(environment.apiRoot + "login", body, options).toPromise()
-           .then(this.extractData)
-           .catch(this.handleErrorPromise);
+    //get User Id from email
+    var userId
+    this.userService.getUserIdByEmail(body.email).toPromise().then((res) => {
+      userId = res.id
+      this.http.post(environment.apiRoot + "auth/login/" + userId , body, options).toPromise()
+      .then(this.extractData.bind(this))
+      .catch(this.handleErrorPromise);
+    })
   }
 
   private extractData(res: Response) {
   	let body = res.json();
     console.log(body)
-    return body.data || {};
+    localStorage.setItem('token', body.message)
+    this.router.navigateByUrl("/login");
   }
   private handleErrorObservable (error: Response | any) {
   	console.error(error.message || error);
@@ -75,7 +80,7 @@ export class AuthService {
   }
 
   isLoggedIn() {
+    //TODO pass localstorage token to backend verifyCurrentUser function : requires a user Id in params, token, and email in request body
     return localStorage.getItem('token') != null
   }
 }
-
