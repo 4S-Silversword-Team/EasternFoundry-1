@@ -28,8 +28,7 @@ export class LoginComponent implements OnInit {
 
   logIn() {
     this.auth.doLogin(this.email, this.password, (function() {
-      console.log("last")
-      //this.authError = this.auth.isLoggedIn() //TODO: Implement flash message correctly
+      this.authError = !this.auth.isLoggedIn()
       if (!this.authError){
         this.nav.navRefresh();
         this.router.navigateByUrl("/companies")

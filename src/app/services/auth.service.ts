@@ -53,11 +53,15 @@ export class AuthService {
     //get User Id from email
     var userId
     this.userService.getUserIdByEmail(body.email).toPromise().then((user) => {
+      if (user.id) {
       localStorage.setItem('uid', user.id)
       userId = user.id
       this.http.post(environment.apiRoot + "auth/login/" + userId , body, options).toPromise()
       .then(res => {this.extractData(res); callback()} )
-      .catch(this.handleErrorPromise);
+      .catch(err => {this.handleErrorPromise(err); callback();});
+    } else {
+      callback();
+    }
     })
   }
 

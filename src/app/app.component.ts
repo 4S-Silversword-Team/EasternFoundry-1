@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service'
 import { UserService } from './services/user.service'
 
@@ -15,7 +15,6 @@ export class AppComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
-    private zone: NgZone
   ){
     this.signedIn = this.auth.isLoggedIn()
 
@@ -30,10 +29,7 @@ export class AppComponent implements OnInit {
   }
 
   navRefresh() {
-    console.log("1",this.signedIn)
     this.signedIn = this.auth.isLoggedIn()
-    console.log("2",this.signedIn)
-    this.zone.run(() => console.log("refresshing"))
   }
 
 }
