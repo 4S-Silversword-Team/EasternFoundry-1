@@ -54,7 +54,11 @@ export class AuthService {
     var userId
     this.userService.getUserIdByEmail(body.email).toPromise().then((user) => {
       if (user.id) {
-      localStorage.setItem('uid', user.id)
+
+      localStorage.setItem('uid', user.id)//this sets a current user just for submitting a valid email, this could introduce security issues we should be mindful of addressing.
+      this.current_user = user.id
+      console.log("CU", this.current_user)
+
       userId = user.id
       this.http.post(environment.apiRoot + "auth/login/" + userId , body, options).toPromise()
       .then(res => {this.extractData(res); callback()} )
@@ -81,6 +85,8 @@ export class AuthService {
 
   doLogout(redirect = null) {
     localStorage.removeItem('token')
+    localStorage.removeItem('uid')
+    this.current_user = null;
   }
 
   isLoggedIn() {
