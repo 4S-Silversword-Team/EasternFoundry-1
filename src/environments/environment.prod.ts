@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiRoot: ' http://easternfoundrybackend.herokuapp.com/'
+  apiRoot: ' https://easternfoundrybackend.herokuapp.com/'
 };
