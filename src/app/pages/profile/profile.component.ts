@@ -68,21 +68,6 @@ export class ProfileComponent implements OnInit {
       }
       this.strengthChartDatas.push({data: temp, label: 'Strength'})
 
-      for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
-        if (this.currentUser.positionHistory[i].isGovernment) {
-          this.currentUser.positionHistory[i].agencyExperience[0].main.title = this.currentUser.positionHistory[i].Employer
-        }
-        for (var x = 0; x < this.currentUser.positionHistory[i].agencyExperience.length; x++) {
-          const endDate = +this.currentUser.positionHistory[i].EndDate.slice(0, 4);
-          const startDate = +this.currentUser.positionHistory[i].StartDate.slice(0, 4);
-          var yearsWorked = (endDate - startDate)
-          if (yearsWorked == 0) {
-            yearsWorked = 1
-          }
-          this.currentUser.positionHistory[i].agencyExperience[0].main.data[0].score = yearsWorked
-        }
-      }
-
       for (let job of this.currentUser.positionHistory) {
         job.Year = +job.StartDate.slice(0, 4);
         for (let agency of job.agencyExperience) {

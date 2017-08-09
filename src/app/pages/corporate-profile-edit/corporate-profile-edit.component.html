@@ -84,14 +84,8 @@
           <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" (change)="updateEmployee(employee.proxyId,'startDate',employee.startDate)" [(ngModel)]="employee.startDate" onblur="(this.type='text')" onfocus="(this.type='date')"></span>
           <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" (change)="updateEmployee(employee.proxyId,'endDate',employee.endDate)" [(ngModel)]="employee.endDate" onblur="(this.type='text')" onfocus="(this.type='date')"></span>
           <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input type="checkbox" (change)="updateEmployee(employee.proxyId,'stillAffiliated',employee.stillAffiliated)" [(ngModel)]="employee.stillAffiliated" /></span>
-          <!-- this is all code to make employees into leadership - not completed, probably could use another variable -->
-          <!-- <div *ngIf='isLeadership(employee._id) === true'>
-            <span class="col-xs-1 col-sm-1 col-md-1 text-center text-nowrap" ><button (click)="switchLeadership(employee._id)" /></span>
-          </div>
-          <div *ngIf='isLeadership(employee._id) === false'>
-            <span class="col-xs-1 col-sm-1 col-md-1 text-center text-nowrap" style="color: red"><button (click)="switchLeadership(employee._id)" /></span>
-          </div>
-      </div> -->
+          <span class="col-xs-1 col-sm-1 col-md-1 text-center text-nowrap" ></span>
+      </div>
     </div>
     <select class="form-control" [(ngModel)]="this.newUserSelected">
         <option *ngFor="let user of this.userProfilesAll" value={{user._id}}>{{user.firstName + " " + user.lastName + ": " + user.username }}</option>

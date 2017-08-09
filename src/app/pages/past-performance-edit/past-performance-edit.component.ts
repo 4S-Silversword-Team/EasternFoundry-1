@@ -26,7 +26,7 @@ export class PastPerformanceEditComponent implements OnInit {
   userProfiles: any[] = [];
   allCompanyEmployees: any[] = [];
   newUserSelected: string;
-
+  isReadOnly: boolean = false;
   ppImage: string;
   ppInputWidth: number = 300;
   employeeWidth: number = 600;
