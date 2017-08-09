@@ -80,9 +80,9 @@ export class ProfileEditComponent implements OnInit {
           }
 
         }
-        for (degree of this.currentUser.education) {
-          if (degree.DegreeType[0] == null){
-            degree.DegreeType.push({Name: ''})
+        for (var x = 0; x < this.currentUser.education.length; x++) {
+          if (this.currentUser.education[x].DegreeType[0] == null){
+            this.currentUser.education[x].DegreeType.push({Name: ''})
           }
         }
         this.promiseFinished = true;
