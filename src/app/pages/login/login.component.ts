@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth.service'
-import { UserService } from '../../services/user.service'
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
+import { Router, ActivatedRoute, Params } from '@angular/router'
+import {AppComponent} from '../../app.component'
 
 @Component({
   selector: 'app-login',
@@ -16,14 +18,23 @@ export class LoginComponent implements OnInit {
 
 
   constructor(
-    private auth: AuthService
+    private auth: AuthService,
+    private router: Router,
+    private nav: AppComponent
   ) { }
 
   ngOnInit() {
   }
 
   logIn() {
-    this.auth.doLogin(this.email, this.password)
-    this.authError = this.auth.isLoggedIn() //TODO: Implement flash message correctly
+    this.auth.doLogin(this.email, this.password, (function() {
+      console.log("last")
+      //this.authError = this.auth.isLoggedIn() //TODO: Implement flash message correctly
+      if (!this.authError){
+        this.nav.navRefresh();
+        this.router.navigateByUrl("/companies")
+      }
+    }).bind(this))
+
   }
 }

@@ -31,7 +31,7 @@ export class AuthService {
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,
-    private userService: UserService
+    private userService: UserService,
   ) {
     this.authHttp = new AuthHttp(http)
 
@@ -43,7 +43,7 @@ export class AuthService {
     }
   }
 
-  doLogin(email, password) {
+  doLogin(email, password, callback) {
     let body = {
       email: email,
       password: password
@@ -52,10 +52,11 @@ export class AuthService {
     let options = new RequestOptions({ headers: headers });
     //get User Id from email
     var userId
-    this.userService.getUserIdByEmail(body.email).toPromise().then((res) => {
-      userId = res.id
+    this.userService.getUserIdByEmail(body.email).toPromise().then((user) => {
+      localStorage.setItem('uid', user.id)
+      userId = user.id
       this.http.post(environment.apiRoot + "auth/login/" + userId , body, options).toPromise()
-      .then(this.extractData.bind(this))
+      .then(res => {this.extractData(res); callback()} )
       .catch(this.handleErrorPromise);
     })
   }
@@ -63,8 +64,7 @@ export class AuthService {
   private extractData(res: Response) {
   	let body = res.json();
     console.log(body)
-    localStorage.setItem('token', body.message)
-    this.router.navigateByUrl("/login");
+    localStorage.setItem('token', body.message) //TODO: ideally in the future, we should look into finding more secure ways to handle tokens than local storage
   }
   private handleErrorObservable (error: Response | any) {
   	console.error(error.message || error);
