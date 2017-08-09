@@ -80,7 +80,7 @@ export class ProfileEditComponent implements OnInit {
           }
 
         }
-        for (degree in this.currentUser.education) {
+        for (degree of this.currentUser.education) {
           if (degree.DegreeType[0] == null){
             degree.DegreeType.push({Name: ''})
           }
