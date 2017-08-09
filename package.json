@@ -38,7 +38,7 @@
     "codelyzer": "~2.0.0",
     "core-js": "^2.5.0",
     "d3": "^4.10.0",
-    "enhanced-resolve": "^3.4.1",
+    "enhanced-resolve": "^3.3.0",
     "http-server": "^0.10.0",
     "jasmine-core": "~2.5.2",
     "jasmine-spec-reporter": "~3.2.0",
@@ -57,7 +57,8 @@
     "rxjs": "^5.4.2",
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",
-    "typescript": "~2.2.0",
+    "typescript": "^2.4.2",
+    "webpack": "^3.3.0",
     "zone.js": "^0.8.16"
   },
   "devDependencies": {}
