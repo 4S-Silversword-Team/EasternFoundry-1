@@ -14,6 +14,7 @@ import { PastperformanceService } from '../../services/pastperformance.service';
 import { UserService } from '../../services/user.service'
 import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
 import { AuthService } from '../../services/auth.service'
+import { RoleService } from '../../services/role.service'
 
 declare var $: any;
 
@@ -21,7 +22,7 @@ declare var $: any;
   selector: 'app-corporate-profile-edit',
   templateUrl: './corporate-profile-edit.component.html',
   styleUrls: ['./corporate-profile-edit.component.css'],
-  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, CompanyUserProxyService]
+  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, CompanyUserProxyService, RoleService]
 })
 export class CorporateProfileEditComponent implements OnInit {
 
@@ -52,7 +53,8 @@ export class CorporateProfileEditComponent implements OnInit {
     private ppService: PastperformanceService,
     private userService: UserService,
     private companyUserProxyService: CompanyUserProxyService,
-    private auth: AuthService
+    private auth: AuthService,
+    private roleService: RoleService
   ) {
     if(!auth.isLoggedIn()){
       this.router.navigateByUrl("/login")
@@ -223,6 +225,22 @@ export class CorporateProfileEditComponent implements OnInit {
     )
   }
 
+  addUserWithRole(company, user, role){
+    let request = {
+      "userProfile": user,
+      "company": company,
+      "startDate": "01/01/2001",
+      "endDate": "01/02/2001",
+      "stillAffiliated": true,
+      "role": role
+    }
+    this.companyUserProxyService.addCompanyUserProxy(request).then((res) =>{
+      console.log(res);
+      window.scrollTo(0, 0);
+      this.router.navigate(['companies']);
+    });
+  }
+
   updateCompany(model) {
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     if (this.creatingNew == true) {
@@ -253,10 +271,17 @@ export class CorporateProfileEditComponent implements OnInit {
       //     }
       //   });
       // }
-      this.companyService.createCompany(model).toPromise().then(result => {
-        console.log(result)
-        window.scrollTo(0, 0);
-        this.router.navigate(['companies']);
+      var userId = this.auth.getLoggedInUser()
+      this.companyService.createCompany(model).toPromise().then(newCompany => {
+        console.log(JSON.parse(newCompany._body)._id)
+
+        //TODO handle if no admin in role collection in Db
+        this.roleService.getRoleByTitle("admin").toPromise().then((admin) => {
+          console.log("adminresult",admin)
+          this.addUserWithRole(JSON.parse(newCompany._body)._id, userId, admin._id);
+        })
+        // window.scrollTo(0, 0);
+        // this.router.navigate(['companies']);
       });
     } else {
       for (const i of this.currentAccount.product) {

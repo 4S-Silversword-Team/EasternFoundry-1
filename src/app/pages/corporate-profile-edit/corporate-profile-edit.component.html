@@ -65,7 +65,7 @@
     <p>EMPLOYEES</p>
     <div></div>
   </div>
-  <div class="container">
+  <div *ngIf="!creatingNew" class="container">
     <div class="col-xs-12">
       <div class="srow">
         <span class="col-xs-1 col-sm-1 col-md-1 text-center" ></span>
@@ -92,6 +92,9 @@
     </select>
     <input type="button" value="Add employee" (click)="addEmployee(this.newUserSelected)"/>
     </div>
+  </div>
+  <div *ngIf="creatingNew" class="container">
+    You will be the first employee and admin for this company when you create it. Once the company is created you can add new employees.
   </div>
 </div>
 

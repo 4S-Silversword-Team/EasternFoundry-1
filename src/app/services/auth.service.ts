@@ -93,4 +93,8 @@ export class AuthService {
     //TODO pass localstorage token to backend verifyCurrentUser function : requires a user Id in params, token, and email in request body
     return localStorage.getItem('token') != null
   }
+
+  getLoggedInUser() {
+    return localStorage.getItem('uid'); //TODO: Another way to go about this. Pass token to a getUserIdByToken function to the backend. If respone doesn't eql localstorage uid, doLogout. Else return uid.
+  }
 }
