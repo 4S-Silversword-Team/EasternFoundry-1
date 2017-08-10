@@ -27,10 +27,12 @@ export class CompaniesComponent implements OnInit {
   }
 
   goTo(id: string) {
+    window.scrollTo(0, 0);
     this.router.navigate(['corporate-profile', id]);
   }
 
   newCompany() {
+    window.scrollTo(0, 0);
     this.router.navigate(['corporate-profile-create']);
   }
 
