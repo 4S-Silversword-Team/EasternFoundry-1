@@ -36,6 +36,12 @@ export class PastperformanceService {
     return response;
   }
 
+  createPastPerformance(request: any){
+    var response = this.authHttp.post(environment.apiRoot + "PastPerformance/add", request)
+    .map(response => response.json())
+    return response;
+  }
+
   // getPastPerformancebyID(id: string): PastPerformance {
   //   let temp: PastPerformance = new PastPerformance()
   //   temp.id = '1'

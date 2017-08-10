@@ -98,7 +98,7 @@ p {
     width: 20px;
     height: 20px;
     position: absolute;
-    top: 18px;
+    top: inherit;
     right: 15px;
 }
 
@@ -115,13 +115,13 @@ p {
 
 .btn-edit {
     position: absolute;
-    top: 15px;
+    top: inherit;
     right: 35px;
     width: 50px;
     height: 26px;
     font-size: 20px;
     line-height: 26px;
-    cursor: pointer;    
+    cursor: pointer;
 }
 
 button {
