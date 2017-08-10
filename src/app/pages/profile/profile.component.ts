@@ -25,6 +25,7 @@ export class ProfileComponent implements OnInit {
     values: [],
     dates: []
   }
+  agencyExperience: any[] = []
 
 
   constructor(
@@ -66,10 +67,27 @@ export class ProfileComponent implements OnInit {
         this.availabilityData.values.push(index.available)
       }
       this.strengthChartDatas.push({data: temp, label: 'Strength'})
+
       for (let job of this.currentUser.positionHistory) {
         job.Year = +job.StartDate.slice(0, 4);
+        for (let agency of job.agencyExperience) {
+          var nameMatch = false
+          for (let i of this.agencyExperience) {
+            if (agency.main.title == i.main.title) {
+              i.main.data[0].score = (i.main.data[0].score + agency.main.data[0].score)
+              nameMatch = true
+            }
+          }
+          if (nameMatch == false) {
+            if (this.agencyExperience[0] == null) {
+              this.agencyExperience[0] = job.agencyExperience[0]
+            } else {
+              this.agencyExperience.push(agency)
+            }
+          }
+        }
       }
-
+      console.log(this.agencyExperience[0].main.titles)
       function stringToBool(val) {
         return (val + '').toLowerCase() === 'true';
       };
@@ -127,8 +145,8 @@ export class ProfileComponent implements OnInit {
 
   expMainValues(tempUser: User, jobNum, agencyNum): number[] {
     let temp: number[] = []
-    for (let data of this.currentUser.positionHistory[jobNum].agencyExperience[agencyNum].main.data) {
-      temp.push(data.score)
+    for (let data of this.agencyExperience[agencyNum].main.data) {
+      temp.push(data.score * 10)
     }
     return temp
   }
