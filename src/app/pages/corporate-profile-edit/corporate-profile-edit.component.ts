@@ -13,6 +13,7 @@ import { ServiceService } from '../../services/service.service';
 import { PastperformanceService } from '../../services/pastperformance.service';
 import { UserService } from '../../services/user.service'
 import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
+import {AuthService} from '../../services/auth.service'
 
 declare var $: any;
 
@@ -20,7 +21,7 @@ declare var $: any;
   selector: 'app-corporate-profile-edit',
   templateUrl: './corporate-profile-edit.component.html',
   styleUrls: ['./corporate-profile-edit.component.css'],
-  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, CompanyUserProxyService]
+  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, CompanyUserProxyService, AuthService]
 })
 export class CorporateProfileEditComponent implements OnInit {
 
@@ -50,8 +51,12 @@ export class CorporateProfileEditComponent implements OnInit {
     private serviceService: ServiceService,
     private ppService: PastperformanceService,
     private userService: UserService,
-    private companyUserProxyService: CompanyUserProxyService
+    private companyUserProxyService: CompanyUserProxyService,
+    private auth: AuthService
   ) {
+    if (!this.auth.isLoggedIn()) {
+      this.router.navigateByUrl("/login")
+    }
     if ( this.router.url !== '/corporate-profile-create' ) {
       this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result; myCallback(); });
       // .subscribe(result => this.currentAccount =result).
