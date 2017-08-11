@@ -42,6 +42,7 @@ export class CorporateProfileEditComponent implements OnInit {
   ppInputWidth: number = 300;
   creatingNew: boolean = false;
   writeWidth: number = 800;
+  isUserAdmin: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -60,6 +61,7 @@ export class CorporateProfileEditComponent implements OnInit {
       this.router.navigateByUrl("/login")
     }
     if ( this.router.url !== '/corporate-profile-create' ) {
+      this.getAdminStatus()
       this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result; myCallback(); });
       // .subscribe(result => this.currentAccount =result).
       // this.currentAccount = this.companyService.getTestCompany()
@@ -82,6 +84,7 @@ export class CorporateProfileEditComponent implements OnInit {
       }
       }
       this.refreshEmployees();
+
     };
     }
     else {
@@ -94,7 +97,24 @@ export class CorporateProfileEditComponent implements OnInit {
   ngOnInit() {
   }
 
+  getAdminStatus() {
+
+    var userId = this.auth.getLoggedInUser()
+    this.userService.getUserbyID(userId).toPromise().then((user) =>{
+    var currentUserProxy = user.companyUserProxies.filter((proxy) => {
+        return proxy.userProfile == userId
+      })[0]
+      this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
+        if (role.title && role.title == "admin") {
+          this.isUserAdmin = true;
+          console.log("I'm admin")
+        }
+      })
+    })
+  }
+
   addEmployee(employeeId) {
+    if (!this.isUserAdmin){return;}
 
     let request = {
       "userProfile": employeeId,
@@ -108,6 +128,7 @@ export class CorporateProfileEditComponent implements OnInit {
   }
 
   deleteEmployee(proxyId){
+    if (!this.isUserAdmin){return;}
     this.companyUserProxyService.deleteCompanyUserProxy(proxyId).then(() =>
     this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }));
   }

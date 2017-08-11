@@ -78,7 +78,7 @@
       </div>
       <div  *ngFor='let employee of this.userProfiles'>
       <div class="srow">
-        <span class="col-xs-1 col-sm-1 col-md-1 text-center" ><button class="col-xs-2 col-sm-2 col-md-2 text-center" (click)="deleteEmployee(employee.proxyId)">X</button></span>
+        <span class="col-xs-1 col-sm-1 col-md-1 text-center" ><button *ngIf="this.isUserAdmin" class="col-xs-2 col-sm-2 col-md-2 text-center" (click)="deleteEmployee(employee.proxyId)">X</button></span>
           <span class="col-xs-2 col-sm-2 col-md-2 text-center text-nowrap" >{{employee.name}}</span>
           <span class="col-xs-2 col-sm-2 col-md-2 text-center" >{{employee.username}}</span>
           <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" (change)="updateEmployee(employee.proxyId,'startDate',employee.startDate)" [(ngModel)]="employee.startDate" onblur="(this.type='text')" onfocus="(this.type='date')"></span>
@@ -87,10 +87,10 @@
           <span class="col-xs-1 col-sm-1 col-md-1 text-center text-nowrap" ></span>
       </div>
     </div>
-    <select class="form-control" [(ngModel)]="this.newUserSelected">
+    <select *ngIf="this.isUserAdmin" class="form-control" [(ngModel)]="this.newUserSelected">
         <option *ngFor="let user of this.userProfilesAll" value={{user._id}}>{{user.firstName + " " + user.lastName + ": " + user.username }}</option>
     </select>
-    <input type="button" value="Add employee" (click)="addEmployee(this.newUserSelected)"/>
+    <input *ngIf="this.isUserAdmin" type="button" value="Add employee" (click)="addEmployee(this.newUserSelected)"/>
     </div>
   </div>
   <div *ngIf="creatingNew" class="container">
