@@ -84,6 +84,9 @@ export class CorporateProfileEditComponent implements OnInit {
       }
       }
       this.refreshEmployees();
+      if(!this.checkIfEmployee()){
+          this.router.navigateByUrl("/corporate-profile/"+this.route.snapshot.params['id'])
+      }
 
     };
     }
@@ -189,6 +192,12 @@ export class CorporateProfileEditComponent implements OnInit {
         }).includes(user._id)
       })
     })
+  }
+
+  checkIfEmployee(): boolean{
+    return this.userProfiles.map((profile) => {
+      return profile.userId
+    }).includes(this.auth.getLoggedInUser())
   }
 
   addProduct() {
