@@ -64,17 +64,22 @@ export class CorporateProfileEditComponent implements OnInit {
       // .subscribe(result => this.currentAccount =result).
       // this.currentAccount = this.companyService.getTestCompany()
       const myCallback = () => {
+      if (this.currentAccount.product){
       for (const i of this.currentAccount.product) {
         productService.getProductbyID(i.productId).toPromise().then(res => {this.products.push(res)});
       }
-
+      }
+      if (this.currentAccount.service){
       for (const i of this.currentAccount.service) {
         this.serviceService.getServicebyID(i.serviceId).toPromise().then(res => {this.services.push(res)});
       }
+      }
 
+      if(this.currentAccount.pastPerformance){
       for (const i of this.currentAccount.pastPerformance) {
         // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
         ppService.getPastPerformancebyID(i.pastPerformanceId).toPromise().then(res => this.pastperformances.push(res)); // Might try to continue the for loop before the promise resolves.
+      }
       }
       this.refreshEmployees();
     };
