@@ -102,6 +102,11 @@ p {
     right: 15px;
 }
 
+.btn-back:hover {
+  color: rgba(255, 0, 0, 0.5);;
+}
+
+
 .btn-edit::before {
     content: '';
     position: absolute;
@@ -121,7 +126,11 @@ p {
     height: 26px;
     font-size: 20px;
     line-height: 26px;
-    cursor: pointer;    
+    cursor: pointer;
+}
+
+.btn-edit:hover {
+  color: rgba(255, 0, 0, 0.5);;
 }
 
 button {
