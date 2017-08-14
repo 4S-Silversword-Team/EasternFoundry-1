@@ -283,9 +283,14 @@ export class ProfileEditComponent implements OnInit {
         this.currentUser.positionHistory[i].agencyExperience[0].main.title = this.currentUser.positionHistory[i].Employer
       }
       for (var x = 0; x < this.currentUser.positionHistory[i].agencyExperience.length; x++) {
-        const endDate = +this.currentUser.positionHistory[i].EndDate.slice(0, 4);
+        var endDate = 0
+        if (this.currentUser.positionHistory[i].EndDate.slice(0, 4) == "Curr") {
+          endDate = 2017;
+        } else {
+          endDate = +this.currentUser.positionHistory[i].EndDate.slice(0, 4);
+        }
         const startDate = +this.currentUser.positionHistory[i].StartDate.slice(0, 4);
-        const yearsWorked = (endDate - startDate)
+        var yearsWorked = (endDate - startDate)
         this.currentUser.positionHistory[i].agencyExperience[0].main.data[0].score = yearsWorked
       }
     }
