@@ -7,6 +7,7 @@ export class User {
   cell: string
   office: string
   username: string
+  primaryEmail: string
   avatar: string
   disabled: boolean
   dateOfBirth: string
