@@ -207,6 +207,6 @@ export class User {
     }
   ]
   companyUserProxies: [
-    CompanyUserProxy
+    any
   ]
 }

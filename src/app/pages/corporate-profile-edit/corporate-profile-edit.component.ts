@@ -105,14 +105,16 @@ export class CorporateProfileEditComponent implements OnInit {
     var userId = this.auth.getLoggedInUser()
     this.userService.getUserbyID(userId).toPromise().then((user) =>{
     var currentUserProxy = user.companyUserProxies.filter((proxy) => {
-        return proxy.userProfile == userId
+        return proxy.company._id == this.route.snapshot.params['id']
       })[0]
+      if(currentUserProxy){
       this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
         if (role.title && role.title == "admin") {
           this.isUserAdmin = true;
           console.log("I'm admin")
         }
       })
+    }
     })
   }
 
