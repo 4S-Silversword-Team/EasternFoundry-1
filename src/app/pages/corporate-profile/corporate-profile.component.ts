@@ -148,18 +148,30 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     var skill = [];
     var prof = [];
     var peop = [];
-//    console.log(this.team.strength.length)
-    var count = 0;
+
     for(const i of this.team){
-//      console.log(i.strength.length);
-//      console.log(i);
       for(var j = 0; j < i.strength.length; j++){
-        data_prof.set(i.strength[j].skill, i.strength[j].score);
-        skill.push(i.strength[j].skill);
-        prof.push(i.strength[j].score);
+        if( data_prof.has(i.strength[j].skill) ){
+          data_prof.set(i.strength[j].skill, data_prof.get(i.strength[j].skill)+i.strength[j].score);
+          data_peop.set(i.strength[j].skill, data_peop.get(i.strength[j].skill) + 1)
+        }
+        if( !data_prof.has(i.strength[j].skill) ){
+          data_prof.set(i.strength[j].skill, i.strength[j].score);
+          data_peop.set(i.strength[j].skill, 1);
+          skill.push(i.strength[j].skill);
+        }
       }
     }
-    var team_iter = data_prof.entries();
+    for(var i = 0; i < skill.length; i++){
+      data_prof.set( skill[i], ( data_prof.get( skill[i] )/data_peop.get( skill[i] ) ) );
+      prof[i] = data_prof.get( skill[i] );
+      peop[i] = data_peop.get( skill[i] );
+    }
+
+
+
+
+  //  var team_iter = data_prof.entries();
   //  console.log(team_iter.return);
     //for(var [x , y] of team_iter){
       // skill.push(i)
@@ -181,7 +193,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
           },
           xAxis: [{
 
-              categories: [skill[0], 'Systems', 'Dev Ops', 'Cyber Sec','Cloud'],
+              categories: skill,
               crosshair: true
           }],
           yAxis: [{ // Primary yAxis
@@ -229,7 +241,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
               name: 'People',
               type: 'column',
               yAxis: 1,
-              data: [1, 2, 3, 4, 5],
+              data: peop,
               tooltip: {
                   valueSuffix: ' '
               }
@@ -237,7 +249,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
           }, {
               name: 'Proficiency',
               type: 'column',
-              data: [77, 64, 30, 88, 20],
+              data: prof,
               tooltip: {
                   valueSuffix: '%'
               }
