@@ -14,6 +14,7 @@ import { PastperformanceService } from '../../services/pastperformance.service';
 import { UserService } from '../../services/user.service'
 import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
 import { AuthService } from '../../services/auth.service'
+import { RoleService } from '../../services/role.service'
 
 declare var $: any;
 
@@ -21,7 +22,7 @@ declare var $: any;
   selector: 'app-corporate-profile-edit',
   templateUrl: './corporate-profile-edit.component.html',
   styleUrls: ['./corporate-profile-edit.component.css'],
-  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, CompanyUserProxyService]
+  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, CompanyUserProxyService, RoleService]
 })
 export class CorporateProfileEditComponent implements OnInit {
 
@@ -41,6 +42,7 @@ export class CorporateProfileEditComponent implements OnInit {
   ppInputWidth: number = 300;
   creatingNew: boolean = false;
   writeWidth: number = 800;
+  isUserAdmin: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -52,29 +54,40 @@ export class CorporateProfileEditComponent implements OnInit {
     private ppService: PastperformanceService,
     private userService: UserService,
     private companyUserProxyService: CompanyUserProxyService,
-    private auth: AuthService
+    private auth: AuthService,
+    private roleService: RoleService
   ) {
     if(!auth.isLoggedIn()){
       this.router.navigateByUrl("/login")
     }
     if ( this.router.url !== '/corporate-profile-create' ) {
+      this.getAdminStatus()
       this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result; myCallback(); });
       // .subscribe(result => this.currentAccount =result).
       // this.currentAccount = this.companyService.getTestCompany()
       const myCallback = () => {
+      if (this.currentAccount.product){
       for (const i of this.currentAccount.product) {
         productService.getProductbyID(i.productId).toPromise().then(res => {this.products.push(res)});
       }
-
+      }
+      if (this.currentAccount.service){
       for (const i of this.currentAccount.service) {
         this.serviceService.getServicebyID(i.serviceId).toPromise().then(res => {this.services.push(res)});
       }
+      }
 
+      if(this.currentAccount.pastPerformance){
       for (const i of this.currentAccount.pastPerformance) {
         // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
         ppService.getPastPerformancebyID(i.pastPerformanceId).toPromise().then(res => this.pastperformances.push(res)); // Might try to continue the for loop before the promise resolves.
       }
+      }
       this.refreshEmployees();
+      if(!this.checkIfEmployee()){
+          this.router.navigateByUrl("/corporate-profile/"+this.route.snapshot.params['id'])
+      }
+
     };
     }
     else {
@@ -87,7 +100,26 @@ export class CorporateProfileEditComponent implements OnInit {
   ngOnInit() {
   }
 
+  getAdminStatus() {
+
+    var userId = this.auth.getLoggedInUser()
+    this.userService.getUserbyID(userId).toPromise().then((user) =>{
+    var currentUserProxy = user.companyUserProxies.filter((proxy) => {
+        return proxy.company._id == this.route.snapshot.params['id']
+      })[0]
+      if(currentUserProxy){
+      this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
+        if (role.title && role.title == "admin") {
+          this.isUserAdmin = true;
+          console.log("I'm admin")
+        }
+      })
+    }
+    })
+  }
+
   addEmployee(employeeId) {
+    if (!this.isUserAdmin){return;}
 
     let request = {
       "userProfile": employeeId,
@@ -101,6 +133,7 @@ export class CorporateProfileEditComponent implements OnInit {
   }
 
   deleteEmployee(proxyId){
+    if (!this.isUserAdmin){return;}
     this.companyUserProxyService.deleteCompanyUserProxy(proxyId).then(() =>
     this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }));
   }
@@ -163,6 +196,12 @@ export class CorporateProfileEditComponent implements OnInit {
     })
   }
 
+  checkIfEmployee(): boolean{
+    return this.userProfiles.map((profile) => {
+      return profile.userId
+    }).includes(this.auth.getLoggedInUser())
+  }
+
   addProduct() {
     this.products.push(
       {
@@ -223,6 +262,22 @@ export class CorporateProfileEditComponent implements OnInit {
     )
   }
 
+  addUserWithRole(company, user, role){
+    let request = {
+      "userProfile": user,
+      "company": company,
+      "startDate": "01/01/2001",
+      "endDate": "01/02/2001",
+      "stillAffiliated": true,
+      "role": role
+    }
+    this.companyUserProxyService.addCompanyUserProxy(request).then((res) =>{
+      console.log(res);
+      window.scrollTo(0, 0);
+      this.router.navigate(['companies']);
+    });
+  }
+
   updateCompany(model) {
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     if (this.creatingNew == true) {
@@ -253,10 +308,17 @@ export class CorporateProfileEditComponent implements OnInit {
       //     }
       //   });
       // }
-      this.companyService.createCompany(model).toPromise().then(result => {
-        console.log(result)
-        window.scrollTo(0, 0);
-        this.router.navigate(['companies']);
+      var userId = this.auth.getLoggedInUser()
+      this.companyService.createCompany(model).toPromise().then(newCompany => {
+        console.log(JSON.parse(newCompany._body)._id)
+
+        //TODO handle if no admin in role collection in Db
+        this.roleService.getRoleByTitle("admin").toPromise().then((admin) => {
+          console.log("adminresult",admin)
+          this.addUserWithRole(JSON.parse(newCompany._body)._id, userId, admin._id);
+        })
+        // window.scrollTo(0, 0);
+        // this.router.navigate(['companies']);
       });
     } else {
       for (const i of this.currentAccount.product) {

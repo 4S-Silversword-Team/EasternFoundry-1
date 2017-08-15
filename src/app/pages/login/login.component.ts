@@ -31,7 +31,9 @@ export class LoginComponent implements OnInit {
       this.authError = !this.auth.isLoggedIn()
       if (!this.authError){
         this.nav.navRefresh();
-        this.router.navigateByUrl("/companies")
+        //this.currentUser = this.auth.current_user  //TODO: find out why this doesn't work
+        this.currentUser = localStorage.getItem('uid')
+        this.router.navigateByUrl("/user-profile/" + this.currentUser)
       }
     }).bind(this))
 

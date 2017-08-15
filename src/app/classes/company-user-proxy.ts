@@ -5,5 +5,5 @@ export class CompanyUserProxy {
    startDate: string
    endDate: string
    stillAffiliated: boolean
-
+   role?: string
 }
