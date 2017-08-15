@@ -5,9 +5,17 @@
 .halfwidth {
     width: calc(50% - 2px);
 }
+.thirdwidth {/*TIM*/
+  width: calc(33% - 3px);
+}
 
 .left {
     float: left;
+}
+
+.center {/*TIM*/
+    float: initial;
+    text-align: center;
 }
 
 .right {
@@ -180,11 +188,17 @@ textarea {
     color: #555;
     text-align: center;
 }
-
+.div-tab .center{
+  border-bottom: 5px solid #757575;
+}
+.div-tab .center:hover{
+  background-color: #3bbbed;
+  color: #eff;
+  border-bottom: 5px solid #2aaadc;
+}
 .div-tab .left{
     border-bottom: 5px solid #757575;
 }
-
 .div-tab .left:hover{
     background-color: #3bbbed;
     color: #eff;
@@ -275,7 +289,7 @@ textarea {
     padding-right: 30px;
 }
 
-.pp-slide p.halfwidth strong{    
+.pp-slide p.halfwidth strong{
     line-height: 20px;
 }
 
@@ -298,4 +312,18 @@ textarea {
 
 .schedule .div-title div{
     width: calc(100% - 271px);
+}
+
+
+
+
+
+
+.strength .div-title p{
+    color: #198fcf;
+}
+
+.strength .div-title div{
+    background-color: #0e6daf;
+    width: calc(100% - 272px);
 }

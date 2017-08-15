@@ -8,6 +8,9 @@ import { Service } from '../../classes/service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
+import {Highcharts} from 'angular-highcharts';
+
+
 import { UserService } from '../../services/user.service';
 import { CompanyService } from '../../services/company.service';
 import { ProductService } from '../../services/product.service';
@@ -16,7 +19,8 @@ import { PastperformanceService } from '../../services/pastperformance.service';
 
 declare var $: any;
 declare var Swiper: any;
-
+// var renderChart: boolean;
+// renderChart = false;
 @Component({
   selector: 'app-corporate-profile',
   providers: [UserService, ProductService, ServiceService, PastperformanceService, CompanyService],
@@ -31,8 +35,11 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   pastperformances: PastPerformance[] = [];
   currentPP = 0;
   CQAC: string[] = [];
-  currentTab = true;
+  currentTab = 1;
   promiseFinished: boolean = false;
+  team: User[]  = [];
+  renderChart: boolean;
+  chart: Highcharts;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,9 +49,10 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     private companyService: CompanyService,
     private productService: ProductService,
     private serviceService: ServiceService,
-    private ppService: PastperformanceService
+    private ppService: PastperformanceService,
   ) {
 
+    this.renderChart = false;
     // this.currentAccount = this.companyService.getTestCompany()
     // Need to use companyservice.getCompanyByID
     this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then(company => { this.currentAccount = company; myCallback(); });
@@ -55,19 +63,31 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
       }
 
     for (const i of this.currentAccount.product) {
-      this.productService.getProductbyID(i.productId).toPromise().then(res => {this.products.push(res)});
+      this.productService.getProductbyID(i.toString()).toPromise().then(res => {this.products.push(res)});
     }
 
 
     for (const i of this.currentAccount.service) {
-      this.serviceService.getServicebyID(i.serviceId).toPromise().then(res => {this.services.push(res)});
+      this.serviceService.getServicebyID(i.toString()).toPromise().then(res => {this.services.push(res)});
     }
 
     for (const i of this.currentAccount.pastPerformance) {
       // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
-      this.ppService.getPastPerformancebyID(i.pastPerformanceId).toPromise().then(res => {this.pastperformances.push(res)}); // Might try to continue the for loop before the promise resolves.
+      this.ppService.getPastPerformancebyID(i.toString()).toPromise().then(res => {this.pastperformances.push(res)}); // Might try to continue the for loop before the promise resolves.
       // let myCallback = () => {console.log(this.pastperformances);}
     }
+
+//TIM
+    for (const i of this.currentAccount.userProfileProxies){
+    //  console.log(this);
+      // console.log("proxyID == " + i._id);
+      // console.log("userID  == "+ i.userProfile.firstname);
+      this.userService.getUserbyID(i.userProfile._id).toPromise().then(member => { this.team.push(member);});
+      //console.log(this.team);
+    }
+
+
+//
     const myCallback2 = () => {
 
       for (const i of this.users) {
@@ -84,6 +104,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     };
     this.promiseFinished = true;
   };
+//  this.showTeam();
   }
 
   ngOnInit() {
@@ -115,15 +136,131 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
         freeMode: true
       });
     }
+    this.showTeam();
   }
 
+  showTeam(){
+    console.log("moved to team tab. implement the chat generation");
+    this.currentTab = 1;
+    this.renderChart = true;
+    var data_prof = new Map();
+    var data_peop = new Map();
+    var skill = [];
+    var prof = [];
+    var peop = [];
+//    console.log(this.team.strength.length)
+    var count = 0;
+    for(const i of this.team){
+//      console.log(i.strength.length);
+//      console.log(i);
+      for(var j = 0; j < i.strength.length; j++){
+        data_prof.set(i.strength[j].skill, i.strength[j].score);
+        skill.push(i.strength[j].skill);
+        prof.push(i.strength[j].score);
+      }
+    }
+    var team_iter = data_prof.entries();
+  //  console.log(team_iter.return);
+    //for(var [x , y] of team_iter){
+      // skill.push(i)
+//this is why c is a good language. i could just make my own data structure
+  console.log(skill[0]);
+  console.log(prof);
+
+    //}
+    //console.log(data_prof);
+    var options = {
+
+          chart: {
+              type: 'bar',
+              backgroundColor: '#FDF5EB',
+              renderTo: "team_chart"
+          },
+          title: {
+              text: 'Skills'
+          },
+          xAxis: [{
+
+              categories: [skill[0], 'Systems', 'Dev Ops', 'Cyber Sec','Cloud'],
+              crosshair: true
+          }],
+          yAxis: [{ // Primary yAxis
+              labels: {
+                  format: '{value}%',
+                  style: {
+                      color: Highcharts.getOptions().colors[1]
+                  }
+              },
+              title: {
+                  text: 'Proficiency',
+                  style: {
+                      color: Highcharts.getOptions().colors[1]
+                  }
+              }
+          }, { // Secondary yAxis
+              title: {
+                  text: 'Number of Employees',
+                  style: {
+                      color: Highcharts.getOptions().colors[0]
+                  }
+              },
+              labels: {
+                  step: 1,
+                  format: '{value:.0f}',
+                  style: {
+                      color: Highcharts.getOptions().colors[0]
+                  }
+              },
+              opposite: true
+          }],
+          tooltip: {
+              shared: true
+          },
+          // legend: {
+          //     layout: 'vertical',
+          //     align: 'left',
+          //     x: 375,
+          //     verticalAlign: 'top',
+          //     y: 0,
+          //     floating: true,
+          //     backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FDF5EB'
+          // },
+          series: [{
+              name: 'People',
+              type: 'column',
+              yAxis: 1,
+              data: [1, 2, 3, 4, 5],
+              tooltip: {
+                  valueSuffix: ' '
+              }
+
+          }, {
+              name: 'Proficiency',
+              type: 'column',
+              data: [77, 64, 30, 88, 20],
+              tooltip: {
+                  valueSuffix: '%'
+              }
+          }]
+    };
+    this.chart = new Highcharts.chart(options);
+  //  console.log(this.chart);
+  }
+
+
+
+
   showService() {
-    this.currentTab = false;
+    this.currentTab = 2;
+    this.renderChart = false;
   }
 
   showProduct() {
-    this.currentTab = true;
+    this.currentTab = 3;
+    this.renderChart = false;
   }
+
+
 
   getServiceChartValue(id: string): number[] {
     const temp: number[] = [];

@@ -33,6 +33,9 @@ import { BarchartComponent } from './components/barchart/barchart.component';
 import { AvailablebarComponent } from './components/availablebar/availablebar.component';
 import { SelectorComponent } from './components/selector/selector.component';
 
+import { ChartModule } from 'angular-highcharts';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,7 +65,8 @@ import { SelectorComponent } from './components/selector/selector.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(ROUTES, {useHash: true})
+    RouterModule.forRoot(ROUTES, {useHash: true}),
+    ChartModule
   ],
   providers: [],
   bootstrap: [AppComponent]
