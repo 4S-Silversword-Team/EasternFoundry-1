@@ -35,12 +35,13 @@ export class AuthService {
   ) {
     this.authHttp = new AuthHttp(http)
 
-    // check if the user is logged or if token is expired. If true then login
-    if (!this.isLoggedIn()) {
-      this.router.navigateByUrl("/login")
-    } else { // else if already logged in go to corporate profile page
-      this.router.navigateByUrl("/companies")
-    }
+    //This should not be here because it is called anytime auth service is invoked: i.e. it redirects at inappropriate times
+    // // check if the user is logged or if token is expired. If true then login
+    // if (!this.isLoggedIn()) {
+    //   this.router.navigateByUrl("/login")
+    // } else { // else if already logged in go to corporate profile page
+    //   this.router.navigateByUrl("/companies")
+    // }
   }
 
   doLogin(email, password, callback) {

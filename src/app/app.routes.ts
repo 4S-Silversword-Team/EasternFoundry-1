@@ -18,6 +18,7 @@ export const ROUTES: Routes = [
   { path: '',      component: LoginComponent },
   { path: 'login', component: LoginComponent},
   { path: 'companies', component: CompaniesComponent},
+  { path: 'my-companies', component: CompaniesComponent},
   { path: 'user-profile/:id',      component: ProfileComponent },
   { path: 'corporate-profile/:id', component: CorporateProfileComponent },
   { path: 'past-performance/:id', component: PastPerformanceComponent},
