@@ -16,6 +16,7 @@ import { AllProfilesComponent } from './pages/all-profiles/all-profiles.componen
 import { PastPerformanceComponent } from './pages/past-performance/past-performance.component';
 import { PastPerformanceEditComponent } from './pages/past-performance-edit/past-performance-edit.component';
 import { NoContentComponent } from './pages/no-content/no-content.component';
+import { MyPastPerformancesComponent } from './pages/my-pastperformances/my-pastperformances.component'
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RatingModule } from 'ng2-bootstrap/rating';
@@ -54,7 +55,7 @@ import { ChartModule } from 'angular-highcharts';
     ExpChartComponent,
     CareerComponent,
     BarchartComponent,
-    AvailablebarComponent, SelectorComponent, CompaniesComponent, CorporateProfileEditComponent
+    AvailablebarComponent, SelectorComponent, CompaniesComponent, CorporateProfileEditComponent, MyPastPerformancesComponent
   ],
   imports: [
     NgbModule.forRoot(),

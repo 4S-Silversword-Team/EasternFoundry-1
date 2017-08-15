@@ -209,4 +209,7 @@ export class User {
   companyUserProxies: [
     any
   ]
+  pastPerformanceProxies: [
+    any
+  ]
 }
