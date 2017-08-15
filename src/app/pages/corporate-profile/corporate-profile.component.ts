@@ -8,7 +8,7 @@ import { Service } from '../../classes/service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import {Highcharts} from 'angular-highcharts';
+import { Highcharts } from 'angular-highcharts';
 
 
 import { UserService } from '../../services/user.service';
