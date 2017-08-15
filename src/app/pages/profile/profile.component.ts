@@ -25,6 +25,7 @@ export class ProfileComponent implements OnInit {
     values: [],
     dates: []
   }
+  agencyExperience: any[] = []
 
 
   constructor(
@@ -66,10 +67,27 @@ export class ProfileComponent implements OnInit {
         this.availabilityData.values.push(index.available)
       }
       this.strengthChartDatas.push({data: temp, label: 'Strength'})
+
       for (let job of this.currentUser.positionHistory) {
         job.Year = +job.StartDate.slice(0, 4);
+        for (let agency of job.agencyExperience) {
+          var nameMatch = false
+          for (let i of this.agencyExperience) {
+            if (agency.main.title == i.main.title) {
+              i.main.data[0].score = (i.main.data[0].score + agency.main.data[0].score)
+              nameMatch = true
+            }
+          }
+          if (nameMatch == false) {
+            if (this.agencyExperience[0] == null) {
+              this.agencyExperience[0] = job.agencyExperience[0]
+            } else {
+              this.agencyExperience.push(agency)
+            }
+          }
+        }
       }
-
+      console.log(this.agencyExperience[0].main.titles)
       function stringToBool(val) {
         return (val + '').toLowerCase() === 'true';
       };
@@ -90,7 +108,9 @@ export class ProfileComponent implements OnInit {
           this.currentUser.positionHistory[i].isKO = stringToBool(this.currentUser.positionHistory[i].isKO)
         }
       }
-
+      if (this.currentUser.education[0].DegreeType[0] == null) {
+        this.currentUser.education[0].DegreeType.push({Name: ''})
+      }
       this.promiseFinished = true;
     }
 
@@ -99,10 +119,18 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
   }
 
+  // getCapaChartValues(tempUser: User): number[] {
+  //   let temp: number[] = []
+  //   for (let index of tempUser.skills) {
+  //     temp.push(+index[1])
+  //   }
+  //   return temp
+  // }
+
   getCapaChartValues(tempUser: User): number[] {
     let temp: number[] = []
-    for (let index of tempUser.skills) {
-      temp.push(+index[1])
+    for (let index of tempUser.occupations) {
+      temp.push(index.score)
     }
     return temp
   }
@@ -117,8 +145,8 @@ export class ProfileComponent implements OnInit {
 
   expMainValues(tempUser: User, jobNum, agencyNum): number[] {
     let temp: number[] = []
-    for (let data of this.currentUser.positionHistory[jobNum].agencyExperience[agencyNum].main.data) {
-      temp.push(data.score)
+    for (let data of this.agencyExperience[agencyNum].main.data) {
+      temp.push(data.score * 10)
     }
     return temp
   }

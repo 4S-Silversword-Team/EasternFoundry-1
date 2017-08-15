@@ -45,7 +45,7 @@
             </div>
             <div class="col-xs-12 srow">
                 <p class="left lh-50">Rating</p>
-                <rating [(ngModel)]="rate" [max]="5" [readonly]="isReadonly" class="right srow" [style.line-height]="'50px'"></rating>
+                <rating [(ngModel)]="this.currentPastPerformance.rating" [max]="5" [readonly]="isReadOnly" class="right srow" [style.line-height]="'50px'"></rating>
             </div>
             <div class="col-xs-12 srow mt15">
                 <p class="left lh-25">Location<br>(zipcode)</p>
@@ -57,39 +57,58 @@
             </div>
             <div class="col-xs-12 srow mt15">
                 <p class="left lh-50"># of FTE</p>
-                <input type="text" [(ngModel)] = "this.currentPastPerformance.fte" placeholder="FTE" class="right" [style.width]="''+ppInputWidth+'px'">
+                <input type="text" [(ngModel)] = "this.currentPastPerformance.FTE" placeholder="FTE" class="right" [style.width]="''+ppInputWidth+'px'">
             </div>
         </div>
     </div>
 </div>
 
-<div class="employee col-xs-12 clear">
+<div *ngIf="!this.createMode" class="employee col-xs-12 clear">
     <div class="div-title col-xs-12">
         <img src="./assets/img/employee.png">
         <p>EMPLOYEES</p>
         <div></div>
     </div>
     <div [style.width]="''+employeeWidth+'px'">
-        <!--<selector [items]='agencyType' [width] = 'employeeWidth'></selector>
-        <div class="text-container" [style.height]="'300px'"><textarea></textarea></div>-->
 
-        <table *ngFor=" let employee of this.currentPastPerformance.employees; let i = index">
-	          <!--<div>{{employee.title}}  {{employee.stillwith}}  {{i}}</div>-->
+
+
+        <table style="margin-top: 1em" *ngFor=" let employee of this.userProfiles">
 	          <tr>
 	            <td>
-	              <button (click)="deleteArrayIndex(this.currentPastPerformance.employees, i)" style="width: 1.5em; height: 1.75em; margin-top: 1.5em; margin-right: 1em;">X</button>
+	              <button (click)="deleteEmployee(employee.proxyId)" style="width: 1.5em; height: 1.75em; margin-right: 1em;">X</button>
 	            </td>
 	            <td>
-	              <p>Title</p>
-	              <input type="text" [(ngModel)] = "this.currentPastPerformance.employees[i].title" placeholder="title">
+	              <p>Name</p>
+	              <span>{{employee.name}}</span>
+	            </td>
+              <!-- <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" onblur="(this.type='text')" onfocus="(this.type='date')" placeholder="{{employee.startDate}}"></span> -->
+
+              <td>
+	              <p>Start Date</p>
+	              <span><input (change)="updateEmployee(employee.proxyId, 'startDate', employee.startDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="employee.startDate"></span>
+	            </td>
+              <td>
+	              <p>End Date</p>
+	              <span><input (change)="updateEmployee(employee.proxyId, 'endDate', employee.endDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="employee.endDate"></span>
 	            </td>
 
 	            <td>
-	              <p>Still with?</p>
-	              <input style="margin-top:.75em; margin-left:1em" type="checkbox" [(ngModel)] = "this.currentPastPerformance.employees[i].stillWith" name="stillWith">
+	              <p>Still Affiliated?</p>
+                <span><input (change)="updateEmployee(employee.proxyId, 'stillAffiliated', employee.stillAffiliated)" type="checkbox" [(ngModel)]="employee.stillAffiliated" /></span>
+	              <!-- <input style="margin-top:.75em; margin-left:1em" type="checkbox" [(ngModel)] = "this.currentPastPerformance.employees[i].stillWith" name="stillWith"> -->
 	          </td>
+            <td>
+              <p>Role</p>
+              <span><input (blur)="updateEmployee(employee.proxyId, 'role', employee.role)" type="text" [(ngModel)]="employee.role" /></span>
+            </td>
+
 	        </table>
-        <div class="col-xs-12" [style.margin]="'auto'"><button class="center-block" (click)="addEmployee(this.currentPastPerformance.employees)">Add</button></div>
+          <select style="margin-top: 1em" class="form-control" [(ngModel)]="this.newUserSelected">
+            <option *ngFor="let user of this.allCompanyEmployees" value={{user._id}}>{{user.firstName}} {{user.lastName}}: {{user.username}}</option>
+          </select>
+
+        <div class="col-xs-12" [style.margin]="'auto'" [style.margin-top]="'1em'"><button class="center-block" (click)="addEmployee(this.newUserSelected)">Add</button></div>
 
     </div>
 </div>

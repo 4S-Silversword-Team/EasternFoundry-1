@@ -1,5 +1,5 @@
 export class Company {
-    id: string
+    _id: string
     name: string
     email: string
     avatar: string
@@ -40,4 +40,5 @@ export class Company {
     userProfileProxies : [
     any
   ]
+
 }
