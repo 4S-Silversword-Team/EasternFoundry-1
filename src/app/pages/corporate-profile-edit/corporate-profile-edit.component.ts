@@ -57,9 +57,13 @@ export class CorporateProfileEditComponent implements OnInit {
     private auth: AuthService,
     private roleService: RoleService
   ) {
-    if(!auth.isLoggedIn()){
-      this.router.navigateByUrl("/login")
-    }
+    // if(!auth.isLoggedIn()){
+    //   this.router.navigateByUrl("/login")
+    // }
+    auth.isLoggedIn().then(res => {
+      !res ? this.router.navigateByUrl("/login"): afterLogin()
+    }).catch(reason => {console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})
+    let afterLogin = () => {
     if ( this.router.url !== '/corporate-profile-create' ) {
       this.getAdminStatus()
       this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result; myCallback(); });
@@ -95,6 +99,7 @@ export class CorporateProfileEditComponent implements OnInit {
       this.currentAccount = companyService.getEmptyCompany();
       this.creatingNew = true;
     }
+  }
   }
 
   ngOnInit() {

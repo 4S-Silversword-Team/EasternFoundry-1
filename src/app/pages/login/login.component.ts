@@ -28,12 +28,15 @@ export class LoginComponent implements OnInit {
 
   logIn() {
     this.auth.doLogin(this.email, this.password, (function() {
-      this.authError = !this.auth.isLoggedIn()
-      if (!this.authError){
-        this.nav.navRefresh();
-        //this.currentUser = this.auth.current_user  //TODO: find out why this doesn't work
-        this.currentUser = localStorage.getItem('uid')
-        this.router.navigateByUrl("/user-profile/" + this.currentUser)
+      //this.authError = !this.auth.isLoggedIn()
+      this.auth.isLoggedIn().then(res => { this.authError = !res; myCallback() }).catch(reason => {this.authError = true; myCallback()})
+      let myCallback = () => {
+        if (!this.authError){
+          this.nav.navRefresh();
+          //this.currentUser = this.auth.current_user  //TODO: find out why this doesn't work
+          this.currentUser = localStorage.getItem('uid')
+          this.router.navigateByUrl("/user-profile/" + this.currentUser)
+        }
       }
     }).bind(this))
 

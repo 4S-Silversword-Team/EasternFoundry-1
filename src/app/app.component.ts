@@ -17,9 +17,13 @@ export class AppComponent implements OnInit {
   constructor(
     private auth: AuthService,
   ){
-    this.signedIn = this.auth.isLoggedIn()
-    //this.currentUser = this.auth.current_user  //TODO: find out why this doesn't work
-    this.currentUser = localStorage.getItem('uid')
+    this.auth.isLoggedIn().then(res => { console.log("Navbar checkin login status", res); this.signedIn = res; myCallback() }).catch(reason => { this.signedIn = false; localStorage.removeItem('uid'); this.currentUser = null })
+
+    let myCallback = () => {
+      //this.currentUser = this.auth.current_user  //TODO: find out why this doesn't work
+      this.currentUser = localStorage.getItem('uid')
+    }
+
   }
 
   ngOnInit() {
@@ -27,13 +31,17 @@ export class AppComponent implements OnInit {
 
   navLogOut() {
     this.auth.doLogout()
-    this.signedIn = this.auth.isLoggedIn()
-    this.currentUser = localStorage.getItem('uid')
+    this.auth.isLoggedIn().then(res => { console.log("Navbar checkin logout status. signedIn: ", res); this.signedIn = res; myCallback() }).catch(reason => { this.signedIn = false; localStorage.removeItem('uid'); this.currentUser = null })
+    let myCallback = () => {
+      this.currentUser = localStorage.getItem('uid')
+    }
   }
 
   navRefresh() {
-    this.signedIn = this.auth.isLoggedIn()
-    this.currentUser = localStorage.getItem('uid')
+    this.auth.isLoggedIn().then(res => { console.log("Navbar refreshing: signedIn: ", res); this.signedIn = res; myCallback() }).catch(reason => { this.signedIn = false; localStorage.removeItem('uid'); this.currentUser = null })
+    let myCallback = () => {
+      this.currentUser = localStorage.getItem('uid')
+    }
   }
 
 }
