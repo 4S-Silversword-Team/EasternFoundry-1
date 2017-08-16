@@ -64,30 +64,18 @@
         }
     ],
     "pastPerformance": [
-    	{
-    		"pastPerformanceId": "598b58e6fa1e950011ec4b5f"
-    	}
     	],
     "service": [
-    	{
-    		"serviceId": "598b591efa1e950011ec4b64"
-    	}
     	],
     "product": [
-    	{
-    		"productId": "598b5810fa1e950011ec4b45"
-    	},
-		{
-    		"productId": "598b583cfa1e950011ec4b4c"
-    	}
     ],
     "leadership": [
         {
-            "userId": "598b5496fa1e950011ec4b42",
+            "userId": "599464c420130a001104a3b7",
             "_id": "5978bab7d4297936b588ea41"
         },
         {
-            "userId": "598b5496fa1e950011ec4b42",
+            "userId": "599464c420130a001104a3b7",
             "_id": "5978bab7d4297936b588ea40"
         }
     ]
