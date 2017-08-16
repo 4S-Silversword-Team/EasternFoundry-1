@@ -30,11 +30,16 @@
     "@angular/router": "^4.3.3",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.30",
     "@types/d3": "^4.10.0",
+    "@types/google.visualization": "0.0.35",
     "@types/jasmine": "2.5.38",
     "@types/jquery": "^2.0.48",
     "@types/node": "^6.0.85",
+    "angular-chart.js": "^1.1.1",
+    "angular-google-chart": "^0.1.0",
+    "angular-highcharts": "^3.4.2",
     "bootstrap": "^3.3.7",
     "chart.js": "^2.5.0",
+    "cli": "^1.0.1",
     "codelyzer": "~2.0.0",
     "core-js": "^2.5.0",
     "d3": "^4.10.0",
@@ -61,5 +66,8 @@
     "webpack": "^3.3.0",
     "zone.js": "^0.8.16"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/jquery": "^2.0.48",
+    "highcharts": "^5.0.14"
+  }
 }

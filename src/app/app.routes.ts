@@ -11,6 +11,7 @@ import { AllProfilesComponent } from './pages/all-profiles/all-profiles.componen
 import { PastPerformanceComponent } from './pages/past-performance/past-performance.component';
 import { PastPerformanceEditComponent } from './pages/past-performance-edit/past-performance-edit.component';
 import { NoContentComponent } from './pages/no-content/no-content.component';
+import { MyPastPerformancesComponent } from './pages/my-pastperformances/my-pastperformances.component'
 
 
 export const ROUTES: Routes = [
@@ -18,6 +19,8 @@ export const ROUTES: Routes = [
   { path: '',      component: LoginComponent },
   { path: 'login', component: LoginComponent},
   { path: 'companies', component: CompaniesComponent},
+  { path: 'my-companies', component: CompaniesComponent},
+  { path: 'my-pastperformances', component: MyPastPerformancesComponent},
   { path: 'user-profile/:id',      component: ProfileComponent },
   { path: 'corporate-profile/:id', component: CorporateProfileComponent },
   { path: 'past-performance/:id', component: PastPerformanceComponent},

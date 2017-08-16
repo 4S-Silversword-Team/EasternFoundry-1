@@ -1,3 +1,5 @@
+import {CompanyUserProxy} from './company-user-proxy'
+
 export class User {
   _id: string
   firstName: string
@@ -203,5 +205,11 @@ export class User {
       classification: string
       score: number
     }
+  ]
+  companyUserProxies: [
+    any
+  ]
+  pastPerformanceProxies: [
+    any
   ]
 }

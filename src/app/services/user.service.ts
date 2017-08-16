@@ -37,6 +37,12 @@ export class UserService {
     return response;
   }
 
+  getUserIdByEmail(email: string){
+    var response = this.authHttp.get(environment.apiRoot + "profiles/email/" + email)
+      .map(response => response.json())
+    return response;
+  }
+
   registerUser(){
 
   }
