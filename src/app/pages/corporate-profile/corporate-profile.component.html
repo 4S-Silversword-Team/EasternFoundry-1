@@ -1,10 +1,6 @@
 <div class="container">
-  <button class="login-toggle" (click) = "this.loggedIn = !this.loggedIn">
-    (registering doesn't work so if
-     you need to edit click here)
-  </button>
-    <div class="btn-edit" (click) = 'editCompany()' *ngIf='this.loggedIn'>Edit</div>
-    <div class="btn-back" (click) = 'this.location.back()'></div>
+  <div class="btn-edit" (click) = 'editCompany()' *ngIf='this.loggedIn'>Edit</div>
+  <div class="btn-back" (click) = 'this.location.back()'></div>
   <div class="basic-info col-xs-12 clear">
     <div class="col-xs-12 srow div-title" *ngIf = this.promiseFinished>
         <p class="left">{{ this.currentAccount.name }}</p>
