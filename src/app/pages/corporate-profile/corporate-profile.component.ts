@@ -16,6 +16,7 @@ import { CompanyService } from '../../services/company.service';
 import { ProductService } from '../../services/product.service';
 import { ServiceService } from '../../services/service.service';
 import { PastperformanceService } from '../../services/pastperformance.service';
+import { AuthService } from '../../services/auth.service'
 
 declare var $: any;
 declare var Swiper: any;
@@ -40,6 +41,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   team: User[]  = [];
   renderChart: boolean;
   chart: Highcharts;
+  loggedIn: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -49,8 +51,15 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     private companyService: CompanyService,
     private productService: ProductService,
     private serviceService: ServiceService,
+    private auth: AuthService,
     private ppService: PastperformanceService,
   ) {
+
+    auth.isLoggedIn().then(
+      res => {
+        !res ? this.loggedIn = false: this.loggedIn = true
+      }
+    )
 
     this.renderChart = false;
     // this.currentAccount = this.companyService.getTestCompany()

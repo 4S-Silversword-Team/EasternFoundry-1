@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 
 import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
+import { AuthService } from '../../services/auth.service'
 
 declare var $: any;
 
@@ -26,17 +27,24 @@ export class ProfileComponent implements OnInit {
     dates: []
   }
   agencyExperience: any[] = []
+  loggedIn: boolean = false
 
 
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
+    private auth: AuthService,
     public location: Location
   ) {
 
     // this.currentUser = this.userService.getTempUser();
 
+    auth.isLoggedIn().then(
+      res => {
+        !res ? this.loggedIn = false: this.loggedIn = true
+      }
+    )
 
     this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
       this.currentUser = result;

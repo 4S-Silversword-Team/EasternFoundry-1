@@ -159,6 +159,15 @@ input {
     background: #1c1c1c;
 }
 
+.login-toggle {
+  position: absolute;
+  right: 5px;
+  top: 105px;
+  font-size: 10px;
+  line-height: normal;
+  height: 40px;
+}
+
 .fc-title           { color: #4373c3; }
 .fc-subtitle        { color: #3e3e3e; }
 .fc-white           { color: white; }
