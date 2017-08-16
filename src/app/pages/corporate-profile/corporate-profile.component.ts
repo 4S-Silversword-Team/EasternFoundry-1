@@ -51,7 +51,8 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     private serviceService: ServiceService,
     private ppService: PastperformanceService,
   ) {
-
+    // console.log("testing1");
+    // console.log(this);
     this.renderChart = false;
     // this.currentAccount = this.companyService.getTestCompany()
     // Need to use companyservice.getCompanyByID
@@ -78,14 +79,19 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     }
 
 //TIM
-    for (const i of this.currentAccount.userProfileProxies){
-    //  console.log(this);
-      // console.log("proxyID == " + i._id);
-      // console.log("userID  == "+ i.userProfile.firstname);
-      this.userService.getUserbyID(i.userProfile._id).toPromise().then(member => { this.team.push(member);});
-      //console.log(this.team);
-    }
+// console.log("testing2");
+// console.log(this);
 
+    // for (const i of this.currentAccount.userProfileProxies){
+    // //  console.log(this);
+    //   // console.log("proxyID == " + i._id);
+    //   // console.log("userID  == "+ i.userProfile.firstname);
+    //   this.userService.getUserbyID(i.userProfile._id).toPromise().then(member => { this.team.push(member);});
+    //   //console.log(this.team);
+    // }
+
+    console.log("calling change to team");
+    this.changeToTeam();
 
 //
     const myCallback2 = () => {
@@ -136,48 +142,73 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
         freeMode: true
       });
     }
-    this.showTeam();
   }
 
-  showTeam(){
-    console.log("moved to team tab. implement the chat generation");
-    this.currentTab = 1;
-    this.renderChart = true;
+
+changeToTeam(){
+
+  this.currentTab = 1;
+  // console.log("inside change to team");
+  // console.log(this);
+  //setTimeout(this.showTeam(), 0
+  console.log("moving ot show team");
+  // setTimeout(this.showTeam(), 1000);
+  this.showTeam();
+}
+
+
+
+
+
+
+  async showTeam(){
+    console.log("in show Team");
+    console.log(this);
+    // this.currentTab = 1;
+//    this.renderChart = true;
     var data_prof = new Map();
     var data_peop = new Map();
     var skill = [];
     var prof = [];
     var peop = [];
+//    console.log(this.team);
+//    console.log(this.currentAccount.userProfileProxies);
 
-    for(const i of this.team){
-      for(var j = 0; j < i.strength.length; j++){
-        if( data_prof.has(i.strength[j].skill) ){
-          data_prof.set(i.strength[j].skill, data_prof.get(i.strength[j].skill)+i.strength[j].score);
-          data_peop.set(i.strength[j].skill, data_peop.get(i.strength[j].skill) + 1)
+    for(const i of this.currentAccount.userProfileProxies){
+  //    console.log("1");
+  console.log(i.userProfile)
+      var member = i.userProfile;
+      console.log(member.strength[0].skill);
+      for(var j = 0; j < member.strength.length; j++){
+        if( data_prof.has(member.strength[j].skill) ){
+          data_prof.set(member.strength[j].skill, data_prof.get(member.strength[j].skill) + member.strength[j].score);
+          data_peop.set(member.strength[j].skill, data_peop.get(member.strength[j].skill) + 1);
         }
-        if( !data_prof.has(i.strength[j].skill) ){
-          data_prof.set(i.strength[j].skill, i.strength[j].score);
-          data_peop.set(i.strength[j].skill, 1);
-          skill.push(i.strength[j].skill);
+        if( !data_prof.has(member.strength[j].skill) ){
+          data_prof.set(member.strength[j].skill, member.strength[j].score);
+          data_peop.set(member.strength[j].skill, 1);
+          skill.push(member.strength[j].skill);
+
         }
+
       }
     }
-    for(var i = 0; i < skill.length; i++){
-      data_prof.set( skill[i], ( data_prof.get( skill[i] )/data_peop.get( skill[i] ) ) );
-      prof[i] = data_prof.get( skill[i] );
-      peop[i] = data_peop.get( skill[i] );
+    for(var k = 0; k < skill.length; k++){
+      data_prof.set( skill[k], ( data_prof.get( skill[k] )/data_peop.get( skill[k] ) ) );
+      prof[k] = data_prof.get( skill[k] );
+      peop[k] = data_peop.get( skill[k] );
     }
 
 
-
+    console.log("for some reason it is skipping over the population of the chart...... why.....");
 
   //  var team_iter = data_prof.entries();
   //  console.log(team_iter.return);
     //for(var [x , y] of team_iter){
       // skill.push(i)
 //this is why c is a good language. i could just make my own data structure
-  console.log(skill[0]);
-  console.log(prof);
+//  console.log(skill[0]);
+//  console.log(prof);
 
     //}
     //console.log(data_prof);
@@ -254,9 +285,12 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
                   valueSuffix: '%'
               }
           }]
+  //        loading:false
     };
+    console.log("skills: \n" + skill);
+    console.log("Proficiency: \n" +prof);
+    console.log("people: \n" +peop);
     this.chart = new Highcharts.chart(options);
-  //  console.log(this.chart);
   }
 
 

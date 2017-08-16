@@ -57,7 +57,7 @@
 
   <div class="div-tab col-xs-12 clear">
       <div [style.width] = "'80%'" [style.margin-left]="'10%'">
-        <div class="thirdwidth left" id="teamTab" (click)='showTeam();'>Team</div><!--TIM-->
+        <div class="thirdwidth left" id="teamTab" (click)='changeToTeam();'>Team</div><!--TIM-->
           <div class="thirdwidth left" id="serviceTab" (click)='showService()'>Services</div>
           <div class="thirdwidth left" id="productTab" (click)='showProduct()'>Products</div>
       </div>
@@ -185,8 +185,8 @@
       <img src="./assets/img/profile/agency-4.png">
       <p>Team Analytics</p>
       <div></div>
-      <div class="team_chart" id="team_chart" [chart]="team_chart" style="min-width: 500px; height: 500px; margin: 0 auto"></div>
-  </div>
+      <div  id="team_chart"  style="min-width: 500px; height: 500px; margin: 0 auto"></div>
+</div>
 <!-- </div> -->
 <!-- END For Team Tab -->
 
