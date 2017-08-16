@@ -21,7 +21,7 @@
     "@angular/cli": "^1.2.7",
     "@angular/common": "^4.3.3",
     "@angular/compiler": "^4.3.3",
-    "@angular/compiler-cli": "^4.3.3",
+    "@angular/compiler-cli": "^4.3.4",
     "@angular/core": "^4.3.3",
     "@angular/forms": "^4.3.3",
     "@angular/http": "^4.3.3",
@@ -67,6 +67,5 @@
     "webpack": "^3.3.0",
     "zone.js": "^0.8.16"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
