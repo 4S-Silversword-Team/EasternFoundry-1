@@ -26,7 +26,8 @@ export class PastPerformanceEditComponent implements OnInit {
   userProfiles: any[] = [];
   allCompanyEmployees: any[] = [];
   newUserSelected: string;
-
+  isReadOnly: boolean = false;
+  createMode: boolean = false;
   ppImage: string;
   ppInputWidth: number = 300;
   employeeWidth: number = 600;
@@ -42,8 +43,10 @@ export class PastPerformanceEditComponent implements OnInit {
     private companyService: CompanyService,
     private userPastPerformanceProxyService: UserPastPerformanceProxyService
   ) {
-    if ( this.router.url !== 'past-performance-create' ) {
+    if ( this.router.url !== '/past-performance-create' ) {
       this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2() });
+    } else {
+      this.createMode = true;
     }
   }
 
@@ -88,10 +91,23 @@ export class PastPerformanceEditComponent implements OnInit {
   }
   updatePP(model) {
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
+    if ( !this.createMode ) {
     delete model['_id'];
     this.pastPerformanceService.updatePP(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
     window.scrollTo(0, 0);
     this.router.navigate(['past-performance', this.route.snapshot.params['id']]);
+  } else {
+    //creating a new PP
+    // TODO: Require auth of a signed in user with admin priveleges to the company that this past performance will be associated with.
+    console.log(model)
+    this.pastPerformanceService.createPastPerformance(model).toPromise().then(result => {console.log(result)
+      //TODO: call addEmployee with the signed in user's id and the new pastperformance id.
+      //TODO: Add a call to create a companyPastPerformanceProxy with the appropriate company and the newly created past performance's id
+      //Finally, redirect to the past performance
+      window.scrollTo(0, 0);
+      this.router.navigate(['past-performance', result['_id']]);
+    });
+  }
   }
   addEmployee(employeeId) {
     let request = {

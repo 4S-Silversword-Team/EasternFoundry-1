@@ -38,6 +38,7 @@ export class Company {
         }
     ]
     userProfileProxies : [
-      any
-    ]
+    any
+  ]
+
 }

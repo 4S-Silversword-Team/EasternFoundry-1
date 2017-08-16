@@ -65,7 +65,7 @@
     <p>EMPLOYEES</p>
     <div></div>
   </div>
-  <div class="container">
+  <div *ngIf="!creatingNew" class="container">
     <div class="col-xs-12">
       <div class="srow">
         <span class="col-xs-1 col-sm-1 col-md-1 text-center" ></span>
@@ -78,26 +78,23 @@
       </div>
       <div  *ngFor='let employee of this.userProfiles'>
       <div class="srow">
-        <span class="col-xs-1 col-sm-1 col-md-1 text-center" ><button class="col-xs-2 col-sm-2 col-md-2 text-center" (click)="deleteEmployee(employee.proxyId)">X</button></span>
+        <span class="col-xs-1 col-sm-1 col-md-1 text-center" ><button *ngIf="this.isUserAdmin" class="col-xs-2 col-sm-2 col-md-2 text-center" (click)="deleteEmployee(employee.proxyId)">X</button></span>
           <span class="col-xs-2 col-sm-2 col-md-2 text-center text-nowrap" >{{employee.name}}</span>
           <span class="col-xs-2 col-sm-2 col-md-2 text-center" >{{employee.username}}</span>
           <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" (change)="updateEmployee(employee.proxyId,'startDate',employee.startDate)" [(ngModel)]="employee.startDate" onblur="(this.type='text')" onfocus="(this.type='date')"></span>
           <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" (change)="updateEmployee(employee.proxyId,'endDate',employee.endDate)" [(ngModel)]="employee.endDate" onblur="(this.type='text')" onfocus="(this.type='date')"></span>
           <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input type="checkbox" (change)="updateEmployee(employee.proxyId,'stillAffiliated',employee.stillAffiliated)" [(ngModel)]="employee.stillAffiliated" /></span>
-          <!-- this is all code to make employees into leadership - not completed, probably could use another variable -->
-          <!-- <div *ngIf='isLeadership(employee._id) === true'>
-            <span class="col-xs-1 col-sm-1 col-md-1 text-center text-nowrap" ><button (click)="switchLeadership(employee._id)" /></span>
-          </div>
-          <div *ngIf='isLeadership(employee._id) === false'>
-            <span class="col-xs-1 col-sm-1 col-md-1 text-center text-nowrap" style="color: red"><button (click)="switchLeadership(employee._id)" /></span>
-          </div>
-      </div> -->
+          <span class="col-xs-1 col-sm-1 col-md-1 text-center text-nowrap" ></span>
+      </div>
     </div>
-    <select class="form-control" [(ngModel)]="this.newUserSelected">
+    <select *ngIf="this.isUserAdmin" class="form-control" [(ngModel)]="this.newUserSelected">
         <option *ngFor="let user of this.userProfilesAll" value={{user._id}}>{{user.firstName + " " + user.lastName + ": " + user.username }}</option>
     </select>
-    <input type="button" value="Add employee" (click)="addEmployee(this.newUserSelected)"/>
+    <input *ngIf="this.isUserAdmin" type="button" value="Add employee" (click)="addEmployee(this.newUserSelected)"/>
     </div>
+  </div>
+  <div *ngIf="creatingNew" class="container">
+    You will be the first employee and admin for this company when you create it. Once the company is created you can add new employees.
   </div>
 </div>
 
@@ -228,7 +225,7 @@
     <p>Services</p>
     <div></div>
   </div>
-  <div class='col-xs-12' *ngIf='this.service == null'>
+  <div class='col-xs-12' *ngIf='this.services == null'>
     <button class='col-xs-4 col-xs-offset-4' type="button" name="button" (click)='addService()'>Add Service</button>
   </div>
   <div class="container">
