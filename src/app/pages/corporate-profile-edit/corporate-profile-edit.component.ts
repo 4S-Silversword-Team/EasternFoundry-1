@@ -66,6 +66,7 @@ export class CorporateProfileEditComponent implements OnInit {
     let afterLogin = () => {
     if ( this.router.url !== '/corporate-profile-create' ) {
       this.getAdminStatus()
+      // this.isUserAdmin = true;
       this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result; myCallback(); });
       // .subscribe(result => this.currentAccount =result).
       // this.currentAccount = this.companyService.getTestCompany()
@@ -106,20 +107,19 @@ export class CorporateProfileEditComponent implements OnInit {
   }
 
   getAdminStatus() {
-
     var userId = this.auth.getLoggedInUser()
     this.userService.getUserbyID(userId).toPromise().then((user) =>{
-    var currentUserProxy = user.companyUserProxies.filter((proxy) => {
+      var currentUserProxy = user.companyUserProxies.filter((proxy) => {
         return proxy.company._id == this.route.snapshot.params['id']
       })[0]
       if(currentUserProxy){
-      this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
-        if (role.title && role.title == "admin") {
-          this.isUserAdmin = true;
-          console.log("I'm admin")
-        }
-      })
-    }
+        this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
+          if (role.title && role.title == "admin") {
+            this.isUserAdmin = true;
+            console.log("I'm admin")
+          }
+        })
+      }
     })
   }
 
