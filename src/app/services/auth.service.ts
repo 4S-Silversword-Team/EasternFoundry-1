@@ -86,13 +86,26 @@ export class AuthService {
 
   doLogout(redirect = null) {
     localStorage.removeItem('token')
-    localStorage.removeItem('uid')
+    //localStorage.removeItem('uid')
     this.current_user = null;
   }
 
-  isLoggedIn() {
-    //TODO pass localstorage token to backend verifyCurrentUser function : requires a user Id in params, token, and email in request body
-    return localStorage.getItem('token') != null
+  async isLoggedIn(): Promise<boolean> {
+    var userId = this.getLoggedInUser()
+    var returnVal
+    await this.userService.getUserbyID(userId).toPromise().then(async (user) => {
+      var body = {
+        token: localStorage.getItem("token"),
+        email: user.primaryEmail
+      }
+      await this.http.post(environment.apiRoot + "auth/verify/" + userId , body).toPromise().then(async (res) => {
+        console.log("in isLoggedIn promise")
+        await res.status === 200 ? returnVal = true: returnVal = false
+      })
+    })
+    console.log("logged in return val is: ", returnVal)
+    return returnVal
+    //return localStorage.getItem('token') != null
   }
 
   getLoggedInUser() {
