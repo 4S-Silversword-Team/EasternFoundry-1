@@ -263,12 +263,12 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
 
 
   showService() {
-    this.currentTab = 2;
+    this.currentTab = 3;
     this.renderChart = false;
   }
 
   showProduct() {
-    this.currentTab = 3;
+    this.currentTab = 2;
     this.renderChart = false;
   }
 
