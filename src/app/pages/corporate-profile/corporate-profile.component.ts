@@ -63,7 +63,8 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then(company => { this.currentAccount = company; myCallback(); });
     // this.companyService.getCompanyByID(this.route.params["id"] ).toPromise().then(company => this.currentAccount = company)
     const myCallback = () => {
-      this.getAdminStatus();
+      this.auth.isLoggedIn().then((res) => {if(res) this.getAdminStatus()}).catch((reason)=> console.log("user not logged in"))
+      //this.getAdminStatus();
       if (this.currentAccount.leadership) {
         for (const i of this.currentAccount.leadership) {
           this.userService.getUserbyID(i.userId).toPromise().then(user => {

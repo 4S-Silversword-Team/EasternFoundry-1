@@ -50,15 +50,24 @@ export class PastPerformanceEditComponent implements OnInit {
     private roleService: RoleService,
     private companyPastPerformanceProxyService: CompanyPastperformanceProxyService,
   ) {
-    if ( !this.router.url.startsWith('/past-performance-create')) {
-      console.log('in past performance edit')
-      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2() });
-      this.getEditorAdminStatus()
-    } else {
-      console.log("in past performance create")
-      this.createMode = true;
-      if(this.route.snapshot.queryParams["company"]){
-        this.getCreatorAdminStatus();
+    auth.isLoggedIn().then(res => {
+      !res ? this.router.navigateByUrl("/login"): afterLogin()
+    }).catch(reason => {console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})
+    let afterLogin = () => {
+      if (!this.router.url.startsWith('/past-performance-create')) {
+        console.log('in past performance edit')
+        this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {
+          this.currentPastPerformance = res;
+          this.myCallback();
+          this.myCallback2()
+        });
+        this.getEditorAdminStatus()
+      } else {
+        console.log("in past performance create")
+        this.createMode = true;
+        if (this.route.snapshot.queryParams["company"]) {
+          this.getCreatorAdminStatus();
+        }
       }
     }
   }

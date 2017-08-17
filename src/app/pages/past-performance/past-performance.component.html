@@ -1,5 +1,5 @@
 <div class="past-performance col-xs-12 clear">
-    <div class="btn-edit" (click) = 'editPastPerformance()'>Edit</div>
+    <div *ngIf="this.isUserAdmin" class="btn-edit" (click) = 'editPastPerformance()'>Edit</div>
     <div class="btn-back" (click) = 'this.location.back()'></div>
     <div class="div-title col-xs-12">
         <img src="./assets/img/performance.png">
