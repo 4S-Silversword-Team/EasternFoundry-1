@@ -351,6 +351,10 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     this.router.navigate(['past-performance', id]);
   }
 
+  toPastPerformanceCreate(query: string) {
+    this.router.navigate(['past-performance-create'], { queryParams: { company: query } });
+  }
+
   editCompany() {
     this.router.navigate(['corporate-profile-edit', this.currentAccount['_id']]);
   }
