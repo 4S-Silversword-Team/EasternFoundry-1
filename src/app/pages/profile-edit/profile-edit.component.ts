@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
 import {isUndefined} from "util";
+import { AuthService} from "../../services/auth.service"
 
 declare var $: any;
 
@@ -13,7 +14,7 @@ declare var $: any;
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html',
   styleUrls: ['./profile-edit.component.css'],
-  providers: [ UserService ]
+  providers: [ UserService, AuthService ]
 })
 export class ProfileEditComponent implements OnInit {
 
@@ -50,41 +51,49 @@ export class ProfileEditComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
-    public location: Location
+    public location: Location,
+    private auth: AuthService
   ) {
+    auth.isLoggedIn().then(res => {
+      !res ? this.router.navigateByUrl("/login"): afterLogin()
+    }).catch(reason => {console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})
     // this.currentUser = this.userService.getUserbyID(this.route.snapshot.params['id'])
-    if (this.router.url !== '/user-profile-create') {
+    let afterLogin = () => {
+      this.auth.getLoggedInUser() == this.route.snapshot.params['id']? console.log("welcome to your profile edit page"): (() => { console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})()
+      if (this.router.url !== '/user-profile-create') {
         this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
-        this.currentUser = result;
-        function stringToBool(val) {
-          return (val + '').toLowerCase() === 'true';
-        };
+          this.currentUser = result;
 
-        //right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
-        //i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
-        if (typeof this.currentUser.disabled === "string") {
-          this.currentUser.disabled = stringToBool(this.currentUser.disabled)
-        }
-        for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
-          if (typeof this.currentUser.positionHistory[i].isGovernment === "string") {
-            this.currentUser.positionHistory[i].isGovernment = stringToBool(this.currentUser.positionHistory[i].isGovernment)
-          }
-          if (typeof this.currentUser.positionHistory[i].isPM === "string") {
-            this.currentUser.positionHistory[i].isPM = stringToBool(this.currentUser.positionHistory[i].isPM)
-          }
-          if (typeof this.currentUser.positionHistory[i].isKO === "string") {
-            this.currentUser.positionHistory[i].isKO = stringToBool(this.currentUser.positionHistory[i].isKO)
-          }
-          if ( this.currentUser.positionHistory[i].EndDate == null) {
-            this.currentUser.positionHistory[i].EndDate = "Current"
-          }
+          function stringToBool(val) {
+            return (val + '').toLowerCase() === 'true';
+          };
 
-        }
-        if (this.currentUser.education[0].DegreeType[0] == null) {
-          this.currentUser.education[0].DegreeType.push({Name: ''})
-        }
-        this.promiseFinished = true;
-      });
+          //right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
+          //i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
+          if (typeof this.currentUser.disabled === "string") {
+            this.currentUser.disabled = stringToBool(this.currentUser.disabled)
+          }
+          for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
+            if (typeof this.currentUser.positionHistory[i].isGovernment === "string") {
+              this.currentUser.positionHistory[i].isGovernment = stringToBool(this.currentUser.positionHistory[i].isGovernment)
+            }
+            if (typeof this.currentUser.positionHistory[i].isPM === "string") {
+              this.currentUser.positionHistory[i].isPM = stringToBool(this.currentUser.positionHistory[i].isPM)
+            }
+            if (typeof this.currentUser.positionHistory[i].isKO === "string") {
+              this.currentUser.positionHistory[i].isKO = stringToBool(this.currentUser.positionHistory[i].isKO)
+            }
+            if (this.currentUser.positionHistory[i].EndDate == null) {
+              this.currentUser.positionHistory[i].EndDate = "Current"
+            }
+
+          }
+          if (this.currentUser.education[0].DegreeType[0] == null) {
+            this.currentUser.education[0].DegreeType.push({Name: ''})
+          }
+          this.promiseFinished = true;
+        });
+      }
     }
   }
 
