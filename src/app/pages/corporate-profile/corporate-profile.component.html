@@ -1,6 +1,6 @@
 
 <div class="container">
-    <div class="btn-edit" (click) = 'editCompany()'>Edit</div>
+    <div *ngIf="this.isUserAdmin" class="btn-edit" (click) = 'editCompany()'>Edit</div>
     <div class="btn-back" (click) = 'this.location.back()'></div>
   <div class="basic-info col-xs-12 clear">
     <div class="col-xs-12 srow div-title" *ngIf = this.promiseFinished>
@@ -73,8 +73,8 @@
       <div class="row main" *ngIf='currentTab == 2'>
           <div style="display: block" class="col-xs-12 col-sm-6">
             <canvas baseChart
-                    [data]="getProductChartData(index.id)"
-                    [labels]="getProductChartLabel(index.id)"
+                    [data]="getProductChartData(index._id)"
+                    [labels]="getProductChartLabel(index._id)"
                     [chartType]="'pie'"></canvas>
           </div>
           <div class="col-xs-12 col-sm-6 text-container">
@@ -149,7 +149,7 @@
 
 <!-- START -- FOR SERVICE IN SERVICES -->
   <div class="service col-xs-12 clear" *ngFor='let index of services'>
-    <div class="div-title col-md-12" *ngIf='currentTab == 3'>
+    <div class="div-title col-md-12" *ngIf='currentTab == 2'>
         <img src="./assets/img/profile/capabilities-1.png">
         <p>{{index.name}}</p>
         <div></div>
@@ -157,7 +157,7 @@
     <div class="capa-main col-md-12" *ngIf='currentTab == 3'>
         <div class="col-xl-12 col-lg-6">
             <div class="capa-chart col-xs-12">
-                <app-bent-bars-chart width='300' height='300' divID='bbChart{{index.id}}' [values]='getServiceChartValue(index.id)'></app-bent-bars-chart>
+                <app-bent-bars-chart width='300' height='300' divID='bbChart{{index._id}}' [values]='getServiceChartValue(index._id)'></app-bent-bars-chart>
             </div>
         </div>
         <div class="col-xs-12 col-lg-6 text-container">

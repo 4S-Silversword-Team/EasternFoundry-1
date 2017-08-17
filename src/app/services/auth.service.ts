@@ -35,12 +35,13 @@ export class AuthService {
   ) {
     this.authHttp = new AuthHttp(http)
 
-    // check if the user is logged or if token is expired. If true then login
-    if (!this.isLoggedIn()) {
-      this.router.navigateByUrl("/login")
-    } else { // else if already logged in go to corporate profile page
-      this.router.navigateByUrl("/companies")
-    }
+    //This should not be here because it is called anytime auth service is invoked: i.e. it redirects at inappropriate times
+    // // check if the user is logged or if token is expired. If true then login
+    // if (!this.isLoggedIn()) {
+    //   this.router.navigateByUrl("/login")
+    // } else { // else if already logged in go to corporate profile page
+    //   this.router.navigateByUrl("/companies")
+    // }
   }
 
   doLogin(email, password, callback) {
@@ -85,12 +86,29 @@ export class AuthService {
 
   doLogout(redirect = null) {
     localStorage.removeItem('token')
-    localStorage.removeItem('uid')
+    //localStorage.removeItem('uid')
     this.current_user = null;
   }
 
-  isLoggedIn() {
-    //TODO pass localstorage token to backend verifyCurrentUser function : requires a user Id in params, token, and email in request body
-    return localStorage.getItem('token') != null
+  async isLoggedIn(): Promise<boolean> {
+    var userId = this.getLoggedInUser()
+    var returnVal
+    await this.userService.getUserbyID(userId).toPromise().then(async (user) => {
+      var body = {
+        token: localStorage.getItem("token"),
+        email: user.primaryEmail
+      }
+      await this.http.post(environment.apiRoot + "auth/verify/" + userId , body).toPromise().then(async (res) => {
+        console.log("in isLoggedIn promise")
+        await res.status === 200 ? returnVal = true: returnVal = false
+      })
+    })
+    console.log("logged in return val is: ", returnVal)
+    return returnVal
+    //return localStorage.getItem('token') != null
+  }
+
+  getLoggedInUser() {
+    return localStorage.getItem('uid'); //TODO: Another way to go about this. Pass token to a getUserIdByToken function to the backend. If respone doesn't eql localstorage uid, doLogout. Else return uid.
   }
 }

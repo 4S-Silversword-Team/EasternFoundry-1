@@ -34,7 +34,7 @@ export class CompanyService {
     return response;
   }
 
-  createCompany(request: any): Observable<Company> {
+  createCompany(request: any): Observable<any> {
     var response = this.authHttp.post(environment.apiRoot + "company/add", request)
       .map(response => <Company> JSON.parse(JSON.stringify(response)));
     return response;
