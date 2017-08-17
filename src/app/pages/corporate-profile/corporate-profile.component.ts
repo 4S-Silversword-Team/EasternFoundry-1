@@ -187,11 +187,23 @@ changeToTeam(){
           },
           xAxis: [{
               categories: skill,
+              options : {
+                  endOnTick: false
+              },
+
+
           }],
           yAxis: [{ // Primary yAxis
 //            tickInterval: Math.round(100/numPeop),
 //            tickAmount: numPeop,
 //            max: 100,
+              // endOnTick:false ,
+              max:100,
+              min:0,
+              endOnTick: false,
+              alignTicks: false,
+
+              ceiling: 100,
               labels: {
                   format: '{value}%',
                   style: {
@@ -205,9 +217,14 @@ changeToTeam(){
                   }
               },
           }, { // Secondary yAxis
-//            max: numPeop,
+              max: numPeop,
               tickInterval: 1,
 //            tickAmount: numPeop,
+//              endOnTick:false ,
+              min:0,
+              endOnTick: false,
+              alignTicks: false,
+
               title: {
                   text: 'Number of Employees',
                   style: {
