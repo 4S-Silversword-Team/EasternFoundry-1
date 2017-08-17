@@ -64,25 +64,39 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     // this.companyService.getCompanyByID(this.route.params["id"] ).toPromise().then(company => this.currentAccount = company)
     const myCallback = () => {
       this.getAdminStatus();
-      for (const i of this.currentAccount.leadership) {
-        this.userService.getUserbyID(i.userId).toPromise().then(user => { this.users.push(user); myCallback2();});
+      if (this.currentAccount.leadership) {
+        for (const i of this.currentAccount.leadership) {
+          this.userService.getUserbyID(i.userId).toPromise().then(user => {
+            this.users.push(user);
+            myCallback2();
+          });
+        }
       }
 
-    for (const i of this.currentAccount.product) {
-      this.productService.getProductbyID(i.toString()).toPromise().then(res => {this.products.push(res)});
-    }
+      if (this.currentAccount.product) {
+        for (const i of this.currentAccount.product) {
+          this.productService.getProductbyID(i.toString()).toPromise().then(res => {
+            this.products.push(res)
+          });
+        }
+      }
 
+      if (this.currentAccount.service) {
+        for (const i of this.currentAccount.service) {
+          this.serviceService.getServicebyID(i.toString()).toPromise().then(res => {
+            this.services.push(res)
+          });
+        }
+      }
 
-    for (const i of this.currentAccount.service) {
-      this.serviceService.getServicebyID(i.toString()).toPromise().then(res => {this.services.push(res)});
-    }
-
-    for (const i of this.currentAccount.pastPerformanceProxies.map(proxy => proxy.pastPerformance) ) {
-      // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
-      this.pastperformances.push(i);
-      //this.ppService.getPastPerformancebyID(i.toString()).toPromise().then(res => {this.pastperformances.push(res)}); // Might try to continue the for loop before the promise resolves.
-      // let myCallback = () => {console.log(this.pastperformances);}
-    }
+      if (this.currentAccount.pastPerformanceProxies) {
+        for (const i of this.currentAccount.pastPerformanceProxies.map(proxy => proxy.pastPerformance)) {
+          // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
+          this.pastperformances.push(i);
+          //this.ppService.getPastPerformancebyID(i.toString()).toPromise().then(res => {this.pastperformances.push(res)}); // Might try to continue the for loop before the promise resolves.
+          // let myCallback = () => {console.log(this.pastperformances);}
+        }
+      }
 
 //TIM
     for (const i of this.currentAccount.userProfileProxies){

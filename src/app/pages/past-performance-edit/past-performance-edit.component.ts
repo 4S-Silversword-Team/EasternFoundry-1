@@ -53,6 +53,7 @@ export class PastPerformanceEditComponent implements OnInit {
     if ( !this.router.url.startsWith('/past-performance-create')) {
       console.log('in past performance edit')
       this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2() });
+      this.getEditorAdminStatus()
     } else {
       console.log("in past performance create")
       this.createMode = true;
@@ -117,13 +118,38 @@ export class PastPerformanceEditComponent implements OnInit {
   }
 
   getEditorAdminStatus() {
-
+    var userId = this.auth.getLoggedInUser()
+    //get user
+    this.userService.getUserbyID(userId).toPromise().then((user) => {
+      //get the company ids where the user is admin
+      var relevantCompanyIds = user.companyUserProxies.filter(async (proxy) =>{
+        let returnVal;
+        await this.roleService.getRoleByID(proxy.role).toPromise().then(async (roleObj) => {
+         await roleObj.title == "admin"? returnVal = true: returnVal = false;
+        })
+        return returnVal
+      }).map((proxy) => proxy.company["_id"])
+      console.log("Relevent companies", relevantCompanyIds)
+      //then get the company ids associated with the past performance
+      var ppCompanyIds = this.currentPastPerformance.companyProxies.map((cproxy) => cproxy.company["_id"])
+      console.log("pp companies", ppCompanyIds)
+      //finally check if the two sets have anything in common.
+      for (const companyId of ppCompanyIds){
+        if(relevantCompanyIds.includes(companyId)){
+          this.isUserAdmin = true;
+          console.log("I'm a pp admin")
+        }
+      }
+    })
   }
 
   uploadImage() {
 
   }
   updatePP(model) {
+    // require auth of a signed in user with admin priveleges to the company that this past performance will be associated with.
+    if (!this.isUserAdmin){return;}
+
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     if ( !this.createMode ) {
     delete model['_id'];
@@ -132,12 +158,10 @@ export class PastPerformanceEditComponent implements OnInit {
     this.router.navigate(['past-performance', this.route.snapshot.params['id']]);
   } else {
     //creating a new PP
-    // TODO: Require auth of a signed in user with admin priveleges to the company that this past performance will be associated with.
-      if (!this.isUserAdmin){return;}
     console.log(model)
     this.pastPerformanceService.createPastPerformance(model).toPromise().then(result => {console.log(result)
 
-      //TODO: Add a call to create a companyPastPerformanceProxy with the appropriate company and the newly created past performance's id
+      // a call to create a companyPastPerformanceProxy with the appropriate company and the newly created past performance's id
       let callback = () => {
         var request = {
           company: this.route.snapshot.queryParams["company"],
@@ -153,12 +177,13 @@ export class PastPerformanceEditComponent implements OnInit {
         })
 
       }
-      //TODO: call addEmployee with the signed in user's id and the new pastperformance id.
+      // call addEmployee with the signed in user's id and the new pastperformance id.
       this.addFirstEmployee(this.auth.getLoggedInUser(), result['_id'], callback)
     });
   }
   }
   addEmployee(employeeId) {
+    if(!this.isUserAdmin){return;}
     let request = {
         "user": employeeId,
         "pastPerformance": this.route.snapshot.params['id'],
@@ -187,12 +212,14 @@ export class PastPerformanceEditComponent implements OnInit {
   }
 
   deleteEmployee(proxyId){
+    if(!this.isUserAdmin){return;}
     this.userPastPerformanceProxyService.deleteUserPPProxy(proxyId).then(() => {
       this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2() });
     })
   }
 
   updateEmployee(proxyId,key, value){
+    if(!this.isUserAdmin){return;}
   let req = {};
   req[key] = value;
   this.userPastPerformanceProxyService.updateUserPPProxies(proxyId, req).toPromise().then(() =>
