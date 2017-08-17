@@ -79,18 +79,6 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     }
 
 //TIM
-// console.log("testing2");
-// console.log(this);
-
-    // for (const i of this.currentAccount.userProfileProxies){
-    // //  console.log(this);
-    //   // console.log("proxyID == " + i._id);
-    //   // console.log("userID  == "+ i.userProfile.firstname);
-    //   this.userService.getUserbyID(i.userProfile._id).toPromise().then(member => { this.team.push(member);});
-    //   //console.log(this.team);
-    // }
-
-  //  console.log("calling change to team");
     this.changeToTeam();
 
 //
@@ -110,7 +98,6 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     };
     this.promiseFinished = true;
   };
-//  this.showTeam();
   }
 
   ngOnInit() {
@@ -148,11 +135,6 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
 changeToTeam(){
 
   this.currentTab = 1;
-  // console.log("inside change to team");
-  // console.log(this);
-  //setTimeout(this.showTeam(), 0
-//  console.log("moving ot show team");
-  // setTimeout(this.showTeam(), 1000);
   this.showTeam();
 }
 
@@ -162,25 +144,17 @@ changeToTeam(){
 
 
   showTeam(){
-//    console.log("in show Team");
-//    console.log(this);
-    // this.currentTab = 1;
-//    this.renderChart = true;
     var data_prof = new Map();
     var data_peop = new Map();
     var skill = [];
     var prof = [];
     var peop = [];
     var numPeop = 0;
-//    console.log(this.team);
-//    console.log(this.currentAccount.userProfileProxies);
 
     for(const i of this.currentAccount.userProfileProxies){
       numPeop++;
       console.log(numPeop);
-  //console.log(i.userProfile)
       var member = i.userProfile;
-    //  console.log(member.strength[0].skill);
       for(var j = 0; j < member.strength.length; j++){
         if( data_prof.has(member.strength[j].skill) ){
           data_prof.set(member.strength[j].skill, data_prof.get(member.strength[j].skill) + member.strength[j].score);
@@ -201,19 +175,6 @@ changeToTeam(){
       peop[k] = data_peop.get( skill[k] );
     }
 
-
-//    console.log("for some reason it is skipping over the population of the chart...... why.....");
-
-  //  var team_iter = data_prof.entries();
-  //  console.log(team_iter.return);
-    //for(var [x , y] of team_iter){
-      // skill.push(i)
-//this is why c is a good language. i could just make my own data structure
-//  console.log(skill[0]);
-//  console.log(prof);
-
-    //}
-    //console.log(data_prof);
     var options = {
 
           chart: {
@@ -246,7 +207,7 @@ changeToTeam(){
           }, { // Secondary yAxis
 //            max: numPeop,
               tickInterval: 1,
-//              tickAmount: numPeop,
+//            tickAmount: numPeop,
               title: {
                   text: 'Number of Employees',
                   style: {
