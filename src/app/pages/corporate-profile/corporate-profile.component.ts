@@ -90,7 +90,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     //   //console.log(this.team);
     // }
 
-    console.log("calling change to team");
+  //  console.log("calling change to team");
     this.changeToTeam();
 
 //
@@ -151,7 +151,7 @@ changeToTeam(){
   // console.log("inside change to team");
   // console.log(this);
   //setTimeout(this.showTeam(), 0
-  console.log("moving ot show team");
+//  console.log("moving ot show team");
   // setTimeout(this.showTeam(), 1000);
   this.showTeam();
 }
@@ -161,9 +161,9 @@ changeToTeam(){
 
 
 
-  async showTeam(){
-    console.log("in show Team");
-    console.log(this);
+  showTeam(){
+//    console.log("in show Team");
+//    console.log(this);
     // this.currentTab = 1;
 //    this.renderChart = true;
     var data_prof = new Map();
@@ -171,14 +171,16 @@ changeToTeam(){
     var skill = [];
     var prof = [];
     var peop = [];
+    var numPeop = 0;
 //    console.log(this.team);
 //    console.log(this.currentAccount.userProfileProxies);
 
     for(const i of this.currentAccount.userProfileProxies){
-  //    console.log("1");
-  console.log(i.userProfile)
+      numPeop++;
+      console.log(numPeop);
+  //console.log(i.userProfile)
       var member = i.userProfile;
-      console.log(member.strength[0].skill);
+    //  console.log(member.strength[0].skill);
       for(var j = 0; j < member.strength.length; j++){
         if( data_prof.has(member.strength[j].skill) ){
           data_prof.set(member.strength[j].skill, data_prof.get(member.strength[j].skill) + member.strength[j].score);
@@ -200,7 +202,7 @@ changeToTeam(){
     }
 
 
-    console.log("for some reason it is skipping over the population of the chart...... why.....");
+//    console.log("for some reason it is skipping over the population of the chart...... why.....");
 
   //  var team_iter = data_prof.entries();
   //  console.log(team_iter.return);
@@ -223,24 +225,28 @@ changeToTeam(){
               text: 'Skills'
           },
           xAxis: [{
-
               categories: skill,
-              crosshair: true
           }],
           yAxis: [{ // Primary yAxis
+//            tickInterval: Math.round(100/numPeop),
+//            tickAmount: numPeop,
+//            max: 100,
               labels: {
                   format: '{value}%',
                   style: {
                       color: Highcharts.getOptions().colors[1]
-                  }
+                  },
               },
               title: {
                   text: 'Proficiency',
                   style: {
                       color: Highcharts.getOptions().colors[1]
                   }
-              }
+              },
           }, { // Secondary yAxis
+//            max: numPeop,
+              tickInterval: 1,
+//              tickAmount: numPeop,
               title: {
                   text: 'Number of Employees',
                   style: {
@@ -259,15 +265,6 @@ changeToTeam(){
           tooltip: {
               shared: true
           },
-          // legend: {
-          //     layout: 'vertical',
-          //     align: 'left',
-          //     x: 375,
-          //     verticalAlign: 'top',
-          //     y: 0,
-          //     floating: true,
-          //     backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FDF5EB'
-          // },
           series: [{
               name: 'People',
               type: 'column',
@@ -285,11 +282,7 @@ changeToTeam(){
                   valueSuffix: '%'
               }
           }]
-  //        loading:false
     };
-    console.log("skills: \n" + skill);
-    console.log("Proficiency: \n" +prof);
-    console.log("people: \n" +peop);
     this.chart = new Highcharts.chart(options);
   }
 

@@ -57,9 +57,9 @@
 
   <div class="div-tab col-xs-12 clear">
       <div [style.width] = "'80%'" [style.margin-left]="'10%'">
-        <div class="thirdwidth left" id="teamTab" (click)='changeToTeam();'>Team</div><!--TIM-->
-          <div class="thirdwidth left" id="serviceTab" (click)='showService()'>Services</div>
-          <div class="thirdwidth left" id="productTab" (click)='showProduct()'>Products</div>
+        <!-- <div class="thirdwidth left" id="teamTab" (click)='changeToTeam();'>Team</div><!--TIM--> 
+          <div class="halfwidth left" id="serviceTab" (click)='showService()'>Services</div>
+          <div class="halfwidth left" id="productTab" (click)='showProduct()'>Products</div>
       </div>
   </div>
 
@@ -180,14 +180,45 @@
 <!-- START For Team Tab -->
 <!-- <div class="service col-xs-12 clear" *ngFor='let index of team'> -->
 
-  <div class="div-title col-md-12" *ngIf='currentTab == 1'>
-    <!-- <div> -->
+  <!-- <div class="div-title col-md-12" *ngIf='currentTab == 1'>
       <img src="./assets/img/profile/agency-4.png">
       <p>Team Analytics</p>
       <div></div>
       <div  id="team_chart"  style="min-width: 500px; height: 500px; margin: 0 auto"></div>
+
+</div> -->
+
+<!-- worst case: you can just get rid of the team tab and have it render on the
+default page and not under a button click -->
+<!-- <div class="div-title col-md-12">
+<div  id="team_chart"  style="min-width: 500px; height: 500px; margin: 0 auto"></div>
+</div> -->
+
+
+
+<div class="performance col-xs-12 clear" >
+    <div class="div-title col-xs-12">
+      <img src="./assets/img/profile/agency-4.png">
+      <p>Team Analytics</p>
+        <div></div>
+    </div>
+    <div  id="team_chart"  style="max-width: 50%; margin: 0 auto"></div>
+
+    <!-- <div class="main clear">
+      <div class="swiper-container col-xs-12">
+          <div class="swiper-wrapper">
+              <div class="swiper-slide pp-slide" *ngFor="let pp of pastperformances">
+                  <img src="{{pp.avatar}}" class="fullwidth">
+                  <p class="col-xs-12">{{pp.title}}</p>
+                  <p class="halfwidth left"><strong>Client</strong><br>{{pp.client}}</p>
+                  <p class="halfwidth right"><strong>Project</strong><br>{{pp.topic}}</p>
+                  <button (click)='toPastPerformance(pp._id)'>More Information</button>
+              </div>
+          </div>
+      </div>
+    </div> -->
 </div>
-<!-- </div> -->
+
 <!-- END For Team Tab -->
 
   <div class="performance col-xs-12 clear" >
