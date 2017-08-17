@@ -1,6 +1,6 @@
 
 <div class="container">
-    <div class="btn-edit" (click) = 'editCompany()'>Edit</div>
+    <div *ngIf="this.isUserAdmin" class="btn-edit" (click) = 'editCompany()'>Edit</div>
     <div class="btn-back" (click) = 'this.location.back()'></div>
   <div class="basic-info col-xs-12 clear">
     <div class="col-xs-12 srow div-title" *ngIf = this.promiseFinished>

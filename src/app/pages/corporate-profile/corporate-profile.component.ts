@@ -16,6 +16,8 @@ import { CompanyService } from '../../services/company.service';
 import { ProductService } from '../../services/product.service';
 import { ServiceService } from '../../services/service.service';
 import { PastperformanceService } from '../../services/pastperformance.service';
+import  { AuthService } from "../../services/auth.service";
+import  { RoleService} from "../../services/role.service";
 
 declare var $: any;
 declare var Swiper: any;
@@ -23,7 +25,7 @@ declare var Swiper: any;
 // renderChart = false;
 @Component({
   selector: 'app-corporate-profile',
-  providers: [UserService, ProductService, ServiceService, PastperformanceService, CompanyService],
+  providers: [UserService, ProductService, ServiceService, PastperformanceService, CompanyService, AuthService, RoleService],
   templateUrl: './corporate-profile.component.html',
   styleUrls: ['./corporate-profile.component.css']
 })
@@ -40,6 +42,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   team: User[]  = [];
   renderChart: boolean;
   chart: Highcharts;
+  isUserAdmin: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -50,6 +53,8 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     private productService: ProductService,
     private serviceService: ServiceService,
     private ppService: PastperformanceService,
+    private auth: AuthService,
+    private  roleService: RoleService
   ) {
 
     this.renderChart = false;
@@ -58,6 +63,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then(company => { this.currentAccount = company; myCallback(); });
     // this.companyService.getCompanyByID(this.route.params["id"] ).toPromise().then(company => this.currentAccount = company)
     const myCallback = () => {
+      this.getAdminStatus();
       for (const i of this.currentAccount.leadership) {
         this.userService.getUserbyID(i.userId).toPromise().then(user => { this.users.push(user); myCallback2();});
       }
@@ -109,6 +115,24 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+  }
+
+  getAdminStatus() {
+
+    var userId = this.auth.getLoggedInUser()
+    this.userService.getUserbyID(userId).toPromise().then((user) =>{
+      var currentUserProxy = user.companyUserProxies.filter((proxy) => {
+        return proxy.company._id == this.route.snapshot.params['id']
+      })[0]
+      if(currentUserProxy){
+        this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
+          if (role.title && role.title == "admin") {
+            this.isUserAdmin = true;
+            console.log("I'm admin")
+          }
+        })
+      }
+    })
   }
 
   ngAfterViewInit() {
