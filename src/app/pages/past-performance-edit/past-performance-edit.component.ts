@@ -7,12 +7,15 @@ import { PastPerformance } from '../../classes/past-performance'
 import { UserService } from '../../services/user.service'
 import { CompanyService } from '../../services/company.service'
 import { UserPastPerformanceProxyService } from '../../services/userpastperformanceproxy.service'
+import { AuthService } from "../../services/auth.service"
+import { RoleService } from "../../services/role.service"
+import  { CompanyPastperformanceProxyService } from "../../services/companypastperformanceproxy.service"
 
 
 
 @Component({
   selector: 'app-past-performance-edit',
-  providers: [PastperformanceService, UserService, CompanyService, UserPastPerformanceProxyService],
+  providers: [PastperformanceService, UserService, CompanyService, UserPastPerformanceProxyService, AuthService, RoleService, CompanyPastperformanceProxyService],
   templateUrl: './past-performance-edit.component.html',
   styleUrls: ['./past-performance-edit.component.css']
 })
@@ -32,7 +35,8 @@ export class PastPerformanceEditComponent implements OnInit {
   ppInputWidth: number = 300;
   employeeWidth: number = 600;
   writeWidth: number = 800;
-  rate: number = 0
+  rate: number = 0;
+  isUserAdmin: boolean = false;
 
   constructor(
     private pastPerformanceService: PastperformanceService,
@@ -41,12 +45,20 @@ export class PastPerformanceEditComponent implements OnInit {
     public location: Location,
     private userService: UserService,
     private companyService: CompanyService,
-    private userPastPerformanceProxyService: UserPastPerformanceProxyService
+    private userPastPerformanceProxyService: UserPastPerformanceProxyService,
+    private auth: AuthService,
+    private roleService: RoleService,
+    private companyPastPerformanceProxyService: CompanyPastperformanceProxyService,
   ) {
-    if ( this.router.url !== '/past-performance-create' ) {
+    if ( !this.router.url.startsWith('/past-performance-create')) {
+      console.log('in past performance edit')
       this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2() });
     } else {
+      console.log("in past performance create")
       this.createMode = true;
+      if(this.route.snapshot.queryParams["company"]){
+        this.getCreatorAdminStatus();
+      }
     }
   }
 
@@ -86,6 +98,28 @@ export class PastPerformanceEditComponent implements OnInit {
   }
 }
 
+  getCreatorAdminStatus() {
+    console.log("GETTING ADMIN STATUS")
+    var userId = this.auth.getLoggedInUser()
+    this.userService.getUserbyID(userId).toPromise().then((user) =>{
+      var currentUserProxy = user.companyUserProxies.filter((proxy) => {
+        return proxy.company._id == this.route.snapshot.queryParams["company"]
+      })[0]
+      if(currentUserProxy){
+        this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
+          if (role.title && role.title == "admin") {
+            this.isUserAdmin = true;
+            console.log("I'm admin")
+          }
+        })
+      }
+    })
+  }
+
+  getEditorAdminStatus() {
+
+  }
+
   uploadImage() {
 
   }
@@ -99,13 +133,28 @@ export class PastPerformanceEditComponent implements OnInit {
   } else {
     //creating a new PP
     // TODO: Require auth of a signed in user with admin priveleges to the company that this past performance will be associated with.
+      if (!this.isUserAdmin){return;}
     console.log(model)
     this.pastPerformanceService.createPastPerformance(model).toPromise().then(result => {console.log(result)
-      //TODO: call addEmployee with the signed in user's id and the new pastperformance id.
+
       //TODO: Add a call to create a companyPastPerformanceProxy with the appropriate company and the newly created past performance's id
-      //Finally, redirect to the past performance
-      window.scrollTo(0, 0);
-      this.router.navigate(['past-performance', result['_id']]);
+      let callback = () => {
+        var request = {
+          company: this.route.snapshot.queryParams["company"],
+          pastPerformance: result['_id'],
+          startDate: "01/01/2001",
+          endDate: "01/02/2001",
+          activeContract: true
+        }
+        this.companyPastPerformanceProxyService.addCompanyPPProxy(request).then((proxy) => {
+          //Finally, redirect to the past performance
+          window.scrollTo(0, 0);
+          this.router.navigate(['past-performance', result['_id']]);
+        })
+
+      }
+      //TODO: call addEmployee with the signed in user's id and the new pastperformance id.
+      this.addFirstEmployee(this.auth.getLoggedInUser(), result['_id'], callback)
     });
   }
   }
@@ -122,6 +171,19 @@ export class PastPerformanceEditComponent implements OnInit {
     this.userPastPerformanceProxyService.addUserPPProxy(request).then(() => {
       this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2() });
     })
+  }
+
+  addFirstEmployee(employeeId, pastPerformanceId, callback) {
+    let request = {
+      "user": employeeId,
+      "pastPerformance": pastPerformanceId,
+      "startDate": "01/01/2001",
+      "endDate": "01/02/2001",
+      "stillAffiliated": true,
+      "role": "programmer"
+    }
+    console.log(request)
+    this.userPastPerformanceProxyService.addUserPPProxy(request).then(() => callback());
   }
 
   deleteEmployee(proxyId){
