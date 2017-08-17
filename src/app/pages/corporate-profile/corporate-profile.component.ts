@@ -71,9 +71,10 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
       this.serviceService.getServicebyID(i.toString()).toPromise().then(res => {this.services.push(res)});
     }
 
-    for (const i of this.currentAccount.pastPerformance) {
+    for (const i of this.currentAccount.pastPerformanceProxies.map(proxy => proxy.pastPerformance) ) {
       // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
-      this.ppService.getPastPerformancebyID(i.toString()).toPromise().then(res => {this.pastperformances.push(res)}); // Might try to continue the for loop before the promise resolves.
+      this.pastperformances.push(i);
+      //this.ppService.getPastPerformancebyID(i.toString()).toPromise().then(res => {this.pastperformances.push(res)}); // Might try to continue the for loop before the promise resolves.
       // let myCallback = () => {console.log(this.pastperformances);}
     }
 
