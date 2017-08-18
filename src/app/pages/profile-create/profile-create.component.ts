@@ -3,8 +3,8 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { User } from '../../classes/user'
-import { UserService } from '../../services/user.service'
+import { User } from '../../classes/user';
+import { UserService } from '../../services/user.service';
 
 declare var $: any;
 
@@ -41,7 +41,9 @@ export class ProfileCreateComponent implements OnInit {
   }
 
   registerUser() {
-    // this.userService.registerUser(this.userParam);
+    console.log(this.userService.registerUser);
+    this.userService.registerUser(this.userParam).toPromise().then(result => console.log(result));
+    console.log("Register clicked");
     console.log(this.userParam);
   }
 

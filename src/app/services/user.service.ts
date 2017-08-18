@@ -43,8 +43,15 @@ export class UserService {
     return response;
   }
 
-  registerUser(){
-
+  registerUser(request: any){
+    console.log("Register User Service initiated");
+    var response = this.authHttp.post(environment.apiRoot + "register/", request)
+      .map(response => response.json());
+    console.log("Register User Request:");
+    console.log(request);
+    console.log("Register User Response:");
+    console.log(response);
+    return response;
   }
 
   // createUser(id: string): Observable<User> {
