@@ -328,6 +328,7 @@ export class CorporateProfileEditComponent implements OnInit {
         // this.router.navigate(['companies']);
       });
     } else {
+      if(!this.isUserAdmin){return;}
       for (const i of this.currentAccount.product) {
         const productModel = this.products[this.currentAccount.product.indexOf(i)]
         delete productModel['_id'];
