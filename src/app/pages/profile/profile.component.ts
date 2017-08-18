@@ -7,12 +7,13 @@ import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
 import { AuthService } from '../../services/auth.service'
 
+
 declare var $: any;
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  providers: [UserService],
+  providers: [UserService, AuthService],
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
@@ -27,24 +28,19 @@ export class ProfileComponent implements OnInit {
     dates: []
   }
   agencyExperience: any[] = []
-  loggedIn: boolean = false
+  isActiveProfile: boolean = false
 
 
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
-    private auth: AuthService,
-    public location: Location
+    public location: Location,
+    private auth: AuthService
   ) {
 
     // this.currentUser = this.userService.getTempUser();
-
-    auth.isLoggedIn().then(
-      res => {
-        !res ? this.loggedIn = false: this.loggedIn = true
-      }
-    )
+    this.auth.isLoggedIn().then(() => this.auth.getLoggedInUser() == this.route.snapshot.params['id']? this.isActiveProfile = true: this.isActiveProfile = false).catch((reason) => "User Login Check failed")
 
     this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
       this.currentUser = result;

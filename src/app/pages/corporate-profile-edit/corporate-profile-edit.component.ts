@@ -65,8 +65,7 @@ export class CorporateProfileEditComponent implements OnInit {
     }).catch(reason => {console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})
     let afterLogin = () => {
     if ( this.router.url !== '/corporate-profile-create' ) {
-      // this.getAdminStatus()
-      this.isUserAdmin = true;
+      this.getAdminStatus()
       this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result; myCallback(); });
       // .subscribe(result => this.currentAccount =result).
       // this.currentAccount = this.companyService.getTestCompany()
@@ -329,6 +328,7 @@ export class CorporateProfileEditComponent implements OnInit {
         // this.router.navigate(['companies']);
       });
     } else {
+      if(!this.isUserAdmin){return;}
       for (const i of this.currentAccount.product) {
         const productModel = this.products[this.currentAccount.product.indexOf(i)]
         delete productModel['_id'];

@@ -16,7 +16,8 @@ import { CompanyService } from '../../services/company.service';
 import { ProductService } from '../../services/product.service';
 import { ServiceService } from '../../services/service.service';
 import { PastperformanceService } from '../../services/pastperformance.service';
-import { AuthService } from '../../services/auth.service'
+import  { AuthService } from "../../services/auth.service";
+import  { RoleService} from "../../services/role.service";
 
 declare var $: any;
 declare var Swiper: any;
@@ -24,7 +25,7 @@ declare var Swiper: any;
 // renderChart = false;
 @Component({
   selector: 'app-corporate-profile',
-  providers: [UserService, ProductService, ServiceService, PastperformanceService, CompanyService],
+  providers: [UserService, ProductService, ServiceService, PastperformanceService, CompanyService, AuthService, RoleService],
   templateUrl: './corporate-profile.component.html',
   styleUrls: ['./corporate-profile.component.css']
 })
@@ -41,7 +42,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   team: User[]  = [];
   renderChart: boolean;
   chart: Highcharts;
-  loggedIn: boolean = false;
+  isUserAdmin: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -51,50 +52,56 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     private companyService: CompanyService,
     private productService: ProductService,
     private serviceService: ServiceService,
-    private auth: AuthService,
     private ppService: PastperformanceService,
+    private auth: AuthService,
+    private  roleService: RoleService
   ) {
-
-    auth.isLoggedIn().then(
-      res => {
-        !res ? this.loggedIn = false: this.loggedIn = true
-      }
-    )
-
+    // console.log("testing1");
+    // console.log(this);
     this.renderChart = false;
     // this.currentAccount = this.companyService.getTestCompany()
     // Need to use companyservice.getCompanyByID
     this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then(company => { this.currentAccount = company; myCallback(); });
     // this.companyService.getCompanyByID(this.route.params["id"] ).toPromise().then(company => this.currentAccount = company)
     const myCallback = () => {
-      for (const i of this.currentAccount.leadership) {
-        this.userService.getUserbyID(i.userId).toPromise().then(user => { this.users.push(user); myCallback2();});
+      this.auth.isLoggedIn().then((res) => {if(res) this.getAdminStatus()}).catch((reason)=> console.log("user not logged in"))
+      //this.getAdminStatus();
+      if (this.currentAccount.leadership) {
+        for (const i of this.currentAccount.leadership) {
+          this.userService.getUserbyID(i.userId).toPromise().then(user => {
+            this.users.push(user);
+            myCallback2();
+          });
+        }
       }
 
-    for (const i of this.currentAccount.product) {
-      this.productService.getProductbyID(i.toString()).toPromise().then(res => {this.products.push(res)});
-    }
+      if (this.currentAccount.product) {
+        for (const i of this.currentAccount.product) {
+          this.productService.getProductbyID(i.toString()).toPromise().then(res => {
+            this.products.push(res)
+          });
+        }
+      }
 
+      if (this.currentAccount.service) {
+        for (const i of this.currentAccount.service) {
+          this.serviceService.getServicebyID(i.toString()).toPromise().then(res => {
+            this.services.push(res)
+          });
+        }
+      }
 
-    for (const i of this.currentAccount.service) {
-      this.serviceService.getServicebyID(i.toString()).toPromise().then(res => {this.services.push(res)});
-    }
-
-    for (const i of this.currentAccount.pastPerformance) {
-      // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
-      this.ppService.getPastPerformancebyID(i.toString()).toPromise().then(res => {this.pastperformances.push(res)}); // Might try to continue the for loop before the promise resolves.
-      // let myCallback = () => {console.log(this.pastperformances);}
-    }
+      if (this.currentAccount.pastPerformanceProxies) {
+        for (const i of this.currentAccount.pastPerformanceProxies.map(proxy => proxy.pastPerformance)) {
+          // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
+          this.pastperformances.push(i);
+          //this.ppService.getPastPerformancebyID(i.toString()).toPromise().then(res => {this.pastperformances.push(res)}); // Might try to continue the for loop before the promise resolves.
+          // let myCallback = () => {console.log(this.pastperformances);}
+        }
+      }
 
 //TIM
-    for (const i of this.currentAccount.userProfileProxies){
-    //  console.log(this);
-      // console.log("proxyID == " + i._id);
-      // console.log("userID  == "+ i.userProfile.firstname);
-      this.userService.getUserbyID(i.userProfile._id).toPromise().then(member => { this.team.push(member);});
-      //console.log(this.team);
-    }
-
+    this.changeToTeam();
 
 //
     const myCallback2 = () => {
@@ -113,10 +120,27 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     };
     this.promiseFinished = true;
   };
-//  this.showTeam();
   }
 
   ngOnInit() {
+  }
+
+  getAdminStatus() {
+
+    var userId = this.auth.getLoggedInUser()
+    this.userService.getUserbyID(userId).toPromise().then((user) =>{
+      var currentUserProxy = user.companyUserProxies.filter((proxy) => {
+        return proxy.company._id == this.route.snapshot.params['id']
+      })[0]
+      if(currentUserProxy){
+        this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
+          if (role.title && role.title == "admin") {
+            this.isUserAdmin = true;
+            console.log("I'm admin")
+          }
+        })
+      }
+    })
   }
 
   ngAfterViewInit() {
@@ -145,51 +169,52 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
         freeMode: true
       });
     }
-    this.showTeam();
   }
 
+
+changeToTeam(){
+
+  this.currentTab = 1;
+  this.showTeam();
+}
+
+
+
+
+
+
   showTeam(){
-    console.log("moved to team tab. implement the chat generation");
-    this.currentTab = 1;
-    this.renderChart = true;
     var data_prof = new Map();
     var data_peop = new Map();
     var skill = [];
     var prof = [];
     var peop = [];
+    var numPeop = 0;
 
-    for(const i of this.team){
-      for(var j = 0; j < i.strength.length; j++){
-        if( data_prof.has(i.strength[j].skill) ){
-          data_prof.set(i.strength[j].skill, data_prof.get(i.strength[j].skill)+i.strength[j].score);
-          data_peop.set(i.strength[j].skill, data_peop.get(i.strength[j].skill) + 1)
+    for(const i of this.currentAccount.userProfileProxies){
+      numPeop++;
+      console.log(numPeop);
+      var member = i.userProfile;
+      for(var j = 0; j < member.strength.length; j++){
+        if( data_prof.has(member.strength[j].skill) ){
+          data_prof.set(member.strength[j].skill, data_prof.get(member.strength[j].skill) + member.strength[j].score);
+          data_peop.set(member.strength[j].skill, data_peop.get(member.strength[j].skill) + 1);
         }
-        if( !data_prof.has(i.strength[j].skill) ){
-          data_prof.set(i.strength[j].skill, i.strength[j].score);
-          data_peop.set(i.strength[j].skill, 1);
-          skill.push(i.strength[j].skill);
+        if( !data_prof.has(member.strength[j].skill) ){
+          data_prof.set(member.strength[j].skill, member.strength[j].score);
+          data_peop.set(member.strength[j].skill, 1);
+          skill.push(member.strength[j].skill);
+
         }
+
       }
     }
-    for(var i = 0; i < skill.length; i++){
-      data_prof.set( skill[i], ( data_prof.get( skill[i] )/data_peop.get( skill[i] ) ) );
-      prof[i] = data_prof.get( skill[i] );
-      peop[i] = data_peop.get( skill[i] );
+    for(var k = 0; k < skill.length; k++){
+      data_prof.set( skill[k], ( data_prof.get( skill[k] )/data_peop.get( skill[k] ) ) );
+      prof[k] = data_prof.get( skill[k] );
+      peop[k] = data_peop.get( skill[k] );
     }
 
-
-
-
-  //  var team_iter = data_prof.entries();
-  //  console.log(team_iter.return);
-    //for(var [x , y] of team_iter){
-      // skill.push(i)
-//this is why c is a good language. i could just make my own data structure
-  console.log(skill[0]);
-  console.log(prof);
-
-    //}
-    //console.log(data_prof);
     var options = {
 
           chart: {
@@ -201,24 +226,45 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
               text: 'Skills'
           },
           xAxis: [{
-
               categories: skill,
-              crosshair: true
+              options : {
+                  endOnTick: false
+              },
+
+
           }],
           yAxis: [{ // Primary yAxis
+//            tickInterval: Math.round(100/numPeop),
+//            tickAmount: numPeop,
+//            max: 100,
+              // endOnTick:false ,
+              max:100,
+              min:0,
+              endOnTick: false,
+              alignTicks: false,
+
+              ceiling: 100,
               labels: {
                   format: '{value}%',
                   style: {
                       color: Highcharts.getOptions().colors[1]
-                  }
+                  },
               },
               title: {
                   text: 'Proficiency',
                   style: {
                       color: Highcharts.getOptions().colors[1]
                   }
-              }
+              },
           }, { // Secondary yAxis
+              max: numPeop,
+              tickInterval: 1,
+//            tickAmount: numPeop,
+//              endOnTick:false ,
+              min:0,
+              endOnTick: false,
+              alignTicks: false,
+
               title: {
                   text: 'Number of Employees',
                   style: {
@@ -237,15 +283,6 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
           tooltip: {
               shared: true
           },
-          // legend: {
-          //     layout: 'vertical',
-          //     align: 'left',
-          //     x: 375,
-          //     verticalAlign: 'top',
-          //     y: 0,
-          //     floating: true,
-          //     backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FDF5EB'
-          // },
           series: [{
               name: 'People',
               type: 'column',
@@ -265,7 +302,6 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
           }]
     };
     this.chart = new Highcharts.chart(options);
-  //  console.log(this.chart);
   }
 
 
@@ -333,6 +369,10 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
 
   toPastPerformance(id: string) {
     this.router.navigate(['past-performance', id]);
+  }
+
+  toPastPerformanceCreate(query: string) {
+    this.router.navigate(['past-performance-create'], { queryParams: { company: query } });
   }
 
   editCompany() {

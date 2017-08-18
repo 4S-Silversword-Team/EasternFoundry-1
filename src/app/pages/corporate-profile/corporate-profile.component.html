@@ -1,6 +1,7 @@
+
 <div class="container">
-  <div class="btn-edit" (click) = 'editCompany()' *ngIf='this.loggedIn'>Edit</div>
-  <div class="btn-back" (click) = 'this.location.back()'></div>
+    <div *ngIf="this.isUserAdmin" class="btn-edit" (click) = 'editCompany()'>Edit</div>
+    <div class="btn-back" (click) = 'this.location.back()'></div>
   <div class="basic-info col-xs-12 clear">
     <div class="col-xs-12 srow div-title" *ngIf = this.promiseFinished>
         <p class="left">{{ this.currentAccount.name }}</p>
@@ -56,9 +57,9 @@
 
   <div class="div-tab col-xs-12 clear">
       <div [style.width] = "'80%'" [style.margin-left]="'10%'">
-        <div class="thirdwidth left" id="teamTab" (click)='showTeam();'>Team</div><!--TIM-->
-          <div class="thirdwidth left" id="serviceTab" (click)='showService()'>Services</div>
-          <div class="thirdwidth left" id="productTab" (click)='showProduct()'>Products</div>
+        <!-- <div class="thirdwidth left" id="teamTab" (click)='changeToTeam();'>Team</div><!--TIM-->
+          <div class="halfwidth left" id="serviceTab" (click)='showService()'>Services</div>
+          <div class="halfwidth left" id="productTab" (click)='showProduct()'>Products</div>
       </div>
   </div>
 
@@ -177,16 +178,15 @@
 
 
 <!-- START For Team Tab -->
-<!-- <div class="service col-xs-12 clear" *ngFor='let index of team'> -->
-
-  <div class="div-title col-md-12" *ngIf='currentTab == 1'>
-    <!-- <div> -->
+<div class="performance col-xs-12 clear" >
+    <div class="div-title col-xs-12">
       <img src="./assets/img/profile/agency-4.png">
       <p>Team Analytics</p>
-      <div></div>
-      <div class="team_chart" id="team_chart" [chart]="team_chart" style="min-width: 500px; height: 500px; margin: 0 auto"></div>
-  </div>
-<!-- </div> -->
+        <div></div>
+    </div>
+    <div  id="team_chart"  style="max-width: 75%; margin: 0 auto"></div>
+</div>
+
 <!-- END For Team Tab -->
 
   <div class="performance col-xs-12 clear" >
@@ -207,6 +207,7 @@
                 </div>
             </div>
         </div>
+        <button *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
       </div>
   </div>
 
