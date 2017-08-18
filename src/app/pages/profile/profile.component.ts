@@ -5,7 +5,8 @@ import { Location } from '@angular/common';
 
 import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
-import { AuthService } from "../../services/auth.service"
+import { AuthService } from '../../services/auth.service'
+
 
 declare var $: any;
 
@@ -76,9 +77,11 @@ export class ProfileComponent implements OnInit {
         for (let agency of job.agencyExperience) {
           var nameMatch = false
           for (let i of this.agencyExperience) {
-            if (agency.main.title == i.main.title) {
-              i.main.data[0].score = (i.main.data[0].score + agency.main.data[0].score)
-              nameMatch = true
+            if (agency.main.title !== "") {
+              if (agency.main.title == i.main.title) {
+                i.main.data[0].score = (i.main.data[0].score + agency.main.data[0].score)
+                nameMatch = true
+              }
             }
           }
           if (nameMatch == false) {
@@ -90,7 +93,9 @@ export class ProfileComponent implements OnInit {
           }
         }
       }
-      console.log(this.agencyExperience[0].main.titles)
+      console.log(this.agencyExperience[0].main)
+      console.log(this.agencyExperience[1].main)
+      console.log(this.agencyExperience[2].main)
       function stringToBool(val) {
         return (val + '').toLowerCase() === 'true';
       };

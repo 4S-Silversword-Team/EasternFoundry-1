@@ -56,7 +56,8 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     private auth: AuthService,
     private  roleService: RoleService
   ) {
-
+    // console.log("testing1");
+    // console.log(this);
     this.renderChart = false;
     // this.currentAccount = this.companyService.getTestCompany()
     // Need to use companyservice.getCompanyByID
@@ -100,14 +101,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
       }
 
 //TIM
-    for (const i of this.currentAccount.userProfileProxies){
-    //  console.log(this);
-      // console.log("proxyID == " + i._id);
-      // console.log("userID  == "+ i.userProfile.firstname);
-      this.userService.getUserbyID(i.userProfile._id).toPromise().then(member => { this.team.push(member);});
-      //console.log(this.team);
-    }
-
+    this.changeToTeam();
 
 //
     const myCallback2 = () => {
@@ -126,7 +120,6 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     };
     this.promiseFinished = true;
   };
-//  this.showTeam();
   }
 
   ngOnInit() {
@@ -176,51 +169,52 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
         freeMode: true
       });
     }
-    this.showTeam();
   }
 
+
+changeToTeam(){
+
+  this.currentTab = 1;
+  this.showTeam();
+}
+
+
+
+
+
+
   showTeam(){
-    console.log("moved to team tab. implement the chat generation");
-    this.currentTab = 1;
-    this.renderChart = true;
     var data_prof = new Map();
     var data_peop = new Map();
     var skill = [];
     var prof = [];
     var peop = [];
+    var numPeop = 0;
 
-    for(const i of this.team){
-      for(var j = 0; j < i.strength.length; j++){
-        if( data_prof.has(i.strength[j].skill) ){
-          data_prof.set(i.strength[j].skill, data_prof.get(i.strength[j].skill)+i.strength[j].score);
-          data_peop.set(i.strength[j].skill, data_peop.get(i.strength[j].skill) + 1)
+    for(const i of this.currentAccount.userProfileProxies){
+      numPeop++;
+      console.log(numPeop);
+      var member = i.userProfile;
+      for(var j = 0; j < member.strength.length; j++){
+        if( data_prof.has(member.strength[j].skill) ){
+          data_prof.set(member.strength[j].skill, data_prof.get(member.strength[j].skill) + member.strength[j].score);
+          data_peop.set(member.strength[j].skill, data_peop.get(member.strength[j].skill) + 1);
         }
-        if( !data_prof.has(i.strength[j].skill) ){
-          data_prof.set(i.strength[j].skill, i.strength[j].score);
-          data_peop.set(i.strength[j].skill, 1);
-          skill.push(i.strength[j].skill);
+        if( !data_prof.has(member.strength[j].skill) ){
+          data_prof.set(member.strength[j].skill, member.strength[j].score);
+          data_peop.set(member.strength[j].skill, 1);
+          skill.push(member.strength[j].skill);
+
         }
+
       }
     }
-    for(var i = 0; i < skill.length; i++){
-      data_prof.set( skill[i], ( data_prof.get( skill[i] )/data_peop.get( skill[i] ) ) );
-      prof[i] = data_prof.get( skill[i] );
-      peop[i] = data_peop.get( skill[i] );
+    for(var k = 0; k < skill.length; k++){
+      data_prof.set( skill[k], ( data_prof.get( skill[k] )/data_peop.get( skill[k] ) ) );
+      prof[k] = data_prof.get( skill[k] );
+      peop[k] = data_peop.get( skill[k] );
     }
 
-
-
-
-  //  var team_iter = data_prof.entries();
-  //  console.log(team_iter.return);
-    //for(var [x , y] of team_iter){
-      // skill.push(i)
-//this is why c is a good language. i could just make my own data structure
-  console.log(skill[0]);
-  console.log(prof);
-
-    //}
-    //console.log(data_prof);
     var options = {
 
           chart: {
@@ -232,24 +226,45 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
               text: 'Skills'
           },
           xAxis: [{
-
               categories: skill,
-              crosshair: true
+              options : {
+                  endOnTick: false
+              },
+
+
           }],
           yAxis: [{ // Primary yAxis
+//            tickInterval: Math.round(100/numPeop),
+//            tickAmount: numPeop,
+//            max: 100,
+              // endOnTick:false ,
+              max:100,
+              min:0,
+              endOnTick: false,
+              alignTicks: false,
+
+              ceiling: 100,
               labels: {
                   format: '{value}%',
                   style: {
                       color: Highcharts.getOptions().colors[1]
-                  }
+                  },
               },
               title: {
                   text: 'Proficiency',
                   style: {
                       color: Highcharts.getOptions().colors[1]
                   }
-              }
+              },
           }, { // Secondary yAxis
+              max: numPeop,
+              tickInterval: 1,
+//            tickAmount: numPeop,
+//              endOnTick:false ,
+              min:0,
+              endOnTick: false,
+              alignTicks: false,
+
               title: {
                   text: 'Number of Employees',
                   style: {
@@ -268,15 +283,6 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
           tooltip: {
               shared: true
           },
-          // legend: {
-          //     layout: 'vertical',
-          //     align: 'left',
-          //     x: 375,
-          //     verticalAlign: 'top',
-          //     y: 0,
-          //     floating: true,
-          //     backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FDF5EB'
-          // },
           series: [{
               name: 'People',
               type: 'column',
@@ -296,7 +302,6 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
           }]
     };
     this.chart = new Highcharts.chart(options);
-  //  console.log(this.chart);
   }
 
 

@@ -102,6 +102,11 @@ p {
     right: 15px;
 }
 
+.btn-back:hover {
+  color: rgba(255, 0, 0, 0.5);;
+}
+
+
 .btn-edit::before {
     content: '';
     position: absolute;
@@ -122,6 +127,10 @@ p {
     font-size: 20px;
     line-height: 26px;
     cursor: pointer;
+}
+
+.btn-edit:hover {
+  color: rgba(255, 0, 0, 0.5);;
 }
 
 button {
@@ -148,6 +157,15 @@ input {
     height: 1px;
     margin: 50px auto;
     background: #1c1c1c;
+}
+
+.login-toggle {
+  position: absolute;
+  right: 5px;
+  top: 105px;
+  font-size: 10px;
+  line-height: normal;
+  height: 40px;
 }
 
 .fc-title           { color: #4373c3; }
