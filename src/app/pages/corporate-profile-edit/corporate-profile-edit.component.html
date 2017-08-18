@@ -54,7 +54,7 @@
       <div class="col-xs-12 srow info-img-input mt10"><img src="../assets/img/profile/state.png" class="left"><p class="left">State</p><input type="text"  [(ngModel)] = 'this.currentAccount.state'></div>
       <div class="col-xs-12 srow info-img-input mt10"><img src="../assets/img/profile/zip.png" class="left"><p class="left">Zip</p><input type="text"  [(ngModel)] = 'this.currentAccount.zip'></div>
     </div>
-    <div class="text-center" style="display: inline-block"><button class="btn btn-primary btn-block" (click)="updateCompany(this.currentAccount)">Update Company</button></div>
+    <div *ngIf="this.creatingNew || this.isUserAdmin" class="text-center" style="display: inline-block"><button class="btn btn-primary btn-block" (click)="updateCompany(this.currentAccount)">Update Company</button></div>
   </div>
 </div>
 
