@@ -50,7 +50,7 @@ export class ProfileComponent implements OnInit {
       for (let job of this.currentUser.positionHistory) {
         for (let exp of job.agencyExperience) {
           for (let data of exp.main.data) {
-            let color = index / exp.main.data.length * 155
+            let color = 4
             color = Math.floor(color)
             this.expColors[exp.main.title] = this.expColors[index++]
           }
@@ -59,6 +59,7 @@ export class ProfileComponent implements OnInit {
 
       let temp: number[] = []
       for (let index of this.currentUser.abilities) {
+        console.log(index[0])
         this.strengthChartLabels.push(index[0])
         temp.push(+index[1])
       }

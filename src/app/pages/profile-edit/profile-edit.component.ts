@@ -1,3 +1,5 @@
+import {Http} from '@angular/http';
+
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 import { Router, ActivatedRoute } from '@angular/router';
@@ -6,6 +8,8 @@ import { Location } from '@angular/common';
 import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
 import {isUndefined} from "util";
+
+
 
 declare var $: any;
 
@@ -17,6 +21,8 @@ declare var $: any;
 })
 export class ProfileEditComponent implements OnInit {
 
+
+
   currentUser: User = new User()
   newSkill: string = ''
   expColors: string[] = ['rgb(0,178,255)', 'rgb(69,199,255)', 'rgb(138,220,255)', 'rgb(198,241,255)' ];
@@ -27,6 +33,9 @@ export class ProfileEditComponent implements OnInit {
     dates: []
   }
   promiseFinished: boolean = false
+  toolSearch: string = ''
+  allTools: any[] = []
+  toolsDisplayed: [string]
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -49,16 +58,38 @@ export class ProfileEditComponent implements OnInit {
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
+    private http: Http,
     private router: Router,
     public location: Location
   ) {
-    // this.currentUser = this.userService.getUserbyID(this.route.snapshot.params['id'])
+    // this.http.get('../../onet-tools.json')
+    //     .subscribe(res => this.allTools = res.json());
     if (this.router.url !== '/user-profile-create') {
         this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
         this.currentUser = result;
         function stringToBool(val) {
           return (val + '').toLowerCase() === 'true';
         };
+        //here's the logic to check the skillsengine tools against the resume text!
+        for (let tool of this.currentUser.tools) {
+          if (tool.title.length > 1) {
+            if (this.currentUser.resumeText.toLowerCase().indexOf(tool.title.toLowerCase()) >= 0) {
+              if (this.currentUser.foundTools == null) {
+                this.currentUser.foundTools = [
+                  {
+                    title: '',
+                    category: '',
+                    classification: '',
+                    score: 0
+                  }
+                ]
+                this.currentUser.foundTools[0] = tool
+              } else {
+                this.currentUser.foundTools.push(tool)
+              }
+            }
+          }
+        }
 
         //right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
         //i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
@@ -95,18 +126,36 @@ export class ProfileEditComponent implements OnInit {
     console.log('This button doesnt do anything!')
   }
 
-  addSkill() {
-    if (this.newSkill !== '') {
-      this.currentUser.personCompetency.push({
-        CompetencyName: this.newSkill,
-        CompetencyLevel: 'good'
-      });
-      this.newSkill = '';
-    };
+  addTool(tool) {
+    console.log('tool title: ' + tool.title)
+    console.log('tool scpre: ' + tool.score)
+    this.currentUser.foundTools.push(tool);
   }
 
-  deleteSkill(i) {
-    this.currentUser.personCompetency.splice(i, 1);
+  toolIsValid(tool) {
+    if (tool.title.toLowerCase().includes(this.toolSearch.toLowerCase())) {
+      if (!this.currentUser.foundTools.includes(tool)) {
+
+        return true
+      }
+    }
+    return false
+
+    // const skillToFind = this.newSkill
+    // function findName(tool) {
+    //   return tool.title === skillToFind;
+    // }
+    // if (this.newSkill !== '') {
+    //   var fullTool = this.currentUser.tools.find(findName)
+    //   this.currentUser.foundTools.push(fullTool);
+    //   this.newSkill = '';
+    // };
+
+
+  }
+
+  deleteTool(i) {
+    this.currentUser.foundTools.splice(i, 1);
   }
 
   addJob() {

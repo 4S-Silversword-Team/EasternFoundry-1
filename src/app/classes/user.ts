@@ -207,7 +207,14 @@ export class User {
       score: number
     }
   ]
-  foundTools: [string]
+  foundTools: [
+    {
+      title: string
+      category: string
+      classification: string
+      score: number
+    }
+  ]
   resumeText: string
   companyUserProxies: [
     any
