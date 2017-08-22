@@ -62,9 +62,11 @@ export class ProfileComponent implements OnInit {
       }
 
       let temp: number[] = []
-      for (let index of this.currentUser.abilities) {
-        this.strengthChartLabels.push(index[0])
-        temp.push(+index[1])
+      if(this.currentUser.abilities) {
+        for (let index of this.currentUser.abilities) {
+          this.strengthChartLabels.push(index[0])
+          temp.push(+index[1])
+        }
       }
       for (let index of this.currentUser.availability) {
         this.availabilityData.dates.push(index.date)
@@ -94,8 +96,8 @@ export class ProfileComponent implements OnInit {
         }
       }
       console.log(this.agencyExperience[0].main)
-      console.log(this.agencyExperience[1].main)
-      console.log(this.agencyExperience[2].main)
+      // console.log(this.agencyExperience[1].main)
+      // console.log(this.agencyExperience[2].main)
       function stringToBool(val) {
         return (val + '').toLowerCase() === 'true';
       };
@@ -137,8 +139,10 @@ export class ProfileComponent implements OnInit {
 
   getCapaChartValues(tempUser: User): number[] {
     let temp: number[] = []
-    for (let index of tempUser.occupations) {
-      temp.push(index.score)
+    if (tempUser.occupations) {
+      for (let index of tempUser.occupations) {
+        temp.push(index.score)
+      }
     }
     return temp
   }

@@ -28,7 +28,7 @@
           <p class="left">LEADERSHIP</p>
           <div></div>
       </div>
-      <div class="main clear">
+      <div *ngIf="users[0]" class="main clear">
           <div class="halfwidth left" *ngFor='let index of users'>
               <img src='{{ index.avatar }}' class="left avatar" [style.width]="'150px'">
               <p class="srow">{{ index.firstName + ' ' + index.lastName}}</p>
@@ -37,6 +37,7 @@
               <button class="col-xs-8 col-xs-offset-2" (click)="toUserProfile(index._id)">More Information</button>
           </div>
       </div>
+    <div class="main clear" *ngIf="!users[0]">No leadership to show</div>
   </div>
 
   <div class="leadership col-xs-12 clear">
@@ -44,7 +45,7 @@
           <p class="left">EMPLOYEES</p>
           <div></div>
       </div>
-      <div class="main clear">
+      <div *ngIf="this.currentAccount.userProfileProxies[0].userProfile" class="main clear">
           <div class="halfwidth left" *ngFor='let index of this.currentAccount.userProfileProxies'>
             <div *ngIf="index.userProfile">
               <img src='{{ index.userProfile.avatar }}' class="left avatar" [style.width]="'150px'">
@@ -55,6 +56,7 @@
             </div>
           </div>
       </div>
+    <div *ngIf="!this.currentAccount.userProfileProxies[0].userProfile" class="main clear"> No employees to show</div>
   </div>
 
   <div class="div-tab col-xs-12 clear">
@@ -66,6 +68,7 @@
   </div>
 
 <!-- START -- FOR PROJECT IN PROJECTS -->
+  <div class="service col-xs-12 clear main" *ngIf="!products[0] && currentTab == 2">No Products</div>
   <div class="product col-xs-12 clear" *ngFor='let index of products'>
       <div class="div-title col-xs-12" *ngIf='currentTab == 2'>
           <img src="./assets/img/product.png">
@@ -150,6 +153,7 @@
 <!-- END -- FOR PROJECT IN PROJECTS-->
 
 <!-- START -- FOR SERVICE IN SERVICES -->
+  <div class="service col-xs-12 clear main" *ngIf="!services[0] && currentTab == 3">No Services</div>
   <div class="service col-xs-12 clear" *ngFor='let index of services'>
     <div class="div-title col-md-12" *ngIf='currentTab == 2'>
         <img src="./assets/img/profile/capabilities-1.png">
@@ -198,6 +202,7 @@
           <div></div>
       </div>
       <div class="main clear">
+        <div *ngIf="!pastperformances[0]">No past performance to show</div>
         <div class="swiper-container col-xs-12">
             <div class="swiper-wrapper">
                 <div class="swiper-slide pp-slide" *ngFor="let pp of pastperformances">
@@ -221,6 +226,7 @@
       </div>
       <div class="row main">
           <div class="col-xs-12 text-container" >
+              <div *ngIf="!CQAC[0]">No certs/quals to show</div>
               <div class="col-xs-12" [style.overflow] = "'auto'" [style.max-height]="'250px'">
                   <h5 *ngFor='let index of CQAC'>{{index}}</h5>
               </div>
@@ -236,6 +242,7 @@
       </div>
       <div class="row main">
           <div class="col-xs-12 text-container">
+            <div *ngIf="!currentAccount.vehicles[0]">No vehicles to show</div>
               <div class="col-xs-12" [style.overflow] = "'auto'" [style.max-height]="'250px'">
                    <h5 *ngFor='let index of currentAccount.vehicles'>{{index.vehicleType + ': ' + index.quantity}}</h5>
               </div>
@@ -251,6 +258,7 @@
       </div>
       <div class="row main">
           <div class="col-xs-12 text-container">
+            <div *ngIf="!currentAccount.schedule[0]">No schedule to show</div>
               <div class="col-xs-12" [style.overflow] = "'auto'" [style.max-height]="'250px'">
                  <h5 *ngFor='let index of currentAccount.schedule'>{{index.date + ': ' + index.content}}</h5>
               </div>
