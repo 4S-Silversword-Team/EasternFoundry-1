@@ -207,6 +207,8 @@ export class User {
       score: number
     }
   ]
+  foundTools: [string]
+  resumeText: string
   companyUserProxies: [
     any
   ]

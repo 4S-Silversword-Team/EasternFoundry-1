@@ -45,7 +45,7 @@
         <p class="fs-28 fc-title">INTERESTS</p>
         <p class="fs-28 fc-subtitle">INTERESTED IN</p>
         <div class="text-container text-left" [style.height] = "'300px'">
-            <p >{{ this.currentUser.interest }}</p>
+            <p >{{ this.currentUser.resumeText }}</p>
         </div>
     </div>
 </div>
@@ -90,8 +90,8 @@
     </div>
 
     <div class="exp-main col-xs-12" *ngIf="this.promiseFinished">
-        <div class="app-exp-chart left" *ngIf="this.currentUser.agencyExperience">
-            <p id="exp-main-title" *ngIf="this.currentUser.agencyExperience.main">{{this.currentUser.agencyExperience.main.title}}</p>
+        <div class="app-exp-chart left" *ngIf="this.agencyExperience">
+            <p id="exp-main-title" *ngIf="this.agencyExperience.main">{{this.currentUser.agencyExperience.main.title}}</p>
             <app-exp-chart width='500' height='500' divID='exp-main-chart' [values]='expMainValues(this.currentUser)'></app-exp-chart>
         </div>
         <div class="app-exp-chart right">
