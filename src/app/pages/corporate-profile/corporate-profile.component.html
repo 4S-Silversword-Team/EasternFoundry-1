@@ -45,7 +45,7 @@
           <p class="left">EMPLOYEES</p>
           <div></div>
       </div>
-      <div *ngIf="this.currentAccount.userProfileProxies[0].userProfile" class="main clear">
+      <div class="main clear">
           <div class="halfwidth left" *ngFor='let index of this.currentAccount.userProfileProxies'>
             <div *ngIf="index.userProfile">
               <img src='{{ index.userProfile.avatar }}' class="left avatar" [style.width]="'150px'">
