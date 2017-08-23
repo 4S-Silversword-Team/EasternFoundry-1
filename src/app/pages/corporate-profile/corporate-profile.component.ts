@@ -57,7 +57,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     private  roleService: RoleService
   ) {
     // console.log("testing1");
-    // console.log(this);
+    //console.log(this);
     this.renderChart = false;
     // this.currentAccount = this.companyService.getTestCompany()
     // Need to use companyservice.getCompanyByID
@@ -178,42 +178,62 @@ changeToTeam(){
   this.showTeam();
 }
 
-
-
-
-
+// Im going to comment out the data collection from the skill section of the
+// user profile and change it to the "general_work_activities"
+//
+//
+//
 
   showTeam(){
     var data_prof = new Map();
     var data_peop = new Map();
-    var skill = [];
+//    var skill = [];
+    var gen_work_act = [];
     var prof = [];
     var peop = [];
     var numPeop = 0;
-
+//    console.log(this.currentAccount.userProfileProxies[0].userProfile);
     for(const i of this.currentAccount.userProfileProxies){
       numPeop++;
-      console.log(numPeop);
       var member = i.userProfile;
-      for(var j = 0; j < member.strength.length; j++){
-        if( data_prof.has(member.strength[j].skill) ){
-          data_prof.set(member.strength[j].skill, data_prof.get(member.strength[j].skill) + member.strength[j].score);
-          data_peop.set(member.strength[j].skill, data_peop.get(member.strength[j].skill) + 1);
-        }
-        if( !data_prof.has(member.strength[j].skill) ){
-          data_prof.set(member.strength[j].skill, member.strength[j].score);
-          data_peop.set(member.strength[j].skill, 1);
-          skill.push(member.strength[j].skill);
-
-        }
-
+      for( var j = 0; j < member.general_work_activities.length; j++){
+        if( parseInt(member.general_work_activities[j].score) > 30 || data_prof.has(member.general_work_activities[j].title) ){
+          if( data_prof.has(member.general_work_activities[j].title) ){
+            data_prof.set(member.general_work_activities[j].title, data_prof.get(member.general_work_activities[j].title) + parseInt(member.general_work_activities[j].score));
+            data_peop.set(member.general_work_activities[j].title, data_peop.get(member.general_work_activities[j].title) + 1);
+          }
+          if( !data_prof.has(member.general_work_activities[j].title) ){
+            data_prof.set(member.general_work_activities[j].title, parseInt(member.general_work_activities[j].score));
+            data_peop.set(member.general_work_activities[j].title, 1);
+            gen_work_act.push(member.general_work_activities[j].title);
+          }
       }
     }
-    for(var k = 0; k < skill.length; k++){
-      data_prof.set( skill[k], ( data_prof.get( skill[k] )/data_peop.get( skill[k] ) ) );
-      prof[k] = data_prof.get( skill[k] );
-      peop[k] = data_peop.get( skill[k] );
-    }
+  }
+  for( var k = 0; k < gen_work_act.length; k++){
+    data_prof.set( gen_work_act[k], ( data_prof.get(gen_work_act[k])/data_peop.get(gen_work_act[k]) ) );
+    prof[k] = data_prof.get( gen_work_act[k] );
+    peop[k] = data_peop.get( gen_work_act[k] );
+  }
+    //   for(var j = 0; j < member.strength.length; j++){
+    //     if( data_prof.has(member.strength[j].skill) ){
+    //       data_prof.set(member.strength[j].skill, data_prof.get(member.strength[j].skill) + member.strength[j].score);
+    //       data_peop.set(member.strength[j].skill, data_peop.get(member.strength[j].skill) + 1);
+    //     }
+    //     if( !data_prof.has(member.strength[j].skill) ){
+    //       data_prof.set(member.strength[j].skill, member.strength[j].score);
+    //       data_peop.set(member.strength[j].skill, 1);
+    //       skill.push(member.strength[j].skill);
+    //
+    //     }
+    //
+    //   }
+    // }
+    // for(var k = 0; k < skill.length; k++){
+    //   data_prof.set( skill[k], ( data_prof.get( skill[k] )/data_peop.get( skill[k] ) ) );
+    //   prof[k] = data_prof.get( skill[k] );
+    //   peop[k] = data_peop.get( skill[k] );
+    // }
 
     var options = {
 
@@ -223,10 +243,12 @@ changeToTeam(){
               renderTo: "team_chart"
           },
           title: {
-              text: 'Skills'
+//              text: 'Skills'
+                text:''
           },
           xAxis: [{
-              categories: skill,
+//              categories: skill,
+              categories: gen_work_act,
               options : {
                   endOnTick: false
               },
