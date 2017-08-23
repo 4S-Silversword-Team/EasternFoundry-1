@@ -43,51 +43,6 @@
     </div>
   </div>
 
-  <div class="career col-xs-12 clear">
-    <div class="div-title col-xs-12">
-      <img src="./assets/img/profile/capabilities-1.png">
-      <p>SKILLS</p>
-      <div ></div>
-    </div>
-
-    <div class="col-xs-6 text-center text-container" style="padding-top: 15px">
-      <p>Your Skills</p>
-      <div class="tool-list-box">
-        <div class="">
-          <div class="tool-list-item" *ngFor='let tool of this.currentUser.foundTools; let i = index; trackBy:customTrackBy'>
-            <p>{{tool.title}}</p>
-            <button class="tiny-button-skills" (click)="deleteTool(i)"><div class="tiny-button-text">x</div></button>
-          </div>
-        </div>
-      </div>
-
-      <!-- <div class="" *ngFor="let skill of this.currentUser.foundTools; let i = index; trackBy:customTrackBy">
-        <input type="text" style="width: 100%" [(ngModel)] = 'this.currentUser.foundTools[i].title' disabled>
-      </div> -->
-    </div>
-    <div class="col-xs-6 text-center text-container" style="padding-top: 15px">
-      <p>Add New Skills</p>
-      <input type="text" style="width: 100%" [(ngModel)] = 'this.toolSearch' >
-      <div class="tool-search-box">
-        <div class="" *ngIf='this.toolSearch.length >= 1'>
-          <div class="" *ngFor='let tool of this.currentUser.tools; let i = index; trackBy:customTrackBy'>
-            <div class="tool-search-item" *ngIf='toolIsValid(tool)' (click)='addTool(this.currentUser.tools[i])'>
-              <p>{{tool.title}}</p>
-            </div>
-          </div>
-        </div>
-        <!-- <div class="" *ngIf='this.toolSearch.length >= 1'>
-          <div class="" *ngFor='let tool of this.allTools; let i = index; trackBy:customTrackBy'>
-            <div class="tool-search-item" *ngIf='toolIsValid(tool)' (click)='addTool(this.currentUser.tools[i])'>
-              <p>{{tool.title}}</p>
-            </div>
-          </div>
-        </div> -->
-      </div>
-    </div>
-
-  </div>
-
   <div class="certification col-xs-12">
     <div class="div-title col-xs-12">
       <img src="./assets/img/profile/degree.png">
@@ -259,6 +214,53 @@
     </div>
   </div>
 
+  <div class="career col-xs-12 clear" *ngIf='this.currentUser.resumeText'>
+    <div class="div-title col-xs-12">
+      <img src="./assets/img/profile/capabilities-1.png">
+      <p>SKILLS</p>
+      <div ></div>
+    </div>
+
+    <div class="col-xs-6 text-center text-container" style="padding-top: 15px">
+      <p>Your Skills</p>
+      <div class="tool-list-box">
+        <div class="">
+          <div class="tool-list-item" *ngFor='let tool of this.currentUser.foundTools; let i = index; trackBy:customTrackBy'>
+            <p>{{tool.title}}</p>
+            <button class="tiny-button-skills" (click)="deleteTool(i)"><div class="tiny-button-text">x</div></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-6 text-center text-container" style="padding-top: 15px">
+      <p>Add New Skills</p>
+      <input type="text" style="width: 100%" [(ngModel)] = 'this.toolSearch' (ngModelChange)="updateToolList($event)" >
+      <div class="tool-search-box">
+        <div class="" *ngIf='this.toolSearch.length >= 1'>
+          <div class="" *ngFor='let tool of this.currentUser.tools; let i = index; trackBy:customTrackBy'>
+            <div class="tool-search-item" *ngIf='toolIsValid(tool)' (click)='addTool(this.currentUser.tools[i])'>
+              <p>{{tool.title}}</p>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="" *ngIf='this.toolSearch.length >= 1'>
+          <div class="" *ngFor='let tool of this.toolsDisplayed; let i = index; trackBy:customTrackBy'>
+            <div class="tool-search-item" *ngIf='toolIsValid(tool)' (click)='addTool(this.currentUser.tools[i])'>
+              <p>{{tool.title}}</p>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <div class="career col-xs-12 clear" *ngIf='!this.currentUser.resumeText'>
+    <div class="div-title col-xs-12">
+      <img src="./assets/img/profile/capabilities-1.png">
+      <p>SKILLS</p>
+      <div ></div>
+    </div>
+    <p>Hi! This profile doesn't have the full resume text saved so this stuff won't work. Create a new profile!</p>
+  </div>
 
   <div class="col-xs-12 col-md-6 text-center">
     <p class="fs-28 fc-title">INTERESTS</p>

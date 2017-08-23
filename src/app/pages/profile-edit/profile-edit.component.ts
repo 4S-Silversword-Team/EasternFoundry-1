@@ -35,7 +35,6 @@ export class ProfileEditComponent implements OnInit {
   promiseFinished: boolean = false
   toolSearch: string = ''
   allTools: any[] = []
-  toolsDisplayed: [string]
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -62,8 +61,8 @@ export class ProfileEditComponent implements OnInit {
     private router: Router,
     public location: Location
   ) {
-    // this.http.get('../../onet-tools.json')
-    //     .subscribe(res => this.allTools = res.json());
+    this.http.get('../../onet-tools.json')
+        .subscribe(res => this.allTools = res.json());
     if (this.router.url !== '/user-profile-create') {
         this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
         this.currentUser = result;
@@ -71,6 +70,7 @@ export class ProfileEditComponent implements OnInit {
           return (val + '').toLowerCase() === 'true';
         };
         //here's the logic to check the skillsengine tools against the resume text!
+        if (this.currentUser.resumeText) {
         for (let tool of this.currentUser.tools) {
           if (tool.title.length > 1) {
             if (this.currentUser.resumeText.toLowerCase().indexOf(tool.title.toLowerCase()) >= 0) {
@@ -90,6 +90,7 @@ export class ProfileEditComponent implements OnInit {
             }
           }
         }
+      }
 
         //right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
         //i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
@@ -114,6 +115,7 @@ export class ProfileEditComponent implements OnInit {
         if (this.currentUser.education[0].DegreeType[0] == null) {
           this.currentUser.education[0].DegreeType.push({Name: ''})
         }
+
         this.promiseFinished = true;
       });
     }
@@ -135,24 +137,29 @@ export class ProfileEditComponent implements OnInit {
   toolIsValid(tool) {
     if (tool.title.toLowerCase().includes(this.toolSearch.toLowerCase())) {
       if (!this.currentUser.foundTools.includes(tool)) {
-
         return true
       }
     }
     return false
-
-    // const skillToFind = this.newSkill
-    // function findName(tool) {
-    //   return tool.title === skillToFind;
-    // }
-    // if (this.newSkill !== '') {
-    //   var fullTool = this.currentUser.tools.find(findName)
-    //   this.currentUser.foundTools.push(fullTool);
-    //   this.newSkill = '';
-    // };
-
-
   }
+//hey! figure this whole dumb thing out!
+  // updateToolList(search){
+  //   console.log(search)
+  //   var toolSearch = this.toolSearch
+  //   var toolsDisplayed = this.toolsDisplayed
+  //   var foundTools = this.currentUser.foundTools
+  //   function isGoodTool(tool) {
+  //     if (tool.title.toLowerCase().includes(toolSearch.toLowerCase())) {
+  //       if (!toolsDisplayed.includes(tool)) {
+  //         if (!foundTools.includes(tool)) {
+  //           return true
+  //         }
+  //       }
+  //     }
+  //     return false
+  //   }
+  //   this.toolsDisplayed = this.filteredTools.filter(isGoodTool)
+  // }
 
   deleteTool(i) {
     this.currentUser.foundTools.splice(i, 1);
