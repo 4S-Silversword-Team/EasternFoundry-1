@@ -46,7 +46,7 @@ export class UserService {
   registerUser(request: any){
     console.log("Register User Service initiated");
     var response = this.authHttp.post(environment.apiRoot + "register/", request)
-      .map(response => response.json());
+      .map(response => { console.log("non json response", response); return response.json()});
     console.log("Register User Request:");
     console.log(request);
     console.log("Register User Response:");

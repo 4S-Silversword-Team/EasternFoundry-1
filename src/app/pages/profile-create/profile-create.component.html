@@ -27,8 +27,8 @@
     </div>
     <div class="form-group">
       <label for="resume">Resume</label>
-      <input type="file" name="resume" id="resume" class="form-control" [(ngModel)]='this.userParam.resume' required />
-      <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".pdf,.doc,.docx">
+      <!--<input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".pdf,.doc,.docx">-->
+      <input type="file" #fileInput placeholder="Upload file" accept=".pdf,.doc,.docx">
 
 
 
@@ -36,7 +36,8 @@
 
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-primary" (click)="registerUser(this.userParam)">Register</button>
+      <!--<button type="submit" class="btn btn-primary" (click)="registerUser(this.userParam)">Register</button>-->
+      <button type="submit" class="btn btn-primary" (click)="registerUser()">Register</button>
       <a href="/login" class="btn btn-link">Cancel</a>
     </div>
   </form>

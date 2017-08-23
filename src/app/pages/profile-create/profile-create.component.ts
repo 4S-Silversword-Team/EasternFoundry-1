@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Directive } from '@angular/core';
+import {Component, OnInit, AfterViewInit, Directive, ViewChild} from '@angular/core';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -23,13 +23,15 @@ declare var $: any;
 
 export class ProfileCreateComponent implements OnInit {
 
+    @ViewChild('fileInput') fileInput;
+
   userParam = {
     firstName: '',
     lastName: '',
     cell: '',
     office: '',
     username: '',
-    resume: ''
+
   };
 
   customTrackBy(index: number, obj: any): any {
@@ -39,7 +41,7 @@ export class ProfileCreateComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
-    public location: Location
+    public location: Location,
   ) {
     // this.currentUser = this.userService.getUserbyID(this.route.snapshot.params['id'])
   }
@@ -47,28 +49,31 @@ export class ProfileCreateComponent implements OnInit {
   ngOnInit() {
   }
 
+  // registerUser() {
+  //   console.log(this.userService.registerUser);
+  //   this.userService.registerUser(this.userParam).toPromise().then(result => console.log(result));
+  //   console.log("Register clicked");
+  //   console.log(this.userParam);
+  // }
+
   registerUser() {
-    console.log(this.userService.registerUser);
-    this.userService.registerUser(this.userParam).toPromise().then(result => console.log(result));
-    console.log("Register clicked");
-    console.log(this.userParam);
-  }
+    //const fileList: FileList = event.target.files;
+    let fileBrowser = this.fileInput.nativeElement;
+    if (fileBrowser.files && fileBrowser.files[0]) {
+      const formData = new FormData();
+      let file = fileBrowser.files[0]
 
-  fileChange(event) {
-    const fileList: FileList = event.target.files;
-    //console.log(fileList)
-    if (fileList.length > 0) {
-      const file: File = fileList[0];
-      console.log(file)
-
-      let formData = new FormData();
+      //let formData = new FormData();
       formData.append('uploadFile', file, file.name);
-
-      console.log(formData, formData === new FormData())
-      const headers = new Headers();
-      /** No need to include Content-Type in Angular 4 */
-      headers.append('Content-Type', 'multipart/form-data');
-      headers.append('Accept', 'application/json');
+      let req = this.userParam;
+      req['resume'] = formData;
+      console.log("REQ", req)
+      this.userService.registerUser(req).toPromise().then(result => console.log("did it work?",result));
+      //console.log(formData, formData === new FormData())
+      // const headers = new Headers();
+      // /** No need to include Content-Type in Angular 4 */
+      // headers.append('Content-Type', 'multipart/form-data');
+      // headers.append('Accept', 'application/json');
       // const options = new RequestOptions({ headers: headers });
       // this.http.post(`${this.apiEndPoint}`, formData, options)
       //   .map(res => res.json())
