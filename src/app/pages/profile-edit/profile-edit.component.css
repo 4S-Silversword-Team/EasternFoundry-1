@@ -226,6 +226,41 @@ button {
   transform: translateY(15px);
 }
 
+.tool-search-box {
+  height: 400px;
+  width: 100%;
+  border:1px solid #ccc;
+  overflow:auto;
+}
+
+.tool-search-item {
+  background: white;
+  font-size: 20px;
+  padding: 4px;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.tool-search-item:hover {
+  background: rgb(225, 225, 225);
+}
+
+.tool-list-box {
+  height: 442px;
+  width: 100%;
+  border:1px solid #ccc;
+  overflow:auto;
+}
+
+.tool-list-item {
+  background: white;
+  font-size: 20px;
+  padding: 4px;
+  margin-top: 4px;
+  text-align: center;
+}
+
+
 input {
   color: black;
 }

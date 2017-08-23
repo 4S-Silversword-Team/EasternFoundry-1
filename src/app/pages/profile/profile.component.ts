@@ -54,7 +54,7 @@ export class ProfileComponent implements OnInit {
       for (let job of this.currentUser.positionHistory) {
         for (let exp of job.agencyExperience) {
           for (let data of exp.main.data) {
-            let color = index / exp.main.data.length * 155
+            let color = 4
             color = Math.floor(color)
             this.expColors[exp.main.title] = this.expColors[index++]
           }
@@ -62,9 +62,11 @@ export class ProfileComponent implements OnInit {
       }
 
       let temp: number[] = []
-      for (let index of this.currentUser.abilities) {
-        this.strengthChartLabels.push(index[0])
-        temp.push(+index[1])
+      if(this.currentUser.abilities) {
+        for (let index of this.currentUser.abilities) {
+          this.strengthChartLabels.push(index[0])
+          temp.push(+index[1])
+        }
       }
       for (let index of this.currentUser.availability) {
         this.availabilityData.dates.push(index.date)
@@ -94,8 +96,8 @@ export class ProfileComponent implements OnInit {
         }
       }
       console.log(this.agencyExperience[0].main)
-      console.log(this.agencyExperience[1].main)
-      console.log(this.agencyExperience[2].main)
+      // console.log(this.agencyExperience[1].main)
+      // console.log(this.agencyExperience[2].main)
       function stringToBool(val) {
         return (val + '').toLowerCase() === 'true';
       };
@@ -114,6 +116,33 @@ export class ProfileComponent implements OnInit {
         }
         if (typeof this.currentUser.positionHistory[i].isKO === "string") {
           this.currentUser.positionHistory[i].isKO = stringToBool(this.currentUser.positionHistory[i].isKO)
+        }
+      }
+      if (this.currentUser.education[0] == null){
+        this.currentUser.education[0] = {
+          School: '',
+          ReferenceLocation: {
+            CountryCode: '',
+            CountrySubDivisionCode: '',
+            CityName: ''
+          },
+          EducationLevel: [
+            {
+              Name: ''
+            }
+          ],
+          AttendanceStatusCode: '',
+          AttendanceEndDate: '',
+          EducationScore: [''],
+          DegreeType: [
+            {
+              Name: ''
+            }
+          ],
+          DegreeDate: '',
+          MajorProgramName: [''],
+          MinorProgramName: [''],
+          Comment: ''
         }
       }
       if (this.currentUser.education[0].DegreeType[0] == null) {
@@ -137,8 +166,10 @@ export class ProfileComponent implements OnInit {
 
   getCapaChartValues(tempUser: User): number[] {
     let temp: number[] = []
-    for (let index of tempUser.occupations) {
-      temp.push(index.score)
+    if (tempUser.occupations) {
+      for (let index of tempUser.occupations) {
+        temp.push(index.score)
+      }
     }
     return temp
   }

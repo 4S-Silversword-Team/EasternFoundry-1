@@ -214,31 +214,59 @@
     </div>
   </div>
 
-  <div class="career col-xs-12 text-center clear">
-    <div class="div-title col-xs-12">
-      <p>INTERESTS</p>
-      <div ></div>
-    </div>
-    <p class="fs-28 fc-subtitle">INTERESTED IN:</p>
-    <div class="text-container text-left" [style.height] = "'300px'">
-      <textarea class="col-xs-12 interests" [(ngModel)] = 'this.currentUser.interest'></textarea>
-    </div>
-  </div>
-
-
-  <!-- <div class="career col-xs-12 clear">
+  <div class="career col-xs-12 clear" *ngIf='this.currentUser.resumeText'>
     <div class="div-title col-xs-12">
       <img src="./assets/img/profile/capabilities-1.png">
       <p>SKILLS</p>
       <div ></div>
     </div>
-    <div class="col-xs-4 col-xs-offset-4 text-center text-container" style="padding-top: 15px">
-      <div class="" *ngFor="let skill of this.currentUser.personCompetency; let i = index; trackBy:customTrackBy">
-        <input type="text" style="width: 100%" [(ngModel)] = 'this.currentUser.personCompetency[i].CompetencyName'>
-        <button class="tiny-button-skills" (click)="deleteSkill(i)"><div class="tiny-button-text">x</div></button>
+
+    <div class="col-xs-6 text-center text-container" style="padding-top: 15px">
+      <p>Your Skills</p>
+      <div class="tool-list-box">
+        <div class="">
+          <div class="tool-list-item" *ngFor='let tool of this.currentUser.foundTools; let i = index; trackBy:customTrackBy'>
+            <p>{{tool.title}}</p>
+            <button class="tiny-button-skills" (click)="deleteTool(i)"><div class="tiny-button-text">x</div></button>
+          </div>
+        </div>
       </div>
-        <input type="text" class="col-xs-8" placeholder="New Skill" [(ngModel)] = 'this.newSkill'>
-      <button class="col-xs-4" style="height: 30px; margin-top: 10px" (click)="addSkill()"><div style="margin-top: -5px">ADD</div></button>
+    </div>
+    <div class="col-xs-6 text-center text-container" style="padding-top: 15px">
+      <p>(this is slow right now, please be patient)</p>
+      <input type="text" style="width: 100%" [(ngModel)] = 'this.toolSearch' (ngModelChange)="updateToolList($event)" >
+      <div class="tool-search-box">
+        <div class="" *ngIf='this.toolSearch.length >= 1'>
+          <div class="" *ngFor='let tool of this.currentUser.tools; let i = index; trackBy:customTrackBy'>
+            <div class="tool-search-item" *ngIf='toolIsValid(tool) && toolIsNotListedAlready(tool)' (click)='addTool(this.currentUser.tools[i])'>
+              <p>{{tool.title}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="" *ngIf='this.toolSearch.length >= 1'>
+          <div class="" *ngFor='let tool of this.filteredTools; let i = index; trackBy:customTrackBy'>
+            <div class="tool-search-item" *ngIf='toolIsValid(tool)' (click)='addTool(this.filteredTools[i])'>
+              <p>{{tool.title}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="career col-xs-12 clear" *ngIf='!this.currentUser.resumeText'>
+    <div class="div-title col-xs-12">
+      <img src="./assets/img/profile/capabilities-1.png">
+      <p>SKILLS</p>
+      <div ></div>
+    </div>
+    <p>Hi! This profile doesn't have the full resume text saved so this stuff won't work. If you make a new profile it should all be good!</p>
+  </div>
+
+  <div class="col-xs-12 col-md-6 text-center">
+    <p class="fs-28 fc-title">INTERESTS</p>
+    <p class="fs-28 fc-subtitle">INTERESTED IN</p>
+    <div class="text-container text-left" [style.height] = "'300px'">
+      <textarea class="col-xs-12 interests" [(ngModel)] = 'this.currentUser.interest'></textarea>
     </div>
   </div> -->
 
@@ -257,6 +285,5 @@
 
   <div class="col-xs-6 col-xs-offset-3" style="margin-bottom: 1%"><button class="btn btn-primary btn-block" (click)="updateProfile(this.currentUser)">Save Changes</button></div>
   <br>
-
 
 </div>
