@@ -16,6 +16,14 @@ export class ToolService {
     this.authHttp = new AuthHttp(http)
   }
 
+  getTools(): Promise<Tool[]> {
+    var response = this.authHttp.get(environment.apiRoot + "tools/" )
+      .map(response => <[Tool]> response.json())
+
+    var toolPromise: Promise<[Tool]> = response.toPromise();
+    return toolPromise;
+  }
+
   getToolbyID(id: string): Observable<Tool> {
     var response =  this.authHttp.get(environment.apiRoot + "tools/" + id)
     .map(response => <Tool> response.json());
