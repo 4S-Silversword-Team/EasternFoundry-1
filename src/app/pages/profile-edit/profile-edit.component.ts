@@ -7,6 +7,7 @@ import { Location } from '@angular/common';
 
 import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
+import { ToolService } from '../../services/tool.service'
 import {isUndefined} from "util";
 import { AuthService} from "../../services/auth.service"
 
@@ -18,7 +19,7 @@ declare var $: any;
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html',
   styleUrls: ['./profile-edit.component.css'],
-  providers: [ UserService, AuthService ]
+  providers: [ UserService, AuthService, ToolService ]
 })
 export class ProfileEditComponent implements OnInit {
 
@@ -36,6 +37,8 @@ export class ProfileEditComponent implements OnInit {
   promiseFinished: boolean = false
   toolSearch: string = ''
   allTools: any[] = []
+  filteredTools: any[] = []
+  validNames: string[] = []
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -61,13 +64,17 @@ export class ProfileEditComponent implements OnInit {
     private http: Http,
     private router: Router,
     public location: Location,
-    private auth: AuthService
+    private auth: AuthService,
+    private toolService: ToolService
   ) {
     auth.isLoggedIn().then(res => {!res ? this.router.navigateByUrl("/login"): afterLogin()})
     .catch(reason => {console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})
 
     let afterLogin = () => {
       this.auth.getLoggedInUser() == this.route.snapshot.params['id']? console.log("welcome to your profile edit page"): (() => { console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})()
+      this.toolService.getTools().then(val => {
+        this.allTools = val
+      });
 
     if (this.router.url !== '/user-profile-create') {
         this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
@@ -143,32 +150,39 @@ export class ProfileEditComponent implements OnInit {
     this.currentUser.foundTools.push(tool);
   }
 
+  toolIsNotListedAlready(tool){
+    // this should keep track of everything used to prevent duplicates. it doesnt work! so it's not on.
+    if (!this.validNames.includes(tool.title.toLowerCase())) {
+      return true
+    } else {
+      return false
+    }
+  }
   toolIsValid(tool) {
     if (tool.title.toLowerCase().includes(this.toolSearch.toLowerCase())) {
       if (!this.currentUser.foundTools.includes(tool)) {
+        this.validNames.push(tool.title.toLowerCase())
         return true
       }
     }
     return false
   }
 //hey! figure this whole dumb thing out!
-  // updateToolList(search){
-  //   console.log(search)
-  //   var toolSearch = this.toolSearch
-  //   var toolsDisplayed = this.toolsDisplayed
-  //   var foundTools = this.currentUser.foundTools
-  //   function isGoodTool(tool) {
-  //     if (tool.title.toLowerCase().includes(toolSearch.toLowerCase())) {
-  //       if (!toolsDisplayed.includes(tool)) {
-  //         if (!foundTools.includes(tool)) {
-  //           return true
-  //         }
-  //       }
-  //     }
-  //     return false
-  //   }
-  //   this.toolsDisplayed = this.filteredTools.filter(isGoodTool)
-  // }
+  updateToolList(search){
+    this.validNames = []
+    console.log(search)
+    var toolSearch = this.toolSearch
+    var foundTools = this.currentUser.foundTools
+    function isGoodTool(tool) {
+      if (tool.title.toLowerCase().includes(toolSearch.toLowerCase())) {
+        if (!foundTools.includes(tool)) {
+          return true
+        }
+      }
+      return false
+    }
+    this.filteredTools = this.allTools.filter(isGoodTool)
+  }
 
   deleteTool(i) {
     this.currentUser.foundTools.splice(i, 1);

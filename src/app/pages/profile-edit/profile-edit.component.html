@@ -233,23 +233,23 @@
       </div>
     </div>
     <div class="col-xs-6 text-center text-container" style="padding-top: 15px">
-      <p>Add New Skills</p>
+      <p>(this is slow right now, please be patient)</p>
       <input type="text" style="width: 100%" [(ngModel)] = 'this.toolSearch' (ngModelChange)="updateToolList($event)" >
       <div class="tool-search-box">
         <div class="" *ngIf='this.toolSearch.length >= 1'>
           <div class="" *ngFor='let tool of this.currentUser.tools; let i = index; trackBy:customTrackBy'>
-            <div class="tool-search-item" *ngIf='toolIsValid(tool)' (click)='addTool(this.currentUser.tools[i])'>
+            <div class="tool-search-item" *ngIf='toolIsValid(tool) && toolIsNotListedAlready(tool)' (click)='addTool(this.currentUser.tools[i])'>
               <p>{{tool.title}}</p>
             </div>
           </div>
         </div>
-        <!-- <div class="" *ngIf='this.toolSearch.length >= 1'>
-          <div class="" *ngFor='let tool of this.toolsDisplayed; let i = index; trackBy:customTrackBy'>
-            <div class="tool-search-item" *ngIf='toolIsValid(tool)' (click)='addTool(this.currentUser.tools[i])'>
+        <div class="" *ngIf='this.toolSearch.length >= 1'>
+          <div class="" *ngFor='let tool of this.filteredTools; let i = index; trackBy:customTrackBy'>
+            <div class="tool-search-item" *ngIf='toolIsValid(tool)' (click)='addTool(this.filteredTools[i])'>
               <p>{{tool.title}}</p>
             </div>
           </div>
-        </div> -->
+        </div>
       </div>
     </div>
   </div>
@@ -259,7 +259,7 @@
       <p>SKILLS</p>
       <div ></div>
     </div>
-    <p>Hi! This profile doesn't have the full resume text saved so this stuff won't work. Create a new profile!</p>
+    <p>Hi! This profile doesn't have the full resume text saved so this stuff won't work. If you make a new profile it should all be good!</p>
   </div>
 
   <div class="col-xs-12 col-md-6 text-center">
