@@ -1,3 +1,5 @@
+import {Http} from '@angular/http';
+
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 import { Router, ActivatedRoute } from '@angular/router';
@@ -7,6 +9,8 @@ import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
 import {isUndefined} from "util";
 import { AuthService} from "../../services/auth.service"
+
+
 
 declare var $: any;
 
@@ -18,6 +22,8 @@ declare var $: any;
 })
 export class ProfileEditComponent implements OnInit {
 
+
+
   currentUser: User = new User()
   newSkill: string = ''
   expColors: string[] = ['rgb(0,178,255)', 'rgb(69,199,255)', 'rgb(138,220,255)', 'rgb(198,241,255)' ];
@@ -28,6 +34,8 @@ export class ProfileEditComponent implements OnInit {
     dates: []
   }
   promiseFinished: boolean = false
+  toolSearch: string = ''
+  allTools: any[] = []
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -50,6 +58,7 @@ export class ProfileEditComponent implements OnInit {
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
+    private http: Http,
     private router: Router,
     public location: Location,
     private auth: AuthService
@@ -60,19 +69,40 @@ export class ProfileEditComponent implements OnInit {
     let afterLogin = () => {
       this.auth.getLoggedInUser() == this.route.snapshot.params['id']? console.log("welcome to your profile edit page"): (() => { console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})()
 
-    // this.currentUser = this.userService.getUserbyID(this.route.snapshot.params['id'])
-      if (this.router.url !== '/user-profile-create') {
-          this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
-          this.currentUser = result;
-          function stringToBool(val) {
-            return (val + '').toLowerCase() === 'true';
-          };
-
-          //right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
-          //i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
-          if (typeof this.currentUser.disabled === "string") {
-            this.currentUser.disabled = stringToBool(this.currentUser.disabled)
+    if (this.router.url !== '/user-profile-create') {
+        this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
+        this.currentUser = result;
+        function stringToBool(val) {
+          return (val + '').toLowerCase() === 'true';
+        };
+        //here's the logic to check the skillsengine tools against the resume text!
+        if (this.currentUser.resumeText) {
+        for (let tool of this.currentUser.tools) {
+          if (tool.title.length > 1) {
+            if (this.currentUser.resumeText.toLowerCase().indexOf(tool.title.toLowerCase()) >= 0) {
+              if (this.currentUser.foundTools == null) {
+                this.currentUser.foundTools = [
+                  {
+                    title: '',
+                    category: '',
+                    classification: '',
+                    score: 0
+                  }
+                ]
+                this.currentUser.foundTools[0] = tool
+              } else {
+                this.currentUser.foundTools.push(tool)
+              }
+            }
           }
+        }
+      }
+
+        //right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
+        //i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
+        if (typeof this.currentUser.disabled === "string") {
+          this.currentUser.disabled = stringToBool(this.currentUser.disabled)
+        }
           for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
             if (typeof this.currentUser.positionHistory[i].isGovernment === "string") {
               this.currentUser.positionHistory[i].isGovernment = stringToBool(this.currentUser.positionHistory[i].isGovernment)
@@ -93,6 +123,9 @@ export class ProfileEditComponent implements OnInit {
               this.currentUser.education[x].DegreeType.push({Name: ''})
             }
           }
+          if (this.currentUser.education[0].DegreeType[0] == null) {
+            this.currentUser.education[0].DegreeType.push({Name: ''})
+          }
           this.promiseFinished = true;
         });
       }
@@ -106,18 +139,39 @@ export class ProfileEditComponent implements OnInit {
     console.log('This button doesnt do anything!')
   }
 
-  addSkill() {
-    if (this.newSkill !== '') {
-      this.currentUser.personCompetency.push({
-        CompetencyName: this.newSkill,
-        CompetencyLevel: 'good'
-      });
-      this.newSkill = '';
-    };
+  addTool(tool) {
+    this.currentUser.foundTools.push(tool);
   }
 
-  deleteSkill(i) {
-    this.currentUser.personCompetency.splice(i, 1);
+  toolIsValid(tool) {
+    if (tool.title.toLowerCase().includes(this.toolSearch.toLowerCase())) {
+      if (!this.currentUser.foundTools.includes(tool)) {
+        return true
+      }
+    }
+    return false
+  }
+//hey! figure this whole dumb thing out!
+  // updateToolList(search){
+  //   console.log(search)
+  //   var toolSearch = this.toolSearch
+  //   var toolsDisplayed = this.toolsDisplayed
+  //   var foundTools = this.currentUser.foundTools
+  //   function isGoodTool(tool) {
+  //     if (tool.title.toLowerCase().includes(toolSearch.toLowerCase())) {
+  //       if (!toolsDisplayed.includes(tool)) {
+  //         if (!foundTools.includes(tool)) {
+  //           return true
+  //         }
+  //       }
+  //     }
+  //     return false
+  //   }
+  //   this.toolsDisplayed = this.filteredTools.filter(isGoodTool)
+  // }
+
+  deleteTool(i) {
+    this.currentUser.foundTools.splice(i, 1);
   }
 
   addJob() {
