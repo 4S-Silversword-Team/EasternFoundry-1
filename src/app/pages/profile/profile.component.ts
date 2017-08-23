@@ -5,13 +5,15 @@ import { Location } from '@angular/common';
 
 import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
+import { AuthService } from '../../services/auth.service'
+
 
 declare var $: any;
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  providers: [UserService],
+  providers: [UserService, AuthService],
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
@@ -26,17 +28,19 @@ export class ProfileComponent implements OnInit {
     dates: []
   }
   agencyExperience: any[] = []
+  isActiveProfile: boolean = false
 
 
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
-    public location: Location
+    public location: Location,
+    private auth: AuthService
   ) {
 
     // this.currentUser = this.userService.getTempUser();
-
+    this.auth.isLoggedIn().then(() => this.auth.getLoggedInUser() == this.route.snapshot.params['id']? this.isActiveProfile = true: this.isActiveProfile = false).catch((reason) => "User Login Check failed")
 
     this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
       this.currentUser = result;
@@ -74,9 +78,11 @@ export class ProfileComponent implements OnInit {
         for (let agency of job.agencyExperience) {
           var nameMatch = false
           for (let i of this.agencyExperience) {
-            if (agency.main.title == i.main.title) {
-              i.main.data[0].score = (i.main.data[0].score + agency.main.data[0].score)
-              nameMatch = true
+            if (agency.main.title !== "") {
+              if (agency.main.title == i.main.title) {
+                i.main.data[0].score = (i.main.data[0].score + agency.main.data[0].score)
+                nameMatch = true
+              }
             }
           }
           if (nameMatch == false) {
@@ -88,7 +94,9 @@ export class ProfileComponent implements OnInit {
           }
         }
       }
-      console.log(this.agencyExperience[0].main.titles)
+      console.log(this.agencyExperience[0].main)
+      console.log(this.agencyExperience[1].main)
+      console.log(this.agencyExperience[2].main)
       function stringToBool(val) {
         return (val + '').toLowerCase() === 'true';
       };

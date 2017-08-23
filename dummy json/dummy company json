@@ -7,72 +7,76 @@
     "state": "VA",
     "zip": "12345",
     "address": "211112 Street",
-    "lastUpdated": "Feb, 2017",
+    "lastUpdated": "August 2017",
     "informationAccuracy": 5,
-    "__v": 2,
-    "userProfileProxies": [
-      {
-          "type": "597f86b54b2aa97e42d62cc8",
-          "ref": "companyUserProxy"
-      }
-    ],
-    "pastPerformanceProxies": [
-    	{
-          "type": "596fa3d90098230340303ee2",
-          "ref": "userPastPerformanceProxy"
-    	}
-	],
+    "__v": 0,
+    "userProfileProxies": [],
+    "pastPerformanceProxies": [],
     "schedule": [
         {
             "date": "Dec, 2016",
-            "content": "Schedule 1"
+            "content": "Schedule 1",
+            "_id": "5978bab7d4297936b588ea33"
         },
         {
             "date": "Feb, 2017",
-            "content": "Schedule 2"
+            "content": "Schedule 2",
+            "_id": "5978bab7d4297936b588ea32"
         },
         {
             "date": "Jul, 2017",
-            "content": "Schedule 3"
+            "content": "Schedule 3",
+            "_id": "5978bab7d4297936b588ea31"
         }
     ],
     "vehicles": [
         {
             "vehicleType": "Vehicle type 1",
-            "quantity": 3
+            "quantity": 3,
+            "_id": "5978bab7d4297936b588ea36"
         },
         {
             "vehicleType": "Vehicle type 2",
-            "quantity": 13
+            "quantity": 13,
+            "_id": "5978bab7d4297936b588ea35"
         },
         {
             "vehicleType": "Vehicle type 3",
-            "quantity": 22
+            "quantity": 22,
+            "_id": "5978bab7d4297936b588ea34"
         }
     ],
     "agencyExperience": [
         {
             "title": "Years agency experience",
-            "score": 90
+            "score": 90,
+            "_id": "5978bab7d4297936b588ea39"
         },
         {
             "title": "$ (M) of agency revenue",
-            "score": 12
+            "score": 12,
+            "_id": "5978bab7d4297936b588ea38"
         },
         {
             "title": "Proposals written",
-            "score": 14
+            "score": 14,
+            "_id": "5978bab7d4297936b588ea37"
         }
     ],
-    "pastPerformance": [],
-    "service": [],
-    "product": [],
+    "pastPerformance": [
+    	],
+    "service": [
+    	],
+    "product": [
+    ],
     "leadership": [
         {
-            "userId": "5978ae90ad3fed32a21c094e"
+            "userId": "599464c420130a001104a3b7",
+            "_id": "5978bab7d4297936b588ea41"
         },
         {
-            "userId": "5978ae90ad3fed32a21c094e"
+            "userId": "599464c420130a001104a3b7",
+            "_id": "5978bab7d4297936b588ea40"
         }
     ]
 }

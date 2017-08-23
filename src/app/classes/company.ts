@@ -39,6 +39,9 @@ export class Company {
     ]
     userProfileProxies : [
     any
-  ]
+    ]
+    pastPerformanceProxies: [
+      any
+    ]
 
 }

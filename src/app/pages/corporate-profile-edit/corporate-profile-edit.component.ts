@@ -27,7 +27,7 @@ declare var $: any;
 export class CorporateProfileEditComponent implements OnInit {
 
   currentAccount: Company = new Company();
-  products: Product[] = [];
+  products: any[] = [];
   services: Service[] = [];
   userProfiles: any[] = [];
   userProfilesAll: any[] = [];
@@ -72,24 +72,27 @@ export class CorporateProfileEditComponent implements OnInit {
       const myCallback = () => {
       if (this.currentAccount.product){
       for (const i of this.currentAccount.product) {
-        productService.getProductbyID(i.productId).toPromise().then(res => {this.products.push(res)});
+        var productId = i.toString()
+        productService.getProductbyID(productId).toPromise().then(res => {this.products.push(res)});
       }
       }
       if (this.currentAccount.service){
       for (const i of this.currentAccount.service) {
-        this.serviceService.getServicebyID(i.serviceId).toPromise().then(res => {this.services.push(res)});
+        var serviceId = i.toString()
+        this.serviceService.getServicebyID(serviceId).toPromise().then(res => {this.services.push(res)});
       }
       }
 
       if(this.currentAccount.pastPerformance){
       for (const i of this.currentAccount.pastPerformance) {
         // this.pastperformances.push(ppService.getPastPerformancebyID(i.pastperformanceid))
-        ppService.getPastPerformancebyID(i.pastPerformanceId).toPromise().then(res => this.pastperformances.push(res)); // Might try to continue the for loop before the promise resolves.
+        var pastPerformanceId = i.toString()
+        ppService.getPastPerformancebyID(pastPerformanceId).toPromise().then(res => this.pastperformances.push(res)); // Might try to continue the for loop before the promise resolves.
       }
       }
       this.refreshEmployees();
       if(!this.checkIfEmployee()){
-          this.router.navigateByUrl("/corporate-profile/"+this.route.snapshot.params['id'])
+          // this.router.navigateByUrl("/corporate-profile/"+this.route.snapshot.params['id'])
       }
 
     };
@@ -106,20 +109,19 @@ export class CorporateProfileEditComponent implements OnInit {
   }
 
   getAdminStatus() {
-
     var userId = this.auth.getLoggedInUser()
     this.userService.getUserbyID(userId).toPromise().then((user) =>{
-    var currentUserProxy = user.companyUserProxies.filter((proxy) => {
+      var currentUserProxy = user.companyUserProxies.filter((proxy) => {
         return proxy.company._id == this.route.snapshot.params['id']
       })[0]
       if(currentUserProxy){
-      this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
-        if (role.title && role.title == "admin") {
-          this.isUserAdmin = true;
-          console.log("I'm admin")
-        }
-      })
-    }
+        this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
+          if (role.title && role.title == "admin") {
+            this.isUserAdmin = true;
+            console.log("I'm admin")
+          }
+        })
+      }
     })
   }
 
@@ -326,6 +328,7 @@ export class CorporateProfileEditComponent implements OnInit {
         // this.router.navigate(['companies']);
       });
     } else {
+      if(!this.isUserAdmin){return;}
       for (const i of this.currentAccount.product) {
         const productModel = this.products[this.currentAccount.product.indexOf(i)]
         delete productModel['_id'];
