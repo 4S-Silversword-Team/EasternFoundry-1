@@ -195,18 +195,20 @@ changeToTeam(){
       numPeop++;
       console.log(numPeop);
       var member = i.userProfile;
-      for(var j = 0; j < member.strength.length; j++){
-        if( data_prof.has(member.strength[j].skill) ){
-          data_prof.set(member.strength[j].skill, data_prof.get(member.strength[j].skill) + member.strength[j].score);
-          data_peop.set(member.strength[j].skill, data_peop.get(member.strength[j].skill) + 1);
-        }
-        if( !data_prof.has(member.strength[j].skill) ){
-          data_prof.set(member.strength[j].skill, member.strength[j].score);
-          data_peop.set(member.strength[j].skill, 1);
-          skill.push(member.strength[j].skill);
+      if (member) {
+        for (var j = 0; j < member.strength.length; j++) {
+          if (data_prof.has(member.strength[j].skill)) {
+            data_prof.set(member.strength[j].skill, data_prof.get(member.strength[j].skill) + member.strength[j].score);
+            data_peop.set(member.strength[j].skill, data_peop.get(member.strength[j].skill) + 1);
+          }
+          if (!data_prof.has(member.strength[j].skill)) {
+            data_prof.set(member.strength[j].skill, member.strength[j].score);
+            data_peop.set(member.strength[j].skill, 1);
+            skill.push(member.strength[j].skill);
+
+          }
 
         }
-
       }
     }
     for(var k = 0; k < skill.length; k++){

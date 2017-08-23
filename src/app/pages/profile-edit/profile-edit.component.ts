@@ -8,6 +8,7 @@ import { Location } from '@angular/common';
 import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
 import { ToolService } from '../../services/tool.service'
+import { ToolSubmissionService } from '../../services/toolsubmission.service'
 import {isUndefined} from "util";
 import { AuthService} from "../../services/auth.service"
 
@@ -19,7 +20,7 @@ declare var $: any;
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html',
   styleUrls: ['./profile-edit.component.css'],
-  providers: [ UserService, AuthService, ToolService ]
+  providers: [ UserService, AuthService, ToolService, ToolSubmissionService ]
 })
 export class ProfileEditComponent implements OnInit {
 
@@ -39,6 +40,7 @@ export class ProfileEditComponent implements OnInit {
   allTools: any[] = []
   filteredTools: any[] = []
   validNames: string[] = []
+  toolSubmitted: boolean = false
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -65,11 +67,13 @@ export class ProfileEditComponent implements OnInit {
     private router: Router,
     public location: Location,
     private auth: AuthService,
-    private toolService: ToolService
+    private toolService: ToolService,
+    private toolSubmissionService: ToolSubmissionService
   ) {
-    auth.isLoggedIn().then(res => {!res ? this.router.navigateByUrl("/login"): afterLogin()})
-    .catch(reason => {console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})
-
+    auth.isLoggedIn().then(res => {
+      !res ? this.router.navigateByUrl("/login"): afterLogin()
+    }).catch(reason => {console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})
+    // this.currentUser = this.userService.getUserbyID(this.route.snapshot.params['id'])
     let afterLogin = () => {
       this.auth.getLoggedInUser() == this.route.snapshot.params['id']? console.log("welcome to your profile edit page"): (() => { console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})()
       this.toolService.getTools().then(val => {
@@ -79,11 +83,18 @@ export class ProfileEditComponent implements OnInit {
     if (this.router.url !== '/user-profile-create') {
         this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
         this.currentUser = result;
+        if(!this.currentUser.positionHistory[0]){
+          console.log("NO POS HISTORY.") //TODO create backend functionality for default pos history
+
+        }
         function stringToBool(val) {
           return (val + '').toLowerCase() === 'true';
         };
+
         //here's the logic to check the skillsengine tools against the resume text!
-        if (this.currentUser.resumeText) {
+        console.log(this.currentUser.foundTools)
+        if (this.currentUser.resumeText && this.currentUser.foundTools[0] == undefined) {
+          console.log('hi. im doin the resume scan. you did a bad job.')
         for (let tool of this.currentUser.tools) {
           if (tool.title.length > 1) {
             if (this.currentUser.resumeText.toLowerCase().indexOf(tool.title.toLowerCase()) >= 0) {
@@ -120,14 +131,36 @@ export class ProfileEditComponent implements OnInit {
             if (typeof this.currentUser.positionHistory[i].isKO === "string") {
               this.currentUser.positionHistory[i].isKO = stringToBool(this.currentUser.positionHistory[i].isKO)
             }
-            if ( this.currentUser.positionHistory[i].EndDate == null) {
+            if (this.currentUser.positionHistory[i].EndDate == null) {
               this.currentUser.positionHistory[i].EndDate = "Current"
             }
 
           }
-          for (var x = 0; x < this.currentUser.education.length; x++) {
-            if (this.currentUser.education[x].DegreeType[0] == null){
-              this.currentUser.education[x].DegreeType.push({Name: ''})
+          if (this.currentUser.education[0] == null){
+            this.currentUser.education[0] = {
+              School: '',
+              ReferenceLocation: {
+                CountryCode: '',
+                CountrySubDivisionCode: '',
+                CityName: ''
+              },
+              EducationLevel: [
+                {
+                  Name: ''
+                }
+              ],
+              AttendanceStatusCode: '',
+              AttendanceEndDate: '',
+              EducationScore: [''],
+              DegreeType: [
+                {
+                  Name: ''
+                }
+              ],
+              DegreeDate: '',
+              MajorProgramName: [''],
+              MinorProgramName: [''],
+              Comment: ''
             }
           }
           if (this.currentUser.education[0].DegreeType[0] == null) {
@@ -159,8 +192,12 @@ export class ProfileEditComponent implements OnInit {
     }
   }
   toolIsValid(tool) {
+    var toolNames = []
+    for (let tool of this.currentUser.foundTools) {
+      toolNames.push(tool.title.toLowerCase())
+    }
     if (tool.title.toLowerCase().includes(this.toolSearch.toLowerCase())) {
-      if (!this.currentUser.foundTools.includes(tool)) {
+      if (!toolNames.includes(tool.title.toLowerCase())) {
         this.validNames.push(tool.title.toLowerCase())
         return true
       }
@@ -169,8 +206,8 @@ export class ProfileEditComponent implements OnInit {
   }
 //hey! figure this whole dumb thing out!
   updateToolList(search){
+    this.toolSubmitted = false
     this.validNames = []
-    console.log(search)
     var toolSearch = this.toolSearch
     var foundTools = this.currentUser.foundTools
     function isGoodTool(tool) {
@@ -182,6 +219,21 @@ export class ProfileEditComponent implements OnInit {
       return false
     }
     this.filteredTools = this.allTools.filter(isGoodTool)
+  }
+
+  submitNewTool(tool){
+    var newTool = {
+      userName: '',
+      userId: '',
+      toolName: ''
+    }
+    newTool.userName = this.currentUser.firstName + ' ' + this.currentUser.lastName
+    newTool.userId = this.currentUser._id
+    newTool.toolName = this.toolSearch
+    console.log(newTool)
+    this.toolSubmissionService.createToolSubmission(newTool).toPromise();
+    this.toolSubmitted = true;
+
   }
 
   deleteTool(i) {

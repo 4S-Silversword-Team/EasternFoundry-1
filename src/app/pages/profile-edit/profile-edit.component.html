@@ -236,6 +236,13 @@
       <p>(this is slow right now, please be patient)</p>
       <input type="text" style="width: 100%" [(ngModel)] = 'this.toolSearch' (ngModelChange)="updateToolList($event)" >
       <div class="tool-search-box">
+        <div class="no-tool-found" *ngIf='this.toolSearch.length >= 1 && this.filteredTools.length == 0 && !this.toolSubmitted' >
+          <p>No matches found. Submit {{this.toolSearch}} as a new tool?</p>
+          <button class="btn btn-primary btn-block" type="button" name="button" (click)='submitNewTool(this.toolSearch)'>Submit</button>
+        </div>
+        <div class="no-tool-found" *ngIf='this.toolSearch.length >= 1 && this.filteredTools.length == 0 && this.toolSubmitted' >
+          <p>{{this.toolSearch}} has been submitted. If it's approved we'll add it to the list!</p>
+        </div>
         <div class="" *ngIf='this.toolSearch.length >= 1'>
           <div class="" *ngFor='let tool of this.currentUser.tools; let i = index; trackBy:customTrackBy'>
             <div class="tool-search-item" *ngIf='toolIsValid(tool) && toolIsNotListedAlready(tool)' (click)='addTool(this.currentUser.tools[i])'>
@@ -250,6 +257,13 @@
             </div>
           </div>
         </div>
+        <div class="no-tool-found" *ngIf='this.toolSearch.length >= 1 && this.filteredTools.length > 0 && !this.toolSubmitted' >
+          <p>Can't find what you're looking for? Submit {{this.toolSearch}} as a new tool.</p>
+          <button class="btn btn-primary btn-block" type="button" name="button" (click)='submitNewTool(this.toolSearch)'>Submit</button>
+        </div>
+        <div class="no-tool-found" *ngIf='this.toolSearch.length >= 1 && this.filteredTools.length > 0 && this.toolSubmitted' >
+          <p>{{this.toolSearch}} has been submitted. If it's approved we'll add it to the list!</p>
+        </div>
       </div>
     </div>
   </div>
@@ -262,7 +276,7 @@
     <p>Hi! This profile doesn't have the full resume text saved so this stuff won't work. If you make a new profile it should all be good!</p>
   </div>
 
-  <div class="col-xs-12 col-md-6 text-center">
+  <div class="col-xs-12 col-md-8 col-md-offset-2 text-center">
     <p class="fs-28 fc-title">INTERESTS</p>
     <p class="fs-28 fc-subtitle">INTERESTED IN</p>
     <div class="text-container text-left" [style.height] = "'300px'">
