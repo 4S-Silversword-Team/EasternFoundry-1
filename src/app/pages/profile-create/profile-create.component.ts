@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Directive } from '@angular/core';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -6,14 +6,21 @@ import { Location } from '@angular/common';
 import { User } from '../../classes/user';
 import { UserService } from '../../services/user.service';
 
+
+
 declare var $: any;
 
 @Component({
   selector: 'app-profile-create',
   templateUrl: './profile-create.component.html',
   styleUrls: ['./profile-create.component.css'],
-  providers: [ UserService ]
+  providers: [ UserService ],
 })
+
+@Directive({
+
+})
+
 export class ProfileCreateComponent implements OnInit {
 
   userParam = {
@@ -47,4 +54,29 @@ export class ProfileCreateComponent implements OnInit {
     console.log(this.userParam);
   }
 
+  fileChange(event) {
+    const fileList: FileList = event.target.files;
+    //console.log(fileList)
+    if (fileList.length > 0) {
+      const file: File = fileList[0];
+      console.log(file)
+
+      let formData = new FormData();
+      formData.append('uploadFile', file, file.name);
+
+      console.log(formData, formData === new FormData())
+      const headers = new Headers();
+      /** No need to include Content-Type in Angular 4 */
+      headers.append('Content-Type', 'multipart/form-data');
+      headers.append('Accept', 'application/json');
+      // const options = new RequestOptions({ headers: headers });
+      // this.http.post(`${this.apiEndPoint}`, formData, options)
+      //   .map(res => res.json())
+      //   .catch(error => Observable.throw(error))
+      //   .subscribe(
+      //     data => console.log('success'),
+      //     error => console.log(error)
+      //   )
+    }
+  }
 }
