@@ -67,9 +67,10 @@ export class ProfileEditComponent implements OnInit {
     private auth: AuthService,
     private toolService: ToolService
   ) {
-    auth.isLoggedIn().then(res => {!res ? this.router.navigateByUrl("/login"): afterLogin()})
-    .catch(reason => {console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})
-
+    auth.isLoggedIn().then(res => {
+      !res ? this.router.navigateByUrl("/login"): afterLogin()
+    }).catch(reason => {console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})
+    // this.currentUser = this.userService.getUserbyID(this.route.snapshot.params['id'])
     let afterLogin = () => {
       this.auth.getLoggedInUser() == this.route.snapshot.params['id']? console.log("welcome to your profile edit page"): (() => { console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})()
       this.toolService.getTools().then(val => {
@@ -79,6 +80,10 @@ export class ProfileEditComponent implements OnInit {
     if (this.router.url !== '/user-profile-create') {
         this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
         this.currentUser = result;
+        if(!this.currentUser.positionHistory[0]){
+          console.log("NO POS HISTORY.") //TODO create backend functionality for default pos history
+
+        }
         function stringToBool(val) {
           return (val + '').toLowerCase() === 'true';
         };
@@ -120,14 +125,36 @@ export class ProfileEditComponent implements OnInit {
             if (typeof this.currentUser.positionHistory[i].isKO === "string") {
               this.currentUser.positionHistory[i].isKO = stringToBool(this.currentUser.positionHistory[i].isKO)
             }
-            if ( this.currentUser.positionHistory[i].EndDate == null) {
+            if (this.currentUser.positionHistory[i].EndDate == null) {
               this.currentUser.positionHistory[i].EndDate = "Current"
             }
 
           }
-          for (var x = 0; x < this.currentUser.education.length; x++) {
-            if (this.currentUser.education[x].DegreeType[0] == null){
-              this.currentUser.education[x].DegreeType.push({Name: ''})
+          if (this.currentUser.education[0] == null){
+            this.currentUser.education[0] = {
+              School: '',
+              ReferenceLocation: {
+                CountryCode: '',
+                CountrySubDivisionCode: '',
+                CityName: ''
+              },
+              EducationLevel: [
+                {
+                  Name: ''
+                }
+              ],
+              AttendanceStatusCode: '',
+              AttendanceEndDate: '',
+              EducationScore: [''],
+              DegreeType: [
+                {
+                  Name: ''
+                }
+              ],
+              DegreeDate: '',
+              MajorProgramName: [''],
+              MinorProgramName: [''],
+              Comment: ''
             }
           }
           if (this.currentUser.education[0].DegreeType[0] == null) {

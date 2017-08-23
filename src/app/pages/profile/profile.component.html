@@ -58,7 +58,7 @@
     </div>
     <div class="capa-main col-xs-12">
         <div class="col-xl-12 col-sm-6">
-            <div class="capa-chart col-xs-12" *ngIf="this.promiseFinished">
+            <div class="capa-chart col-xs-12" *ngIf="this.promiseFinished && this.currentUser.occupations">
                 <app-bent-bars-chart width='300' height='300' divID='bbChart{{this.currentUser.id}}' [values]='getCapaChartValues(this.currentUser)'></app-bent-bars-chart>
             </div>
         </div>
