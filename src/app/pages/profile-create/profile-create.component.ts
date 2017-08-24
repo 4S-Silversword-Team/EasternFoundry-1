@@ -26,12 +26,8 @@ export class ProfileCreateComponent implements OnInit {
     @ViewChild('fileInput') fileInput;
 
   userParam = {
-    firstName: '',
-    lastName: '',
-    cell: '',
-    office: '',
     username: '',
-
+    password: ''
   };
 
   customTrackBy(index: number, obj: any): any {
@@ -60,28 +56,15 @@ export class ProfileCreateComponent implements OnInit {
     //const fileList: FileList = event.target.files;
     let fileBrowser = this.fileInput.nativeElement;
     if (fileBrowser.files && fileBrowser.files[0]) {
-      const formData = new FormData();
+      let formData = new FormData();
       let file = fileBrowser.files[0]
 
-      //let formData = new FormData();
-      formData.append('uploadFile', file, file.name);
-      let req = this.userParam;
-      req['resume'] = formData;
-      console.log("REQ", req)
-      this.userService.registerUser(req).toPromise().then(result => console.log("did it work?",result));
-      //console.log(formData, formData === new FormData())
-      // const headers = new Headers();
-      // /** No need to include Content-Type in Angular 4 */
-      // headers.append('Content-Type', 'multipart/form-data');
-      // headers.append('Accept', 'application/json');
-      // const options = new RequestOptions({ headers: headers });
-      // this.http.post(`${this.apiEndPoint}`, formData, options)
-      //   .map(res => res.json())
-      //   .catch(error => Observable.throw(error))
-      //   .subscribe(
-      //     data => console.log('success'),
-      //     error => console.log(error)
-      //   )
+      for(var key in this.userParam){
+        formData.append(key, this.userParam[key])
+      }
+      
+      formData.append('resume', file);
+      this.userService.registerUser(formData).toPromise().then(result => console.log("did it work?",result)).catch((reason) =>console.log("reason ", reason));
     }
   }
 }
