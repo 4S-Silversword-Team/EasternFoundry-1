@@ -1,0 +1,33 @@
+.div-networks {
+    width: 70px;
+    height: 20px;
+    border: 1px solid white;
+    display: inline-block;
+}
+
+/*.div-available.available {*/
+.div-networks.skilled{
+    background-color: #0b6ec1;
+}
+
+/*.div-available.unavailable {*/
+.div-networks.unskilled{
+    background-color: #7f7f7f;
+}
+
+img {
+    width: 70px;
+    height: 60px;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+}
+
+p {
+    width: 70px;
+    height: 20px;
+    display: inline-block;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+}

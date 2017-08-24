@@ -7,6 +7,7 @@ import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
 import { AuthService } from '../../services/auth.service'
 
+import { Highcharts } from 'angular-highcharts';
 
 declare var $: any;
 
@@ -27,6 +28,7 @@ export class ProfileComponent implements OnInit {
     values: [],
     dates: []
   }
+  chart: Highcharts;
   agencyExperience: any[] = []
   isActiveProfile: boolean = false
 
@@ -38,7 +40,7 @@ export class ProfileComponent implements OnInit {
     public location: Location,
     private auth: AuthService
   ) {
-
+//    console.log(this);
     // this.currentUser = this.userService.getTempUser();
     this.auth.isLoggedIn().then(() => this.auth.getLoggedInUser() == this.route.snapshot.params['id']? this.isActiveProfile = true: this.isActiveProfile = false).catch((reason) => "User Login Check failed")
 
@@ -150,10 +152,11 @@ export class ProfileComponent implements OnInit {
       }
       this.promiseFinished = true;
     }
-
+    this.generateToolChart();
   }
 
   ngOnInit() {
+
   }
 
   // getCapaChartValues(tempUser: User): number[] {
@@ -202,25 +205,155 @@ export class ProfileComponent implements OnInit {
       for (let exp of job.agencyExperience) {
         for (let office of exp.offices) {
           for (let data of office.data) {
-            temp.push(data.score)
+            temp.push(data.score);
           }
         }
       }
     }
-    return temp
+    return temp;
   }
 
   currentYear() {
-    let year = new Date().getFullYear()
-    return year
+    let year = new Date().getFullYear();
+    return year;
   }
 
   back() {
-    this.location.back()
+    this.location.back();
   }
 
   editProfile() {
     this.router.navigate(['user-profile-edit', this.currentUser['_id']]);
   }
+
+    generateToolChart(){
+      console.log("tool chart generation is \"implemented\" but i need to figure out how to log in locally to test it....");
+//     var data_prof = new Map();
+//     var data_peop = new Map();
+// //    var tool = [];
+//     var tools = [];
+//     var prof = [];
+//     var peop = [];
+//     var numPeop = 0;
+//     console.log(this.currentUser);
+// //    console.log(this.currentUser[0].userProfile);
+//   //   for(const i of this.currentUser){
+//   //     numPeop++;
+//   //     var member = i;;
+//   //     for( var j = 0; j < member.tools.length; j++){
+//   //       if( parseInt(member.tools[j].score) > 30 || data_prof.has(member.tools[j].title) ){
+//   //         if( data_prof.has(member.tools[j].title) ){
+//   //           data_prof.set(member.tools[j].title, data_prof.get(member.tools[j].title) + parseInt(member.tools[j].score));
+//   //           data_peop.set(member.tools[j].title, data_peop.get(member.tools[j].title) + 1);
+//   //         }
+//   //         if( !data_prof.has(member.tools[j].title) ){
+//   //           data_prof.set(member.tools[j].title, parseInt(member.tools[j].score));
+//   //           data_peop.set(member.tools[j].title, 1);
+//   //           tools.push(member.tools[j].title);
+//   //         }
+//   //     }
+//   //   }
+//   // }
+//   // for( var k = 0; k < gen_work_act.length; k++){
+//   //   data_prof.set( tools[k], ( data_prof.get(tools[k])/data_peop.get(tools[k]) ) );
+//   //   prof[k] = data_prof.get( tools[k] );
+//   //   peop[k] = data_peop.get( tools[k] );
+//   // }
+//
+//     var options = {
+//
+//           chart: {
+//               type: 'bar',
+//               backgroundColor: '#FDF5EB',
+//               renderTo: "tool_chart"
+//           },
+//           title: {
+// //              text: 'Skills'
+//                 text:''
+//           },
+//           xAxis: [{
+// //              categories: skill,
+//               categories: tools,
+//               options : {
+//                   endOnTick: false
+//               },
+//
+//
+//           }],
+//           yAxis: [{ // Primary yAxis
+// //            tickInterval: Math.round(100/numPeop),
+// //            tickAmount: numPeop,
+// //            max: 100,
+//               // endOnTick:false ,
+//               max:100,
+//               min:0,
+//               endOnTick: false,
+//               alignTicks: false,
+//
+//               ceiling: 100,
+//               labels: {
+//                   format: '{value}%',
+//                   style: {
+//                       color: Highcharts.getOptions().colors[1]
+//                   },
+//               },
+//               title: {
+//                   text: 'Proficiency',
+//                   style: {
+//                       color: Highcharts.getOptions().colors[1]
+//                   }
+//               },
+//           }, { // Secondary yAxis
+//               max: numPeop,
+//               tickInterval: 1,
+// //            tickAmount: numPeop,
+// //              endOnTick:false ,
+//               min:0,
+//               endOnTick: false,
+//               alignTicks: false,
+//
+//               title: {
+//                   text: 'Number of Employees',
+//                   style: {
+//                       color: Highcharts.getOptions().colors[0]
+//                   }
+//               },
+//               labels: {
+//                   step: 1,
+//                   format: '{value:.0f}',
+//                   style: {
+//                       color: Highcharts.getOptions().colors[0]
+//                   }
+//               },
+//               opposite: true
+//           }],
+//           tooltip: {
+//               shared: true
+//           },
+//           series: [{
+//               name: 'People',
+//               type: 'column',
+//               yAxis: 1,
+//               data: peop,
+//               tooltip: {
+//                   valueSuffix: ' '
+//               }
+//
+//           }, {
+//               name: 'Proficiency',
+//               type: 'column',
+//               data: prof,
+//               tooltip: {
+//                   valueSuffix: '%'
+//               }
+//           }]
+//     };
+//     this.chart = new Highcharts.chart(options);
+   }
+//
+
+
+
+
 
 }
