@@ -35,6 +35,15 @@ export class AuthHttp {
     });
   }
 
+  postNoJson(url, data) {
+    let headers = new Headers();
+    headers.delete('Content-Type');
+    this.createAuthorizationHeader(headers);
+    return this.http.post(url, data, {
+      headers: headers
+    });
+  }
+
   patch(url, data) {
     let headers = new Headers();
     this.createAuthorizationHeader(headers);

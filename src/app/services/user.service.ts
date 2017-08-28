@@ -43,8 +43,11 @@ export class UserService {
     return response;
   }
 
-  registerUser(){
-
+  registerUser(request: any){
+    console.log("Register User Service initiated");
+    var response = this.authHttp.postNoJson(environment.apiRoot + "register/", request)
+      .map(response => { console.log("non json response", response); return response.json()});
+    return response;
   }
 
   // createUser(id: string): Observable<User> {
