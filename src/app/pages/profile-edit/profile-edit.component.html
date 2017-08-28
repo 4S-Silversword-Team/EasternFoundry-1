@@ -107,7 +107,7 @@
       <div class="col-xs-10" style="padding-top: 2%">
         <div class="col-xs-4">
           <p class="col-xs-12 text-left">Type: </p>
-          <input class="col-xs-12" [(ngModel)] = 'index.type'>
+          <input class="col-xs-12" [(ngModel)] = 'index.clearanceType'>
         </div>
         <div class="col-xs-4 text-left">
           <p class="col-xs-12">Awarded: </p>
@@ -226,8 +226,8 @@
       <div class="tool-list-box">
         <div class="">
           <div class="tool-list-item" *ngFor='let tool of this.currentUser.foundTools; let i = index; trackBy:customTrackBy'>
-            <p>{{tool.title}}</p>
-            <button class="tiny-button-skills" (click)="deleteTool(i)"><div class="tiny-button-text">x</div></button>
+            {{tool.title}}
+            <button class="tiny-button-tools" (click)="deleteTool(i)"><div class="tiny-button-text">x</div></button>
           </div>
         </div>
       </div>
