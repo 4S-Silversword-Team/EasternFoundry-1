@@ -34,6 +34,19 @@ button {
   color: white;
 }
 
+.tiny-button-tools {
+  position: absolute;
+  right: 1px;
+  margin-top: -2px;
+  height: 15px;
+  width: 15px;
+  font-size: 16px;
+  background-color: orangered;
+  border: 1px solid lightgray;
+  color: white;
+}
+
+
 .tiny-button-awards {
   position: absolute;
   right: 17px;
@@ -230,6 +243,7 @@ button {
   height: 400px;
   width: 100%;
   border:1px solid #ccc;
+  background: rgba(0, 0, 0, 0.03);
   overflow:auto;
 }
 
@@ -246,9 +260,11 @@ button {
 }
 
 .tool-list-box {
+  position: relative;
   height: 442px;
   width: 100%;
   border:1px solid #ccc;
+  background: rgba(0, 0, 0, 0.03);
   overflow:auto;
 }
 
@@ -259,6 +275,15 @@ button {
   margin-top: 4px;
   text-align: center;
 }
+
+.no-tool-found {
+  background: rgba(255, 0, 0, 0.25);
+  font-size: 20px;
+  padding: 4px;
+  margin-top: 4px;
+  text-align: center;
+}
+
 
 
 input {
