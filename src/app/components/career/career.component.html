@@ -1,15 +1,15 @@
 <section class="col-xs-12 timeline">
   <ul>
     <li><div class="career-year" [style.margin-top] = "'32px'">{{current}}</div></li>
-    <li *ngFor="let data of Data" id="{{data['Year']}}">
-        <div class="career-year" id="c-year-{{data.Year}}" (click)="refresh(data.Year)">{{data['Year']}}</div>
-        <div class="career-brief hidden" id="c-brief-{{data.Year}}">
+    <li *ngFor="let data of Data" id="{{data.StartDate.replace('', '').replace('', '')}}">
+        <div class="career-year" id="c-year-{{data.StartDate.replace('', '').replace('', '')}}" (click)="refresh(data.StartDate.replace('', '').replace('', ''))">{{data['Year']}}</div>
+        <div class="career-brief hidden" id="c-brief-{{data.StartDate.replace('', '').replace('', '')}}">
             <p class="job-title">{{data['PositionTitle']}}</p>
             <p class="company">{{data['Employer']}}</p>
             <p class="from">{{data['StartDate']}}</p>
         </div>
-        <div class="career-detail hidden" id="c-detail-{{data.Year}}">
-            <p class="job-title">{{data['PositionTitle']}}</p>
+        <div class="career-detail hidden" id="c-detail-{{data.StartDate.replace('', '').replace('', '')}}">
+            <p class="job-title">{{data['PositionTitle']}}, {{data['Employer']}}</p>
             <p class="from">{{data['StartDate']}} - {{data['EndDate']}}</p>
             <textarea class="career" readonly>{{data['Description']}}</textarea>
         </div>

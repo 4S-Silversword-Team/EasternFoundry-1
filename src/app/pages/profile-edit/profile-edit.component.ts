@@ -92,9 +92,7 @@ export class ProfileEditComponent implements OnInit {
         };
 
         //here's the logic to check the skillsengine tools against the resume text!
-        console.log(this.currentUser.foundTools)
         if (this.currentUser.resumeText && this.currentUser.foundTools[0] == undefined) {
-          console.log('hi. im doin the resume scan. you did a bad job.')
         for (let tool of this.currentUser.tools) {
           if (tool.title.length > 1) {
             if (this.currentUser.resumeText.toLowerCase().indexOf(tool.title.toLowerCase()) >= 0) {
@@ -407,6 +405,34 @@ export class ProfileEditComponent implements OnInit {
   }
 
   updateProfile(model) {
+    function moveObject (array, old_index, new_index) {
+      if (new_index >= array.length) {
+          var k = new_index - array.length;
+          while ((k--) + 1) {
+              array.push(undefined);
+          }
+      }
+      array.splice(new_index, 0, array.splice(old_index, 1)[0]);
+    };
+    //this SHOULD automatically arrange jobs by date so more recent ones are on top. it doesnt seem to work 100% but it kind of works?
+    for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
+      if (this.currentUser.positionHistory[i].EndDate == "Current") {
+        moveObject(this.currentUser.positionHistory, i, 0)
+      } else {
+        if (this.currentUser.positionHistory[i+1]) {
+          while (+this.currentUser.positionHistory[i].EndDate.replace("-", "").replace("-", "") < +this.currentUser.positionHistory[i+1].StartDate.replace("-", "").replace("-", "")) {
+            moveObject(this.currentUser.positionHistory, i, i+1)
+          }
+        }
+        if (i > 1) {
+          while (+this.currentUser.positionHistory[i].StartDate.replace("-", "").replace("-", "") > +this.currentUser.positionHistory[i-1].EndDate.replace("-", "").replace("-", "")) {
+            console.log('1: ' + this.currentUser.positionHistory[i].StartDate)
+            console.log('2: ' + this.currentUser.positionHistory[i-1].EndDate)
+            moveObject(this.currentUser.positionHistory, i, i-1)
+          }
+        }
+      }
+    }
     for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
       if (this.currentUser.positionHistory[i].isGovernment) {
         this.currentUser.positionHistory[i].agencyExperience[0].main.title = this.currentUser.positionHistory[i].Employer
