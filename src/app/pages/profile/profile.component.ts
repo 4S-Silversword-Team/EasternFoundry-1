@@ -100,15 +100,16 @@ export class ProfileComponent implements OnInit {
         job.Year = +job.StartDate.slice(0, 4);
         for (let agency of job.agencyExperience) {
           var nameMatch = false
+
           for (let i of this.agencyExperience) {
-            if (agency.main.title !== "") {
+            if (agency.main.title.length !=- "") {
               if (agency.main.title == i.main.title) {
                 i.main.data[0].score = (i.main.data[0].score + agency.main.data[0].score)
                 nameMatch = true
               }
             }
           }
-          if (nameMatch == false) {
+          if (nameMatch == false && job.agencyExperience[0].main.title.length > 0) {
             if (this.agencyExperience[0] == null) {
               this.agencyExperience[0] = job.agencyExperience[0]
             } else {
@@ -117,7 +118,7 @@ export class ProfileComponent implements OnInit {
           }
         }
       }
-      console.log(this.agencyExperience[0].main)
+      console.log('HEY I AM LOGGING CONSOLES' + JSON.stringify(this.agencyExperience))
       // console.log(this.agencyExperience[1].main)
       // console.log(this.agencyExperience[2].main)
       function stringToBool(val) {

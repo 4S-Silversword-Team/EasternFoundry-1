@@ -37,7 +37,7 @@
         <p class="fs-28 fc-subtitle">AWARDS & CLEARANCES</p>
         <div class="text-container text-left cert-container" [style.height] = "'300px'">
           <div class="" *ngIf = 'this.currentUser.certification'>
-            <div class="" *ngIf = 'this.currentUser.certification[0].CertificationName'>
+            <div class="" *ngIf = 'this.currentUser.certification[0]'>
               <div class="" *ngIf = 'this.currentUser.certification[0].CertificationName.length > 0'>
                 <p>CERTS:</p>
                 <div class="" *ngFor="let cert of this.currentUser.certification">
@@ -150,7 +150,7 @@
   </div>
 
 
-<div class="career col-xs-12 clear">
+<div class="career col-xs-12 clear" *ngIf='this.currentUser.positionHistory'>
     <div class="div-title col-xs-12">
         <img src="./assets/img/profile/career.png">
         <p>CAREER</p>
