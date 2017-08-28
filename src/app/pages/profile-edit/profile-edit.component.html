@@ -3,7 +3,11 @@
   <div class="basic-info col-xs-10 col-xs-offset-1 clear">
     <div class="row">
       <div class="col-xs-8 col-xs-offset-4 col-lg-2 col-lg-offset-0" [style.height] = "'150px'">
-        <img src="{{this.currentUser.avatar}}" class="avatar left">
+        <img *ngIf="this.currentUser.avatar" src="{{this.currentUser.avatar}}" class="avatar left">
+        <div *ngIf="!this.currentUser.avatar" class="left">
+        <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
+        <button class="btn btn-primary" (click)="uploadPhoto()">Upload Avatar</button>
+        </div>
       </div>
       <div id="20" class="col-xs-10 col-xs-offset-1 col-lg-5 col-lg-offset-0" *ngIf = this.promiseFinished>
         <p class="col-xs-4 text-right vertically-centered">First Name</p>
