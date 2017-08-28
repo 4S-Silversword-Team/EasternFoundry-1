@@ -29,6 +29,7 @@ export class ProfileComponent implements OnInit {
   }
   agencyExperience: any[] = []
   isActiveProfile: boolean = false
+  currentJob: any = null
 
 
   constructor(
@@ -51,7 +52,27 @@ export class ProfileComponent implements OnInit {
       let index: number = 0
       this.availabilityData.values = []
       this.availabilityData.dates = []
+
       for (let job of this.currentUser.positionHistory) {
+        if (job.EndDate == "Current") {
+          this.currentJob = job
+        } else {
+          if (this.currentJob == null) {
+            this.currentJob = job
+          } else if (this.currentJob.endDate != "Current"){
+            var jobYear = +job.EndDate.slice(0, 4);
+            var currentYear = +this.currentJob.EndDate.slice(0, 4);
+            if (jobYear > currentYear) {
+              this.currentJob = job
+            } else if (jobYear == currentYear) {
+              var jobMonth = +job.EndDate.slice(5, 2);
+              var currentMonth = +this.currentJob.EndDate.slice(5, 2);
+              if (jobMonth > currentMonth) {
+                this.currentJob = job
+              }
+            }
+          }
+        }
         for (let exp of job.agencyExperience) {
           for (let data of exp.main.data) {
             let color = 4

@@ -7,10 +7,10 @@
                 <img class="avatar left" src="{{ this.currentUser.avatar }}">
                 <div class="right" [style.width] = "'calc(100% - 150px)'">
                     <p class="col-xs-12 mt15" [style.height] = "'40px'">{{ this.currentUser.firstName }} {{this.currentUser.lastName}}</p>
-                    <p class="col-xs-12 mt15" [style.height] = "'40px'" *ngIf = this.currentUser.positionHistory[0]>{{
-                      this.currentUser.positionHistory[0].PositionTitle }}</p>
-                    <p class="col-xs-12 mb15" [style.height] = "'40px'" *ngIf = this.currentUser.positionHistory[0]>{{
-                      this.currentUser.positionHistory[0].Employer}}</p>
+                    <p class="col-xs-12 mt15" [style.height] = "'40px'" *ngIf = this.currentJob>{{
+                      this.currentJob.PositionTitle }}</p>
+                    <p class="col-xs-12 mb15" [style.height] = "'40px'" *ngIf = this.currentJob>{{
+                      this.currentJob.Employer}}</p>
                 </div>
             </div>
             <div id="user-contact" class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0">
@@ -110,7 +110,7 @@
     </div>
   </div>
 
-  <div class="experience col-xs-12 clear">
+  <div class="experience col-xs-12 clear" *ngIf='this.agencyExperience[0].main.title'>
     <div class="div-title col-xs-12">
         <img src="./assets/img/profile/agency-3.png">
         <p>AGENCY EXPERIENCE</p>
