@@ -36,14 +36,18 @@
         <p class="fs-28 fc-title">CERTIFICATIONS, DEGREES</p>
         <p class="fs-28 fc-subtitle">AWARDS & CLEARANCES</p>
         <div class="text-container text-left cert-container" [style.height] = "'300px'">
-          <div class="" *ngIf = 'this.currentUser.certification[0].CertificationName && this.currentUser.certification[0].CertificationName.length > 0'>
-            <p>CERTS:</p>
-            <div class="" *ngFor="let cert of this.currentUser.certification">
-              <p *ngIf="cert.CertificationName && cert.CertificationName.length > 0">{{ 'Degree: ' + cert.CertificationName}}</p>
-              <p *ngIf="cert.DateEarned && cert.DateEarned.length > 0">{{'Earned: ' + cert.DateEarned }}</p>
+          <div class="" *ngIf = 'this.currentUser.certification'>
+            <div class="" *ngIf = 'this.currentUser.certification[0].CertificationName'>
+              <div class="" *ngIf = 'this.currentUser.certification[0].CertificationName.length > 0'>
+                <p>CERTS:</p>
+                <div class="" *ngFor="let cert of this.currentUser.certification">
+                  <p *ngIf="cert.CertificationName && cert.CertificationName.length > 0">{{ 'Degree: ' + cert.CertificationName}}</p>
+                  <p *ngIf="cert.DateEarned && cert.DateEarned.length > 0">{{'Earned: ' + cert.DateEarned }}</p>
+                </div>
+              </div>
             </div>
           </div>
-          <div *ngIf = this.currentUser.education>
+          <div *ngIf = 'this.currentUser.education'>
             <p>DEGREES:</p>
             <div class="" *ngFor="let deg of this.currentUser.education">
               <p *ngIf="deg.DegreeType[0].Name && deg.DegreeType[0].Name.length > 0">
@@ -60,13 +64,13 @@
               </p>
             </div>
           </div>
-          <div class="" *ngIf='this.currentUser.award[0] && this.currentUser.award[0].length > 0'>
+          <div class="" *ngIf='this.currentUser.award && this.currentUser.award[0].length > 0'>
             <p>AWARDS:</p>
             <div class="" *ngFor="let award of this.currentUser.award">
               <p *ngIf="award.length > 0">{{ 'Awarded: ' + award }}</p>
             </div>
           </div>
-          <div class="" *ngIf='this.currentUser.clearance[0] && this.currentUser.clearance[0].clearanceType.length > 0'>
+          <div class="" *ngIf='this.currentUser.clearance && this.currentUser.clearance[0].clearanceType.length > 0'>
             <p>CLEARANCES:</p>
             <div class="" *ngFor="let clearance of this.currentUser.clearance">
               <p *ngIf="clearance.clearanceType.length > 0">{{ 'Clearance: ' + clearance.clearanceType }}</p>
@@ -110,34 +114,37 @@
     </div>
   </div>
 
-  <div class="experience col-xs-12 clear" *ngIf='this.agencyExperience[0].main.title'>
-    <div class="div-title col-xs-12">
-        <img src="./assets/img/profile/agency-3.png">
-        <p>AGENCY EXPERIENCE</p>
-        <div ></div>
-    </div>
-
-    <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-container" *ngIf="this.promiseFinished">
-      <div class="" *ngFor='let agency of this.agencyExperience; let i = index'>
-        <div class="" *ngIf="agency.main.title">
-          <app-color-comment-box *ngFor="let index of agency.main.data" color='{{ expColors[i] }}' text='{{agency.main.title}}' class="col-xs-12 col-md-12"></app-color-comment-box>
+  <div class="experience col-xs-12 clear" *ngIf='this.agencyExperience'>
+    <div class="" *ngIf='this.agencyExperience[0]'>
+      <div class="" *ngIf='this.agencyExperience[0].main.title'>
+        <div class="div-title col-xs-12">
+          <img src="./assets/img/profile/agency-3.png">
+          <p>AGENCY EXPERIENCE</p>
+          <div ></div>
         </div>
-      </div>
-    </div>
-    <div class="exp-main col-xs-12" *ngIf="this.promiseFinished">
-      <div class="col-xs-12" *ngFor='let agency of this.agencyExperience; let x = index'>
-        <p class="exp-main-title">{{agency.main.title}}</p>
-        <div class="app-exp-chart" *ngIf="agency.main.title">
-          <app-exp-chart width='500' height='500' divID='exp-main-chart' [values]='expMainValues(this.currentUser, i, x)'></app-exp-chart>
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-container" *ngIf="this.promiseFinished">
+          <div class="" *ngFor='let agency of this.agencyExperience; let i = index'>
+            <div class="" *ngIf="agency.main.title">
+              <app-color-comment-box *ngFor="let index of agency.main.data" color='{{ expColors[i] }}' text='{{agency.main.title}}' class="col-xs-12 col-md-12"></app-color-comment-box>
+            </div>
+          </div>
         </div>
-        <!-- <div class="app-exp-chart right" *ngFor='let office of agency.offices; let y = index'>
+        <div class="exp-main col-xs-12" *ngIf="this.promiseFinished">
+          <div class="col-xs-12" *ngFor='let agency of this.agencyExperience; let x = index'>
+            <p class="exp-main-title">{{agency.main.title}}</p>
+            <div class="app-exp-chart" *ngIf="agency.main.title">
+              <app-exp-chart width='500' height='500' divID='exp-main-chart' [values]='expMainValues(this.currentUser, i, x)'></app-exp-chart>
+            </div>
+            <!-- <div class="app-exp-chart right" *ngFor='let office of agency.offices; let y = index'>
             <app-exp-chart id='sub1' width='250' height='250' divID='exp-sub1-chart' [values]='expSub1Values(this.currentUser, i, x, y)' class="right"></app-exp-chart>
             <p id="exp-sub1-title" class="left">{{office.title}}</p>
+          </div> -->
+          <!-- <div class="app-exp-chart left">
+          <app-exp-chart id='sub2' width='250' height='250' divID='exp-sub2-chart' [values]='expSub2Values(this.currentUser)' class="left"></app-exp-chart>
+          <p id="exp-sub2-title" class="right">Office 2</p>
         </div> -->
-        <!-- <div class="app-exp-chart left">
-            <app-exp-chart id='sub2' width='250' height='250' divID='exp-sub2-chart' [values]='expSub2Values(this.currentUser)' class="left"></app-exp-chart>
-            <p id="exp-sub2-title" class="right">Office 2</p>
-        </div> -->
+          </div>
+        </div>
       </div>
     </div>
   </div>

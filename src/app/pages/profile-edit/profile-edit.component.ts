@@ -420,12 +420,14 @@ export class ProfileEditComponent implements OnInit {
         moveObject(this.currentUser.positionHistory, i, 0)
       } else {
         if (this.currentUser.positionHistory[i+1]) {
-          while (+this.currentUser.positionHistory[i].EndDate.replace("-", "") < +this.currentUser.positionHistory[i+1].StartDate.replace("-", "")) {
+          while (+this.currentUser.positionHistory[i].EndDate.replace("-", "").replace("-", "") < +this.currentUser.positionHistory[i+1].StartDate.replace("-", "").replace("-", "")) {
             moveObject(this.currentUser.positionHistory, i, i+1)
           }
         }
-        if (i > 0 && this.currentUser.positionHistory[i-1].EndDate != "Current") {
-          while (+this.currentUser.positionHistory[i].StartDate.replace("-", "") > +this.currentUser.positionHistory[i-1].EndDate.replace("-", "")) {
+        if (i > 1) {
+          while (+this.currentUser.positionHistory[i].StartDate.replace("-", "").replace("-", "") > +this.currentUser.positionHistory[i-1].EndDate.replace("-", "").replace("-", "")) {
+            console.log('1: ' + this.currentUser.positionHistory[i].StartDate)
+            console.log('2: ' + this.currentUser.positionHistory[i-1].EndDate)
             moveObject(this.currentUser.positionHistory, i, i-1)
           }
         }

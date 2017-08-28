@@ -30,6 +30,7 @@ export class ProfileComponent implements OnInit {
   agencyExperience: any[] = []
   isActiveProfile: boolean = false
   currentJob: any = null
+  positionHistory: any[] = []
 
 
   constructor(
@@ -139,6 +140,7 @@ export class ProfileComponent implements OnInit {
           this.currentUser.positionHistory[i].isKO = stringToBool(this.currentUser.positionHistory[i].isKO)
         }
       }
+
       if (this.currentUser.education[0] == null){
         this.currentUser.education[0] = {
           School: '',
