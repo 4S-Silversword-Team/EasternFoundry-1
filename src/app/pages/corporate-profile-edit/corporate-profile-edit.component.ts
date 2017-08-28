@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { Company } from '../../classes/company';
 import { Product } from '../../classes/product';
 import { Service } from '../../classes/service';
@@ -15,6 +15,9 @@ import { UserService } from '../../services/user.service'
 import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
 import { AuthService } from '../../services/auth.service'
 import { RoleService } from '../../services/role.service'
+import { s3Service } from '../../services/s3.service'
+
+import {environment} from "../../../environments/environment"
 
 declare var $: any;
 
@@ -22,9 +25,11 @@ declare var $: any;
   selector: 'app-corporate-profile-edit',
   templateUrl: './corporate-profile-edit.component.html',
   styleUrls: ['./corporate-profile-edit.component.css'],
-  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, CompanyUserProxyService, RoleService]
+  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, CompanyUserProxyService, RoleService, s3Service]
 })
 export class CorporateProfileEditComponent implements OnInit {
+
+  @ViewChild('fileInput') fileInput;
 
   currentAccount: Company = new Company();
   products: any[] = [];
@@ -55,7 +60,8 @@ export class CorporateProfileEditComponent implements OnInit {
     private userService: UserService,
     private companyUserProxyService: CompanyUserProxyService,
     private auth: AuthService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private s3Service: s3Service
   ) {
     // if(!auth.isLoggedIn()){
     //   this.router.navigateByUrl("/login")
@@ -106,6 +112,19 @@ export class CorporateProfileEditComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  uploadPhoto() {
+    let fileBrowser = this.fileInput.nativeElement;
+    if (fileBrowser.files && fileBrowser.files[0]) {
+      let formData = new FormData();
+      let file = fileBrowser.files[0]
+      console.log(file)
+      formData.append("bucket", environment.bucketName);
+      formData.append("key", "companyPhotos/"+this.currentAccount._id);
+      formData.append("file", file);
+      this.s3Service.postPhoto(formData).toPromise().then(result => console.log("did it work?",result)).catch((reason) =>console.log("reason ", reason));
+    }
   }
 
   getAdminStatus() {
