@@ -17,9 +17,9 @@ declare var $: any;
   providers: [ UserService ],
 })
 
-@Directive({
-
-})
+// @Directive({
+//
+// })
 
 export class ProfileCreateComponent implements OnInit {
 
@@ -62,7 +62,7 @@ export class ProfileCreateComponent implements OnInit {
       for(var key in this.userParam){
         formData.append(key, this.userParam[key])
       }
-      
+
       formData.append('resume', file);
       this.userService.registerUser(formData).toPromise().then(result => console.log("did it work?",result)).catch((reason) =>console.log("reason ", reason));
     }
