@@ -34,6 +34,19 @@ button {
   color: white;
 }
 
+.tiny-button-tools {
+  position: absolute;
+  right: 1px;
+  margin-top: -2px;
+  height: 15px;
+  width: 15px;
+  font-size: 16px;
+  background-color: orangered;
+  border: 1px solid lightgray;
+  color: white;
+}
+
+
 .tiny-button-awards {
   position: absolute;
   right: 17px;
@@ -247,6 +260,7 @@ button {
 }
 
 .tool-list-box {
+  position: relative;
   height: 442px;
   width: 100%;
   border:1px solid #ccc;
