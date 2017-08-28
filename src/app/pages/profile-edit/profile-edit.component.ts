@@ -1,6 +1,6 @@
 import {Http} from '@angular/http';
 
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -11,6 +11,9 @@ import { ToolService } from '../../services/tool.service'
 import { ToolSubmissionService } from '../../services/toolsubmission.service'
 import {isUndefined} from "util";
 import { AuthService} from "../../services/auth.service"
+import { s3Service } from "../../services/s3.service"
+
+import { environment } from "../../../environments/environment"
 
 
 
@@ -20,11 +23,11 @@ declare var $: any;
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html',
   styleUrls: ['./profile-edit.component.css'],
-  providers: [ UserService, AuthService, ToolService, ToolSubmissionService ]
+  providers: [ UserService, AuthService, ToolService, ToolSubmissionService, s3Service ]
 })
 export class ProfileEditComponent implements OnInit {
 
-
+  @ViewChild('fileInput') fileInput;
 
   currentUser: User = new User()
   newSkill: string = ''
@@ -68,7 +71,8 @@ export class ProfileEditComponent implements OnInit {
     public location: Location,
     private auth: AuthService,
     private toolService: ToolService,
-    private toolSubmissionService: ToolSubmissionService
+    private toolSubmissionService: ToolSubmissionService,
+    private s3Service: s3Service
   ) {
     auth.isLoggedIn().then(res => {
       !res ? this.router.navigateByUrl("/login"): afterLogin()
@@ -174,6 +178,21 @@ export class ProfileEditComponent implements OnInit {
 
   ngOnInit() {
   }
+
+
+  uploadPhoto() {
+    let fileBrowser = this.fileInput.nativeElement;
+    if (fileBrowser.files && fileBrowser.files[0]) {
+      let formData = new FormData();
+      let file = fileBrowser.files[0]
+      console.log(file)
+      formData.append("bucket", environment.bucketName);
+      formData.append("key", "userPhotos/"+this.currentUser._id);
+      formData.append("file", file);
+      this.s3Service.postPhoto(formData).toPromise().then(result => console.log("did it work?",result)).catch((reason) =>console.log("reason ", reason));
+    }
+  }
+
 
   saveChanges() {
     console.log('This button doesnt do anything!')
