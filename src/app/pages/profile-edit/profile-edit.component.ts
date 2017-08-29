@@ -189,7 +189,11 @@ export class ProfileEditComponent implements OnInit {
       formData.append("bucket", environment.bucketName);
       formData.append("key", "userPhotos/"+this.currentUser._id);
       formData.append("file", file);
-      this.s3Service.postPhoto(formData).toPromise().then(result => console.log("did it work?",result)).catch((reason) =>console.log("reason ", reason));
+      this.s3Service.postPhoto(formData).toPromise().then(result => {
+        console.log("Photo upload success",result) ;
+        this.currentUser.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/userPhotos/"+this.currentUser._id;
+        this.updateProfile(this.currentUser, true);
+      }).catch((reason) =>console.log("reason ", reason));
     }
   }
 
@@ -425,7 +429,7 @@ export class ProfileEditComponent implements OnInit {
     return year;
   }
 
-  updateProfile(model) {
+  updateProfile(model, noNav?: boolean) {
     for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
       if (this.currentUser.positionHistory[i].isGovernment) {
         this.currentUser.positionHistory[i].agencyExperience[0].main.title = this.currentUser.positionHistory[i].Employer
@@ -445,8 +449,10 @@ export class ProfileEditComponent implements OnInit {
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     delete model['_id']
     this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
-    window.scrollTo(0, 0);
-    this.router.navigate(['user-profile', this.route.snapshot.params['id']]);
+    if(!noNav) {
+      window.scrollTo(0, 0);
+      this.router.navigate(['user-profile', this.route.snapshot.params['id']]);
+    }
   }
 
 

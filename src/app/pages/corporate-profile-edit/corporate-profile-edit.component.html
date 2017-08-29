@@ -7,9 +7,10 @@
       </div>
       <div class="col-xs-12 mt10">
         <p class="left lh-50 mt10" [style.width]="'80px'">Logo</p>
-        <div class="text-container right text-center" [style.min-height] = "'150px'" [style.width] = "'calc(100% - 100px)'">
-          <input type="file" #fileInput accept=".jpg,.png"/>
-          <p class="col-xs-12 vcenter link" (click)="uploadPhoto()">Upload Logo</p>
+        <img *ngIf="this.currentAccount.avatar" src="{{this.currentAccount.avatar}}" class="avatar left">
+        <div *ngIf="!creatingNew && (!this.currentAccount.avatar || this.currentAccount.avatar.startsWith('..'))" class="right">
+          <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
+          <button class="btn btn-primary" (click)="uploadPhoto()">Upload Logo</button>
         </div>
       </div>
       <!--<div class="col-xs-12" [style.height]="'130px'">
