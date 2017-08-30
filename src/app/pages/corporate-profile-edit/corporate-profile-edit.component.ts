@@ -134,6 +134,7 @@ export class CorporateProfileEditComponent implements OnInit {
   editPhoto() {
     let fileBrowser = this.fileInput.nativeElement;
     if (fileBrowser.files && fileBrowser.files[0]) {
+      if(!this.currentAccount._id){return}
       const uid = this.currentAccount._id;
       let formData = new FormData();
       let file = fileBrowser.files[0]
