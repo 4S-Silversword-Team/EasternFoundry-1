@@ -141,9 +141,28 @@ export class ProfileComponent implements OnInit {
           }
         }
       }
-      for (let tool of toolsToPush) {
-        if (tool.score > 25) {
-          this.occupations.push(tool)
+      if (toolsToPush.length < 2) {
+        for (let o of this.currentUser.occupations) {
+          var newOccupation = {
+            title: '',
+            score: 0
+          }
+          newOccupation.title = o.title
+          newOccupation.score = o.score
+          this.occupations.push(newOccupation)
+
+        }
+      } else {
+        for (let tool of toolsToPush) {
+          console.log(tool.title)
+          for (let o of this.currentUser.occupations) {
+            if (tool.title == o.title) {
+              tool.score += (o.score / 5)
+            }
+          }
+          if (tool.score > 50) {
+            this.occupations.push(tool)
+          }
         }
       }
       for (let o of this.occupations) {
