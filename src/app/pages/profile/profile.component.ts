@@ -31,6 +31,7 @@ export class ProfileComponent implements OnInit {
   isActiveProfile: boolean = false
   currentJob: any = null
   positionHistory: any[] = []
+  occupations: any[] = []
 
 
   constructor(
@@ -118,9 +119,37 @@ export class ProfileComponent implements OnInit {
           }
         }
       }
-      console.log('HEY I AM LOGGING CONSOLES' + JSON.stringify(this.agencyExperience))
-      // console.log(this.agencyExperience[1].main)
-      // console.log(this.agencyExperience[2].main)
+
+      var toolsToPush = []
+      for (let tool of this.currentUser.foundTools) {
+        var matchFound = false
+        for (let position of tool.position) {
+          for (let toolDone of toolsToPush) {
+            if (position == toolDone.title) {
+              toolDone.score += 5
+              matchFound = true
+            }
+          }
+          if (!matchFound) {
+            var newPosition = {
+              title: '',
+              score: 0
+            }
+            newPosition.title = position
+            newPosition.score = 5
+            toolsToPush.push(newPosition)
+          }
+        }
+      }
+      for (let tool of toolsToPush) {
+        if (tool.score > 25) {
+          this.occupations.push(tool)
+        }
+      }
+      for (let o of this.occupations) {
+        console.log(o.title + ' ' + o.score)
+      }
+
       function stringToBool(val) {
         return (val + '').toLowerCase() === 'true';
       };
@@ -188,15 +217,24 @@ export class ProfileComponent implements OnInit {
   //   return temp
   // }
 
-  getCapaChartValues(tempUser: User): number[] {
+  // getCapaChartValues(tempUser: User): number[] {
+  //   let temp: number[] = []
+  //   if (tempUser.occupations) {
+  //     for (let index of tempUser.occupations) {
+  //       temp.push(index.score)
+  //     }
+  //   }
+  //   return temp
+  // }
+
+  getCapaChartValues(occupations): number[] {
     let temp: number[] = []
-    if (tempUser.occupations) {
-      for (let index of tempUser.occupations) {
-        temp.push(index.score)
-      }
+    for (let index of occupations) {
+      temp.push(index.score)
     }
     return temp
   }
+
 
   getCapaChartColor(score: number): string {
     let temp: string
