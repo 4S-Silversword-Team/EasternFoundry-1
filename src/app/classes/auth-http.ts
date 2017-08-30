@@ -52,6 +52,14 @@ export class AuthHttp {
     });
   }
 
+  deleteNoAuthNoJson(url) {
+    let headers = new Headers();
+    headers.delete('Content-Type');
+    return this.http.delete(url, {
+      headers: headers
+    });
+  }
+
   patch(url, data) {
     let headers = new Headers();
     this.createAuthorizationHeader(headers);
