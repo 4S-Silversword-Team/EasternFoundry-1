@@ -187,14 +187,39 @@ export class ProfileEditComponent implements OnInit {
       let file = fileBrowser.files[0]
       console.log(file)
       formData.append("bucket", environment.bucketName);
-      formData.append("key", "userPhotos/"+this.currentUser._id);
+      formData.append("key", "userPhotos/"+this.currentUser._id+"_0");
       formData.append("file", file);
       this.s3Service.postPhoto(formData).toPromise().then(result => {
         console.log("Photo upload success",result) ;
-        this.currentUser.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/userPhotos/"+this.currentUser._id;
+        this.currentUser.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/userPhotos/"+this.currentUser._id+"_0";
         this.updateProfile(this.currentUser, true);
       }).catch((reason) =>console.log("reason ", reason));
     }
+  }
+
+
+  editPhoto() {
+    let fileBrowser = this.fileInput.nativeElement;
+    if (fileBrowser.files && fileBrowser.files[0]) {
+      if(!this.currentUser._id){console.log("no id"); return;}
+      const uid = this.currentUser._id;
+      let formData = new FormData();
+      let file = fileBrowser.files[0]
+      let myArr = this.currentUser.avatar.split("_")
+      let i: any = myArr[myArr.length - 1]
+      i = parseInt(i);
+      console.log(file)
+      formData.append("bucket", environment.bucketName);
+      formData.append("key", "userPhotos/"+uid+"_"+(i+1).toString());
+      formData.append("file", file);
+      this.s3Service.postPhoto(formData).toPromise().then(result => {
+        console.log("Photo upload success",result);
+        this.currentUser.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/userPhotos/"+uid+"_"+(i+1).toString()
+        this.updateProfile(this.currentUser, true);
+        this.s3Service.deletePhoto("/userPhotos/"+uid+"_"+(i).toString()).toPromise().then( res => console.log("Old photo deleted " + res))
+      }).catch((reason) =>console.log("reason ", reason));
+    }
+
   }
 
 
@@ -448,7 +473,7 @@ export class ProfileEditComponent implements OnInit {
     }
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     delete model['_id']
-    this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
+    this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => {console.log(result); this.currentUser = result});
     if(!noNav) {
       window.scrollTo(0, 0);
       this.router.navigate(['user-profile', this.route.snapshot.params['id']]);
