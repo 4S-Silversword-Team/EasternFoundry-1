@@ -22,4 +22,9 @@ export class s3Service {
     return response;
   }
 
+  deletePhoto(objectName: string){
+    var response = this.authHttp.deleteNoAuthNoJson("http://s3.amazonaws.com/" + environment.bucketName + objectName)
+      .map(response => response);
+    return response;
+  }
 }

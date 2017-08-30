@@ -121,14 +121,37 @@ export class CorporateProfileEditComponent implements OnInit {
       let file = fileBrowser.files[0]
       console.log(file)
       formData.append("bucket", environment.bucketName);
-      formData.append("key", "companyPhotos/"+this.currentAccount._id);
+      formData.append("key", "companyPhotos/"+this.currentAccount._id+"_0");
       formData.append("file", file);
       this.s3Service.postPhoto(formData).toPromise().then(result => {
         console.log("Photo upload success",result);
-        this.currentAccount.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/companyPhotos/"+this.currentAccount._id
+        this.currentAccount.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/companyPhotos/"+this.currentAccount._id+"_0"
         this.updateCompany(this.currentAccount, true);
       }).catch((reason) =>console.log("reason ", reason));
     }
+  }
+
+  editPhoto() {
+    let fileBrowser = this.fileInput.nativeElement;
+    if (fileBrowser.files && fileBrowser.files[0]) {
+      const uid = this.currentAccount._id;
+      let formData = new FormData();
+      let file = fileBrowser.files[0]
+      let myArr = this.currentAccount.avatar.split("_")
+      let i: any = myArr[myArr.length - 1]
+      i = parseInt(i);
+      console.log(file)
+      formData.append("bucket", environment.bucketName);
+      formData.append("key", "companyPhotos/"+uid+"_"+(i+1).toString());
+      formData.append("file", file);
+      this.s3Service.postPhoto(formData).toPromise().then(result => {
+        console.log("Photo upload success",result);
+        this.currentAccount.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/companyPhotos/"+uid+"_"+(i+1).toString()
+        this.updateCompany(this.currentAccount, true);
+        this.s3Service.deletePhoto("/companyPhotos/"+uid+"_"+(i).toString()).toPromise().then( res => console.log("Old photo deleted " + res))
+      }).catch((reason) =>console.log("reason ", reason));
+    }
+
   }
 
   getAdminStatus() {
@@ -367,7 +390,7 @@ export class CorporateProfileEditComponent implements OnInit {
         }
       }
       delete model['_id'];
-      this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
+      this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then(result => this.currentAccount = result);
       if (!noNav) {
         window.scrollTo(0, 0);
         this.router.navigate(['corporate-profile', this.route.snapshot.params['id']]);
