@@ -7,6 +7,7 @@ import { Location } from '@angular/common';
 
 import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
+import { Tool } from '../../classes/tool'
 import { ToolService } from '../../services/tool.service'
 import { ToolSubmissionService } from '../../services/toolsubmission.service'
 import {isUndefined} from "util";
@@ -39,6 +40,7 @@ export class ProfileEditComponent implements OnInit {
   toolSearch: string = ''
   allTools: any[] = []
   filteredTools: any[] = []
+  filteredToolsFromProfile: any[] = []
   validNames: string[] = []
   toolSubmitted: boolean = false
 
@@ -93,27 +95,35 @@ export class ProfileEditComponent implements OnInit {
 
         //here's the logic to check the skillsengine tools against the resume text!
         if (this.currentUser.resumeText && this.currentUser.foundTools[0] == undefined) {
-        for (let tool of this.currentUser.tools) {
-          if (tool.title.length > 1) {
-            if (this.currentUser.resumeText.toLowerCase().indexOf(tool.title.toLowerCase()) >= 0) {
-              if (this.currentUser.foundTools == null) {
-                this.currentUser.foundTools = [
-                  {
-                    title: '',
-                    category: '',
-                    classification: '',
-                    score: 0
-                  }
-                ]
-                this.currentUser.foundTools[0] = tool
-              } else {
-                this.currentUser.foundTools.push(tool)
+          for (let tool of this.currentUser.tools) {
+            if (tool.title.length > 1) {
+              if (this.currentUser.resumeText.toLowerCase().indexOf(tool.title.toLowerCase()) >= 0) {
+                var toolToAdd = {
+                  title: '',
+                  category: '',
+                  classification: '',
+                  position: []
+                }
+                toolToAdd.title = tool.title
+                toolToAdd.category = tool.category
+                toolToAdd.classification = tool.classification
+                if (this.currentUser.foundTools == null) {
+                  this.currentUser.foundTools = [
+                    {
+                      title: '',
+                      category: '',
+                      classification: '',
+                      position: []
+                    }
+                  ]
+                  this.currentUser.foundTools[0] = toolToAdd
+                } else {
+                  this.currentUser.foundTools.push(toolToAdd)
+                }
               }
             }
           }
         }
-      }
-
         //right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
         //i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
         if (typeof this.currentUser.disabled === "string") {
@@ -182,7 +192,6 @@ export class ProfileEditComponent implements OnInit {
   }
 
   toolIsNotListedAlready(tool){
-    // this should keep track of everything used to prevent duplicates. it doesnt work! so it's not on.
     if (!this.validNames.includes(tool.title.toLowerCase())) {
       return true
     } else {
@@ -204,7 +213,6 @@ export class ProfileEditComponent implements OnInit {
   }
 //hey! figure this whole dumb thing out!
   updateToolList(search){
-    this.toolSubmitted = false
     this.validNames = []
     var toolSearch = this.toolSearch
     var foundTools = this.currentUser.foundTools
@@ -414,6 +422,7 @@ export class ProfileEditComponent implements OnInit {
       }
       array.splice(new_index, 0, array.splice(old_index, 1)[0]);
     };
+
     //this SHOULD automatically arrange jobs by date so more recent ones are on top. it doesnt seem to work 100% but it kind of works?
     for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
       if (this.currentUser.positionHistory[i].EndDate == "Current") {
