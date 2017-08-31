@@ -72,3 +72,10 @@ selector {
 .products .div-title div{
     width: calc(100% - 249px);
 }
+
+.avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  border: 2px solid #757575;
+}

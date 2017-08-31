@@ -1,6 +1,6 @@
 import {Http} from '@angular/http';
 
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -11,6 +11,9 @@ import { ToolService } from '../../services/tool.service'
 import { ToolSubmissionService } from '../../services/toolsubmission.service'
 import {isUndefined} from "util";
 import { AuthService} from "../../services/auth.service"
+import { s3Service } from "../../services/s3.service"
+
+import { environment } from "../../../environments/environment"
 
 
 
@@ -20,11 +23,11 @@ declare var $: any;
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html',
   styleUrls: ['./profile-edit.component.css'],
-  providers: [ UserService, AuthService, ToolService, ToolSubmissionService ]
+  providers: [ UserService, AuthService, ToolService, ToolSubmissionService, s3Service ]
 })
 export class ProfileEditComponent implements OnInit {
 
-
+  @ViewChild('fileInput') fileInput;
 
   currentUser: User = new User()
   newSkill: string = ''
@@ -68,7 +71,8 @@ export class ProfileEditComponent implements OnInit {
     public location: Location,
     private auth: AuthService,
     private toolService: ToolService,
-    private toolSubmissionService: ToolSubmissionService
+    private toolSubmissionService: ToolSubmissionService,
+    private s3Service: s3Service
   ) {
     auth.isLoggedIn().then(res => {
       !res ? this.router.navigateByUrl("/login"): afterLogin()
@@ -172,6 +176,50 @@ export class ProfileEditComponent implements OnInit {
 
   ngOnInit() {
   }
+
+
+  uploadPhoto() {
+    let fileBrowser = this.fileInput.nativeElement;
+    if (fileBrowser.files && fileBrowser.files[0]) {
+      let formData = new FormData();
+      let file = fileBrowser.files[0]
+      console.log(file)
+      formData.append("bucket", environment.bucketName);
+      formData.append("key", "userPhotos/"+this.currentUser._id+"_0");
+      formData.append("file", file);
+      this.s3Service.postPhoto(formData).toPromise().then(result => {
+        console.log("Photo upload success",result) ;
+        this.currentUser.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/userPhotos/"+this.currentUser._id+"_0";
+        this.updateProfile(this.currentUser, true);
+      }).catch((reason) =>console.log("reason ", reason));
+    }
+  }
+
+
+  editPhoto() {
+    let fileBrowser = this.fileInput.nativeElement;
+    if (fileBrowser.files && fileBrowser.files[0]) {
+      if(!this.currentUser._id){console.log("no id"); return;}
+      const uid = this.currentUser._id;
+      let formData = new FormData();
+      let file = fileBrowser.files[0]
+      let myArr = this.currentUser.avatar.split("_")
+      let i: any = myArr[myArr.length - 1]
+      i = parseInt(i);
+      console.log(file)
+      formData.append("bucket", environment.bucketName);
+      formData.append("key", "userPhotos/"+uid+"_"+(i+1).toString());
+      formData.append("file", file);
+      this.s3Service.postPhoto(formData).toPromise().then(result => {
+        console.log("Photo upload success",result);
+        this.currentUser.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/userPhotos/"+uid+"_"+(i+1).toString()
+        this.updateProfile(this.currentUser, true);
+        this.s3Service.deletePhoto("/userPhotos/"+uid+"_"+(i).toString()).toPromise().then( res => console.log("Old photo deleted " + res))
+      }).catch((reason) =>console.log("reason ", reason));
+    }
+
+  }
+
 
   saveChanges() {
     console.log('This button doesnt do anything!')
@@ -404,6 +452,7 @@ export class ProfileEditComponent implements OnInit {
     return year;
   }
 
+<<<<<<< HEAD
   updateProfile(model) {
     function moveObject (array, old_index, new_index) {
       if (new_index >= array.length) {
@@ -433,6 +482,9 @@ export class ProfileEditComponent implements OnInit {
         }
       }
     }
+=======
+  updateProfile(model, noNav?: boolean) {
+>>>>>>> abce45799219b6e0dda84c3e807d5836e9c13f3a
     for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
       if (this.currentUser.positionHistory[i].isGovernment) {
         this.currentUser.positionHistory[i].agencyExperience[0].main.title = this.currentUser.positionHistory[i].Employer
@@ -451,9 +503,11 @@ export class ProfileEditComponent implements OnInit {
     }
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     delete model['_id']
-    this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
-    window.scrollTo(0, 0);
-    this.router.navigate(['user-profile', this.route.snapshot.params['id']]);
+    this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => {console.log(result); this.currentUser = result});
+    if(!noNav) {
+      window.scrollTo(0, 0);
+      this.router.navigate(['user-profile', this.route.snapshot.params['id']]);
+    }
   }
 
 

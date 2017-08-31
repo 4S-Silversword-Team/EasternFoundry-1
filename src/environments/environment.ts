@@ -6,5 +6,6 @@
 export const environment = {
   production: false,
   apiRoot: ' http://localhost:80/',
-  baseHref: '/'
+  baseHref: '/',
+  bucketName: 'ef-photos'
 };
