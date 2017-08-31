@@ -1,5 +1,5 @@
 export class Tool {
-  position: string;
+  position: [string];
   classification: string;
   title: string;
   category: string

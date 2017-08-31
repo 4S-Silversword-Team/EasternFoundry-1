@@ -251,13 +251,13 @@
         <div class="no-tool-found" *ngIf='this.toolSearch.length >= 1 && this.filteredTools.length == 0 && this.toolSubmitted' >
           <p>{{this.toolSearch}} has been submitted. If it's approved we'll add it to the list!</p>
         </div>
-        <div class="" *ngIf='this.toolSearch.length >= 1'>
-          <div class="" *ngFor='let tool of this.currentUser.tools; let i = index; trackBy:customTrackBy'>
-            <div class="tool-search-item" *ngIf='toolIsValid(tool) && toolIsNotListedAlready(tool)' (click)='addTool(this.currentUser.tools[i])'>
+        <!-- <div class="" *ngIf='this.toolSearch.length >= 1'>
+          <div class="" *ngFor='let tool of this.filteredToolsFromProfile; let i = index; trackBy:customTrackBy'>
+            <div class="tool-search-item" *ngIf='toolIsNotListedAlready(tool)' (click)='addTool(this.currentUser.tools[i])'>
               <p>{{tool.title}}</p>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="" *ngIf='this.toolSearch.length >= 1'>
           <div class="" *ngFor='let tool of this.filteredTools; let i = index; trackBy:customTrackBy'>
             <div class="tool-search-item" *ngIf='toolIsValid(tool)' (click)='addTool(this.filteredTools[i])'>
