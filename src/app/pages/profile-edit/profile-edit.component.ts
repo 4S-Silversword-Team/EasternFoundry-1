@@ -460,8 +460,7 @@ export class ProfileEditComponent implements OnInit {
     return year;
   }
 
-<<<<<<< HEAD
-  updateProfile(model) {
+  updateProfile(model, noNav?: boolean) {
     function moveObject (array, old_index, new_index) {
       if (new_index >= array.length) {
           var k = new_index - array.length;
@@ -491,9 +490,6 @@ export class ProfileEditComponent implements OnInit {
         }
       }
     }
-=======
-  updateProfile(model, noNav?: boolean) {
->>>>>>> abce45799219b6e0dda84c3e807d5836e9c13f3a
     for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
       if (this.currentUser.positionHistory[i].isGovernment) {
         this.currentUser.positionHistory[i].agencyExperience[0].main.title = this.currentUser.positionHistory[i].Employer
