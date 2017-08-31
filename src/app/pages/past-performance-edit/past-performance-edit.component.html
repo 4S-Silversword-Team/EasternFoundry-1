@@ -23,11 +23,20 @@
                 <p class="left lh-50">Cleared</p>
                 <input type="checkbox" [(ngModel)] = "this.currentPastPerformance.cleared" name="cleared" class="right">
             </div>
-            <div class="col-xs-12">
+            <div *ngIf="!createMode" class="col-xs-12">
                 <p class="left lh-50">Image</p>
-                <div class="right text-container div-uploadImage" [style.width]="''+ppInputWidth+'px'">
-                    <p class="left lh-50" [style.cursor] = "'pointer'" (click) = 'uploadImage()' >Upload Image</p>
+                <img *ngIf="this.currentPastPerformance.avatar" src="{{this.currentPastPerformance.avatar}}" class="avatar right">
+                <div *ngIf="!createMode && (!this.currentPastPerformance.avatar || this.currentPastPerformance.avatar.startsWith('..'))" style="clear: both">
+                  <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
+                  <button style="color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;" class="btn btn-primary" (click)="uploadPhoto()">Upload Photo</button>
                 </div>
+                <div *ngIf="this.currentPastPerformance.avatar && !this.currentPastPerformance.avatar.startsWith('..')" style="clear: both">
+                  <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
+                  <button style="color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;" class="btn btn-primary" (click)="editPhoto()">Edit Photo</button>
+                </div>
+                <!--<div class="right text-container div-uploadImage" [style.width]="''+ppInputWidth+'px'">-->
+                    <!--<p class="left lh-50" [style.cursor] = "'pointer'" (click) = 'uploadImage()' >Upload Image</p>-->
+                <!--</div>-->
             </div>
         </div>
         <div class="col-xs-6 right">
