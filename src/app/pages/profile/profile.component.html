@@ -50,7 +50,7 @@
           <div *ngIf = 'this.currentUser.education'>
             <p>DEGREES:</p>
             <div class="" *ngFor="let deg of this.currentUser.education">
-              <p *ngIf="deg.DegreeType[0].Name && deg.DegreeType[0].Name.length > 0">
+              <p *ngIf="deg.DegreeType[0] && deg.DegreeType[0].Name.length > 0">
                 {{ 'Type: ' + deg.DegreeType[0].Name}}
               </p>
               <p *ngIf="deg.MajorProgramName && deg.MajorProgramName.length > 0">
