@@ -10,6 +10,7 @@ import { UserService } from '../../services/user.service';
 import { ToolService } from '../../services/tool.service';
 
 
+
 @Component({
   selector: 'app-all-profiles',
   templateUrl: './all-profiles.component.html',
@@ -19,8 +20,10 @@ import { ToolService } from '../../services/tool.service';
 export class AllProfilesComponent implements OnInit {
 
   users: User[] = [];
-  allTools: any[] = []
-  toolsUsed: string[] = []
+  allTools: any[] = [];
+  sortedTools: any[] = [];
+  sortCounter: number = 0;
+  uploadCounter: number = 2000;
 
   constructor(
     private router: Router,
@@ -28,11 +31,22 @@ export class AllProfilesComponent implements OnInit {
     private toolService: ToolService,
     private http: Http,
   ) {
-    this.http.get('../../onet-tools.json')
-        .subscribe(res => this.allTools = res.json());
-    this.userService.getUsers().then(val => this.users = val );
+    this.http.get('../../../assets/onet-tools.json')
+      .map((res: any) => res.json())
+      .subscribe(
+        (data: any) => {
+            this.allTools = data;
+        },
+        err => console.log(err), // error
+        () => console.log('get tools Complete') // complete
+      );
 
+    this.toolService.getTools().then(val => this.sortedTools = val );
+
+    this.userService.getUsers().then(val => this.users = val );
   }
+
+
 
   ngOnInit() {
   }
@@ -41,24 +55,39 @@ export class AllProfilesComponent implements OnInit {
     this.router.navigate(['user-profile', id]);
   }
 
-// this was used to upload the 68000 tools minus all the duplicates. i cut like 50k duplicate entries but please do not turn this back on unless it is CRITICALLY NEEDED
-  // uploadAllTools() {
-  //   console.log('god help us.')
-  //   var toolsUsed: string[] = []
-  //   toolsUsed.push('DEFAULT')
-  //   for (let tool of this.allTools) {
-  //     var matchFound = false
-  //     for (let name of toolsUsed) {
-  //       if (tool.title == name) {
-  //         matchFound = true
-  //       }
-  //     }
-  //     if (!matchFound) {
-  //       toolsUsed.push(tool.title)
-  //       this.toolService.createTool(tool).toPromise();
-  //     }
-  //   }
-  // }
+// // these are my dev tools to sort the 68000 tools into the format we need. do not use unless you know what you're doing
+//   sortAllTools() {
+//     console.log('god help us.')
+//
+//       while (this.sortCounter < this.allTools.length) {
+//         var matchFound = false
+//         for (let tool of this.sortedTools) {
+//           if (this.allTools[this.sortCounter].title == tool.title) {
+//             tool.position.push(this.allTools[this.sortCounter].position[0])
+//             matchFound = true
+//           }
+//         }
+//         if (!matchFound) {
+//           this.sortedTools.push(this.allTools[this.sortCounter])
+//         }
+//         this.sortCounter++
+//       }
+//
+//     console.log('DONE. We have sorted ' + this.sortedTools.length + ' so far.')
+//   }
+//   uploadAllTools() {
+//     if ((this.sortedTools.length - this.uploadCounter) >= 2000 ){
+//       for (var i = 0; i < 2000; i++) {
+//         this.toolService.createTool(this.sortedTools[this.uploadCounter]).toPromise();
+//         this.uploadCounter++
+//       }
+//     } else {
+//       while (this.uploadCounter < this.sortedTools.length) {
+//         this.toolService.createTool(this.sortedTools[this.uploadCounter]).toPromise();
+//         this.uploadCounter++
+//         }
+//       }
+//       console.log('DONE. We have finished ' + this.uploadCounter + ' so far.')
+//     }
 
-
-}
+  }

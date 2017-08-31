@@ -13,24 +13,24 @@ export class CareerComponent {
 
   public refresh(year: number) {
     for (let index of this.Data){
-      jQuery('#c-year-' + index.Year).removeClass();
-      $('#c-brief-' + index.Year).removeClass();
-      $('#c-detail-' + index.Year).removeClass();
+      jQuery('#c-year-' + index.StartDate.replace('', '').replace('', '')).removeClass();
+      $('#c-brief-' + index.StartDate.replace('', '').replace('', '')).removeClass();
+      $('#c-detail-' + index.StartDate.replace('', '').replace('', '')).removeClass();
 
-      if (index.Year > year) {
-        $('#c-year-' + index.Year).addClass('career-year');
-        $('#c-brief-' + index.Year).addClass('pre');
-        $('#c-brief-' + index.Year).addClass('career-brief');
-        $('#c-detail-' + index.Year).addClass('hidden');
-      } else if (index.Year < year) {
-        $('#c-year-' + index.Year).addClass('career-year');
-        $('#c-brief-' + index.Year).addClass('after');
-        $('#c-brief-' + index.Year).addClass('career-brief');
-        $('#c-detail-' + index.Year).addClass('hidden');
+      if (index.StartDate.replace('', '').replace('', '') > year) {
+        $('#c-year-' + index.StartDate.replace('', '').replace('', '')).addClass('career-year');
+        $('#c-brief-' + index.StartDate.replace('', '').replace('', '')).addClass('pre');
+        $('#c-brief-' + index.StartDate.replace('', '').replace('', '')).addClass('career-brief');
+        $('#c-detail-' + index.StartDate.replace('', '').replace('', '')).addClass('hidden');
+      } else if (index.StartDate.replace('', '').replace('', '') < year) {
+        $('#c-year-' + index.StartDate.replace('', '').replace('', '')).addClass('career-year');
+        $('#c-brief-' + index.StartDate.replace('', '').replace('', '')).addClass('after');
+        $('#c-brief-' + index.StartDate.replace('', '').replace('', '')).addClass('career-brief');
+        $('#c-detail-' + index.StartDate.replace('', '').replace('', '')).addClass('hidden');
       } else {
-        $('#c-year-' + index.Year).addClass('hidden');
-        $('#c-brief-' + index.Year).addClass('hidden');
-        $('#c-detail-' + index.Year).addClass('career-detail');
+        $('#c-year-' + index.StartDate.replace('', '').replace('', '')).addClass('hidden');
+        $('#c-brief-' + index.StartDate.replace('', '').replace('', '')).addClass('hidden');
+        $('#c-detail-' + index.StartDate.replace('', '').replace('', '')).addClass('career-detail');
       }
     }
   }
