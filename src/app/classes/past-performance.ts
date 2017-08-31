@@ -1,5 +1,6 @@
 export class PastPerformance {
     id: string
+    _id: string
     title: string
     client: string
     topic: string
