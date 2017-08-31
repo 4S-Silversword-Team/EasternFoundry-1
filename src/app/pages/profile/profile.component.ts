@@ -56,30 +56,32 @@ export class ProfileComponent implements OnInit {
       this.availabilityData.dates = []
 
       for (let job of this.currentUser.positionHistory) {
-        if (job.EndDate == "Current") {
-          this.currentJob = job
-        } else {
-          if (this.currentJob == null) {
+        if (job.EndDate) {
+          if (job.EndDate == "Current") {
             this.currentJob = job
-          } else if (this.currentJob.endDate != "Current"){
-            var jobYear = +job.EndDate.slice(0, 4);
-            var currentYear = +this.currentJob.EndDate.slice(0, 4);
-            if (jobYear > currentYear) {
+          } else {
+            if (this.currentJob == null) {
               this.currentJob = job
-            } else if (jobYear == currentYear) {
-              var jobMonth = +job.EndDate.slice(5, 2);
-              var currentMonth = +this.currentJob.EndDate.slice(5, 2);
-              if (jobMonth > currentMonth) {
+            } else if (this.currentJob.endDate != "Current"){
+              var jobYear = +job.EndDate.slice(0, 4);
+              var currentYear = +this.currentJob.EndDate.slice(0, 4);
+              if (jobYear > currentYear) {
                 this.currentJob = job
+              } else if (jobYear == currentYear) {
+                var jobMonth = +job.EndDate.slice(5, 2);
+                var currentMonth = +this.currentJob.EndDate.slice(5, 2);
+                if (jobMonth > currentMonth) {
+                  this.currentJob = job
+                }
               }
             }
           }
-        }
-        for (let exp of job.agencyExperience) {
-          for (let data of exp.main.data) {
-            let color = 4
-            color = Math.floor(color)
-            this.expColors[exp.main.title] = this.expColors[index++]
+          for (let exp of job.agencyExperience) {
+            for (let data of exp.main.data) {
+              let color = 4
+              color = Math.floor(color)
+              this.expColors[exp.main.title] = this.expColors[index++]
+            }
           }
         }
       }
