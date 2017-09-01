@@ -208,11 +208,15 @@ export class PastPerformanceEditComponent implements OnInit {
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     if ( !this.createMode ) {
     delete model['_id'];
-    this.pastPerformanceService.updatePP(this.route.snapshot.params['id'], model).toPromise().then(result => { console.log(result); this.currentPastPerformance = result});
-    if(!noNav) {
-      window.scrollTo(0, 0);
-      this.router.navigate(['past-performance', this.route.snapshot.params['id']]);
-    }
+    this.pastPerformanceService.updatePP(this.route.snapshot.params['id'], model).toPromise().then(result => {
+      console.log(result);
+      this.currentPastPerformance = result;
+      if(!noNav) {
+        window.scrollTo(0, 0);
+        this.router.navigate(['past-performance', this.route.snapshot.params['id']]);
+      }
+    });
+
   } else {
     //creating a new PP
     console.log(model)
