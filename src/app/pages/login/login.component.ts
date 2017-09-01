@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   }
 
   logIn() {
-    this.auth.doLogin(this.email, this.password, (function() {
+    this.auth.doLogin(this.email.toLowerCase(), this.password, (function() {
       //this.authError = !this.auth.isLoggedIn()
       this.auth.isLoggedIn().then(res => { this.authError = !res; myCallback() }).catch(reason => {this.authError = true; myCallback()})
       let myCallback = () => {
