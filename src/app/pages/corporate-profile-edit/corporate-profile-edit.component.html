@@ -84,7 +84,7 @@
       </div>
       <div  *ngFor='let employee of this.userProfiles'>
       <div class="srow">
-        <span class="col-xs-1 col-sm-1 col-md-1 text-center" ><button *ngIf="this.isUserAdmin" class="col-xs-2 col-sm-2 col-md-2 text-center" (click)="deleteEmployee(employee.proxyId)">X</button></span>
+        <span class="col-xs-1 col-sm-1 col-md-1 text-center" ><button *ngIf="this.isUserAdmin" class="col-xs-2 col-sm-2 col-md-2 text-center" (click)="deleteEmployee(employee.proxyId, employee.role)">X</button></span>
           <span class="col-xs-2 col-sm-2 col-md-2 text-center text-nowrap" >{{employee.name}}</span>
           <span class="col-xs-2 col-sm-2 col-md-2 text-center" >{{employee.username}}</span>
           <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" (change)="updateEmployee(employee.proxyId,'startDate',employee.startDate)" [(ngModel)]="employee.startDate" onblur="(this.type='text')" onfocus="(this.type='date')"></span>
