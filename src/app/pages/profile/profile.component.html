@@ -36,17 +36,6 @@
         <p class="fs-28 fc-title">CERTIFICATIONS, DEGREES</p>
         <p class="fs-28 fc-subtitle">AWARDS & CLEARANCES</p>
         <div class="text-container text-left cert-container" [style.height] = "'300px'">
-          <div class="" *ngIf = 'this.currentUser.certification'>
-            <div class="" *ngIf = 'this.currentUser.certification[0]'>
-              <div class="" *ngIf = 'this.currentUser.certification[0].CertificationName.length > 0'>
-                <p>CERTS:</p>
-                <div class="" *ngFor="let cert of this.currentUser.certification">
-                  <p *ngIf="cert.CertificationName && cert.CertificationName.length > 0">{{ 'Degree: ' + cert.CertificationName}}</p>
-                  <p *ngIf="cert.DateEarned && cert.DateEarned.length > 0">{{'Earned: ' + cert.DateEarned }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
           <div *ngIf = 'this.currentUser.education'>
             <p>Degrees:</p>
             <div class="" *ngFor="let deg of this.currentUser.education">
@@ -58,6 +47,21 @@
                         {{deg.DegreeType[0].Name}} in {{deg.MajorProgramName[0]}} from {{deg.School}}
                       </p>
                       <p>Graduated {{deg.AttendanceEndDate}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="" *ngIf = 'this.currentUser.certification'>
+            <div class="" *ngIf = 'this.currentUser.certification[0]'>
+              <div class="" *ngIf = 'this.currentUser.certification[0].CertificationName.length > 0'>
+                <p>Certificates:</p>
+                <div class="" *ngFor="let cert of this.currentUser.certification">
+                  <div class="" *ngIf="cert.CertificationName && cert.CertificationName.length > 0">
+                    <div class="degree-box" *ngIf="cert.DateEarned && cert.DateEarned.length > 0">
+                      <p>{{cert.CertificationName}} Certification</p>
+                      <p>Earned {{cert.DateEarned}}</p>
                     </div>
                   </div>
                 </div>

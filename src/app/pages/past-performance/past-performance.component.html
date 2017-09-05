@@ -70,13 +70,25 @@
         <p>EMPLOYEES</p>
         <div></div>
     </div>
-    <div>
+    <!-- <div>
         <div class="text-container col-xs-6 left" [style.height]="'250px'">
             <div class="col-xs-12" *ngFor='let index of currentPastPerformance.employees'>{{ '' + index.title +
               ((index.stillWith == true) ?' (Still with company)':'')}}</div>
         </div>
         <div class="col-xs-6 mt10 mb10" [style.overflow] = "'hidden'" [style.max-width] = "'100%'" [style.height]="'250px'" [style.border-radius]="'5px'"><img src="{{ currentPastPerformance.avatar }}" [style.height]="'250px'" [style.border-radius]="'5px'" [style.border] = "'2px solid #333'" [style.margin] = "'0 auto'"></div>
+    </div> -->
+    <div class="main clear">
+        <div class="col-xs-6 col-md-3 left" *ngFor='let index of this.currentPastPerformance.userProfileProxies'>
+          <div *ngIf="index.user">
+            <img src='{{index.user.avatar}}' class="left avatar" [style.width]="'150px'">
+            <p class="srow">{{ index.user.firstName + ' ' + index.user.lastName}}</p>
+            <p *ngIf="index.user.positionHistory[0]" class="srow">{{ index.user.positionHistory[0].PositionTitle }}</p>
+            <p class="srow">{{ index.user.username }}</p>
+            <button class="col-xs-12" (click)="toUserProfile(index._id)">More Information</button>
+          </div>
+        </div>
     </div>
+  <div *ngIf="!this.currentPastPerformance.userProfileProxies" class="main clear"> No employees to show</div>
 </div>
 
 <div class="write-up col-xs-12 clear">
