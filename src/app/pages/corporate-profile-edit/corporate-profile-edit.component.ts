@@ -50,6 +50,8 @@ export class CorporateProfileEditComponent implements OnInit {
   creatingNew: boolean = false;
   writeWidth: number = 800;
   isUserAdmin: boolean = false;
+  companyAdminCount: number;
+  adminRoleId: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -175,6 +177,17 @@ export class CorporateProfileEditComponent implements OnInit {
     })
   }
 
+  checkCompanyAdminCount() {
+    let employeeRoleIds = this.currentAccount.userProfileProxies.map((proxy) => proxy.role);
+    this.roleService.getRoleByTitle("admin").toPromise().then((role) => {
+      if (role && role._id){
+        this.adminRoleId = role._id
+        this.companyAdminCount = employeeRoleIds.filter((item) => item == role._id).length
+      }
+    })
+  }
+
+
   addEmployee(employeeId) {
     if (!this.isUserAdmin){return;}
 
@@ -189,10 +202,23 @@ export class CorporateProfileEditComponent implements OnInit {
     this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }));
   }
 
-  deleteEmployee(proxyId){
+  deleteEmployee(proxyId, proxyRoleId){
     if (!this.isUserAdmin){return;}
-    this.companyUserProxyService.deleteCompanyUserProxy(proxyId).then(() =>
-    this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }));
+    if(proxyRoleId){
+      this.roleService.getRoleByID(proxyRoleId).toPromise().then((role) => {
+        if (!role.title || role.title !== "admin" || this.companyAdminCount >= 2) { // Prevents only admin from being deleted. TODO: Make a backend implementation
+            this.companyUserProxyService.deleteCompanyUserProxy(proxyId).then(() =>
+            this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }));
+        }
+        else {
+          console.log("Can't delete only admin")
+        }
+      })
+    } else {
+        this.companyUserProxyService.deleteCompanyUserProxy(proxyId).then(() =>
+        this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }));
+    }
+
   }
 
   switchLeadership(employeeId) {
@@ -224,11 +250,13 @@ export class CorporateProfileEditComponent implements OnInit {
 
 
   updateEmployee(proxyId,key, value){
+    if (!this.isUserAdmin){return;}
     let req = {};
     req[key] = value;
     this.companyUserProxyService.updateCompanyUserProxies(proxyId, req).toPromise().then(() =>
-    // this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }))
-    {});
+      this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); })
+    );
+
   }
 
   refreshEmployees() {
@@ -241,7 +269,8 @@ export class CorporateProfileEditComponent implements OnInit {
         "username": i.userProfile.username,
         "startDate": new Date(i.startDate).toDateString(),
         "endDate": new Date(i.endDate).toDateString(),
-        "stillAffiliated": i.stillAffiliated
+        "stillAffiliated": i.stillAffiliated,
+        "role": i.role
       })
     }
     this.userService.getUsers().then(res => {
@@ -251,6 +280,7 @@ export class CorporateProfileEditComponent implements OnInit {
         }).includes(user._id)
       })
     })
+    this.checkCompanyAdminCount()
   }
 
   checkIfEmployee(): boolean{
