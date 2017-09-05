@@ -46,7 +46,7 @@ export class CompanyService {
     temp._id = '1'
     temp.name = ''
     temp.email = ''
-    temp.avatar = '../../assets/img/company-account.png'
+    temp.avatar = '../../assets/img/defaultLogo.png'
     temp.contactNumber = ''
     temp.city = ''
     temp.state = ''

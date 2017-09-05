@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PastperformanceService } from '../../services/pastperformance.service';
 import { Location } from '@angular/common'
@@ -10,16 +10,20 @@ import { UserPastPerformanceProxyService } from '../../services/userpastperforma
 import { AuthService } from "../../services/auth.service"
 import { RoleService } from "../../services/role.service"
 import  { CompanyPastperformanceProxyService } from "../../services/companypastperformanceproxy.service"
+import { s3Service } from "../../services/s3.service"
+
+import { environment } from "../../../environments/environment"
 
 
 
 @Component({
   selector: 'app-past-performance-edit',
-  providers: [PastperformanceService, UserService, CompanyService, UserPastPerformanceProxyService, AuthService, RoleService, CompanyPastperformanceProxyService],
+  providers: [PastperformanceService, UserService, CompanyService, UserPastPerformanceProxyService, AuthService, RoleService, CompanyPastperformanceProxyService, s3Service],
   templateUrl: './past-performance-edit.component.html',
   styleUrls: ['./past-performance-edit.component.css']
 })
 export class PastPerformanceEditComponent implements OnInit {
+  @ViewChild('fileInput') fileInput;
 
   currentPastPerformance: PastPerformance = new PastPerformance()
 
@@ -49,6 +53,7 @@ export class PastPerformanceEditComponent implements OnInit {
     private auth: AuthService,
     private roleService: RoleService,
     private companyPastPerformanceProxyService: CompanyPastperformanceProxyService,
+    private s3Service: s3Service,
   ) {
     auth.isLoggedIn().then(res => {
       !res ? this.router.navigateByUrl("/login"): afterLogin()
@@ -153,19 +158,65 @@ export class PastPerformanceEditComponent implements OnInit {
     })
   }
 
-  uploadImage() {
+
+  uploadPhoto() {
+    let fileBrowser = this.fileInput.nativeElement;
+    if (fileBrowser.files && fileBrowser.files[0]) {
+      let formData = new FormData();
+      let file = fileBrowser.files[0]
+      console.log(file)
+      formData.append("bucket", environment.bucketName);
+      formData.append("key", "pastPerformancePhotos/"+this.currentPastPerformance._id+"_0");
+      formData.append("file", file);
+      this.s3Service.postPhoto(formData).toPromise().then(result => {
+        console.log("Photo upload success",result);
+        this.currentPastPerformance.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/pastPerformancePhotos/"+this.currentPastPerformance._id+"_0"
+        this.updatePP(this.currentPastPerformance, true);
+      }).catch((reason) =>console.log("reason ", reason));
+    }
+  }
+
+  editPhoto() {
+    let fileBrowser = this.fileInput.nativeElement;
+    if (fileBrowser.files && fileBrowser.files[0]) {
+      if(!this.currentPastPerformance._id){return}
+      const uid = this.currentPastPerformance._id;
+      let formData = new FormData();
+      let file = fileBrowser.files[0]
+      let myArr = this.currentPastPerformance.avatar.split("_")
+      let i: any = myArr[myArr.length - 1]
+      i = parseInt(i);
+      console.log(file)
+      formData.append("bucket", environment.bucketName);
+      formData.append("key", "pastPerformancePhotos/"+uid+"_"+(i+1).toString());
+      formData.append("file", file);
+      this.s3Service.postPhoto(formData).toPromise().then(result => {
+        console.log("Photo upload success",result);
+        this.currentPastPerformance.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/pastPerformancePhotos/"+uid+"_"+(i+1).toString()
+        this.updatePP(this.currentPastPerformance, true);
+        this.s3Service.deletePhoto("/pastPerformancePhotos/"+uid+"_"+(i).toString()).toPromise().then( res => console.log("Old photo deleted " + res))
+      }).catch((reason) =>console.log("reason ", reason));
+    }
 
   }
-  updatePP(model) {
+
+
+  updatePP(model, noNav?: boolean) {
     // require auth of a signed in user with admin priveleges to the company that this past performance will be associated with.
     if (!this.isUserAdmin){return;}
 
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     if ( !this.createMode ) {
     delete model['_id'];
-    this.pastPerformanceService.updatePP(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
-    window.scrollTo(0, 0);
-    this.router.navigate(['past-performance', this.route.snapshot.params['id']]);
+    this.pastPerformanceService.updatePP(this.route.snapshot.params['id'], model).toPromise().then(result => {
+      console.log(result);
+      this.currentPastPerformance = result;
+      if(!noNav) {
+        window.scrollTo(0, 0);
+        this.router.navigate(['past-performance', this.route.snapshot.params['id']]);
+      }
+    });
+
   } else {
     //creating a new PP
     console.log(model)

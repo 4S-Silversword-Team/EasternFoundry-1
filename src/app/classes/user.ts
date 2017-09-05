@@ -212,7 +212,7 @@ export class User {
       title: string
       category: string
       classification: string
-      score: number
+      position: string[]
     }
   ]
   resumeText: string

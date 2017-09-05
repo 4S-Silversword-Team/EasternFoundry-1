@@ -1,5 +1,8 @@
 <div class="form-container">
   <h2>Register</h2>
+  <div class="alert alert-danger" [class.hidden] = '!this.paramsError'>
+    <strong>Warning!</strong> {{this.paramsError}}.
+  </div>
   <form method="post" encType="multipart/form-data">
     <div class="form-group">
       <label for="username">Email (Your user name is your email)</label>

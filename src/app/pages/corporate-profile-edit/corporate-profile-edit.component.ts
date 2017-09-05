@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { Company } from '../../classes/company';
 import { Product } from '../../classes/product';
 import { Service } from '../../classes/service';
@@ -15,6 +15,9 @@ import { UserService } from '../../services/user.service'
 import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
 import { AuthService } from '../../services/auth.service'
 import { RoleService } from '../../services/role.service'
+import { s3Service } from '../../services/s3.service'
+
+import {environment} from "../../../environments/environment"
 
 declare var $: any;
 
@@ -22,9 +25,11 @@ declare var $: any;
   selector: 'app-corporate-profile-edit',
   templateUrl: './corporate-profile-edit.component.html',
   styleUrls: ['./corporate-profile-edit.component.css'],
-  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, CompanyUserProxyService, RoleService]
+  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, CompanyUserProxyService, RoleService, s3Service]
 })
 export class CorporateProfileEditComponent implements OnInit {
+
+  @ViewChild('fileInput') fileInput;
 
   currentAccount: Company = new Company();
   products: any[] = [];
@@ -55,7 +60,8 @@ export class CorporateProfileEditComponent implements OnInit {
     private userService: UserService,
     private companyUserProxyService: CompanyUserProxyService,
     private auth: AuthService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private s3Service: s3Service
   ) {
     // if(!auth.isLoggedIn()){
     //   this.router.navigateByUrl("/login")
@@ -106,6 +112,47 @@ export class CorporateProfileEditComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  uploadPhoto() {
+    let fileBrowser = this.fileInput.nativeElement;
+    if (fileBrowser.files && fileBrowser.files[0]) {
+      let formData = new FormData();
+      let file = fileBrowser.files[0]
+      console.log(file)
+      formData.append("bucket", environment.bucketName);
+      formData.append("key", "companyPhotos/"+this.currentAccount._id+"_0");
+      formData.append("file", file);
+      this.s3Service.postPhoto(formData).toPromise().then(result => {
+        console.log("Photo upload success",result);
+        this.currentAccount.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/companyPhotos/"+this.currentAccount._id+"_0"
+        this.updateCompany(this.currentAccount, true);
+      }).catch((reason) =>console.log("reason ", reason));
+    }
+  }
+
+  editPhoto() {
+    let fileBrowser = this.fileInput.nativeElement;
+    if (fileBrowser.files && fileBrowser.files[0]) {
+      if(!this.currentAccount._id){return}
+      const uid = this.currentAccount._id;
+      let formData = new FormData();
+      let file = fileBrowser.files[0]
+      let myArr = this.currentAccount.avatar.split("_")
+      let i: any = myArr[myArr.length - 1]
+      i = parseInt(i);
+      console.log(file)
+      formData.append("bucket", environment.bucketName);
+      formData.append("key", "companyPhotos/"+uid+"_"+(i+1).toString());
+      formData.append("file", file);
+      this.s3Service.postPhoto(formData).toPromise().then(result => {
+        console.log("Photo upload success",result);
+        this.currentAccount.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/companyPhotos/"+uid+"_"+(i+1).toString()
+        this.updateCompany(this.currentAccount, true);
+        this.s3Service.deletePhoto("/companyPhotos/"+uid+"_"+(i).toString()).toPromise().then( res => console.log("Old photo deleted " + res))
+      }).catch((reason) =>console.log("reason ", reason));
+    }
+
   }
 
   getAdminStatus() {
@@ -285,7 +332,7 @@ export class CorporateProfileEditComponent implements OnInit {
     });
   }
 
-  updateCompany(model) {
+  updateCompany(model, noNav?: boolean) {
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     if (this.creatingNew == true) {
       delete model['_id'];
@@ -329,20 +376,26 @@ export class CorporateProfileEditComponent implements OnInit {
       });
     } else {
       if(!this.isUserAdmin){return;}
-      for (const i of this.currentAccount.product) {
-        const productModel = this.products[this.currentAccount.product.indexOf(i)]
-        delete productModel['_id'];
-        this.productService.updateProduct(i.productId, productModel).toPromise().then(result => console.log(result));
+      if(this.currentAccount.product) {
+        for (const i of this.currentAccount.product) {
+          const productModel = this.products[this.currentAccount.product.indexOf(i)]
+          delete productModel['_id'];
+          this.productService.updateProduct(i.productId, productModel).toPromise().then(result => console.log(result));
+        }
       }
-      for (const i of this.currentAccount.service) {
-        const serviceModel = this.services[this.currentAccount.service.indexOf(i)]
-        delete serviceModel['_id'];
-        this.serviceService.updateService(i.serviceId, serviceModel).toPromise().then(result => console.log(result));
+      if (this.currentAccount.service) {
+        for (const i of this.currentAccount.service) {
+          const serviceModel = this.services[this.currentAccount.service.indexOf(i)]
+          delete serviceModel['_id'];
+          this.serviceService.updateService(i.serviceId, serviceModel).toPromise().then(result => console.log(result));
+        }
       }
       delete model['_id'];
-      this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
-      window.scrollTo(0, 0);
-      this.router.navigate(['corporate-profile', this.route.snapshot.params['id']]);
+      this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then(result => this.currentAccount = result);
+      if (!noNav) {
+        window.scrollTo(0, 0);
+        this.router.navigate(['corporate-profile', this.route.snapshot.params['id']]);
+      }
     }
   }
 

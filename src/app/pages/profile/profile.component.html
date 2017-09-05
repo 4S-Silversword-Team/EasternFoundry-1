@@ -50,7 +50,7 @@
           <div *ngIf = 'this.currentUser.education'>
             <p>DEGREES:</p>
             <div class="" *ngFor="let deg of this.currentUser.education">
-              <p *ngIf="deg.DegreeType[0].Name && deg.DegreeType[0].Name.length > 0">
+              <p *ngIf="deg.DegreeType[0] && deg.DegreeType[0].Name.length > 0">
                 {{ 'Type: ' + deg.DegreeType[0].Name}}
               </p>
               <p *ngIf="deg.MajorProgramName && deg.MajorProgramName.length > 0">
@@ -98,13 +98,13 @@
     <div class="capa-main col-xs-12">
         <div class="col-xl-12 col-sm-6">
             <div class="capa-chart col-xs-12" *ngIf="this.promiseFinished && this.currentUser.occupations">
-                <app-bent-bars-chart width='300' height='300' divID='bbChart{{this.currentUser.id}}' [values]='getCapaChartValues(this.currentUser)'></app-bent-bars-chart>
+                <app-bent-bars-chart width='300' height='300' divID='bbChart{{this.currentUser.id}}' [values]='getCapaChartValues(this.occupations)'></app-bent-bars-chart>
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 text-container">
             <div class="row">
-                <div class="col-xs-12 col-md-8">
-                    <app-color-comment-box *ngFor='let feature of this.currentUser.occupations' color='{{getCapaChartColor(feature.score)}}' text='{{feature.title}}' class="col-xs-12"></app-color-comment-box>
+                <div class="col-xs-12 col-md-10">
+                    <app-color-comment-box *ngFor='let feature of this.occupations' color='{{getCapaChartColor(feature.score)}}' text='{{feature.title}}' class="col-xs-12"></app-color-comment-box>
                 </div>
                 <div class="col-xs-12 col-md-6">
                     <p *ngFor='let skill of this.currentUser.skill'>{{ skill }} </p>

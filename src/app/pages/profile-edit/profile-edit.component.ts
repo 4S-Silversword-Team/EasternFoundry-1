@@ -1,16 +1,20 @@
 import {Http} from '@angular/http';
 
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
+import { Tool } from '../../classes/tool'
 import { ToolService } from '../../services/tool.service'
 import { ToolSubmissionService } from '../../services/toolsubmission.service'
 import {isUndefined} from "util";
 import { AuthService} from "../../services/auth.service"
+import { s3Service } from "../../services/s3.service"
+
+import { environment } from "../../../environments/environment"
 
 
 
@@ -20,11 +24,11 @@ declare var $: any;
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html',
   styleUrls: ['./profile-edit.component.css'],
-  providers: [ UserService, AuthService, ToolService, ToolSubmissionService ]
+  providers: [ UserService, AuthService, ToolService, ToolSubmissionService, s3Service ]
 })
 export class ProfileEditComponent implements OnInit {
 
-
+  @ViewChild('fileInput') fileInput;
 
   currentUser: User = new User()
   newSkill: string = ''
@@ -39,6 +43,7 @@ export class ProfileEditComponent implements OnInit {
   toolSearch: string = ''
   allTools: any[] = []
   filteredTools: any[] = []
+  filteredToolsFromProfile: any[] = []
   validNames: string[] = []
   toolSubmitted: boolean = false
 
@@ -68,7 +73,8 @@ export class ProfileEditComponent implements OnInit {
     public location: Location,
     private auth: AuthService,
     private toolService: ToolService,
-    private toolSubmissionService: ToolSubmissionService
+    private toolSubmissionService: ToolSubmissionService,
+    private s3Service: s3Service
   ) {
     auth.isLoggedIn().then(res => {
       !res ? this.router.navigateByUrl("/login"): afterLogin()
@@ -93,27 +99,35 @@ export class ProfileEditComponent implements OnInit {
 
         //here's the logic to check the skillsengine tools against the resume text!
         if (this.currentUser.resumeText && this.currentUser.foundTools[0] == undefined) {
-        for (let tool of this.currentUser.tools) {
-          if (tool.title.length > 1) {
-            if (this.currentUser.resumeText.toLowerCase().indexOf(tool.title.toLowerCase()) >= 0) {
-              if (this.currentUser.foundTools == null) {
-                this.currentUser.foundTools = [
-                  {
-                    title: '',
-                    category: '',
-                    classification: '',
-                    score: 0
-                  }
-                ]
-                this.currentUser.foundTools[0] = tool
-              } else {
-                this.currentUser.foundTools.push(tool)
+          for (let tool of this.currentUser.tools) {
+            if (tool.title.length > 1) {
+              if (this.currentUser.resumeText.toLowerCase().indexOf(tool.title.toLowerCase()) >= 0) {
+                var toolToAdd = {
+                  title: '',
+                  category: '',
+                  classification: '',
+                  position: []
+                }
+                toolToAdd.title = tool.title
+                toolToAdd.category = tool.category
+                toolToAdd.classification = tool.classification
+                if (this.currentUser.foundTools == null) {
+                  this.currentUser.foundTools = [
+                    {
+                      title: '',
+                      category: '',
+                      classification: '',
+                      position: []
+                    }
+                  ]
+                  this.currentUser.foundTools[0] = toolToAdd
+                } else {
+                  this.currentUser.foundTools.push(toolToAdd)
+                }
               }
             }
           }
         }
-      }
-
         //right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
         //i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
         if (typeof this.currentUser.disabled === "string") {
@@ -173,6 +187,50 @@ export class ProfileEditComponent implements OnInit {
   ngOnInit() {
   }
 
+
+  uploadPhoto() {
+    let fileBrowser = this.fileInput.nativeElement;
+    if (fileBrowser.files && fileBrowser.files[0]) {
+      let formData = new FormData();
+      let file = fileBrowser.files[0]
+      console.log(file)
+      formData.append("bucket", environment.bucketName);
+      formData.append("key", "userPhotos/"+this.currentUser._id+"_0");
+      formData.append("file", file);
+      this.s3Service.postPhoto(formData).toPromise().then(result => {
+        console.log("Photo upload success",result) ;
+        this.currentUser.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/userPhotos/"+this.currentUser._id+"_0";
+        this.updateProfile(this.currentUser, true);
+      }).catch((reason) =>console.log("reason ", reason));
+    }
+  }
+
+
+  editPhoto() {
+    let fileBrowser = this.fileInput.nativeElement;
+    if (fileBrowser.files && fileBrowser.files[0]) {
+      if(!this.currentUser._id){console.log("no id"); return;}
+      const uid = this.currentUser._id;
+      let formData = new FormData();
+      let file = fileBrowser.files[0]
+      let myArr = this.currentUser.avatar.split("_")
+      let i: any = myArr[myArr.length - 1]
+      i = parseInt(i);
+      console.log(file)
+      formData.append("bucket", environment.bucketName);
+      formData.append("key", "userPhotos/"+uid+"_"+(i+1).toString());
+      formData.append("file", file);
+      this.s3Service.postPhoto(formData).toPromise().then(result => {
+        console.log("Photo upload success",result);
+        this.currentUser.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/userPhotos/"+uid+"_"+(i+1).toString()
+        this.updateProfile(this.currentUser, true);
+        this.s3Service.deletePhoto("/userPhotos/"+uid+"_"+(i).toString()).toPromise().then( res => console.log("Old photo deleted " + res))
+      }).catch((reason) =>console.log("reason ", reason));
+    }
+
+  }
+
+
   saveChanges() {
     console.log('This button doesnt do anything!')
   }
@@ -182,7 +240,6 @@ export class ProfileEditComponent implements OnInit {
   }
 
   toolIsNotListedAlready(tool){
-    // this should keep track of everything used to prevent duplicates. it doesnt work! so it's not on.
     if (!this.validNames.includes(tool.title.toLowerCase())) {
       return true
     } else {
@@ -204,7 +261,6 @@ export class ProfileEditComponent implements OnInit {
   }
 //hey! figure this whole dumb thing out!
   updateToolList(search){
-    this.toolSubmitted = false
     this.validNames = []
     var toolSearch = this.toolSearch
     var foundTools = this.currentUser.foundTools
@@ -404,7 +460,7 @@ export class ProfileEditComponent implements OnInit {
     return year;
   }
 
-  updateProfile(model) {
+  updateProfile(model, noNav?: boolean) {
     function moveObject (array, old_index, new_index) {
       if (new_index >= array.length) {
           var k = new_index - array.length;
@@ -414,6 +470,7 @@ export class ProfileEditComponent implements OnInit {
       }
       array.splice(new_index, 0, array.splice(old_index, 1)[0]);
     };
+
     //this SHOULD automatically arrange jobs by date so more recent ones are on top. it doesnt seem to work 100% but it kind of works?
     for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
       if (this.currentUser.positionHistory[i].EndDate == "Current") {
@@ -451,9 +508,11 @@ export class ProfileEditComponent implements OnInit {
     }
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     delete model['_id']
-    this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => console.log(result));
-    window.scrollTo(0, 0);
-    this.router.navigate(['user-profile', this.route.snapshot.params['id']]);
+    this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => {console.log(result); this.currentUser = result});
+    if(!noNav) {
+      window.scrollTo(0, 0);
+      this.router.navigate(['user-profile', this.route.snapshot.params['id']]);
+    }
   }
 
 
