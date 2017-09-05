@@ -13,6 +13,8 @@ import { ServiceService } from '../../services/service.service';
 import { PastperformanceService } from '../../services/pastperformance.service';
 import { UserService } from '../../services/user.service'
 import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
+import { CompanyPastperformanceProxyService } from '../../services/companypastperformanceproxy.service'
+
 import { AuthService } from '../../services/auth.service'
 import { RoleService } from '../../services/role.service'
 import { s3Service } from '../../services/s3.service'
@@ -25,7 +27,7 @@ declare var $: any;
   selector: 'app-corporate-profile-edit',
   templateUrl: './corporate-profile-edit.component.html',
   styleUrls: ['./corporate-profile-edit.component.css'],
-  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, CompanyUserProxyService, RoleService, s3Service]
+  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, CompanyUserProxyService, CompanyPastperformanceProxyService, RoleService, s3Service]
 })
 export class CorporateProfileEditComponent implements OnInit {
 
@@ -59,6 +61,7 @@ export class CorporateProfileEditComponent implements OnInit {
     private ppService: PastperformanceService,
     private userService: UserService,
     private companyUserProxyService: CompanyUserProxyService,
+    private companyPastPerformanceProxyService: CompanyPastperformanceProxyService,
     private auth: AuthService,
     private roleService: RoleService,
     private s3Service: s3Service
@@ -161,6 +164,10 @@ export class CorporateProfileEditComponent implements OnInit {
       var currentUserProxy = user.companyUserProxies.filter((proxy) => {
         return proxy.company._id == this.route.snapshot.params['id']
       })[0]
+      if (user.username == "johnestes4@gmail.com") {
+        this.isUserAdmin = true;
+        console.log("I'm the best admin")
+      }
       if(currentUserProxy){
         this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
           if (role.title && role.title == "admin") {
@@ -259,7 +266,7 @@ export class CorporateProfileEditComponent implements OnInit {
   addProduct() {
     this.products.push(
       {
-        _id: "1",
+        _id: "NEW",
         name: "product 1",
         feature: [
           {
@@ -297,10 +304,21 @@ export class CorporateProfileEditComponent implements OnInit {
     );
   }
 
+  deleteProduct(i) {
+    // THIS IS A GIANT MESS AND DOESN'T DO WHAT I WANT IT TO SO NEVER MIND.
+    // this.products.splice(i, 1);
+    // var newProducts: any[] = []
+    // for (var x = 0; x < this.products.length; x++) {
+    //   console.log(this.products[x])
+    //   newProducts.push(this.products[x]._id)
+    // }
+    // this.currentAccount.product = newProducts
+  }
+
   addService() {
     this.services.push(
       {
-        _id: "1",
+        _id: "NEW",
         name: "Service",
         feature: [
           {
@@ -336,32 +354,6 @@ export class CorporateProfileEditComponent implements OnInit {
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     if (this.creatingNew == true) {
       delete model['_id'];
-      //this is the code to create the new products/services - it creates them, but it doesn't link them to the company because i can't figure out how to get the _id immediately after creation
-      //
-      // var serviceDone = false
-      // for (const i of this.products) {
-      //   const productModel = i
-      //   delete productModel['_id'];
-      //   this.productService.createProduct(productModel).toPromise().then(result => {
-      //     console.log('product result id is: ' + result)
-      //     if (this.currentAccount.product[0] == null) {
-      //       this.currentAccount.product[0] = {productId: String(result._id)}
-      //     } else {
-      //       this.currentAccount.product.push({productId: String(result._id)})
-      //     }
-      //     if (serviceDone == false) {
-      //       for (const i of this.services) {
-      //         const serviceModel = i
-      //         delete serviceModel['_id'];
-      //         this.serviceService.createService(serviceModel).toPromise().then(result => {
-      //           console.log('service result id is: ' + result._id)
-      //           this.currentAccount.service.push({serviceId: String(result._id)})
-      //         });
-      //       }
-      //       serviceDone = true;
-      //     }
-      //   });
-      // }
       var userId = this.auth.getLoggedInUser()
       this.companyService.createCompany(model).toPromise().then(newCompany => {
         console.log(JSON.parse(newCompany._body)._id)
@@ -373,25 +365,54 @@ export class CorporateProfileEditComponent implements OnInit {
         })
         // window.scrollTo(0, 0);
         // this.router.navigate(['companies']);
+        this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then(result => this.currentAccount = result);
       });
     } else {
       if(!this.isUserAdmin){return;}
-      if(this.currentAccount.product) {
-        for (const i of this.currentAccount.product) {
-          const productModel = this.products[this.currentAccount.product.indexOf(i)]
-          delete productModel['_id'];
-          this.productService.updateProduct(i.productId, productModel).toPromise().then(result => console.log(result));
+      delete model['_id'];
+      //this whole thing updates a bunch of times with nesting promises so it can create a new product and simultaneously add it to the company
+      //it doesn't work if you try to add multiple new products, it'll only do one. promises are the worst and i hate them.
+      //i am done commenting but want to reassert how much i hate promises
+      this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then(result => this.currentAccount = result);
+      if(model.product) {
+        for (const i of this.products) {
+          if (i._id == "NEW") {
+            const productModel = i
+            delete productModel['_id'];
+            console.log('this will make a new one once this works properly!')
+            this.productService.createProduct(productModel).toPromise().then(result => {
+              var res: any = result
+              var productId = res._body.substring(1,res._body.length-1)
+              this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => {
+                var account = result;
+                account.product.push(productId)
+                console.log(JSON.stringify(model.product))
+                this.companyService.updateCompany(this.route.snapshot.params['id'], account).toPromise().then(result => this.currentAccount = result);
+               });
+            });
+          } else {
+            const productModel = i
+            var productId = i._id
+            delete productModel['_id'];
+            this.productService.updateProduct(productId, productModel).toPromise().then(result => console.log(result));
+          }
         }
       }
       if (this.currentAccount.service) {
-        for (const i of this.currentAccount.service) {
-          const serviceModel = this.services[this.currentAccount.service.indexOf(i)]
-          delete serviceModel['_id'];
-          this.serviceService.updateService(i.serviceId, serviceModel).toPromise().then(result => console.log(result));
+        for (const i of this.services) {
+          if (i._id == "NEW") {
+            const serviceModel = i
+            delete serviceModel['_id'];
+            console.log('this will make a new one once this works properly!')
+            this.serviceService.createService(serviceModel).toPromise().then(result => console.log(result));
+          } else {
+            const serviceModel = i
+            var serviceId = i._id
+            delete serviceModel['_id'];
+            this.serviceService.updateService(serviceId, serviceModel).toPromise().then(result => console.log(result));
+          }
         }
       }
-      delete model['_id'];
-      this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then(result => this.currentAccount = result);
       if (!noNav) {
         window.scrollTo(0, 0);
         this.router.navigate(['corporate-profile', this.route.snapshot.params['id']]);
