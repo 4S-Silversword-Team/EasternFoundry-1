@@ -49,6 +49,7 @@ export class CorporateProfileEditComponent implements OnInit {
   writeWidth: number = 800;
   isUserAdmin: boolean = false;
   companyAdminCount: number;
+  adminRoleId: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -175,16 +176,14 @@ export class CorporateProfileEditComponent implements OnInit {
 
   checkCompanyAdminCount() {
     let employeeRoleIds = this.currentAccount.userProfileProxies.map((proxy) => proxy.role);
-    for( let roleId of employeeRoleIds){
-      if(roleId) {
-        this.roleService.getRoleByID(roleId).toPromise().then((role) => {
-          if (role.title && role.title == "admin") {
-            this.companyAdminCount = employeeRoleIds.filter((item) => item == roleId).length
-          }
-        })
+    this.roleService.getRoleByTitle("admin").toPromise().then((role) => {
+      if (role && role._id){
+        this.adminRoleId = role._id
+        this.companyAdminCount = employeeRoleIds.filter((item) => item == role._id).length
       }
-    }
+    })
   }
+
 
   addEmployee(employeeId) {
     if (!this.isUserAdmin){return;}
@@ -204,7 +203,7 @@ export class CorporateProfileEditComponent implements OnInit {
     if (!this.isUserAdmin){return;}
     if(proxyRoleId){
       this.roleService.getRoleByID(proxyRoleId).toPromise().then((role) => {
-        if (!role.title || role.title !== "admin" || this.companyAdminCount >= 2) {
+        if (!role.title || role.title !== "admin" || this.companyAdminCount >= 2) { // Prevents only admin from being deleted. TODO: Make a backend implementation
             this.companyUserProxyService.deleteCompanyUserProxy(proxyId).then(() =>
             this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }));
         }
@@ -248,6 +247,7 @@ export class CorporateProfileEditComponent implements OnInit {
 
 
   updateEmployee(proxyId,key, value){
+    if (!this.isUserAdmin){return;}
     let req = {};
     req[key] = value;
     this.companyUserProxyService.updateCompanyUserProxies(proxyId, req).toPromise().then(() =>
