@@ -29,6 +29,7 @@ export class ProfileCreateComponent implements OnInit {
     username: '',
     password: ''
   };
+  paramsError:string = ""
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -55,7 +56,28 @@ export class ProfileCreateComponent implements OnInit {
   registerUser() {
     //const fileList: FileList = event.target.files;
     let fileBrowser = this.fileInput.nativeElement;
+    if(this.userParam.username == '' || this.userParam.username.trim() == ''){
+      this.paramsError = "Please enter an email address"
+      return
+    }
+    if(!(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.userParam.username))){ //TODO: nice to have: validate email server side
+      this.paramsError = "Please enter a valid email address"
+      return
+    }
+    if(this.userParam.password == '' || this.userParam.password.trim() == ''){
+      this.paramsError = "Please enter a password"
+      return
+    }
+    if(this.userParam.password.length < 6){
+      this.paramsError = "Password must be at least 6 characters" //TODO: nice to have: validate password server side
+      return
+    }
+    if(!fileBrowser.files || !fileBrowser.files[0]){
+      this.paramsError = "Please submit a resume. A file type of .pdf,.doc, or .docx" //
+      return
+    }
     if (fileBrowser.files && fileBrowser.files[0]) {
+      this.userParam.username = this.userParam.username.toLowerCase(); //TODO: nice to have: make the request lower case in the server
       let formData = new FormData();
       let file = fileBrowser.files[0]
 
