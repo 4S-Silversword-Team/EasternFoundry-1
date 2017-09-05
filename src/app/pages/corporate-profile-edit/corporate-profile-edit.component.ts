@@ -304,6 +304,17 @@ export class CorporateProfileEditComponent implements OnInit {
     );
   }
 
+  deleteProduct(i) {
+    // THIS IS A GIANT MESS AND DOESN'T DO WHAT I WANT IT TO SO NEVER MIND.
+    // this.products.splice(i, 1);
+    // var newProducts: any[] = []
+    // for (var x = 0; x < this.products.length; x++) {
+    //   console.log(this.products[x])
+    //   newProducts.push(this.products[x]._id)
+    // }
+    // this.currentAccount.product = newProducts
+  }
+
   addService() {
     this.services.push(
       {

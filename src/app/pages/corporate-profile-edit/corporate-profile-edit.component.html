@@ -110,7 +110,7 @@
     <p>PRODUCTS</p>
     <div></div>
   </div>
-  <div *ngFor='let product of this.products' class="container mt50 product-container">
+  <div *ngFor='let product of this.products; let prodIndex = index' class="container mt50 product-container">
     <div class="col-xs-12 srow">
       <div class="col-xs-12 col-md-6 right">
         <div class="col-xs-12 srow info-input">
@@ -218,7 +218,9 @@
     <div class="col-xs-12 text-center   mt20   mb20">
       <button class="mr10" (click)="addCommercial(product)">ADD</button>
     </div>
-    <div class="col-xs-12 div-split-line"></div>
+    <div class='col-xs-12'>
+      <button class='col-xs-4 col-xs-offset-4' type="button" name="button" (click)='deleteProduct(prodIndex)'>Delete This Product</button>
+    </div>
   </div>
   <div class='col-xs-12'>
     <button class='col-xs-4 col-xs-offset-4' type="button" name="button" (click)='addProduct()'>Add Product</button>
