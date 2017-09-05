@@ -36,46 +36,55 @@
         <p class="fs-28 fc-title">CERTIFICATIONS, DEGREES</p>
         <p class="fs-28 fc-subtitle">AWARDS & CLEARANCES</p>
         <div class="text-container text-left cert-container" [style.height] = "'300px'">
-          <div class="" *ngIf = 'this.currentUser.certification'>
-            <div class="" *ngIf = 'this.currentUser.certification[0]'>
-              <div class="" *ngIf = 'this.currentUser.certification[0].CertificationName.length > 0'>
-                <p>CERTS:</p>
-                <div class="" *ngFor="let cert of this.currentUser.certification">
-                  <p *ngIf="cert.CertificationName && cert.CertificationName.length > 0">{{ 'Degree: ' + cert.CertificationName}}</p>
-                  <p *ngIf="cert.DateEarned && cert.DateEarned.length > 0">{{'Earned: ' + cert.DateEarned }}</p>
+          <div *ngIf = 'this.currentUser.education'>
+            <p>Degrees:</p>
+            <div class="" *ngFor="let deg of this.currentUser.education">
+              <div *ngIf="deg.DegreeType[0] && deg.DegreeType[0].Name.length > 0">
+                <div *ngIf="deg.MajorProgramName && deg.MajorProgramName.length > 0">
+                  <div *ngIf="deg.School && deg.School.length > 0">
+                    <div *ngIf="deg.AttendanceEndDate && deg.AttendanceEndDate.length > 0" class="degree-box">
+                      <p>
+                        {{deg.DegreeType[0].Name}} in {{deg.MajorProgramName[0]}} from {{deg.School}}
+                      </p>
+                      <p>Graduated {{deg.AttendanceEndDate}}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div *ngIf = 'this.currentUser.education'>
-            <p>DEGREES:</p>
-            <div class="" *ngFor="let deg of this.currentUser.education">
-              <p *ngIf="deg.DegreeType[0].Name && deg.DegreeType[0].Name.length > 0">
-                {{ 'Type: ' + deg.DegreeType[0].Name}}
-              </p>
-              <p *ngIf="deg.MajorProgramName && deg.MajorProgramName.length > 0">
-                {{'Concentration: ' + deg.MajorProgramName[0]}}
-              </p>
-              <p *ngIf="deg.School && deg.School.length > 0">
-                {{'From: ' + deg.School}}
-              </p>
-              <p *ngIf="deg.AttendanceEndDate && deg.AttendanceEndDate.length > 0">
-                {{'Graduation: ' + deg.AttendanceEndDate}}
-              </p>
+          <div class="" *ngIf = 'this.currentUser.certification'>
+            <div class="" *ngIf = 'this.currentUser.certification[0]'>
+              <div class="" *ngIf = 'this.currentUser.certification[0].CertificationName.length > 0'>
+                <p>Certificates:</p>
+                <div class="" *ngFor="let cert of this.currentUser.certification">
+                  <div class="" *ngIf="cert.CertificationName && cert.CertificationName.length > 0">
+                    <div class="degree-box" *ngIf="cert.DateEarned && cert.DateEarned.length > 0">
+                      <p>{{cert.CertificationName}} Certification</p>
+                      <p>Earned {{cert.DateEarned}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="" *ngIf='this.currentUser.award && this.currentUser.award[0].length > 0'>
-            <p>AWARDS:</p>
-            <div class="" *ngFor="let award of this.currentUser.award">
-              <p *ngIf="award.length > 0">{{ 'Awarded: ' + award }}</p>
+            <p>Awards:</p>
+            <div class="" *ngFor="let award of this.currentUser.award" class="degree-box">
+              <p *ngIf="award.length > 0">{{award }}</p>
             </div>
           </div>
           <div class="" *ngIf='this.currentUser.clearance && this.currentUser.clearance[0].clearanceType.length > 0'>
-            <p>CLEARANCES:</p>
+            <p>Clearances:</p>
             <div class="" *ngFor="let clearance of this.currentUser.clearance">
-              <p *ngIf="clearance.clearanceType.length > 0">{{ 'Clearance: ' + clearance.clearanceType }}</p>
-              <p *ngIf="clearance.awarded.length > 0">{{ 'Awarded: ' + clearance.awarded }}</p>
-              <p *ngIf="clearance.expiration.length > 0">{{ 'Expiration: ' + clearance.expiration }}</p>
+              <div class="" *ngIf="clearance.clearanceType.length > 0">
+                <div class="" *ngIf="clearance.awarded.length > 0">
+                  <div class="degree-box" *ngIf="clearance.expiration.length > 0">
+                    <p>{{clearance.clearanceType}} Clearance</p>
+                    <p>Awarded {{clearance.awarded}}, expires {{clearance.expiration}}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
