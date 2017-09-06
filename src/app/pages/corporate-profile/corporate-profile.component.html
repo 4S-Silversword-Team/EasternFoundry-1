@@ -249,7 +249,7 @@
       </div>
       <div class="row main">
           <div class="col-xs-12 text-container">
-            <!-- <div *ngIf="!currentAccount.vehicles[0]">No vehicles to show</div> -->
+            <div *ngIf="!currentAccount.vehicles[0]">No vehicles to show</div>
               <div class="col-xs-12" [style.overflow] = "'auto'" [style.max-height]="'250px'">
                    <h5 *ngFor='let index of currentAccount.vehicles'>{{index.vehicleType + ': ' + index.quantity}}</h5>
               </div>
@@ -265,7 +265,7 @@
       </div>
       <div class="row main">
           <div class="col-xs-12 text-container">
-            <!-- <div *ngIf="!currentAccount.schedule[0]">No schedule to show</div> -->
+            <div *ngIf="!currentAccount.schedule[0]">No schedule to show</div>
               <div class="col-xs-12" [style.overflow] = "'auto'" [style.max-height]="'250px'">
                  <h5 *ngFor='let index of currentAccount.schedule'>{{index.date + ': ' + index.content}}</h5>
               </div>
