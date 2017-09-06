@@ -404,6 +404,9 @@ export class CorporateProfileEditComponent implements OnInit {
   }
 
   updateCompany(model, noNav?: boolean) {
+
+    //all these arrays are filled with "null" on creation because otherwise none of it worked properly
+    //so this cleans all that up because i guess it's fine afterwards.
     if (model.pastPerformance[0] == null) {
       model.pastPerformance.splice(0,1)
     }
