@@ -327,24 +327,31 @@ export class ProfileEditComponent implements OnInit {
     var foundTools = this.currentUser.foundTools
     function isGoodTool(tool) {
       if (tool.title.toLowerCase().includes(toolSearch.toLowerCase())) {
-        if (!foundTools.includes(tool)) {
-          return true
+        for (let t of foundTools) {
+          if (t.title.toLowerCase() == tool.title.toLowerCase()) {
+            return false
+          }
         }
+        return true
       }
       return false
     }
-    this.filteredToolsFromProfile = this.currentUser.tools.filter(isGoodTool)
+    var tools1 = this.currentUser.tools.filter(isGoodTool)
     function isGoodTool2(tool) {
       if (tool.title.toLowerCase().includes(toolSearch.toLowerCase())) {
-        if (!foundTools.includes(tool)) {
-          return true
+        if (foundTools.includes(tool)) {
+          return false
         }
-        if (!this.filteredToolsFromProfile.includes(tool)) {
-          return true
+        for (let t of tools1) {
+          if (t.title.toLowerCase() == tool.title.toLowerCase()) {
+            return false
+          }
         }
+        return true
       }
       return false
     }
+    this.filteredToolsFromProfile = tools1
     this.filteredTools = this.allTools.filter(isGoodTool2)
     // for (let tool of this.filteredTools){
     //   for (let position of tool.positions){
