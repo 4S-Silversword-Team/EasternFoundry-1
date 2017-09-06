@@ -54,10 +54,10 @@ export class CompanyService {
     temp.address = 'Washington, DC'
     temp.informationAccuracy = 5
     temp.lastUpdated = 'Dec, 2016'
-    temp.leadership = null
-    temp.product = null
-    temp.service = null
-    temp.pastPerformance = null
+    temp.leadership = [null]
+    temp.product = [null]
+    temp.service = [null]
+    temp.pastPerformance = [null]
     temp.agencyExperience = [
       {
         title: 'Years Agency experience',

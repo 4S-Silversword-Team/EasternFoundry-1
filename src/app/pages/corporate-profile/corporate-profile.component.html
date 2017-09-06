@@ -46,17 +46,24 @@
           <div></div>
       </div>
       <div class="main clear">
-          <div class="halfwidth left" *ngFor='let index of this.currentAccount.userProfileProxies'>
-            <div *ngIf="index.userProfile">
-              <img src='{{ index.userProfile.avatar }}' class="left avatar" [style.width]="'150px'">
-              <p class="srow">{{ index.userProfile.firstName + ' ' + index.userProfile.lastName}}</p>
-              <p *ngIf="index.userProfile.positionHistory[0]" class="srow">{{ index.userProfile.positionHistory[0].PositionTitle }}</p>
-              <p class="srow">{{ index.userProfile.username }}</p>
-              <button class="col-xs-8 col-xs-offset-2" (click)="toUserProfile(index._id)">More Information</button>
+          <div class="" *ngIf='this.currentAccount.userProfileProxies != undefined'>
+            <div class="halfwidth left" *ngFor='let index of this.currentAccount.userProfileProxies'>
+              <div *ngIf="index.userProfile">
+                <img src='{{ index.userProfile.avatar }}' class="left avatar" [style.width]="'150px'">
+                <p class="srow">{{ index.userProfile.firstName + ' ' + index.userProfile.lastName}}</p>
+                <p *ngIf="index.userProfile.positionHistory[0]" class="srow">{{ index.userProfile.positionHistory[0].PositionTitle }}</p>
+                <p class="srow">{{ index.userProfile.username }}</p>
+                <button class="col-xs-8 col-xs-offset-2" (click)="toUserProfile(index._id)">More Information</button>
+              </div>
             </div>
           </div>
       </div>
-    <div *ngIf="!this.currentAccount.userProfileProxies[0].userProfile" class="main clear"> No employees to show</div>
+      <div class="" *ngIf="!this.currentAccount.userProfileProxies" class="main clear">
+         No employees to show
+      </div>
+      <div class="" *ngIf="this.currentAccount.userProfileProxies">
+        <div *ngIf="!this.currentAccount.userProfileProxies[0]" class="main clear">No employees to show</div>
+      </div>
   </div>
 
   <div class="div-tab col-xs-12 clear">
@@ -242,7 +249,7 @@
       </div>
       <div class="row main">
           <div class="col-xs-12 text-container">
-            <div *ngIf="!currentAccount.vehicles[0]">No vehicles to show</div>
+            <!-- <div *ngIf="!currentAccount.vehicles[0]">No vehicles to show</div> -->
               <div class="col-xs-12" [style.overflow] = "'auto'" [style.max-height]="'250px'">
                    <h5 *ngFor='let index of currentAccount.vehicles'>{{index.vehicleType + ': ' + index.quantity}}</h5>
               </div>
@@ -258,7 +265,7 @@
       </div>
       <div class="row main">
           <div class="col-xs-12 text-container">
-            <div *ngIf="!currentAccount.schedule[0]">No schedule to show</div>
+            <!-- <div *ngIf="!currentAccount.schedule[0]">No schedule to show</div> -->
               <div class="col-xs-12" [style.overflow] = "'auto'" [style.max-height]="'250px'">
                  <h5 *ngFor='let index of currentAccount.schedule'>{{index.date + ': ' + index.content}}</h5>
               </div>
