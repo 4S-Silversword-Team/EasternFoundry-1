@@ -163,13 +163,13 @@ export class CorporateProfileEditComponent implements OnInit {
   getAdminStatus() {
     var userId = this.auth.getLoggedInUser()
     this.userService.getUserbyID(userId).toPromise().then((user) =>{
-      var currentUserProxy = user.companyUserProxies.filter((proxy) => {
-        return proxy.company._id == this.route.snapshot.params['id']
-      })[0]
       if (user.username == "johnestes4@gmail.com") {
         this.isUserAdmin = true;
         console.log("I'm the best admin")
       }
+      var currentUserProxy = user.companyUserProxies.filter((proxy) => {
+        return proxy.company._id == this.route.snapshot.params['id']
+      })[0]
       if(currentUserProxy){
         this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
           if (role.title && role.title == "admin") {
@@ -390,6 +390,18 @@ export class CorporateProfileEditComponent implements OnInit {
     service.feature.splice(i,1)
   }
 
+  addVehicle() {
+    this.currentAccount.vehicles.push(
+      {
+        vehicleType: '',
+        quantity: 0
+      }
+    )
+  }
+
+  deleteVehicle(vehicle, i) {
+    this.currentAccount.vehicles.splice(i,1)
+  }
 
   addUserWithRole(company, user, role){
     let request = {

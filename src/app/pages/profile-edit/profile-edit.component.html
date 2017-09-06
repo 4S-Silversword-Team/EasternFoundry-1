@@ -15,13 +15,13 @@
       </div>
       <div id="20" class="col-xs-10 col-xs-offset-1 col-lg-5 col-lg-offset-0" *ngIf = this.promiseFinished>
         <p class="col-xs-4 text-right vertically-centered">First Name</p>
-        <input class="col-xs-8 left" type="text" placeholder="Your first name" [(ngModel)] = 'this.currentUser.firstName'>
+        <input class="col-xs-8 left" type="text" placeholder="Your first name" [(ngModel)] = 'this.currentUser.firstName' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.firstName}">
         <p class="col-xs-4 text-right vertically-centered">Last Name</p>
-        <input class="col-xs-8 left" type="text" placeholder="Your last name" [(ngModel)] = 'this.currentUser.lastName'>
+        <input class="col-xs-8 left" type="text" placeholder="Your last name" [(ngModel)] = 'this.currentUser.lastName' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.lastName}">
         <p class="col-xs-4 text-right vertically-centered">Title</p>
-        <input class="col-xs-8 left" type="text" placeholder="Your current job title" [(ngModel)] = 'this.currentUser.positionHistory[0].PositionTitle'>
+        <input class="col-xs-8 left" type="text" placeholder="Your current job title" [(ngModel)] = 'this.currentUser.positionHistory[0].PositionTitle' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.positionHistory[0].PositionTitle}">
         <p class="col-xs-4 text-right vertically-centered">Employer</p>
-        <input class="col-xs-8 left" type="text" placeholder="Your current employer" [(ngModel)] = 'this.currentUser.positionHistory[0].Employer'>
+        <input class="col-xs-8 left" type="text" placeholder="Your current employer" [(ngModel)] = 'this.currentUser.positionHistory[0].Employer' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.positionHistory[0].Employer}">
       </div>
       <!--<div><img src="../assets/img/glyphicon/phone-2.png" class="left"><p class="left">{{ this.currentUser.contactNumber }}</p></div>-->
       <!--<div><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">{{ this.currentUser.city }}</p></div>-->
@@ -33,19 +33,18 @@
       </div>
       <div id="user-contact" class="col-xs-8 col-lg-4 col-lg-offset-0" style="margin-left: 0px" *ngIf = this.promiseFinished>
         <p class="col-xs-3 text-right vertically-centered">Email</p>
-        <input class="col-xs-9 left" type="email" [(ngModel)] = 'this.currentUser.username'>
+        <input class="col-xs-9 left" type="email" [(ngModel)] = 'this.currentUser.username' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.username}">
 
         <p class="col-xs-3 text-right" style="transform: translateY(10%)">Contact Number</p>
-        <input class="col-xs-9 left" type="tel" maxlength="10" [(ngModel)] = 'this.currentUser.cell'>
-
+        <input class="col-xs-9 left" type="tel" maxlength="10" [(ngModel)] = 'this.currentUser.cell' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.cell}">
         <p class="col-xs-3 text-right vertically-centered">City</p>
-        <input class="col-xs-9 left" type="text"  [(ngModel)] = 'this.currentUser.address.city'>
+        <input class="col-xs-9 left" type="text"  [(ngModel)] = 'this.currentUser.address.city' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': this.currentUser.address.city.length < 1}">
 
         <p class="col-xs-3 text-right vertically-centered">State</p>
-        <input class="col-xs-9 left" type="text"  [(ngModel)] = 'this.currentUser.address.state'>
+        <input class="col-xs-9 left" type="text"  [(ngModel)] = 'this.currentUser.address.state' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.address.state}">
 
         <p class="col-xs-3 text-right vertically-centered">Zip</p>
-        <input class="col-xs-9 left" type="number" max="99999" maxlength="5" [(ngModel)] = 'this.currentUser.address.zip'>
+        <input class="col-xs-9 left" type="number" max="99999" maxlength="5" [(ngModel)] = 'this.currentUser.address.zip' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.address.zip}">
       </div>
 
     </div>
@@ -61,13 +60,13 @@
         <div class="text-left text-container" style="padding-bottom: 14em" [style.height] = "'260px'" *ngFor="let degree of this.currentUser.education; let i = index">
           <div class="col-xs-6 col-md-5">
             <p class="col-xs-6 col-md-5 vertically-centered">Type: </p>
-            <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.DegreeType[0].Name'>
+            <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.DegreeType[0].Name' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !degree.DegreeType[0].Name}">
             <p class="col-xs-6 col-md-5 vertically-centered">Concentration: </p>
-            <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.MajorProgramName'>
+            <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.MajorProgramName' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !degree.MajorProgramName}">
             <p class="col-xs-6 col-md-5 vertically-centered">School: </p>
-            <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.School'>
+            <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.School' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !degree.School}">
             <p class="col-xs-6 col-md-5 vertically-centered">Graduation Date: </p>
-            <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.AttendanceEndDate'>
+            <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.AttendanceEndDate' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !degree.AttendanceEndDate}">
           </div>
           <div class="col-xs-3 col-md-5">
             <textarea name="" id="" rows="8" placeholder="Description:" [(ngModel)] = 'degree.Comment'></textarea>
@@ -93,10 +92,10 @@
 
     <div class="col-xs-11 col-xs-offset-1" type="text" *ngFor="let certificate of this.currentUser.certification; let i = index">
       <div class="col-xs-4">
-        <input class="col-xs-11" type="text" [(ngModel)] = 'certificate.CertificationName'>
+        <input class="col-xs-11" type="text" [(ngModel)] = 'certificate.CertificationName' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !certificate.CertificationName}">
       </div>
       <div class="col-xs-4">
-        <input class="col-xs-11" type="text" [(ngModel)] = 'certificate.DateEarned'>
+        <input class="col-xs-11" type="text" [(ngModel)] = 'certificate.DateEarned' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !certificate.DateEarned}">
       </div>
         <div class="col-xs-3 col-xs-offset-1" style="padding-top: 1%; height: 100%; margin-top: 20px">
           <button class="col-xs-12 side-button" style="height: 12%; margin-top: -24px" (click)="deleteCertificate(i)">DELETE</button>
@@ -115,15 +114,15 @@
       <div class="col-xs-10" style="padding-top: 2%">
         <div class="col-xs-4">
           <p class="col-xs-12 text-left">Type: </p>
-          <input class="col-xs-12" [(ngModel)] = 'index.clearanceType'>
+          <input class="col-xs-12" [(ngModel)] = 'index.clearanceType' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.clearanceType}">
         </div>
         <div class="col-xs-4 text-left">
           <p class="col-xs-12">Awarded: </p>
-          <input class="col-xs-12" [(ngModel)] = 'index.awarded'>
+          <input class="col-xs-12" [(ngModel)] = 'index.awarded' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.awarded}">
         </div>
         <div class="col-xs-4 text-left">
           <p class="col-xs-12">Expiration: </p>
-          <input class="col-xs-12" [(ngModel)] = 'index.expiration'>
+          <input class="col-xs-12" [(ngModel)] = 'index.expiration' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.expiration}">
         </div>
       </div>
       <div class="col-xs-2" style="padding-top: 4%">
@@ -142,7 +141,7 @@
     <div class="col-xs-12 text-center">
       <div class="col-xs-12" style="padding-top: 2%">
         <div class="col-xs-6 text-left" *ngFor="let award of this.currentUser.award; let i = index; trackBy:customTrackBy">
-          <input class="col-xs-12" [(ngModel)] = 'this.currentUser.award[i]'>
+          <input class="col-xs-12" [(ngModel)] = 'this.currentUser.award[i]' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.award[i]}">
           <button class="tiny-button-awards" (click)="deleteAward(i)"><div class="tiny-button-text">x</div></button>
         </div>
       </div>
@@ -305,7 +304,10 @@
     <!--<app-availablebar [values] = 'availabilityData.values' [dates] = 'availabilityData.dates'></app-availablebar>-->
   <!--</div>-->
 
-  <div class="col-xs-6 col-xs-offset-3" style="margin-bottom: 1%"><button class="btn btn-primary btn-block" (click)="updateProfile(this.currentUser)">Save Changes</button></div>
+  <div class="col-xs-6 col-xs-offset-3" style="margin-bottom: 1%">
+    <button class="btn btn-primary btn-block" (click)="updateProfile(this.currentUser)" *ngIf='this.fieldsFilled'>Save Changes</button>
+    <button class="btn btn-primary btn-block" style="background-color: red" *ngIf='!this.fieldsFilled'>Page Unfinished</button>
+  </div>
   <br>
 
 </div>
