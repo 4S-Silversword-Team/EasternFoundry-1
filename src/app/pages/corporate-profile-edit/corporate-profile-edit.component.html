@@ -91,6 +91,7 @@
           <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" (change)="updateEmployee(employee.proxyId,'endDate',employee.endDate)" [(ngModel)]="employee.endDate" onblur="(this.type='text')" onfocus="(this.type='date')"></span>
           <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input type="checkbox" (change)="updateEmployee(employee.proxyId,'stillAffiliated',employee.stillAffiliated)" [(ngModel)]="employee.stillAffiliated" /></span>
           <span class="col-xs-1 col-sm-1 col-md-1 text-center text-nowrap" ><input *ngIf="this.isUserAdmin && employee.role != this.adminRoleId" class="btn btn-primary" (click)="updateEmployee(employee.proxyId, 'role', this.adminRoleId)" type="button" value="Make Admin"></span>
+          <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input type="checkbox" (change)="updateEmployee(employee.proxyId,'leader',employee.leader)" [(ngModel)]="employee.leader" /></span>
       </div>
     </div>
     <select *ngIf="this.isUserAdmin" class="form-control" [(ngModel)]="this.newUserSelected">

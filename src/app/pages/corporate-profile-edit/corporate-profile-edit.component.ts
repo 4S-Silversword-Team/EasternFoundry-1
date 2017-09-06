@@ -270,7 +270,8 @@ export class CorporateProfileEditComponent implements OnInit {
         "startDate": new Date(i.startDate).toDateString(),
         "endDate": new Date(i.endDate).toDateString(),
         "stillAffiliated": i.stillAffiliated,
-        "role": i.role
+        "role": i.role,
+        "leader": i.leader
       })
     }
     this.userService.getUsers().then(res => {
