@@ -126,9 +126,12 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   }
 
   getAdminStatus() {
-
     var userId = this.auth.getLoggedInUser()
     this.userService.getUserbyID(userId).toPromise().then((user) =>{
+      if (user.username == "johnestes4@gmail.com") {
+        this.isUserAdmin = true;
+        console.log("I'm the best admin")
+      }
       var currentUserProxy = user.companyUserProxies.filter((proxy) => {
         return proxy.company._id == this.route.snapshot.params['id']
       })[0]

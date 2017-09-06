@@ -15,6 +15,11 @@ button {
   padding: 0px;
 }
 
+.empty-field {
+  border: 1px solid red;
+  background-color: rgba(255, 0, 0, 0.25);
+}
+
 .text-container {
   background-color: whitesmoke;
   border: 2px solid lightgray;
