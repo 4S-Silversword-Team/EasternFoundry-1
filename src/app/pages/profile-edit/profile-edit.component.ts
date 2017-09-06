@@ -208,7 +208,6 @@ export class ProfileEditComponent implements OnInit {
   }
 
   checkFields(){
-
     var profileCheck = true
     if (!this.currentUser.firstName || !this.currentUser.lastName || !this.currentUser.username || !this.currentUser.cell || !this.currentUser.address.city || !this.currentUser.address.state){
       profileCheck = false
@@ -297,6 +296,10 @@ export class ProfileEditComponent implements OnInit {
     this.currentUser.foundTools.push(tool);
   }
 
+  findAndAddTool(tool) {
+
+  }
+
   toolIsNotListedAlready(tool){
     if (!this.validNames.includes(tool.title.toLowerCase())) {
       return true
@@ -330,7 +333,28 @@ export class ProfileEditComponent implements OnInit {
       }
       return false
     }
-    this.filteredTools = this.allTools.filter(isGoodTool)
+    this.filteredToolsFromProfile = this.currentUser.tools.filter(isGoodTool)
+    function isGoodTool2(tool) {
+      if (tool.title.toLowerCase().includes(toolSearch.toLowerCase())) {
+        if (!foundTools.includes(tool)) {
+          return true
+        }
+        if (!this.filteredToolsFromProfile.includes(tool)) {
+          return true
+        }
+      }
+      return false
+    }
+    this.filteredTools = this.allTools.filter(isGoodTool2)
+    // for (let tool of this.filteredTools){
+    //   for (let position of tool.positions){
+    //     for (let occupation of this.currentUser.occupations) {
+    //       if (position.toLowerCase() == occupation.title.toLowerCase()){
+    //
+    //       }
+    //     }
+    //   }
+    // }
   }
 
   submitNewTool(tool){
