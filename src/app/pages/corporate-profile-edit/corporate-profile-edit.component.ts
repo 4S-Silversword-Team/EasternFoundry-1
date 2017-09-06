@@ -319,7 +319,7 @@ export class CorporateProfileEditComponent implements OnInit {
     this.services.push(
       {
         _id: "NEW",
-        name: "Service",
+        name: "New Service",
         feature: [
           {
             title: "",
@@ -333,6 +333,23 @@ export class CorporateProfileEditComponent implements OnInit {
       }
     )
   }
+
+  addSkill(service){
+    service.skills.push("")
+  }
+
+  deleteSkill(service, i) {
+    service.skills.splice(i,1)
+  }
+
+  addFeature(service){
+    service.feature.push({title: '', score: 0})
+  }
+
+  deleteFeature(service, i) {
+    service.feature.splice(i,1)
+  }
+
 
   addUserWithRole(company, user, role){
     let request = {
