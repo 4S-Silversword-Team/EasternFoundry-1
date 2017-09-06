@@ -305,14 +305,14 @@ export class CorporateProfileEditComponent implements OnInit {
   }
 
   deleteProduct(i) {
-    // THIS IS A GIANT MESS AND DOESN'T DO WHAT I WANT IT TO SO NEVER MIND.
-    // this.products.splice(i, 1);
-    // var newProducts: any[] = []
-    // for (var x = 0; x < this.products.length; x++) {
-    //   console.log(this.products[x])
-    //   newProducts.push(this.products[x]._id)
-    // }
-    // this.currentAccount.product = newProducts
+    var toDelete = this.products[i]
+    var toDeleteId = 0
+    this.products.splice(i, 1);
+    for (var x = 0; x < this.currentAccount.product.length; x++) {
+      if (toDelete._id == this.currentAccount.product[x]) {
+        this.currentAccount.product.splice(x,1)
+      }
+    }
   }
 
   addService() {
@@ -327,11 +327,21 @@ export class CorporateProfileEditComponent implements OnInit {
           }
         ],
         skills: [
-          "",
           ""
         ]
       }
     )
+  }
+
+  deleteService(i) {
+    var toDelete = this.services[i]
+    var toDeleteId = 0
+    this.services.splice(i, 1);
+    for (var x = 0; x < this.currentAccount.service.length; x++) {
+      if (toDelete._id == this.currentAccount.service[x].serviceId) {
+        this.currentAccount.service.splice(x,1)
+      }
+    }
   }
 
   addSkill(service){
@@ -400,11 +410,10 @@ export class CorporateProfileEditComponent implements OnInit {
             this.productService.createProduct(productModel).toPromise().then(result => {
               var res: any = result
               var productId = res._body.substring(1,res._body.length-1)
-              this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => {
-                var account = result;
-                account.product.push(productId)
+              model.product.push(productId)
+              this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then((result) => {
                 console.log(JSON.stringify(model.product))
-                this.companyService.updateCompany(this.route.snapshot.params['id'], account).toPromise().then(result => this.currentAccount = result);
+                this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then(result => model = result);
                });
             });
           } else {
