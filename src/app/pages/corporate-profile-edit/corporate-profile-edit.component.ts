@@ -373,7 +373,7 @@ export class CorporateProfileEditComponent implements OnInit {
     this.companyUserProxyService.addCompanyUserProxy(request).then((res) =>{
       console.log(res);
       window.scrollTo(0, 0);
-      this.router.navigate(['companies']);
+      this.router.navigate(['corporate-profile', company]);
     });
   }
 
@@ -392,7 +392,7 @@ export class CorporateProfileEditComponent implements OnInit {
         })
         // window.scrollTo(0, 0);
         // this.router.navigate(['companies']);
-        this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then(result => this.currentAccount = result);
+        //this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then(result => this.currentAccount = result);
       });
     } else {
       if(!this.isUserAdmin){return;}
