@@ -46,6 +46,7 @@
           <div></div>
       </div>
       <div class="main clear">
+        <div class="" *ngIf='this.currentAccount.userProfileProxies'>
           <div class="halfwidth left" *ngFor='let index of this.currentAccount.userProfileProxies'>
             <div *ngIf="index.userProfile">
               <img src='{{ index.userProfile.avatar }}' class="left avatar" [style.width]="'150px'">
@@ -55,8 +56,14 @@
               <button class="col-xs-8 col-xs-offset-2" (click)="toUserProfile(index.userProfile._id)">More Information</button>
             </div>
           </div>
+        </div>
       </div>
-    <div *ngIf="!this.currentAccount.userProfileProxies[0].userProfile" class="main clear"> No employees to show</div>
+      <div class="" *ngIf="!this.currentAccount.userProfileProxies" class="main clear">
+         No employees to show
+      </div>
+      <div class="" *ngIf="this.currentAccount.userProfileProxies">
+        <div *ngIf="!this.currentAccount.userProfileProxies[0]" class="main clear">No employees to show</div>
+      </div>
   </div>
 
   <div class="div-tab col-xs-12 clear">
@@ -242,7 +249,10 @@
       </div>
       <div class="row main">
           <div class="col-xs-12 text-container">
-            <div *ngIf="!currentAccount.vehicles[0]">No vehicles to show</div>
+            <div *ngIf="!currentAccount.vehicles">No vehicles to show</div>
+            <div class="" *ngIf=currentAccount.vehicles>
+              <div *ngIf="!currentAccount.vehicles[0]">No vehicles to show</div>
+            </div>
               <div class="col-xs-12" [style.overflow] = "'auto'" [style.max-height]="'250px'">
                    <h5 *ngFor='let index of currentAccount.vehicles'>{{index.vehicleType + ': ' + index.quantity}}</h5>
               </div>
@@ -258,7 +268,10 @@
       </div>
       <div class="row main">
           <div class="col-xs-12 text-container">
-            <div *ngIf="!currentAccount.schedule[0]">No schedule to show</div>
+            <div *ngIf="!currentAccount.schedule">No schedule to show</div>
+            <div class="" *ngIf="currentAccount.schedule">
+              <div *ngIf="!currentAccount.schedule[0]">No schedule to show</div>
+            </div>
               <div class="col-xs-12" [style.overflow] = "'auto'" [style.max-height]="'250px'">
                  <h5 *ngFor='let index of currentAccount.schedule'>{{index.date + ': ' + index.content}}</h5>
               </div>

@@ -130,7 +130,6 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   }
 
   getAdminStatus() {
-
     var userId = this.auth.getLoggedInUser()
     this.userService.getUserbyID(userId).toPromise().then((user) =>{
       var currentUserProxy = user.companyUserProxies.filter((proxy) => {

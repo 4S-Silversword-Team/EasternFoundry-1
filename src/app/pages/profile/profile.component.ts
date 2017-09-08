@@ -156,7 +156,6 @@ export class ProfileComponent implements OnInit {
         }
       } else {
         for (let tool of toolsToPush) {
-          console.log(tool.title)
           for (let o of this.currentUser.occupations) {
             if (tool.title == o.title) {
               tool.score += (o.score / 5)

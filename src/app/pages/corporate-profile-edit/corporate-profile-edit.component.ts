@@ -334,21 +334,21 @@ export class CorporateProfileEditComponent implements OnInit {
   }
 
   deleteProduct(i) {
-    // THIS IS A GIANT MESS AND DOESN'T DO WHAT I WANT IT TO SO NEVER MIND.
-    // this.products.splice(i, 1);
-    // var newProducts: any[] = []
-    // for (var x = 0; x < this.products.length; x++) {
-    //   console.log(this.products[x])
-    //   newProducts.push(this.products[x]._id)
-    // }
-    // this.currentAccount.product = newProducts
+    var toDelete = this.products[i]
+    var toDeleteId = 0
+    this.products.splice(i, 1);
+    for (var x = 0; x < this.currentAccount.product.length; x++) {
+      if (toDelete._id == this.currentAccount.product[x]) {
+        this.currentAccount.product.splice(x,1)
+      }
+    }
   }
 
   addService() {
     this.services.push(
       {
         _id: "NEW",
-        name: "Service",
+        name: "New Service",
         feature: [
           {
             title: "",
@@ -356,11 +356,50 @@ export class CorporateProfileEditComponent implements OnInit {
           }
         ],
         skills: [
-          "",
           ""
         ]
       }
     )
+  }
+
+  deleteService(i) {
+    var toDelete = this.services[i]
+    var toDeleteId = 0
+    this.services.splice(i, 1);
+    for (var x = 0; x < this.currentAccount.service.length; x++) {
+      if (toDelete._id == this.currentAccount.service[x].serviceId) {
+        this.currentAccount.service.splice(x,1)
+      }
+    }
+  }
+
+  addSkill(service){
+    service.skills.push("")
+  }
+
+  deleteSkill(service, i) {
+    service.skills.splice(i,1)
+  }
+
+  addFeature(service){
+    service.feature.push({title: '', score: 0})
+  }
+
+  deleteFeature(service, i) {
+    service.feature.splice(i,1)
+  }
+
+  addVehicle() {
+    this.currentAccount.vehicles.push(
+      {
+        vehicleType: '',
+        quantity: 0
+      }
+    )
+  }
+
+  deleteVehicle(vehicle, i) {
+    this.currentAccount.vehicles.splice(i,1)
   }
 
   addUserWithRole(company, user, role){
@@ -380,43 +419,94 @@ export class CorporateProfileEditComponent implements OnInit {
   }
 
   updateCompany(model, noNav?: boolean) {
-    // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
+
+    //all these arrays are filled with "null" on creation because otherwise none of it worked properly
+    //so this cleans all that up because i guess it's fine afterwards.
+    if (model.pastPerformance[0] == null) {
+      model.pastPerformance.splice(0,1)
+    }
+    if (model.service[0] == null) {
+      model.service.splice(0,1)
+    }
+    if (model.product[0] == null) {
+      model.product.splice(0,1)
+    }
+    if (model.leadership[0] == null) {
+      model.leadership.splice(0,1)
+    }
+
     if (this.creatingNew == true) {
+      // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
       delete model['_id'];
       var userId = this.auth.getLoggedInUser()
       this.companyService.createCompany(model).toPromise().then(newCompany => {
-        console.log(JSON.parse(newCompany._body)._id)
-
+        var companyId = JSON.parse(newCompany._body)._id
+        console.log(companyId)
         //TODO handle if no admin in role collection in Db
         this.roleService.getRoleByTitle("admin").toPromise().then((admin) => {
           console.log("adminresult",admin)
-          this.addUserWithRole(JSON.parse(newCompany._body)._id, userId, admin._id);
+          this.addUserWithRole(companyId, userId, admin._id);
         })
-        // window.scrollTo(0, 0);
-        // this.router.navigate(['companies']);
-        //this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then(result => this.currentAccount = result);
+
+        //TODO: John, please explain to me what this section is. I don't like the idea of creating a new company and updating it in the same function.  -Marc
+
+        // this.companyService.updateCompany(companyId, model).toPromise().then(result => {
+        //   this.currentAccount = result
+        //   if(model.product) {
+        //     for (const i of this.products) {
+        //       const productModel = i
+        //       delete productModel['_id'];
+        //       console.log('this will make a new one once this works properly!')
+        //       this.productService.createProduct(productModel).toPromise().then(result => {
+        //         var res: any = result
+        //         var productId = JSON.parse(res._body)._id
+        //         model.product.push(productId)
+        //         this.companyService.updateCompany(companyId, model).toPromise().then((result) => {
+        //           this.companyService.getCompanyByID(companyId).toPromise().then(result => model = result);
+        //          });
+        //       });
+        //     }
+        //   }
+        //   if (this.currentAccount.service) {
+        //     for (const i of this.services) {
+        //       const serviceModel = i
+        //       delete serviceModel['_id'];
+        //       console.log('this will make a new one once this works properly!')
+        //       this.serviceService.createService(serviceModel).toPromise().then(result => {
+        //         var res: any = result
+        //         var serviceId = JSON.parse(res._body)._id
+        //         model.service.push(serviceId)
+        //         this.companyService.updateCompany(companyId, model).toPromise().then((result) => {
+        //           this.companyService.getCompanyByID(companyId).toPromise().then(result => model = result);
+        //          });
+        //       });
+        //
+        //     }
+        //   }
+        //   if (!noNav) {
+        //     window.scrollTo(0, 0);
+        //     this.router.navigate(['corporate-profile', companyId]);
+        //   }
+        // });
+
       });
     } else {
       if(!this.isUserAdmin){return;}
       delete model['_id'];
       //this whole thing updates a bunch of times with nesting promises so it can create a new product and simultaneously add it to the company
-      //it doesn't work if you try to add multiple new products, it'll only do one. promises are the worst and i hate them.
-      //i am done commenting but want to reassert how much i hate promises
       this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then(result => this.currentAccount = result);
       if(model.product) {
         for (const i of this.products) {
           if (i._id == "NEW") {
             const productModel = i
             delete productModel['_id'];
-            console.log('this will make a new one once this works properly!')
             this.productService.createProduct(productModel).toPromise().then(result => {
               var res: any = result
-              var productId = res._body.substring(1,res._body.length-1)
-              this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => {
-                var account = result;
-                account.product.push(productId)
+              var productId = JSON.parse(res._body)._id
+              model.product.push(productId)
+              this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then((result) => {
                 console.log(JSON.stringify(model.product))
-                this.companyService.updateCompany(this.route.snapshot.params['id'], account).toPromise().then(result => this.currentAccount = result);
+                this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then(result => model = result);
                });
             });
           } else {
@@ -432,8 +522,15 @@ export class CorporateProfileEditComponent implements OnInit {
           if (i._id == "NEW") {
             const serviceModel = i
             delete serviceModel['_id'];
-            console.log('this will make a new one once this works properly!')
-            this.serviceService.createService(serviceModel).toPromise().then(result => console.log(result));
+            this.serviceService.createService(serviceModel).toPromise().then(result => {
+              var res: any = result
+              var serviceId = JSON.parse(res._body)._id
+              model.service.push(serviceId)
+              this.serviceService.updateService(this.route.snapshot.params['id'], model).toPromise().then((result) => {
+                console.log(JSON.stringify(model.product))
+                this.serviceService.getServicebyID(this.route.snapshot.params['id']).toPromise().then(result => model = result);
+               });
+            });
           } else {
             const serviceModel = i
             var serviceId = i._id

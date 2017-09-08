@@ -46,6 +46,7 @@ export class ProfileEditComponent implements OnInit {
   filteredToolsFromProfile: any[] = []
   validNames: string[] = []
   toolSubmitted: boolean = false
+  fieldsFilled = false
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -178,6 +179,7 @@ export class ProfileEditComponent implements OnInit {
           if (this.currentUser.education[0].DegreeType[0] == null) {
             this.currentUser.education[0].DegreeType.push({Name: ''})
           }
+          this.checkFields()
           this.promiseFinished = true;
         });
       }
@@ -205,6 +207,61 @@ export class ProfileEditComponent implements OnInit {
     }
   }
 
+  checkFields(){
+    var profileCheck = true
+    if (!this.currentUser.firstName || !this.currentUser.lastName || !this.currentUser.username || !this.currentUser.cell || !this.currentUser.address.city || !this.currentUser.address.state){
+      profileCheck = false
+    }
+
+    var degreesCheck = true
+    for (let degree of this.currentUser.education) {
+      if (!degree.DegreeType[0].Name || !degree.MajorProgramName || !degree.School || !degree.AttendanceEndDate) {
+        degreesCheck = false
+      }
+    }
+
+    var positionCheck = true
+    for (let job of this.currentUser.positionHistory) {
+      if (!job.PositionTitle || !job.EndDate || !job.StartDate || !job.Employer) {
+        positionCheck = false
+      }
+    }
+
+    var certCheck = true
+    for (let cert of this.currentUser.certification) {
+      if (!cert.CertificationName || !cert.DateEarned) {
+        certCheck = false
+      }
+    }
+
+    var clearCheck = true
+    for (let clear of this.currentUser.clearance) {
+      if (!clear.clearanceType || !clear.awarded || !clear.expiration) {
+        clearCheck = false
+      }
+    }
+
+    var awardCheck = true
+    for (let award of this.currentUser.award) {
+      if (award.length < 1) {
+        awardCheck = false
+      }
+    }
+
+    if (
+      profileCheck &&
+      degreesCheck &&
+      positionCheck &&
+      certCheck &&
+      clearCheck &&
+      awardCheck
+    ) {
+      this.fieldsFilled = true
+    }
+    else {
+      this.fieldsFilled = false
+    }
+  }
 
   editPhoto() {
     let fileBrowser = this.fileInput.nativeElement;
@@ -239,6 +296,10 @@ export class ProfileEditComponent implements OnInit {
     this.currentUser.foundTools.push(tool);
   }
 
+  findAndAddTool(tool) {
+
+  }
+
   toolIsNotListedAlready(tool){
     if (!this.validNames.includes(tool.title.toLowerCase())) {
       return true
@@ -266,13 +327,41 @@ export class ProfileEditComponent implements OnInit {
     var foundTools = this.currentUser.foundTools
     function isGoodTool(tool) {
       if (tool.title.toLowerCase().includes(toolSearch.toLowerCase())) {
-        if (!foundTools.includes(tool)) {
-          return true
+        for (let t of foundTools) {
+          if (t.title.toLowerCase() == tool.title.toLowerCase()) {
+            return false
+          }
         }
+        return true
       }
       return false
     }
-    this.filteredTools = this.allTools.filter(isGoodTool)
+    var tools1 = this.currentUser.tools.filter(isGoodTool)
+    function isGoodTool2(tool) {
+      if (tool.title.toLowerCase().includes(toolSearch.toLowerCase())) {
+        if (foundTools.includes(tool)) {
+          return false
+        }
+        for (let t of tools1) {
+          if (t.title.toLowerCase() == tool.title.toLowerCase()) {
+            return false
+          }
+        }
+        return true
+      }
+      return false
+    }
+    this.filteredToolsFromProfile = tools1
+    this.filteredTools = this.allTools.filter(isGoodTool2)
+    // for (let tool of this.filteredTools){
+    //   for (let position of tool.positions){
+    //     for (let occupation of this.currentUser.occupations) {
+    //       if (position.toLowerCase() == occupation.title.toLowerCase()){
+    //
+    //       }
+    //     }
+    //   }
+    // }
   }
 
   submitNewTool(tool){
@@ -292,6 +381,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteTool(i) {
     this.currentUser.foundTools.splice(i, 1);
+    this.checkFields()
   }
 
   addJob() {
@@ -345,6 +435,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteJob(i) {
     this.currentUser.positionHistory.splice(i, 1);
+    this.checkFields()
   }
 
 
@@ -380,6 +471,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteDegree(i) {
     this.currentUser.education.splice(i, 1);
+    this.checkFields()
   }
 
   addClearance() {
@@ -394,6 +486,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteClearance(i) {
     this.currentUser.clearance.splice(i, 1);
+    this.checkFields()
   }
 
 
@@ -405,6 +498,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteAward(i) {
     this.currentUser.award.splice(i, 1);
+    this.checkFields()
   }
 
   addCertificate() {
@@ -416,6 +510,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteCertificate(i) {
     this.currentUser.certification.splice(i, 1);
+    this.checkFields()
   }
 
   addAgency(job) {
@@ -439,6 +534,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteAgency(job, i) {
     job.agencyExperience.splice(i, 1);
+    this.checkFields()
   }
   addOffice(agency) {
     agency.offices.push({
@@ -452,6 +548,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteOffice(agency, i) {
     agency.offices.splice(i, 1);
+    this.checkFields()
   }
 
 
