@@ -65,14 +65,32 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     // this.companyService.getCompanyByID(this.route.params["id"] ).toPromise().then(company => this.currentAccount = company)
     const myCallback = () => {
       this.auth.isLoggedIn().then((res) => {if(res) this.getAdminStatus()}).catch((reason)=> console.log("user not logged in"))
-      //this.getAdminStatus();
-      if (this.currentAccount.leadership) {
-        for (const i of this.currentAccount.leadership) {
-          this.userService.getUserbyID(i.userId).toPromise().then(user => {
-            this.users.push(user);
-            myCallback2();
-          });
+
+      const myCallback2 = () => {
+        console.log("In myCallback2")
+        for (const i of this.users) {
+          for (const j of i.certification) {
+            this.CQAC.push('Degree: ' + j.CertificationName + ', DateEarned: ' + j.DateEarned);
+          }
+          for (const j of i.award) {
+            this.CQAC.push('Awarded: ' + j);
+          }
+          for (const j of i.clearance) {
+            this.CQAC.push('Type: ' + j.clearanceType + ', Awarded: ' + j.awarded + ', Expiration: ' + j.expiration);
+          }
         }
+      };
+
+      if (this.currentAccount.userProfileProxies) {
+        //loop through user proxies
+        for (let proxy of this.currentAccount.userProfileProxies){
+          //if leader: push into users
+          if (proxy.leader){
+            this.users.push(proxy.userProfile)
+          }
+        }
+        //After loop is finished myCallback2()
+        myCallback2()
       }
 
       if (this.currentAccount.product) {
@@ -104,20 +122,6 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     this.changeToTeam();
 
 //
-    const myCallback2 = () => {
-
-      for (const i of this.users) {
-        for (const j of i.certification) {
-          this.CQAC.push('Degree: ' + j.CertificationName + ', DateEarned: ' + j.DateEarned);
-        }
-        for (const j of i.award) {
-          this.CQAC.push('Awarded: ' + j);
-        }
-        for (const j of i.clearance) {
-          this.CQAC.push('Type: ' + j.clearanceType + ', Awarded: ' + j.awarded + ', Expiration: ' + j.expiration);
-        }
-      }
-    };
     this.promiseFinished = true;
   };
   }
