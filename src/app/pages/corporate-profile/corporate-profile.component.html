@@ -52,7 +52,7 @@
               <p class="srow">{{ index.userProfile.firstName + ' ' + index.userProfile.lastName}}</p>
               <p *ngIf="index.userProfile.positionHistory[0]" class="srow">{{ index.userProfile.positionHistory[0].PositionTitle }}</p>
               <p class="srow">{{ index.userProfile.username }}</p>
-              <button class="col-xs-8 col-xs-offset-2" (click)="toUserProfile(index._id)">More Information</button>
+              <button class="col-xs-8 col-xs-offset-2" (click)="toUserProfile(index.userProfile._id)">More Information</button>
             </div>
           </div>
       </div>
