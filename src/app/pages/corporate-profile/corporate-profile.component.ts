@@ -130,6 +130,8 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     var userId = this.auth.getLoggedInUser()
     this.userService.getUserbyID(userId).toPromise().then((user) =>{
       var currentUserProxy = user.companyUserProxies.filter((proxy) => {
+        return proxy.company
+      }).filter((proxy) => {
         return proxy.company._id == this.route.snapshot.params['id']
       })[0]
       if(currentUserProxy){
