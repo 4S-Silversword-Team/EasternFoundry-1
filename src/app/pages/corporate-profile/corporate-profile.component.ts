@@ -368,18 +368,22 @@ changeToTeam(){
   }
 
   toUserProfile(id: string) {
+    window.scrollTo(0, 0);
     this.router.navigate(['user-profile', id]);
   }
 
   toPastPerformance(id: string) {
+    window.scrollTo(0, 0);
     this.router.navigate(['past-performance', id]);
   }
 
   toPastPerformanceCreate(query: string) {
+    window.scrollTo(0, 0);
     this.router.navigate(['past-performance-create'], { queryParams: { company: query } });
   }
 
   editCompany() {
+    window.scrollTo(0, 0);
     this.router.navigate(['corporate-profile-edit', this.currentAccount['_id']]);
   }
 
