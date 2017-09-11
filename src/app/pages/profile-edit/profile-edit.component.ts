@@ -98,6 +98,11 @@ export class ProfileEditComponent implements OnInit {
           return (val + '').toLowerCase() === 'true';
         };
 
+        for (let index of this.currentUser.availability) {
+          this.availabilityData.dates.push(index.date)
+          this.availabilityData.values.push(index.available)
+        }
+
         //here's the logic to check the skillsengine tools against the resume text!
         if (this.currentUser.resumeText && this.currentUser.foundTools[0] == undefined) {
           for (let tool of this.currentUser.tools) {
@@ -290,6 +295,11 @@ export class ProfileEditComponent implements OnInit {
 
   saveChanges() {
     console.log('This button doesnt do anything!')
+  }
+
+  availabilitySwitch(index, i){
+    index = !index
+    console.log(index)
   }
 
   addTool(tool) {
