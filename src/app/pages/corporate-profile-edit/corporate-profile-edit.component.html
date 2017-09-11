@@ -106,7 +106,7 @@
   </div>
 </div>
 
-<div class="products col-xs-12 clear">
+<div class="products col-xs-12 clear" *ngIf='!this.creatingNew'>
   <div class="div-title col-xs-12">
     <img src="./assets/img/product.png">
     <p>PRODUCTS</p>
@@ -229,10 +229,10 @@
   </div>
 </div>
 
-<div class="services col-xs-12 clear">
+<div class="services col-xs-12 clear" *ngIf='!this.creatingNew'>
   <div class="div-title col-xs-12">
     <img src="./assets/img/profile/capabilities-1.png">
-    <p>Services</p>
+    <p>SERVICES</p>
     <div></div>
   </div>
   <div class="container">

@@ -210,7 +210,7 @@
       </div>
       <div class="main clear">
         <div *ngIf="!pastperformances[0]">No past performance to show</div>
-        <div class="swiper-container col-xs-12">
+        <div class="swiper-container col-xs-12" *ngIf="pastperformances[0]">
             <div class="swiper-wrapper">
                 <div class="swiper-slide pp-slide" *ngFor="let pp of pastperformances">
                     <img src="{{pp.avatar}}" class="fullwidth">
