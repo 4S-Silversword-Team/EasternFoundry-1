@@ -163,11 +163,9 @@ export class CorporateProfileEditComponent implements OnInit {
   getAdminStatus() {
     var userId = this.auth.getLoggedInUser()
     this.userService.getUserbyID(userId).toPromise().then((user) =>{
-      if (user.username == "johnestes4@gmail.com") {
-        this.isUserAdmin = true;
-        console.log("I'm the best admin")
-      }
-      var currentUserProxy = user.companyUserProxies.filter((proxy) => {
+      var currentUserProxy = user.companyUserProxies.filter((proxy)=> {
+        return proxy.company
+      }).filter((proxy) => {
         return proxy.company._id == this.route.snapshot.params['id']
       })[0]
       if(currentUserProxy){
@@ -274,7 +272,8 @@ export class CorporateProfileEditComponent implements OnInit {
         "startDate": new Date(i.startDate).toDateString(),
         "endDate": new Date(i.endDate).toDateString(),
         "stillAffiliated": i.stillAffiliated,
-        "role": i.role
+        "role": i.role,
+        "leader": i.leader
       })
     }
     this.userService.getUsers().then(res => {
@@ -415,7 +414,7 @@ export class CorporateProfileEditComponent implements OnInit {
     this.companyUserProxyService.addCompanyUserProxy(request).then((res) =>{
       console.log(res);
       window.scrollTo(0, 0);
-      this.router.navigate(['companies']);
+      this.router.navigate(['corporate-profile', company]);
     });
   }
 
@@ -448,46 +447,48 @@ export class CorporateProfileEditComponent implements OnInit {
           console.log("adminresult",admin)
           this.addUserWithRole(companyId, userId, admin._id);
         })
-        // window.scrollTo(0, 0);
-        // this.router.navigate(['companies']);
-        this.companyService.updateCompany(companyId, model).toPromise().then(result => {
-          this.currentAccount = result
-          if(model.product) {
-            for (const i of this.products) {
-              const productModel = i
-              delete productModel['_id'];
-              console.log('this will make a new one once this works properly!')
-              this.productService.createProduct(productModel).toPromise().then(result => {
-                var res: any = result
-                var productId = JSON.parse(res._body)._id
-                model.product.push(productId)
-                this.companyService.updateCompany(companyId, model).toPromise().then((result) => {
-                  this.companyService.getCompanyByID(companyId).toPromise().then(result => model = result);
-                 });
-              });
-            }
-          }
-          if (this.currentAccount.service) {
-            for (const i of this.services) {
-              const serviceModel = i
-              delete serviceModel['_id'];
-              console.log('this will make a new one once this works properly!')
-              this.serviceService.createService(serviceModel).toPromise().then(result => {
-                var res: any = result
-                var serviceId = JSON.parse(res._body)._id
-                model.service.push(serviceId)
-                this.companyService.updateCompany(companyId, model).toPromise().then((result) => {
-                  this.companyService.getCompanyByID(companyId).toPromise().then(result => model = result);
-                 });
-              });
 
-            }
-          }
-          if (!noNav) {
-            window.scrollTo(0, 0);
-            this.router.navigate(['corporate-profile', companyId]);
-          }
-        });
+        //TODO: John, please explain to me what this section is. I don't like the idea of creating a new company and updating it in the same function.  -Marc
+
+        // this.companyService.updateCompany(companyId, model).toPromise().then(result => {
+        //   this.currentAccount = result
+        //   if(model.product) {
+        //     for (const i of this.products) {
+        //       const productModel = i
+        //       delete productModel['_id'];
+        //       console.log('this will make a new one once this works properly!')
+        //       this.productService.createProduct(productModel).toPromise().then(result => {
+        //         var res: any = result
+        //         var productId = JSON.parse(res._body)._id
+        //         model.product.push(productId)
+        //         this.companyService.updateCompany(companyId, model).toPromise().then((result) => {
+        //           this.companyService.getCompanyByID(companyId).toPromise().then(result => model = result);
+        //          });
+        //       });
+        //     }
+        //   }
+        //   if (this.currentAccount.service) {
+        //     for (const i of this.services) {
+        //       const serviceModel = i
+        //       delete serviceModel['_id'];
+        //       console.log('this will make a new one once this works properly!')
+        //       this.serviceService.createService(serviceModel).toPromise().then(result => {
+        //         var res: any = result
+        //         var serviceId = JSON.parse(res._body)._id
+        //         model.service.push(serviceId)
+        //         this.companyService.updateCompany(companyId, model).toPromise().then((result) => {
+        //           this.companyService.getCompanyByID(companyId).toPromise().then(result => model = result);
+        //          });
+        //       });
+        //
+        //     }
+        //   }
+        //   if (!noNav) {
+        //     window.scrollTo(0, 0);
+        //     this.router.navigate(['corporate-profile', companyId]);
+        //   }
+        // });
+
       });
     } else {
       if(!this.isUserAdmin){return;}

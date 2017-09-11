@@ -32,7 +32,7 @@
           <div class="halfwidth left" *ngFor='let index of users'>
               <img src='{{ index.avatar }}' class="left avatar" [style.width]="'150px'">
               <p class="srow">{{ index.firstName + ' ' + index.lastName}}</p>
-              <p class="srow">{{ index.positionHistory[0].PositionTitle }}</p>
+              <p *ngIf="index.positionHistory[0]" class="srow">{{ index.positionHistory[0].PositionTitle }}</p>
               <p class="srow">{{ index.username }}</p>
               <button class="col-xs-8 col-xs-offset-2" (click)="toUserProfile(index._id)">More Information</button>
           </div>
@@ -46,17 +46,17 @@
           <div></div>
       </div>
       <div class="main clear">
-          <div class="" *ngIf='this.currentAccount.userProfileProxies != undefined'>
-            <div class="halfwidth left" *ngFor='let index of this.currentAccount.userProfileProxies'>
-              <div *ngIf="index.userProfile">
-                <img src='{{ index.userProfile.avatar }}' class="left avatar" [style.width]="'150px'">
-                <p class="srow">{{ index.userProfile.firstName + ' ' + index.userProfile.lastName}}</p>
-                <p *ngIf="index.userProfile.positionHistory[0]" class="srow">{{ index.userProfile.positionHistory[0].PositionTitle }}</p>
-                <p class="srow">{{ index.userProfile.username }}</p>
-                <button class="col-xs-8 col-xs-offset-2" (click)="toUserProfile(index._id)">More Information</button>
-              </div>
+        <div class="" *ngIf='this.currentAccount.userProfileProxies'>
+          <div class="halfwidth left" *ngFor='let index of this.currentAccount.userProfileProxies'>
+            <div *ngIf="index.userProfile">
+              <img src='{{ index.userProfile.avatar }}' class="left avatar" [style.width]="'150px'">
+              <p class="srow">{{ index.userProfile.firstName + ' ' + index.userProfile.lastName}}</p>
+              <p *ngIf="index.userProfile.positionHistory[0]" class="srow">{{ index.userProfile.positionHistory[0].PositionTitle }}</p>
+              <p class="srow">{{ index.userProfile.username }}</p>
+              <button class="col-xs-8 col-xs-offset-2" (click)="toUserProfile(index.userProfile._id)">More Information</button>
             </div>
           </div>
+        </div>
       </div>
       <div class="" *ngIf="!this.currentAccount.userProfileProxies" class="main clear">
          No employees to show
