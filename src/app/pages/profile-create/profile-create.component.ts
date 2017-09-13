@@ -86,7 +86,12 @@ export class ProfileCreateComponent implements OnInit {
       }
 
       formData.append('resume', file);
-      this.userService.registerUser(formData).toPromise().then(result => console.log("did it work?",result)).catch((reason) =>console.log("reason ", reason));
+      this.userService.registerUser(formData).toPromise().then((result) => {
+        var res: any = result
+        console.log(JSON.parse(res))
+        var userId = JSON.parse(res._body)._id
+        this.router.navigate(['user-profile-edit', userId]);
+      });
     }
   }
 }
