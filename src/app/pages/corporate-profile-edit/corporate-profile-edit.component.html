@@ -73,32 +73,33 @@
   </div>
   <div *ngIf="!creatingNew" class="container">
     <div class="col-xs-12">
-      <div class="srow">
-        <span class="col-xs-1 col-sm-1 col-md-1 text-center" ></span>
-          <span class="col-xs-2 col-sm-2 col-md-2 text-center" >Name</span>
-          <span class="col-xs-2 col-sm-2 col-md-2 text-center" >Email</span>
-          <span class="col-xs-2 col-sm-2 col-md-2 text-center" >Started</span>
-          <span class="col-xs-2 col-sm-2 col-md-2 text-center" >Ended</span>
-          <span class="col-xs-1 col-sm-1 col-md-1 text-center" >Affiliated?</span>
-          <span class="col-xs-1 col-sm-1 col-md-1 text-center" >Admin?</span>
-          <span class="col-xs-1 col-sm-1 col-md-1 text-center" >Leader?</span>
-      </div>
-      <div  *ngFor='let employee of this.userProfiles'>
-      <div class="srow">
-        <span class="col-xs-1 col-sm-1 col-md-1 text-center" ><button *ngIf="this.isUserAdmin" class="col-xs-2 col-sm-2 col-md-2 text-center" (click)="deleteEmployee(employee.proxyId, employee.role)">X</button></span>
-          <span class="col-xs-2 col-sm-2 col-md-2 text-center text-nowrap" >{{employee.name}}</span>
-          <span class="col-xs-2 col-sm-2 col-md-2 text-center" >{{employee.username}}</span>
-          <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" (change)="updateEmployee(employee.proxyId,'startDate',employee.startDate)" [(ngModel)]="employee.startDate" onblur="(this.type='text')" onfocus="(this.type='date')"></span>
-          <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" (change)="updateEmployee(employee.proxyId,'endDate',employee.endDate)" [(ngModel)]="employee.endDate" onblur="(this.type='text')" onfocus="(this.type='date')"></span>
-          <span class="col-xs-1 col-sm-1 col-md-1 text-center" ><input type="checkbox" (change)="updateEmployee(employee.proxyId,'stillAffiliated',employee.stillAffiliated)" [(ngModel)]="employee.stillAffiliated" /></span>
-          <span class="col-xs-1 col-sm-1 col-md-1 text-center text-nowrap" ><input *ngIf="this.isUserAdmin && employee.role != this.adminRoleId" class="btn btn-primary" (click)="updateEmployee(employee.proxyId, 'role', this.adminRoleId)" type="button" value="Make Admin"></span>
-          <span class="col-xs-1 col-sm-1 col-md-1 text-center" ><input type="checkbox" (change)="updateEmployee(employee.proxyId,'leader',employee.leader)" [(ngModel)]="employee.leader" /></span>
-      </div>
-    </div>
-    <select *ngIf="this.isUserAdmin" class="form-control" [(ngModel)]="this.newUserSelected">
+      <table class="table">
+        <tr>
+        <th><span></span></th>
+        <th><span>Name</span></th>
+        <th><span>Email</span></th>
+        <th><span>Started</span></th>
+        <th><span>Ended</span></th>
+        <th><span>Affiliated?</span></th>
+        <th><span>Admin?</span></th>
+        <th><span>Leader?</span></th>
+        </tr>
+        <tr *ngFor='let employee of this.userProfiles'>
+          <td><span><button *ngIf="this.isUserAdmin" class="col-xs-2 col-sm-2 col-md-2 text-center" (click)="deleteEmployee(employee.proxyId, employee.role)">X</button></span></td>
+          <td><span>{{employee.name}}</span></td>
+          <td><span>{{employee.username}}</span></td>
+          <td><span><input style="width: 100%" (change)="updateEmployee(employee.proxyId,'startDate',employee.startDate)" [(ngModel)]="employee.startDate" onblur="(this.type='text')" onfocus="(this.type='date')"></span></td>
+          <td><span><input style="width: 100%" (change)="updateEmployee(employee.proxyId,'endDate',employee.endDate)" [(ngModel)]="employee.endDate" onblur="(this.type='text')" onfocus="(this.type='date')"></span></td>
+          <td><span><input type="checkbox" (change)="updateEmployee(employee.proxyId,'stillAffiliated',employee.stillAffiliated)" [(ngModel)]="employee.stillAffiliated" /></span></td>
+          <td><span><input *ngIf="this.isUserAdmin && employee.role != this.adminRoleId" class="btn btn-primary" (click)="updateEmployee(employee.proxyId, 'role', this.adminRoleId)" type="button" value="Make Admin"></span></td>
+          <td><span><input type="checkbox" (change)="updateEmployee(employee.proxyId,'leader',employee.leader)" [(ngModel)]="employee.leader" /></span></td>
+        </tr>
+      </table>
+
+      <select *ngIf="this.isUserAdmin" class="form-control" [(ngModel)]="this.newUserSelected">
         <option *ngFor="let user of this.userProfilesAll" value={{user._id}}>{{user.firstName + " " + user.lastName + ": " + user.username }}</option>
-    </select>
-    <input *ngIf="this.isUserAdmin" type="button" value="Add employee" (click)="addEmployee(this.newUserSelected)"/>
+      </select>
+      <input *ngIf="this.isUserAdmin" type="button" value="Add employee" (click)="addEmployee(this.newUserSelected)"/>
     </div>
   </div>
   <div *ngIf="creatingNew" class="container">
