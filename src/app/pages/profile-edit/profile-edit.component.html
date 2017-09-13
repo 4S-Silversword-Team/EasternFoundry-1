@@ -293,21 +293,30 @@
     <div class="text-container text-left" [style.height] = "'300px'">
       <textarea class="col-xs-12 interests" [(ngModel)] = 'this.currentUser.interest'></textarea>
     </div>
-  </div> -->
+  </div>
 
-  <!--<div class="availability col-xs-12 clear">-->
-    <!--<div class="div-title col-xs-12">-->
-      <!--<img src="./assets/img/profile/availability.png">-->
-      <!--<p>AVAILABILITY</p>-->
-      <!--<div ></div>-->
-    <!--</div>-->
-    <!--<div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-container">-->
-      <!--<app-color-comment-box color='#7f7f7f' text='unavilable' class="col-xs-12 col-sm-6 col-md-6"></app-color-comment-box>-->
-      <!--<app-color-comment-box color='#0b6ec1' text='available' class="col-xs-12 col-sm-6 col-md-6"></app-color-comment-box>-->
-    <!--</div>-->
-    <!--<app-availablebar [values] = 'availabilityData.values' [dates] = 'availabilityData.dates'></app-availablebar>-->
-  <!--</div>-->
+  <div class="availability col-xs-12 clear">
+      <div class="div-title col-xs-12">
+          <img src="./assets/img/profile/availability.png">
+          <p>AVAILABILITY</p>
+          <div ></div>
+      </div>
+      <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-container">
+          <app-color-comment-box color='#7f7f7f' text='unavailable' class="col-xs-12 col-sm-6 col-md-6"></app-color-comment-box>
+          <app-color-comment-box color='#0b6ec1' text='available' class="col-xs-12 col-sm-6 col-md-6"></app-color-comment-box>
+      </div>
+      <div class="col-xs-12">
+        <div class="available-bar">
+          <div *ngFor="let index of this.currentUser.availability; let i = index">
+            <div class="" class="div-available available" *ngIf='index.available' (click) = 'index.available = !index.available'></div>
+            <div class="" class="div-available unavailable" *ngIf='!index.available' (click) = 'index.available = !index.available'></div>
+          </div><br>
+          <p *ngFor="let date of availabilityData.dates" class="div-available-date">{{date}}</p>
+        </div>
 
+        <!-- <app-availablebar [values] = 'availabilityData.values' [dates] = 'availabilityData.dates' [edit] = true></app-availablebar> -->
+      </div>
+  </div>
   <div class="col-xs-6 col-xs-offset-3" style="margin-bottom: 1%">
     <button class="btn btn-primary btn-block" (click)="updateProfile(this.currentUser)" *ngIf='this.fieldsFilled'>Save Changes</button>
     <button class="btn btn-primary btn-block" style="background-color: red" *ngIf='!this.fieldsFilled'>Page Unfinished</button>

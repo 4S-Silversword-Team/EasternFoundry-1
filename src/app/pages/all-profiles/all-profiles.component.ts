@@ -31,17 +31,17 @@ export class AllProfilesComponent implements OnInit {
     private toolService: ToolService,
     private http: Http,
   ) {
-    this.http.get('../../../assets/onet-tools.json')
-      .map((res: any) => res.json())
-      .subscribe(
-        (data: any) => {
-            this.allTools = data;
-        },
-        err => console.log(err), // error
-        () => console.log('get tools Complete') // complete
-      );
-
-    this.toolService.getTools().then(val => this.sortedTools = val );
+    // this.http.get('../../../assets/onet-tools.json')
+    //   .map((res: any) => res.json())
+    //   .subscribe(
+    //     (data: any) => {
+    //         this.allTools = data;
+    //     },
+    //     err => console.log(err), // error
+    //     () => console.log('get tools Complete') // complete
+    //   );
+    //
+    // this.toolService.getTools().then(val => this.sortedTools = val );
 
     this.userService.getUsers().then(val => this.users = val );
   }

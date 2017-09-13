@@ -32,6 +32,9 @@ export class ProfileComponent implements OnInit {
   currentJob: any = null
   positionHistory: any[] = []
   occupations: any[] = []
+  months: any[] = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'
+  ]
 
 
   constructor(
@@ -93,6 +96,43 @@ export class ProfileComponent implements OnInit {
           temp.push(+index[1])
         }
       }
+
+      var date = new Date(),
+          locale = "en-us",
+          month = date.toLocaleString(locale, { month: "long" }).slice(0,3);
+      var year = new Date().getFullYear()
+      //if one of your jobs is tagged as "current", it assumes you're unavailable and vice versa
+      var avail = true
+      for (let pos of this.currentUser.positionHistory) {
+        if (pos.EndDate.toLowerCase() == "current"){
+          avail = false
+        }
+      }
+
+      var currentDate = month + ', ' + year.toString().slice(2,4)
+      while (this.currentUser.availability.length > 1 && this.currentUser.availability[0].date != currentDate) {
+        this.currentUser.availability.splice(0,1)
+      }
+      if (this.currentUser.availability[0].date != currentDate) {
+        this.currentUser.availability.splice(0,1)
+        this.currentUser.availability.push({
+          date: currentDate,
+          available: avail
+        })
+      }
+      while (this.currentUser.availability.length < 7){
+        var lastNum = this.currentUser.availability.length
+        var nextNum = this.months.indexOf(this.currentUser.availability[this.currentUser.availability.length - 1].date.slice(0,3)) + 1
+        if (nextNum >= this.months.length) {
+          nextNum = 0
+          year = year + 1
+        }
+        this.currentUser.availability.push({
+          date: this.months[nextNum] + ', ' + year.toString().slice(2,4),
+          available: avail
+        })
+      }
+
       for (let index of this.currentUser.availability) {
         this.availabilityData.dates.push(index.date)
         this.availabilityData.values.push(index.available)

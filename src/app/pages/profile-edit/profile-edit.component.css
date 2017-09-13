@@ -321,3 +321,51 @@ app-availablebar {
   margin-bottom: 100px;
   display: inherit;
 }
+
+.available-bar {
+  width: 560px;
+  height: 20px;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 50px;
+  padding-left: 33px;
+  display: inherit;
+}
+
+.div-available {
+    width: 70px;
+    height: 20px;
+    border: 1px solid white;
+    display: inline-block;
+    float: left;
+}
+
+.div-available.available {
+    background-color: #0b6ec1;
+}
+
+.div-available.unavailable {
+    background-color: #7f7f7f;
+}
+
+.div-available-img {
+    width: 70px;
+    height: 60px;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+}
+
+.div-available-img:after {
+    content: '\200b';
+}
+
+.div-available-date {
+    width: 70px;
+    height: 20px;
+    margin-top: 5px;
+    display: inline-block;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+}

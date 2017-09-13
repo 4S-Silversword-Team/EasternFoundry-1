@@ -264,17 +264,19 @@ export class CorporateProfileEditComponent implements OnInit {
   refreshEmployees() {
     this.userProfiles = []
     for (const i of this.currentAccount.userProfileProxies) {
-      this.userProfiles.push({
-        "name": i.userProfile.firstName + " " + i.userProfile.lastName,
-        "userId": i.userProfile._id,
-        "proxyId": i._id,
-        "username": i.userProfile.username,
-        "startDate": new Date(i.startDate).toDateString(),
-        "endDate": new Date(i.endDate).toDateString(),
-        "stillAffiliated": i.stillAffiliated,
-        "role": i.role,
-        "leader": i.leader
-      })
+      if (i.userProfile.firstName) {
+        this.userProfiles.push({
+          "name": i.userProfile.firstName + " " + i.userProfile.lastName,
+          "userId": i.userProfile._id,
+          "proxyId": i._id,
+          "username": i.userProfile.username,
+          "startDate": new Date(i.startDate).toDateString(),
+          "endDate": new Date(i.endDate).toDateString(),
+          "stillAffiliated": i.stillAffiliated,
+          "role": i.role,
+          "leader": i.leader
+        })
+      }
     }
     this.userService.getUsers().then(res => {
       this.userProfilesAll = res.filter((user) => {
@@ -439,55 +441,49 @@ export class CorporateProfileEditComponent implements OnInit {
       // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
       delete model['_id'];
       var userId = this.auth.getLoggedInUser()
+
       this.companyService.createCompany(model).toPromise().then(newCompany => {
         var companyId = JSON.parse(newCompany._body)._id
         console.log(companyId)
+
+        //the nesting updates thing doesn't always work if you add a bunch of products/services
+        //and i cannot for the life of me make it do any of it any other way
+        //so as of now i am turning the entire thing off. make your products/services AFTER the company exists. fuck it
+        // if(model.product) {
+        //   for (const i of this.products) {
+        //     const productModel = i
+        //     delete productModel['_id'];
+        //     this.productService.createProduct(productModel).toPromise().then(result => {
+        //       var res: any = result
+        //       var productId = JSON.parse(res._body)._id
+        //       model.product.push(productId)
+        //       this.companyService.updateCompany(companyId, model).toPromise().then((result) => {
+        //         this.companyService.getCompanyByID(companyId).toPromise().then(result => model = result);
+        //        });
+        //     });
+        //   }
+        // }
+        // if (this.currentAccount.service) {
+        //   for (const i of this.services) {
+        //     const serviceModel = i
+        //     delete serviceModel['_id'];
+        //     this.serviceService.createService(serviceModel).toPromise().then(result => {
+        //       var res: any = result
+        //       var serviceId = JSON.parse(res._body)._id
+        //       model.service.push(serviceId)
+        //       this.companyService.updateCompany(companyId, model).toPromise().then((result) => {
+        //         this.companyService.getCompanyByID(companyId).toPromise().then(result => model = result);
+        //        });
+        //     });
+        //
+        //   }
+        // }
+
         //TODO handle if no admin in role collection in Db
         this.roleService.getRoleByTitle("admin").toPromise().then((admin) => {
           console.log("adminresult",admin)
           this.addUserWithRole(companyId, userId, admin._id);
         })
-
-        //TODO: John, please explain to me what this section is. I don't like the idea of creating a new company and updating it in the same function.  -Marc
-
-        // this.companyService.updateCompany(companyId, model).toPromise().then(result => {
-        //   this.currentAccount = result
-        //   if(model.product) {
-        //     for (const i of this.products) {
-        //       const productModel = i
-        //       delete productModel['_id'];
-        //       console.log('this will make a new one once this works properly!')
-        //       this.productService.createProduct(productModel).toPromise().then(result => {
-        //         var res: any = result
-        //         var productId = JSON.parse(res._body)._id
-        //         model.product.push(productId)
-        //         this.companyService.updateCompany(companyId, model).toPromise().then((result) => {
-        //           this.companyService.getCompanyByID(companyId).toPromise().then(result => model = result);
-        //          });
-        //       });
-        //     }
-        //   }
-        //   if (this.currentAccount.service) {
-        //     for (const i of this.services) {
-        //       const serviceModel = i
-        //       delete serviceModel['_id'];
-        //       console.log('this will make a new one once this works properly!')
-        //       this.serviceService.createService(serviceModel).toPromise().then(result => {
-        //         var res: any = result
-        //         var serviceId = JSON.parse(res._body)._id
-        //         model.service.push(serviceId)
-        //         this.companyService.updateCompany(companyId, model).toPromise().then((result) => {
-        //           this.companyService.getCompanyByID(companyId).toPromise().then(result => model = result);
-        //          });
-        //       });
-        //
-        //     }
-        //   }
-        //   if (!noNav) {
-        //     window.scrollTo(0, 0);
-        //     this.router.navigate(['corporate-profile', companyId]);
-        //   }
-        // });
 
       });
     } else {
@@ -507,7 +503,7 @@ export class CorporateProfileEditComponent implements OnInit {
               this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then((result) => {
                 console.log(JSON.stringify(model.product))
                 this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then(result => model = result);
-               });
+              });
             });
           } else {
             const productModel = i
@@ -526,9 +522,9 @@ export class CorporateProfileEditComponent implements OnInit {
               var res: any = result
               var serviceId = JSON.parse(res._body)._id
               model.service.push(serviceId)
-              this.serviceService.updateService(this.route.snapshot.params['id'], model).toPromise().then((result) => {
-                console.log(JSON.stringify(model.product))
-                this.serviceService.getServicebyID(this.route.snapshot.params['id']).toPromise().then(result => model = result);
+              this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then((result) => {
+                console.log(JSON.stringify(model.service))
+                this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then(result => model = result);
                });
             });
           } else {
@@ -545,6 +541,5 @@ export class CorporateProfileEditComponent implements OnInit {
       }
     }
   }
-
 
 }

@@ -47,6 +47,9 @@ export class ProfileEditComponent implements OnInit {
   validNames: string[] = []
   toolSubmitted: boolean = false
   fieldsFilled = false
+  months: any[] = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'
+  ]
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -97,6 +100,51 @@ export class ProfileEditComponent implements OnInit {
         function stringToBool(val) {
           return (val + '').toLowerCase() === 'true';
         };
+
+        //this is the code that makes sure the availability bar lines up with the current date & starts on the current month
+        //i haven't fully tested it, it may not work properly on dummy data.
+        //i may need to duplicate it elsewhere, but for the moment it's a decent way to keep the bar updated
+
+        var date = new Date(),
+            locale = "en-us",
+            month = date.toLocaleString(locale, { month: "long" }).slice(0,3);
+        var year = new Date().getFullYear()
+        //if one of your jobs is tagged as "current", it assumes you're unavailable and vice versa
+        var avail = true
+        for (let pos of this.currentUser.positionHistory) {
+          if (pos.EndDate.toLowerCase() == "current"){
+            avail = false
+          }
+        }
+
+        var currentDate = month + ', ' + year.toString().slice(2,4)
+        while (this.currentUser.availability.length > 1 && this.currentUser.availability[0].date != currentDate) {
+          this.currentUser.availability.splice(0,1)
+        }
+        if (this.currentUser.availability[0].date != currentDate) {
+          this.currentUser.availability.splice(0,1)
+          this.currentUser.availability.push({
+            date: currentDate,
+            available: avail
+          })
+        }
+        while (this.currentUser.availability.length < 7){
+          var lastNum = this.currentUser.availability.length
+          var nextNum = this.months.indexOf(this.currentUser.availability[this.currentUser.availability.length - 1].date.slice(0,3)) + 1
+          if (nextNum >= this.months.length) {
+            nextNum = 0
+            year = year + 1
+          }
+          this.currentUser.availability.push({
+            date: this.months[nextNum] + ', ' + year.toString().slice(2,4),
+            available: avail
+          })
+        }
+
+        for (let index of this.currentUser.availability) {
+          this.availabilityData.dates.push(index.date)
+          this.availabilityData.values.push(index.available)
+        }
 
         //here's the logic to check the skillsengine tools against the resume text!
         if (this.currentUser.resumeText && this.currentUser.foundTools[0] == undefined) {
@@ -292,12 +340,13 @@ export class ProfileEditComponent implements OnInit {
     console.log('This button doesnt do anything!')
   }
 
-  addTool(tool) {
-    this.currentUser.foundTools.push(tool);
+  availabilitySwitch(index, i){
+    index = !index
+    console.log(index)
   }
 
-  findAndAddTool(tool) {
-
+  addTool(tool) {
+    this.currentUser.foundTools.push(tool);
   }
 
   toolIsNotListedAlready(tool){
@@ -320,7 +369,7 @@ export class ProfileEditComponent implements OnInit {
     }
     return false
   }
-//hey! figure this whole dumb thing out!
+
   updateToolList(search){
     this.validNames = []
     var toolSearch = this.toolSearch
@@ -373,7 +422,6 @@ export class ProfileEditComponent implements OnInit {
     newTool.userName = this.currentUser.firstName + ' ' + this.currentUser.lastName
     newTool.userId = this.currentUser._id
     newTool.toolName = this.toolSearch
-    console.log(newTool)
     this.toolSubmissionService.createToolSubmission(newTool).toPromise();
     this.toolSubmitted = true;
 
@@ -557,6 +605,13 @@ export class ProfileEditComponent implements OnInit {
     return year;
   }
 
+  currentMonth() {
+    var date = new Date(),
+        locale = "en-us",
+        month = date.toLocaleString(locale, { month: "long" });
+    return month;
+  }
+
   updateProfile(model, noNav?: boolean) {
     function moveObject (array, old_index, new_index) {
       if (new_index >= array.length) {
@@ -580,8 +635,6 @@ export class ProfileEditComponent implements OnInit {
         }
         if (i > 1) {
           while (+this.currentUser.positionHistory[i].StartDate.replace("-", "").replace("-", "") > +this.currentUser.positionHistory[i-1].EndDate.replace("-", "").replace("-", "")) {
-            console.log('1: ' + this.currentUser.positionHistory[i].StartDate)
-            console.log('2: ' + this.currentUser.positionHistory[i-1].EndDate)
             moveObject(this.currentUser.positionHistory, i, i-1)
           }
         }

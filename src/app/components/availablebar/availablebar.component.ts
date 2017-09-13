@@ -9,11 +9,12 @@ export class AvailablebarComponent implements OnInit {
 
   @Input() values: string[] = []
   @Input() dates: string[] = []
+  @Input() edit: boolean
 
   ruler: string[] =[]
 
-  constructor() { 
-    
+  constructor() {
+
   }
 
   ngOnInit() {
@@ -28,6 +29,13 @@ export class AvailablebarComponent implements OnInit {
       temp = !temp
     }
     this.ruler.pop()
+  }
+
+  switch(index){
+    if (this.edit){
+      index = false
+      console.log(index)
+    }
   }
 
 }
