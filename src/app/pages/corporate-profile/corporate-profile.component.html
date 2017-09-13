@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <div class="leadership col-xs-12 clear">
+  <div class="leadership leadership-big col-xs-12 clear">
       <div class="col-xs-12 srow div-title">
           <p class="left">LEADERSHIP</p>
           <div></div>
@@ -40,7 +40,25 @@
     <div class="main clear" *ngIf="!users[0]">No leadership to show</div>
   </div>
 
-  <div class="leadership col-xs-12 clear">
+  <div class="leadership leadership-small col-xs-12 clear">
+    <div class="col-xs-12 srow div-title">
+      <p class="left">LEADERSHIP</p>
+      <div></div>
+    </div>
+    <div class="main clear"></div>
+    <div style="display: flex; flex-wrap: wrap" *ngIf="users[0]" class="main clear">
+      <div *ngFor='let index of users'>
+        <img src='{{ index.avatar }}' class="avatar" [style.width]="'150px'">
+        <p class="srow">{{ index.firstName + ' ' + index.lastName}}</p>
+        <p *ngIf="index.positionHistory[0]" class="srow">{{ index.positionHistory[0].PositionTitle }}</p>
+        <p class="srow">{{ index.username }}</p>
+        <button style="height: 4em" (click)="toUserProfile(index._id)">More Information</button>
+      </div>
+    </div>
+    <div class="main clear" *ngIf="!users[0]">No leadership to show</div>
+  </div>
+
+  <div class="leadership leadership-big col-xs-12 clear">
       <div class="col-xs-12 srow div-title">
           <p class="left">EMPLOYEES</p>
           <div></div>
@@ -64,6 +82,34 @@
       <div class="" *ngIf="this.currentAccount.userProfileProxies">
         <div *ngIf="!this.currentAccount.userProfileProxies[0]" class="main clear">No employees to show</div>
       </div>
+  </div>
+
+
+  <div class="leadership leadership-small col-xs-12 clear">
+    <div class="col-xs-12 srow div-title">
+      <p class="left">EMPLOYEES</p>
+      <div></div>
+    </div>
+    <div class="main clear"></div>
+    <div class="main clear">
+      <div style="display: flex; flex-wrap: wrap" class="" *ngIf='this.currentAccount.userProfileProxies'>
+        <div *ngFor='let index of this.currentAccount.userProfileProxies'>
+          <div *ngIf="index.userProfile">
+            <img src='{{ index.userProfile.avatar }}' class="avatar" [style.width]="'150px'">
+            <p class="srow">{{ index.userProfile.firstName + ' ' + index.userProfile.lastName}}</p>
+            <p *ngIf="index.userProfile.positionHistory[0]" class="srow">{{ index.userProfile.positionHistory[0].PositionTitle }}</p>
+            <p class="srow">{{ index.userProfile.username }}</p>
+            <button (click)="toUserProfile(index.userProfile._id)">More Information</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="" *ngIf="!this.currentAccount.userProfileProxies" class="main clear">
+      No employees to show
+    </div>
+    <div class="" *ngIf="this.currentAccount.userProfileProxies">
+      <div *ngIf="!this.currentAccount.userProfileProxies[0]" class="main clear">No employees to show</div>
+    </div>
   </div>
 
   <div class="div-tab col-xs-12 clear">
