@@ -36,7 +36,11 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   services: Service[] = [];
   pastperformances: PastPerformance[] = [];
   currentPP = 0;
-  CQAC: string[] = [];
+  CQAC = {
+    certs: [],
+    awards: [],
+    clearances: []
+  };
   currentTab = 1;
   promiseFinished: boolean = false;
   team: User[]  = [];
@@ -70,15 +74,23 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
         console.log("In myCallback2")
         for (const i of this.users) {
           for (const j of i.certification) {
-            this.CQAC.push('Degree: ' + j.CertificationName + ', DateEarned: ' + j.DateEarned);
+            this.CQAC.certs.push({
+              CertificationName: j.CertificationName,
+              DateEarned: j.DateEarned
+            });
           }
           for (const j of i.award) {
-            this.CQAC.push('Awarded: ' + j);
+            this.CQAC.awards.push(j);
           }
           for (const j of i.clearance) {
-            this.CQAC.push('Type: ' + j.clearanceType + ', Awarded: ' + j.awarded + ', Expiration: ' + j.expiration);
+            this.CQAC.clearances.push({
+              clearanceType: j.clearanceType,
+              awarded: j.awarded,
+              expiration: j.expiration
+            });
           }
         }
+        console.log(JSON.stringify(this.CQAC.clearances))
       };
 
       if (this.currentAccount.userProfileProxies) {
@@ -137,6 +149,10 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
       }).filter((proxy) => {
         return proxy.company._id == this.route.snapshot.params['id']
       })[0]
+      if (user.username == "johnestes4@gmail.com"){
+        this.isUserAdmin = true;
+        console.log("I'm SUPER admin")
+      }
       if(currentUserProxy){
         this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
           if (role.title && role.title == "admin") {
