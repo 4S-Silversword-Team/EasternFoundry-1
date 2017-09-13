@@ -137,10 +137,6 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
       }).filter((proxy) => {
         return proxy.company._id == this.route.snapshot.params['id']
       })[0]
-      if (user.username == "johnestes4@gmail.com"){
-        this.isUserAdmin = true;
-        console.log("I'm SUPER admin")
-      }
       if(currentUserProxy){
         this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
           if (role.title && role.title == "admin") {
