@@ -327,3 +327,16 @@ textarea {
     background-color: #0e6daf;
     width: calc(100% - 272px);
 }
+
+
+@media screen and (min-width: 1000px) {
+  .leadership.leadership-small {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 999px) {
+  .leadership.leadership-big {
+    display: none;
+  }
+}
