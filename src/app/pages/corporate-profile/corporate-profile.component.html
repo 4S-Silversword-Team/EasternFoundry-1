@@ -46,7 +46,7 @@
       <div></div>
     </div>
     <div class="main clear"></div>
-    <div style="display: flex; flex-wrap: wrap" *ngIf="users[0]" class="main clear">
+    <div style="display: flex; flex-wrap: wrap" *ngIf="users[0]" class="main main-collapse clear">
       <div *ngFor='let index of users'>
         <img src='{{ index.avatar }}' class="avatar" [style.width]="'150px'">
         <p class="srow">{{ index.firstName + ' ' + index.lastName}}</p>
@@ -91,7 +91,7 @@
       <div></div>
     </div>
     <div class="main clear"></div>
-    <div class="main clear">
+    <div class="main main-collapse clear">
       <div style="display: flex; flex-wrap: wrap" class="" *ngIf='this.currentAccount.userProfileProxies'>
         <div *ngFor='let index of this.currentAccount.userProfileProxies'>
           <div *ngIf="index.userProfile">
@@ -248,27 +248,47 @@
 
 <!-- END For Team Tab -->
 
-  <div class="performance col-xs-12 clear" >
-      <div class="div-title col-xs-12">
-          <img src="./assets/img/performance.png">
-          <p>PAST PERFORMANCE</p>
-          <div></div>
-      </div>
-      <div class="main clear">
-        <div *ngIf="!pastperformances[0]">No past performance to show</div>
-        <div class="swiper-container col-xs-12" *ngIf="pastperformances[0]">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide pp-slide" *ngFor="let pp of pastperformances">
-                    <img src="{{pp.avatar}}" class="fullwidth">
-                    <p class="col-xs-12">{{pp.title}}</p>
-                    <p class="halfwidth left"><strong>Client</strong><br>{{pp.client}}</p>
-                    <p class="halfwidth right"><strong>Project</strong><br>{{pp.topic}}</p>
-                    <button (click)='toPastPerformance(pp._id)'>More Information</button>
-                </div>
-            </div>
+  <div class="performance performance-big col-xs-12 clear" >
+    <div class="div-title col-xs-12">
+      <img src="./assets/img/performance.png">
+      <p>PAST PERFORMANCE</p>
+      <div></div>
+    </div>
+    <div class="main clear">
+      <div *ngIf="!pastperformances[0]">No past performance to show</div>
+      <div *ngIf="pastperformances[0]">
+        <div class="halfwidth left" *ngFor="let pp of pastperformances">
+          <img src="{{pp.avatar}}" class="left avatar">
+          <p class="col-xs-12">{{pp.title}}</p>
+          <p class="srow"><strong>Client</strong><br>{{pp.client}}</p>
+          <p class="srow"><strong>Project</strong><br>{{pp.topic}}</p>
+          <button class="col-xs-8 col-xs-offset-2" (click)='toPastPerformance(pp._id)'>More Information</button>
         </div>
-        <button *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
       </div>
+      <button *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
+    </div>
+  </div>
+
+  <div class="performance performance-small col-xs-12 clear" >
+    <div class="div-title col-xs-12">
+      <img src="./assets/img/performance.png">
+      <p>PAST PERFORMANCE</p>
+      <div></div>
+    </div>
+    <div class="main clear"></div>
+    <div class="main main-collapse clear">
+      <div *ngIf="!pastperformances[0]">No past performance to show</div>
+      <div style="display: flex; flex-wrap: wrap" *ngIf="pastperformances[0]">
+          <div *ngFor="let pp of pastperformances">
+            <img src="{{pp.avatar}}" class="avatar">
+            <p class="col-xs-12">{{pp.title}}</p>
+            <p class="srow"><strong>Client</strong><br>{{pp.client}}</p>
+            <p class="srow"><strong>Project</strong><br>{{pp.topic}}</p>
+            <button style="height: 4em;" (click)='toPastPerformance(pp._id)'>More Information</button>
+          </div>
+      </div>
+      <button *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
+    </div>
   </div>
 
   <div class="cert col-xs-12 clear">
@@ -277,7 +297,7 @@
           <p><strong>CERTS, QUALS</strong><br>AWARDS & CLEARANCES</p>
           <div></div>
       </div>
-      <div class="row main">
+      <div class="row main main-collapse">
           <div class="col-xs-12 text-container" >
               <div *ngIf="!CQAC[0]">No certs/quals to show</div>
               <div class="col-xs-12" [style.overflow] = "'auto'" [style.max-height]="'250px'">
@@ -293,7 +313,7 @@
           <p>VEHICLES</p>
           <div></div>
       </div>
-      <div class="row main">
+      <div class="row main main-collapse">
           <div class="col-xs-12 text-container">
             <div *ngIf="!currentAccount.vehicles">No vehicles to show</div>
             <div class="" *ngIf=currentAccount.vehicles>
@@ -312,7 +332,7 @@
           <p>SCHEDULES</p>
           <div></div>
       </div>
-      <div class="row main">
+      <div class="row main main-collapse">
           <div class="col-xs-12 text-container">
             <div *ngIf="!currentAccount.schedule">No schedule to show</div>
             <div class="" *ngIf="currentAccount.schedule">

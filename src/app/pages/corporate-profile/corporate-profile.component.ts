@@ -227,7 +227,8 @@ changeToTeam(){
           chart: {
               type: 'bar',
               backgroundColor: '#FDF5EB',
-              renderTo: "team_chart"
+              renderTo: "team_chart",
+              height: 400
           },
           title: {
               text: 'Skills'
