@@ -257,13 +257,13 @@
     <div class="main clear"></div>
     <div class="main clear">
       <div *ngIf="!pastperformances[0]">No past performance to show</div>
-      <div style="display: flex; flex-wrap: wrap" class="swiper-container col-xs-12" *ngIf="pastperformances[0]">
-          <div class="swiper-slide pp-slide" *ngFor="let pp of pastperformances">
-            <img src="{{pp.avatar}}" class="fullwidth">
+      <div style="display: flex; flex-wrap: wrap" *ngIf="pastperformances[0]">
+          <div *ngFor="let pp of pastperformances">
+            <img src="{{pp.avatar}}" class="avatar">
             <p class="col-xs-12">{{pp.title}}</p>
-            <p class="halfwidth left"><strong>Client</strong><br>{{pp.client}}</p>
-            <p class="halfwidth right"><strong>Project</strong><br>{{pp.topic}}</p>
-            <button (click)='toPastPerformance(pp._id)'>More Information</button>
+            <p class="srow"><strong>Client</strong><br>{{pp.client}}</p>
+            <p class="srow"><strong>Project</strong><br>{{pp.topic}}</p>
+            <button style="height: 4em;" (click)='toPastPerformance(pp._id)'>More Information</button>
           </div>
       </div>
       <button *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
