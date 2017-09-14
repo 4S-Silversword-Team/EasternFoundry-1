@@ -341,3 +341,11 @@ textarea {
     display: none;
   }
 }
+
+@media screen and (max-width: 450px) {
+  .main.main-collapse {
+    margin-left: 0;
+    margin-right: 0;
+    width: calc(100%);
+  }
+}

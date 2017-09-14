@@ -276,7 +276,7 @@
           <p><strong>CERTS, QUALS</strong><br>AWARDS & CLEARANCES</p>
           <div></div>
       </div>
-      <div class="row main">
+      <div class="row main main-collapse">
           <div class="col-xs-12 text-container" >
               <div *ngIf="!CQAC[0]">No certs/quals to show</div>
               <div class="col-xs-12" [style.overflow] = "'auto'" [style.max-height]="'250px'">
@@ -292,7 +292,7 @@
           <p>VEHICLES</p>
           <div></div>
       </div>
-      <div class="row main">
+      <div class="row main main-collapse">
           <div class="col-xs-12 text-container">
             <div *ngIf="!currentAccount.vehicles">No vehicles to show</div>
             <div class="" *ngIf=currentAccount.vehicles>
@@ -311,7 +311,7 @@
           <p>SCHEDULES</p>
           <div></div>
       </div>
-      <div class="row main">
+      <div class="row main main-collapse">
           <div class="col-xs-12 text-container">
             <div *ngIf="!currentAccount.schedule">No schedule to show</div>
             <div class="" *ngIf="currentAccount.schedule">
