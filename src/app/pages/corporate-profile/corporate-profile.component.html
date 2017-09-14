@@ -249,26 +249,25 @@
 <!-- END For Team Tab -->
 
   <div class="performance col-xs-12 clear" >
-      <div class="div-title col-xs-12">
-          <img src="./assets/img/performance.png">
-          <p>PAST PERFORMANCE</p>
-          <div></div>
+    <div class="div-title col-xs-12">
+      <img src="./assets/img/performance.png">
+      <p>PAST PERFORMANCE</p>
+      <div></div>
+    </div>
+    <div class="main clear"></div>
+    <div class="main clear">
+      <div *ngIf="!pastperformances[0]">No past performance to show</div>
+      <div style="display: flex; flex-wrap: wrap" class="swiper-container col-xs-12" *ngIf="pastperformances[0]">
+          <div class="swiper-slide pp-slide" *ngFor="let pp of pastperformances">
+            <img src="{{pp.avatar}}" class="fullwidth">
+            <p class="col-xs-12">{{pp.title}}</p>
+            <p class="halfwidth left"><strong>Client</strong><br>{{pp.client}}</p>
+            <p class="halfwidth right"><strong>Project</strong><br>{{pp.topic}}</p>
+            <button (click)='toPastPerformance(pp._id)'>More Information</button>
+          </div>
       </div>
-      <div class="main clear">
-        <div *ngIf="!pastperformances[0]">No past performance to show</div>
-        <div class="swiper-container col-xs-12" *ngIf="pastperformances[0]">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide pp-slide" *ngFor="let pp of pastperformances">
-                    <img src="{{pp.avatar}}" class="fullwidth">
-                    <p class="col-xs-12">{{pp.title}}</p>
-                    <p class="halfwidth left"><strong>Client</strong><br>{{pp.client}}</p>
-                    <p class="halfwidth right"><strong>Project</strong><br>{{pp.topic}}</p>
-                    <button (click)='toPastPerformance(pp._id)'>More Information</button>
-                </div>
-            </div>
-        </div>
-        <button *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
-      </div>
+      <button *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
+    </div>
   </div>
 
   <div class="cert col-xs-12 clear">

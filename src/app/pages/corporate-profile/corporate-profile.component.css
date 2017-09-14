@@ -256,6 +256,7 @@ textarea {
 
 .pp-slide {
     width: calc(33% - 40px);
+    min-width: 150px;
     margin: 20px;
     border-radius: 2px;
     border: 2px solid #ccc;
