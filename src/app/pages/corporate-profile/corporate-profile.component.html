@@ -46,7 +46,7 @@
       <div></div>
     </div>
     <div class="main clear"></div>
-    <div style="display: flex; flex-wrap: wrap" *ngIf="users[0]" class="main clear">
+    <div style="display: flex; flex-wrap: wrap" *ngIf="users[0]" class="main main-collapse clear">
       <div *ngFor='let index of users'>
         <img src='{{ index.avatar }}' class="avatar" [style.width]="'150px'">
         <p class="srow">{{ index.firstName + ' ' + index.lastName}}</p>
@@ -91,7 +91,7 @@
       <div></div>
     </div>
     <div class="main clear"></div>
-    <div class="main clear">
+    <div class="main main-collapse clear">
       <div style="display: flex; flex-wrap: wrap" class="" *ngIf='this.currentAccount.userProfileProxies'>
         <div *ngFor='let index of this.currentAccount.userProfileProxies'>
           <div *ngIf="index.userProfile">
@@ -248,14 +248,35 @@
 
 <!-- END For Team Tab -->
 
-  <div class="performance col-xs-12 clear" >
+  <div class="performance performance-big col-xs-12 clear" >
+    <div class="div-title col-xs-12">
+      <img src="./assets/img/performance.png">
+      <p>PAST PERFORMANCE</p>
+      <div></div>
+    </div>
+    <div class="main clear">
+      <div *ngIf="!pastperformances[0]">No past performance to show</div>
+      <div *ngIf="pastperformances[0]">
+        <div class="halfwidth left" *ngFor="let pp of pastperformances">
+          <img src="{{pp.avatar}}" class="left avatar">
+          <p class="col-xs-12">{{pp.title}}</p>
+          <p class="srow"><strong>Client</strong><br>{{pp.client}}</p>
+          <p class="srow"><strong>Project</strong><br>{{pp.topic}}</p>
+          <button class="col-xs-8 col-xs-offset-2" (click)='toPastPerformance(pp._id)'>More Information</button>
+        </div>
+      </div>
+      <button *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
+    </div>
+  </div>
+
+  <div class="performance performance-small col-xs-12 clear" >
     <div class="div-title col-xs-12">
       <img src="./assets/img/performance.png">
       <p>PAST PERFORMANCE</p>
       <div></div>
     </div>
     <div class="main clear"></div>
-    <div class="main clear">
+    <div class="main main-collapse clear">
       <div *ngIf="!pastperformances[0]">No past performance to show</div>
       <div style="display: flex; flex-wrap: wrap" *ngIf="pastperformances[0]">
           <div *ngFor="let pp of pastperformances">

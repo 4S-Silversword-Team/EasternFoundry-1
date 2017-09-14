@@ -331,13 +331,13 @@ textarea {
 
 
 @media screen and (min-width: 1000px) {
-  .leadership.leadership-small {
+  .leadership.leadership-small, .performance.performance-small {
     display: none;
   }
 }
 
 @media screen and (max-width: 999px) {
-  .leadership.leadership-big {
+  .leadership.leadership-big, .performance.performance-big {
     display: none;
   }
 }
