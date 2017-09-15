@@ -92,3 +92,15 @@
     height: 30px;
     line-height: 30px;
 }
+
+@media screen and (min-width: 1100px) {
+  .employee-small {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1099px) {
+  .employee-big {
+    display: none;
+  }
+}
