@@ -7,20 +7,22 @@
         <p class="left">{{ this.currentAccount.name }}</p>
         <div></div>
     </div>
-    <div class="main clear">
+    <div class="main main-collapse clear"></div>
+    <div class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0">
         <img id="company-photo" src='{{ this.currentAccount.avatar }}' class="left avatar">
-        <div class="left">
-            <div class="srow"><img src="../assets/img/glyphicon/email-1.png" class="left"><p class="left">{{ this.currentAccount.email }}</p></div>
-            <div class="srow"><img src="../assets/img/glyphicon/phone-2.png" class="left"><p class="left">{{
+    </div>
+        <div class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0">
+            <div class="srow"><img src="../assets/img/glyphicon/email-1.png" class="left leftBorder"><p class="left">{{ this.currentAccount.email }}</p></div>
+            <div class="srow"><img src="../assets/img/glyphicon/phone-2.png" class="left leftBorder"><p class="left">{{
               this.currentAccount.contactNumber }}</p></div>
-            <div class="srow"><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">{{ this.currentAccount.address }} | {{ this.currentAccount.city }}, {{ this.currentAccount.state }}</p></div>
+            <div class="srow"><img src="../assets/img/glyphicon/post-1.png" class="left leftBorder"><p class="left">{{ this.currentAccount.address }} | {{ this.currentAccount.city }}, {{ this.currentAccount.state }}</p></div>
         </div>
-        <div class="right">
-            <div class="srow"><p class="left two-p" [style.line-height]="'25px'">Information<br>updated</p><p class="right two-p" [style.text-align]="'right'">{{ this.currentAccount.lastUpdated }}</p></div>
-            <div class="srow"><p class="left two-p" [style.line-height]="'25px'">Information<br>accuracy</p><rating [(ngModel)]="this.currentAccount.informationAccuracy" [max]="5" class="right"></rating></div>
+        <div class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0">
+            <div class="srow"><p class="left leftBorder two-p" [style.line-height]="'25px'">Information<br>updated</p><p class="right two-p" [style.text-align]="'right'">{{ this.currentAccount.lastUpdated }}</p></div>
+            <div class="srow"><p class="left leftBorder two-p" [style.line-height]="'25px'">Information<br>accuracy</p><rating [(ngModel)]="this.currentAccount.informationAccuracy" [max]="5" class="right"></rating></div>
             <!--<div class="srow"><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">Service disable vetran owned</p></div>-->
         </div>
-    </div>
+
   </div>
 
   <div class="leadership leadership-big col-xs-12 clear">
