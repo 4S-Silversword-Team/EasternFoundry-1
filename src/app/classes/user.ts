@@ -78,7 +78,7 @@ export class User {
       Industry: {
         Name: string,
       },
-      isGovernment: boolean,
+      employmentType: number,
       agencyExperience: [
         {
           main: {

@@ -220,9 +220,6 @@ export class ProfileComponent implements OnInit {
         this.currentUser.disabled = stringToBool(this.currentUser.disabled)
       }
       for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
-        if (typeof this.currentUser.positionHistory[i].isGovernment === "string") {
-          this.currentUser.positionHistory[i].isGovernment = stringToBool(this.currentUser.positionHistory[i].isGovernment)
-        }
         if (typeof this.currentUser.positionHistory[i].isPM === "string") {
           this.currentUser.positionHistory[i].isPM = stringToBool(this.currentUser.positionHistory[i].isPM)
         }

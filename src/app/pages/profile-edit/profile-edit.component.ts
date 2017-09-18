@@ -50,6 +50,7 @@ export class ProfileEditComponent implements OnInit {
   months: any[] = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'
   ]
+  employmentCheck: any[] = []
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -115,6 +116,7 @@ export class ProfileEditComponent implements OnInit {
           if (pos.EndDate.toLowerCase() == "current"){
             avail = false
           }
+
         }
 
         var currentDate = month + ', ' + year.toString().slice(2,4)
@@ -183,9 +185,6 @@ export class ProfileEditComponent implements OnInit {
           this.currentUser.disabled = stringToBool(this.currentUser.disabled)
         }
           for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
-            if (typeof this.currentUser.positionHistory[i].isGovernment === "string") {
-              this.currentUser.positionHistory[i].isGovernment = stringToBool(this.currentUser.positionHistory[i].isGovernment)
-            }
             if (typeof this.currentUser.positionHistory[i].isPM === "string") {
               this.currentUser.positionHistory[i].isPM = stringToBool(this.currentUser.positionHistory[i].isPM)
             }
@@ -195,7 +194,6 @@ export class ProfileEditComponent implements OnInit {
             if (this.currentUser.positionHistory[i].EndDate == null) {
               this.currentUser.positionHistory[i].EndDate = "Current"
             }
-
           }
           if (this.currentUser.education[0] == null){
             this.currentUser.education[0] = {
@@ -413,6 +411,10 @@ export class ProfileEditComponent implements OnInit {
     // }
   }
 
+  setEmployment(job, num){
+    job.employmentType = num
+  }
+
   submitNewTool(tool){
     var newTool = {
       userName: '',
@@ -449,7 +451,7 @@ export class ProfileEditComponent implements OnInit {
         Industry: {
           Name: ''
         },
-        isGovernment: false,
+        employmentType: 2,
         agencyExperience: [
          {
             main: {
@@ -641,7 +643,7 @@ export class ProfileEditComponent implements OnInit {
       }
     }
     for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
-      if (this.currentUser.positionHistory[i].isGovernment) {
+      if (this.currentUser.positionHistory[i].employmentType = 0) {
         this.currentUser.positionHistory[i].agencyExperience[0].main.title = this.currentUser.positionHistory[i].Employer
       }
       for (var x = 0; x < this.currentUser.positionHistory[i].agencyExperience.length; x++) {

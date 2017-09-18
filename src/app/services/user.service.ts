@@ -145,7 +145,7 @@ export class UserService {
         Industry: {
           Name: ''
         },
-        isGovernment: false,
+        employmentType: 2,
         agencyExperience: [
          {
             main: {
