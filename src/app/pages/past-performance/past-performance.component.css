@@ -93,6 +93,10 @@
     line-height: 30px;
 }
 
+.write-up .container .text-container {
+  overflow: auto;
+}
+
 @media screen and (min-width: 1100px) {
   .employee-small {
     display: none;
@@ -102,5 +106,13 @@
 @media screen and (max-width: 1099px) {
   .employee-big {
     display: none;
+  }
+}
+
+/*Hacky solution for overlaps in the div-info section for small width screens (Only looks acceptable down to 310px and if the largest label in div-info section is 10 characters)*/
+@media screen and (max-width: 350px) {
+  container, .col-xs-12.past-performance {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
