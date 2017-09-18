@@ -329,6 +329,11 @@ textarea {
     width: calc(100% - 272px);
 }
 
+.leftBorder {
+  height: 45px;
+  padding-left: 10px;
+  border-left: 4px solid #3e3e3e;
+}
 
 @media screen and (min-width: 1000px) {
   .leadership.leadership-small, .performance.performance-small {
