@@ -78,39 +78,44 @@
         <p>EMPLOYEES</p>
         <div></div>
     </div>
-    <div [style.width]="''+employeeWidth+'px'">
+    <div class="container">
 
 
 
-        <table style="margin-top: 1em" *ngFor=" let employee of this.userProfiles">
-	          <tr>
+        <table style="margin-top: 1em" class="table">
+          <tr>
+            <th></th>
+            <th><span>Name</span></th>
+            <th><span>Start Date</span></th>
+            <th><span>End Date</span></th>
+            <th><span>Still Affiliated?</span></th>
+            <th><span>Role</span></th>
+
+          </tr>
+	          <tr *ngFor=" let employee of this.userProfiles">
 	            <td>
 	              <button *ngIf="this.isUserAdmin" (click)="deleteEmployee(employee.proxyId)" style="width: 1.5em; height: 1.75em; margin-right: 1em;">X</button>
 	            </td>
 	            <td>
-	              <p>Name</p>
 	              <span>{{employee.name}}</span>
 	            </td>
               <!-- <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" onblur="(this.type='text')" onfocus="(this.type='date')" placeholder="{{employee.startDate}}"></span> -->
 
               <td>
-	              <p>Start Date</p>
 	              <span><input (change)="updateEmployee(employee.proxyId, 'startDate', employee.startDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="employee.startDate"></span>
 	            </td>
               <td>
-	              <p>End Date</p>
 	              <span><input (change)="updateEmployee(employee.proxyId, 'endDate', employee.endDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="employee.endDate"></span>
 	            </td>
 
 	            <td>
-	              <p>Still Affiliated?</p>
                 <span><input (change)="updateEmployee(employee.proxyId, 'stillAffiliated', employee.stillAffiliated)" type="checkbox" [(ngModel)]="employee.stillAffiliated" /></span>
 	              <!-- <input style="margin-top:.75em; margin-left:1em" type="checkbox" [(ngModel)] = "this.currentPastPerformance.employees[i].stillWith" name="stillWith"> -->
 	          </td>
             <td>
-              <p>Role</p>
               <span><input (blur)="updateEmployee(employee.proxyId, 'role', employee.role)" type="text" [(ngModel)]="employee.role" /></span>
             </td>
+            </tr>
 
 	        </table>
           <select *ngIf="this.isUserAdmin" style="margin-top: 1em" class="form-control" [(ngModel)]="this.newUserSelected">
