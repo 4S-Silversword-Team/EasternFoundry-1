@@ -270,6 +270,7 @@ textarea {
 
 .pp-slide {
     width: calc(33% - 40px);
+    min-width: 150px;
     margin: 20px;
     border-radius: 2px;
     border: 2px solid #ccc;
@@ -340,4 +341,25 @@ textarea {
 .strength .div-title div{
     background-color: #0e6daf;
     width: calc(100% - 272px);
+}
+
+
+@media screen and (min-width: 1000px) {
+  .leadership.leadership-small, .performance.performance-small {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 999px) {
+  .leadership.leadership-big, .performance.performance-big {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .main.main-collapse {
+    margin-left: 0;
+    margin-right: 0;
+    width: calc(100%);
+  }
 }
