@@ -14,14 +14,14 @@
                 </div>
             </div>
             <div id="user-contact" class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0">
-                <div><img src="../assets/img/glyphicon/email-1.png" class="left"><p class="left">{{ this.currentUser.username }}</p></div>
-                <div><img src="../assets/img/glyphicon/phone-2.png" class="left"><p class="left">{{ this.currentUser.cell }}</p></div>
-                <div><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left" *ngIf = this.currentUser.address>{{ this.currentUser.address.city }}, {{ this.currentUser.address.state }}</p></div>
+                <div><img src="../assets/img/glyphicon/email-1.png" class="left"><p class="left noWrapScroll">{{ this.currentUser.username }}</p></div>
+                <div><img src="../assets/img/glyphicon/phone-2.png" class="left"><p class="left noWrapScroll">{{ this.currentUser.cell }}</p></div>
+                <div><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left noWrapScroll" *ngIf = this.currentUser.address>{{ this.currentUser.address.city }}, {{ this.currentUser.address.state }}</p></div>
             </div>
             <div id="user-info" class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0">
                 <div class="col-xs-12 col-md-6">
                     <p class="lh-30 left">Information<br>Updated</p>
-                    <p class="lh-60 right">{{ this.currentUser.lastUpdated}}</p>
+                    <p class="lh-60 right noWrapScroll">{{ this.currentUser.lastUpdated}}</p>
                 </div>
                 <div class="col-xs-12 col-md-6">
                     <p class="lh-60 left">Information Accuracy</p>
