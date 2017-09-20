@@ -51,6 +51,7 @@ export class ProfileEditComponent implements OnInit {
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'
   ]
   employmentCheck: any[] = []
+  dont: boolean = true
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -193,6 +194,9 @@ export class ProfileEditComponent implements OnInit {
             }
             if (this.currentUser.positionHistory[i].EndDate == null) {
               this.currentUser.positionHistory[i].EndDate = "Current"
+            }
+            if (this.currentUser.positionHistory[i].agencyExperience[0].main.title == "") {
+              this.currentUser.positionHistory[i].agencyExperience.splice(0,1)
             }
           }
           if (this.currentUser.education[0] == null){
