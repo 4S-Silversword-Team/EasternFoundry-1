@@ -84,17 +84,27 @@ export class User {
           main: {
             title: string,
             data: any[]
+            isPM: boolean,
+            pmDescription: string,
+            pmScore: number,
+            isKO: boolean,
+            koDescription: string,
+            koScore: number
           },
           offices: [
             {
               title: string,
-              data: any[]
+              data: any[],
+              isPM: boolean,
+              pmDescription: string,
+              pmScore: number,
+              isKO: boolean,
+              koDescription: string,
+              koScore: number
             }
           ]
         }
       ],
-      isPM: boolean,
-      isKO: boolean,
       Description: string
     }
     ]

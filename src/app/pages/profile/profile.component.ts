@@ -220,11 +220,21 @@ export class ProfileComponent implements OnInit {
         this.currentUser.disabled = stringToBool(this.currentUser.disabled)
       }
       for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
-        if (typeof this.currentUser.positionHistory[i].isPM === "string") {
-          this.currentUser.positionHistory[i].isPM = stringToBool(this.currentUser.positionHistory[i].isPM)
-        }
-        if (typeof this.currentUser.positionHistory[i].isKO === "string") {
-          this.currentUser.positionHistory[i].isKO = stringToBool(this.currentUser.positionHistory[i].isKO)
+        for (var x = 0; x < this.currentUser.positionHistory[i].agencyExperience.length; x++) {
+          if (typeof this.currentUser.positionHistory[i].agencyExperience[x].main.isPM === "string") {
+            this.currentUser.positionHistory[i].agencyExperience[x].main.isPM = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].main.isPM)
+          }
+          if (typeof this.currentUser.positionHistory[i].agencyExperience[x].main.isKO === "string") {
+            this.currentUser.positionHistory[i].agencyExperience[x].main.isKO = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].main.isKO)
+          }
+          for (var y = 0; y < this.currentUser.positionHistory[i].agencyExperience[x].offices.length; y++) {
+            if (typeof this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isPM === "string") {
+              this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isPM = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isPM)
+            }
+            if (typeof this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isKO === "string") {
+              this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isKO = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isKO)
+            }
+          }
         }
       }
 
