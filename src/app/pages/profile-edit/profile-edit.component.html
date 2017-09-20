@@ -374,12 +374,10 @@
                       <input type="checkbox" class="col-xs-1" [(ngModel)] = 'office.isKO' style="">
                       <div class="col-xs-1" *ngIf='office.isKO'>
                         <div class="" style="text-align: left">Score:</div>
-                        <input type="number" min='1' max='5' name="" value="" [(ngModel)]='agency.koScore' *ngIf='office.isKO'>
+                        <input type="number" min='1' max='5' name="" value="" [(ngModel)]='office.koScore' *ngIf='office.isKO'>
                       </div>
-
-                      <input type="number" class="col-xs-1" min='1' max='5' name="" value="" [(ngModel)]='office.koScore' *ngIf='office.isKO'>
                       <div class="col-xs-5 col-md-6">
-                        <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'office.koDescription' *ngIf='office.isKO'></textarea>
+                        <textarea class="left empty-field" rows="2" placeholder="Description:" [(ngModel)] = 'office.koDescription' *ngIf='office.isKO' [ngClass]="{'empty-field': office.koScore >= 4 && office.koDescription.length < 300}"></textarea>
                       </div>
                     </div>
                   </div>
