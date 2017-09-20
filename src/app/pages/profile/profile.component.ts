@@ -206,9 +206,9 @@ export class ProfileComponent implements OnInit {
           }
         }
       }
-      for (let o of this.occupations) {
-        console.log(o.title + ' ' + o.score)
-      }
+      // for (let o of this.occupations) {
+      //   console.log(o.title + ' ' + o.score)
+      // }
 
       function stringToBool(val) {
         return (val + '').toLowerCase() === 'true';

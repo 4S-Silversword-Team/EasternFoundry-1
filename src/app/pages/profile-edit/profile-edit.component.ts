@@ -412,7 +412,9 @@ export class ProfileEditComponent implements OnInit {
   }
 
   setEmployment(job, num){
+    console.log(job.employmentType)
     job.employmentType = num
+    console.log(job.employmentType)
   }
 
   submitNewTool(tool){
@@ -451,7 +453,7 @@ export class ProfileEditComponent implements OnInit {
         Industry: {
           Name: ''
         },
-        employmentType: 2,
+        employmentType: 3,
         agencyExperience: [
          {
             main: {
@@ -643,7 +645,7 @@ export class ProfileEditComponent implements OnInit {
       }
     }
     for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
-      if (this.currentUser.positionHistory[i].employmentType = 0) {
+      if (this.currentUser.positionHistory[i].employmentType == 0) {
         this.currentUser.positionHistory[i].agencyExperience[0].main.title = this.currentUser.positionHistory[i].Employer
       }
       for (var x = 0; x < this.currentUser.positionHistory[i].agencyExperience.length; x++) {
