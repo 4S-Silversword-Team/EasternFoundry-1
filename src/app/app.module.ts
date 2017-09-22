@@ -36,6 +36,7 @@ import { CareerComponent } from './components/career/career.component';
 import { BarchartComponent } from './components/barchart/barchart.component';
 import { AvailablebarComponent } from './components/availablebar/availablebar.component';
 import { SelectorComponent } from './components/selector/selector.component';
+import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 
 import { ChartModule } from 'angular-highcharts';
 
@@ -71,6 +72,7 @@ import { ChartModule } from 'angular-highcharts';
     BrowserModule,
     FormsModule,
     HttpModule,
+    NguiAutoCompleteModule,
     RouterModule.forRoot(ROUTES, {useHash: true}),
     ChartModule
   ],

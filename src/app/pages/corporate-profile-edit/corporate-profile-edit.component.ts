@@ -53,6 +53,8 @@ export class CorporateProfileEditComponent implements OnInit {
   companyAdminCount: number;
   adminRoleId: string;
 
+  promiseFinished: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -105,7 +107,7 @@ export class CorporateProfileEditComponent implements OnInit {
       if(!this.checkIfEmployee()){
           // this.router.navigateByUrl("/corporate-profile/"+this.route.snapshot.params['id'])
       }
-
+      this.promiseFinished = true
     };
     }
     else {

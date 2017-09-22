@@ -90,6 +90,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
             });
           }
         }
+        this.promiseFinished = true;
       };
 
       if (this.currentAccount.userProfileProxies) {
@@ -133,7 +134,6 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     this.changeToTeam();
 
 //
-    this.promiseFinished = true;
   };
   }
 
