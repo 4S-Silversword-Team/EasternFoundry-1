@@ -20,6 +20,21 @@ button {
   background-color: rgba(255, 0, 0, 0.25);
 }
 
+.autocomplete-form {
+  position: relative;
+}
+
+.autocomplete-form /deep/ .ngui-auto-complete {
+  width: 500px !important;
+  position: absolute;
+  height: 300px;
+  overflow: auto;
+  left: 200px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+}
+
 .text-container {
   background-color: whitesmoke;
   border: 2px solid lightgray;

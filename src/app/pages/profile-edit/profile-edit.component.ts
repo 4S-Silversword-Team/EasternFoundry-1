@@ -258,7 +258,6 @@ export class ProfileEditComponent implements OnInit {
 
           this.agencyService.getAgencies().then(val => {
             this.allAgencies = val
-            console.log(JSON.stringify(this.allAgencies[0].agency))
             this.promiseFinished = true;
           });
         });
