@@ -527,7 +527,7 @@ export class ProfileEditComponent implements OnInit {
         Industry: {
           Name: ''
         },
-        employmentType: 3,
+        employmentType: 2,
         agencyExperience: [
          {
             main: {

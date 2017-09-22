@@ -1,4 +1,4 @@
-ngui-auto-complete<div class="container" *ngIf='!this.promiseFinished'>
+<div class="container" *ngIf='!this.promiseFinished'>
   <div class="loader"></div>
   <!-- <p class="loading">Loading</p> -->
 </div>
@@ -199,7 +199,7 @@ ngui-auto-complete<div class="container" *ngIf='!this.promiseFinished'>
         <textarea class="col-xs-12 left" rows="9" placeholder="Description:" [(ngModel)] = 'job.Description'></textarea>
       </div>
       <!-- field for Government -->
-      <div class="col-xs-12 col-md-9 col-md-offset-3" *ngIf = 'job.employmentType == 0'>
+      <div class="col-xs-12 col-md-10 col-md-offset-2" *ngIf = 'job.employmentType == 0'>
         <div class="col-xs-12">
           <p class="col-md-3 col-xs-5 vertically-centered">Employer (Agency)</p>
           <div class="autocomplete-form">
@@ -207,24 +207,24 @@ ngui-auto-complete<div class="container" *ngIf='!this.promiseFinished'>
           </div>
           <div class="col-xs-12" style="height: 60px">
             <p class="col-xs-4 col-md-3 col-xs-offset-1" style="margin-top: 15px">Were you a PM?</p>
-            <input type="checkbox" class="col-xs-1" [(ngModel)] = 'job.agencyExperience[0].isPM' style="margin-top: 15px">
-            <div class="col-xs-1" *ngIf='job.agencyExperience[0].isPM'>
+            <input type="checkbox" class="col-xs-1" [(ngModel)] = 'job.agencyExperience[0].main.isPM' style="margin-top: 15px">
+            <div class="col-xs-1" *ngIf='job.agencyExperience[0].main.isPM'>
               <div class="" style="text-align: left">Score:</div>
-              <input type="number" min='1' max='5' name="" value="" [(ngModel)]='job.agencyExperience[0].pmScore'>
+              <input type="number" min='1' max='5' name="" value="" [(ngModel)]='job.agencyExperience[0].main.pmScore'>
             </div>
             <div class="col-xs-5 col-md-6">
-              <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'job.agencyExperience[0].pmDescription' *ngIf='job.agencyExperience[0].isPM'></textarea>
+              <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'job.agencyExperience[0].main.pmDescription' *ngIf='job.agencyExperience[0].main.isPM' [ngClass]="{'empty-field': job.agencyExperience[0].main.pmScore >= 4 && job.agencyExperience[0].main.pmDescription.length < 300}"></textarea>
             </div>
           </div>
           <div class="col-xs-12" style="height: 60px; margin-bottom: 5px">
             <p class="col-xs-4 col-md-3 col-xs-offset-1" style="margin-top: 15px">Were you a warranted KO?</p>
-            <input type="checkbox" class="col-xs-1" [(ngModel)] = 'job.agencyExperience[0].isKO' style="margin-top: 15px">
-            <div class="col-xs-1" *ngIf='job.agencyExperience[0].isKO'>
+            <input type="checkbox" class="col-xs-1" [(ngModel)] = 'job.agencyExperience[0].main.isKO' style="margin-top: 15px">
+            <div class="col-xs-1" *ngIf='job.agencyExperience[0].main.isKO'>
               <div class="" style="text-align: left">Score:</div>
-              <input type="number" min='1' max='5' name="" value="" [(ngModel)]='job.agencyExperience[0].koScore'>
+              <input type="number" min='1' max='5' name="" value="" [(ngModel)]='job.agencyExperience[0].main.koScore'>
             </div>
             <div class="col-xs-5 col-md-6">
-              <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'job.agencyExperience[0].koDescription' *ngIf='job.agencyExperience[0].isKO'></textarea>
+              <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'job.agencyExperience[0].main.koDescription' *ngIf='job.agencyExperience[0].main.isKO' [ngClass]="{'empty-field': job.agencyExperience[0].main.koScore >= 4 && job.agencyExperience[0].main.koDescription.length < 300}"></textarea>
             </div>
           </div>
           <div class="" *ngIf='job.agencyExperience[0].offices.length < 1'>
@@ -245,7 +245,7 @@ ngui-auto-complete<div class="container" *ngIf='!this.promiseFinished'>
                 <input type="number" min='1' max='5' name="" value="" [(ngModel)]='job.agencyExperience[0].offices[0].pmScore'>
               </div>
               <div class="col-xs-5 col-md-6">
-                <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'job.agencyExperience[0].offices[0].pmDescription' *ngIf='job.agencyExperience[0].offices[0].isPM'></textarea>
+                <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'job.agencyExperience[0].offices[0].pmDescription' *ngIf='job.agencyExperience[0].offices[0].isPM' [ngClass]="{'empty-field': job.agencyExperience[0].offices[0].pmScore >= 4 && job.agencyExperience[0].offices[0].pmDescription.length < 300}"></textarea>
               </div>
             </div>
             <div class="col-xs-12" style="height: 60px; margin-bottom: 5px">
@@ -256,7 +256,7 @@ ngui-auto-complete<div class="container" *ngIf='!this.promiseFinished'>
                 <input type="number" min='1' max='5' name="" value="" [(ngModel)]='job.agencyExperience[0].offices[0].koScore'>
               </div>
               <div class="col-xs-5 col-md-6">
-                <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'job.agencyExperience[0].offices[0].koDescription' *ngIf='job.agencyExperience[0].offices[0].isKO'></textarea>
+                <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'job.agencyExperience[0].offices[0].koDescription' *ngIf='job.agencyExperience[0].offices[0].isKO' [ngClass]="{'empty-field': job.agencyExperience[0].offices[0].koScore >= 4 && job.agencyExperience[0].offices[0].koDescription.length < 300}"></textarea>
               </div>
             </div>
           </div>
@@ -274,24 +274,24 @@ ngui-auto-complete<div class="container" *ngIf='!this.promiseFinished'>
             </div>
             <div class="col-xs-12" style="height: 50px">
               <p class="col-xs-4 col-md-3 xs-offset-1" style="margin-top: 15px">Were you a PM?</p>
-              <input type="checkbox" class="col-xs-1" [(ngModel)] = 'agency.isPM' style="margin-top: 15px">
-              <div class="col-xs-1" *ngIf='agency.isPM'>
+              <input type="checkbox" class="col-xs-1" [(ngModel)] = 'agency.main.isPM' style="margin-top: 15px">
+              <div class="col-xs-1" *ngIf='agency.main.isPM'>
                 <div class="" style="text-align: left">Score:</div>
-                <input type="number" min='1' max='5' name="" value="" [(ngModel)]='agency.pmScore'>
+                <input type="number" min='1' max='5' name="" value="" [(ngModel)]='agency.main.pmScore'>
               </div>
               <div class="col-xs-5 col-md-6">
-                <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'agency.pmDescription' *ngIf='agency.isPM'></textarea>
+                <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'agency.main.pmDescription' *ngIf='agency.main.isPM' [ngClass]="{'empty-field': agency.main.pmScore >= 4 && agency.main.pmDescription.length < 300}"></textarea>
               </div>
             </div>
             <div class="col-xs-12" style="height: 50px" style="margin-bottom: 5px">
               <p class="col-xs-4 col-md-3  col-xs-offset-1" style="margin-top: 15px">Were you a warranted KO?</p>
-              <input type="checkbox" class="col-xs-1" [(ngModel)] = 'agency.isKO' style="margin-top: 15px">
-              <div class="col-xs-1" *ngIf='agency.isKO'>
+              <input type="checkbox" class="col-xs-1" [(ngModel)] = 'agency.main.isKO' style="margin-top: 15px">
+              <div class="col-xs-1" *ngIf='agency.main.isKO'>
                 <div class="" style="text-align: left">Score:</div>
-                <input type="number" min='1' max='5' name="" value="" [(ngModel)]='agency.koScore'>
+                <input type="number" min='1' max='5' name="" value="" [(ngModel)]='agency.main.koScore'>
               </div>
               <div class="col-xs-5 col-md-6">
-                <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'agency.koDescription' *ngIf='agency.isKO'></textarea>
+                <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'agency.main.koDescription' *ngIf='agency.main.isKO' [ngClass]="{'empty-field': agency.main.koScore >= 4 && agency.main.koDescription.length < 300}"></textarea>
               </div>
             </div>
             <div class="" *ngIf='agency.offices.length < 1'>
@@ -302,7 +302,7 @@ ngui-auto-complete<div class="container" *ngIf='!this.promiseFinished'>
               <div class="" *ngFor='let office of agency.offices; let i = index; trackBy:customTrackBy'>
                 <p class="col-md-3 col-xs-5 col-xs-offset-1 vertically-centered">Subagency</p>
                 <div class="autocomplete-form">
-                  <input ngui-auto-complete class="col-md-8 col-xs-6" [(ngModel)] = 'office.title' [source]='findSubAgencies(agency.agency)' auto-select-first-item='true' [ngClass]="{'empty-field': subagencyValidCheck(agency.agency, office.title) == false}">
+                  <input ngui-auto-complete class="col-md-8 col-xs-6" [(ngModel)] = 'office.title' [source]='findSubAgencies(agency.main.title)' auto-select-first-item='true' [ngClass]="{'empty-field': subagencyValidCheck(agency.agency, office.title) == false}">
                 </div>
                 <!-- <input class="col-md-8 col-xs-6" [(ngModel)] = 'office.title'> -->
                 <!-- BUG: if you have multiple agencies, the button only appears on the topmost one and deletes the bottommost one -->
@@ -318,7 +318,7 @@ ngui-auto-complete<div class="container" *ngIf='!this.promiseFinished'>
       </div>
 
       <!-- field for Contractor -->
-      <div class="col-xs-9 col-xs-offset-3" *ngIf = 'job.employmentType > 0'>
+      <div class="col-xs-12 col-md-10 col-md-offset-2" *ngIf = 'job.employmentType > 0'>
         <div class="col-xs-12">
           <p class="col-xs-2 vertically-centered">Employer</p>
           <input class="col-xs-10" [(ngModel)] = 'job.Employer'>
@@ -344,7 +344,7 @@ ngui-auto-complete<div class="container" *ngIf='!this.promiseFinished'>
                     <input type="number" min='1' max='5' name="" value="" [(ngModel)]='agency.main.pmScore' *ngIf='agency.main.isPM'>
                   </div>
                   <div class="col-xs-5 col-md-6">
-                    <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'agency.main.pmDescription' *ngIf='agency.main.isPM'></textarea>
+                    <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'agency.main.pmDescription' *ngIf='agency.main.isPM' [ngClass]="{'empty-field': agency.main.pmScore >= 4 && agency.main.pmDescription.length < 300}"></textarea>
                   </div>
                 </div>
                 <div class="col-xs-12" style="height: 50px">
@@ -355,7 +355,7 @@ ngui-auto-complete<div class="container" *ngIf='!this.promiseFinished'>
                     <input type="number" min='1' max='5' name="" value="" [(ngModel)]='agency.main.koScore' *ngIf='agency.main.isKO'>
                   </div>
                   <div class="col-xs-5 col-md-6">
-                    <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'agency.main.koDescription' *ngIf='agency.main.isKO'></textarea>
+                    <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'agency.main.koDescription' *ngIf='agency.main.isKO' [ngClass]="{'empty-field': agency.main.koScore >= 4 && agency.main.koDescription.length < 300}"></textarea>
                   </div>
                 </div>
                 <div class="" *ngIf='agency.offices.length < 1'>
@@ -370,7 +370,7 @@ ngui-auto-complete<div class="container" *ngIf='!this.promiseFinished'>
                     </div>
                     <!-- <input class="col-md-8 col-xs-6" [(ngModel)] = 'office.title'> -->
                     <!-- BUG: if you have multiple agencies, the button only appears on the topmost one and deletes the bottommost one -->
-                    <button class="tiny-button-skills" (click)="deleteOffice(agency, i)" style="margin-top: 51px; margin-right: -5px"><div class="tiny-button-text">x</div></button>
+                    <button class="tiny-button-tools" (click)="deleteOffice(agency, i)" style="margin-top: 51px; margin-right: -5px"><div class="tiny-button-text">x</div></button>
                     <div class="col-xs-12" style="height: 50px">
                       <p class="col-xs-4 col-md-3 col-xs-offset-1" style="">Were you a PM?</p>
                       <input type="checkbox" class="col-xs-1" [(ngModel)] = 'office.isPM' style="">
@@ -379,7 +379,7 @@ ngui-auto-complete<div class="container" *ngIf='!this.promiseFinished'>
                         <input type="number" min='1' max='5' name="" value="" [(ngModel)]='office.pmScore' *ngIf='office.isPM'>
                       </div>
                       <div class="col-xs-5 col-md-6">
-                        <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'office.pmDescription' *ngIf='office.isPM'></textarea>
+                        <textarea class="left" rows="2" placeholder="Description:" [(ngModel)] = 'office.pmDescription' *ngIf='office.isPM' [ngClass]="{'empty-field': office.pmScore >= 4 && office.pmDescription.length < 300}"></textarea>
                       </div>
                     </div>
                     <div class="col-xs-12" style="height: 50px">
@@ -397,14 +397,6 @@ ngui-auto-complete<div class="container" *ngIf='!this.promiseFinished'>
                   <button class="col-xs-4 col-xs-offset-8" (click)="addOffice(agency)">Add Another</button>
                 </div>
               </div>
-
-              <!-- <div class="col-xs-12" style="margin-left: 15px" *ngFor="let office of agency.offices; let i = index; trackBy:customTrackBy">
-              <p class="col-xs-3 vertically-centered">Office {{i + 1}}</p>
-              <input class="col-xs-4" type="text" [(ngModel)] = 'office.title'>
-              <input class="col-xs-5" type="text">
-              <button class="tiny-button-skills" (click)="deleteOffice(agency, i)" style="margin-top: 9px; margin-right: -5px"><div class="tiny-button-text">x</div></button>
-              </div> -->
-              <!-- <button class="col-xs-2 col-xs-offset-10" (click)="addOffice(agency)">Add Office</button> -->
             </div>
           </div>
         </div>
@@ -413,7 +405,6 @@ ngui-auto-complete<div class="container" *ngIf='!this.promiseFinished'>
     <div class="col-xs-12">
       <button class="col-xs-4 col-xs-offset-4" (click)="addJob()">Add Another</button>
     </div>
-
   </div>
 
   <div class="career col-xs-12 clear" *ngIf='this.currentUser.resumeText'>
