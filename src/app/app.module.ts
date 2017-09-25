@@ -17,6 +17,7 @@ import { PastPerformanceComponent } from './pages/past-performance/past-performa
 import { PastPerformanceEditComponent } from './pages/past-performance-edit/past-performance-edit.component';
 import { NoContentComponent } from './pages/no-content/no-content.component';
 import { MyPastPerformancesComponent } from './pages/my-pastperformances/my-pastperformances.component';
+import { SearchComponent } from './pages/search/search.component';
 
 import { ComponentNameComponent } from './component-name/component-name.component';
 
@@ -59,6 +60,7 @@ import { ChartModule } from 'angular-highcharts';
     CareerComponent,
     BarchartComponent,
     AvailablebarComponent, SelectorComponent, CompaniesComponent, CorporateProfileEditComponent, MyPastPerformancesComponent,
+    SearchComponent,
     ComponentNameComponent
   ],
   imports: [
