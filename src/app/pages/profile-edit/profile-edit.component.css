@@ -20,6 +20,21 @@ button {
   background-color: rgba(255, 0, 0, 0.25);
 }
 
+.autocomplete-form {
+  position: relative;
+}
+
+.autocomplete-form /deep/ .ngui-auto-complete {
+  width: 500px !important;
+  position: absolute;
+  height: 300px;
+  overflow: auto;
+  left: 200px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+}
+
 .text-container {
   background-color: whitesmoke;
   border: 2px solid lightgray;
@@ -66,6 +81,24 @@ button {
 
 .tiny-button-text {
   transform: translateY(-14px);
+}
+
+.tiny-button-job {
+  position: absolute;
+  right: 22px;
+  margin-top: -34px;
+  margin-right: -18px;
+  height: 20px;
+  width: 20px;
+  font-size: 40px;
+  background-color: rgba(0,0,0,0);
+  border: 1px solid rgba(0,0,0,0);
+  color: rgba(0,0,0,0.33);
+  padding: 0;
+}
+
+.tiny-button-job-text {
+  transform: translateY(-12px);
 }
 
 .text-container textarea {
