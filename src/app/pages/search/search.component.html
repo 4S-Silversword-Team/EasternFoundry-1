@@ -11,6 +11,9 @@
           <div class="loader"></div>
         </div>
         <div class="" *ngIf='!this.searchRunning'>
+          <div class="" *ngIf='this.noResults'>
+            <h1 style="text-align: center">No Results Found</h1>
+          </div>
           <div class="" *ngIf='searchResults.companies.length > 0'>
             <div class="" *ngIf='searchResults.people.length > 0 || searchResults.pastPerformances.length > 0'>
               <h3>Companies</h3>
@@ -30,8 +33,9 @@
             <div class="search-item" *ngFor='let p of searchResults.people' (click)='goTo("person", p._id)'>
               <img src="{{p.avatar}}" alt="" class="search-item-avatar">
               <div class="search-item-header">{{p.firstName}} {{p.lastName}}</div>
-              <div class="search-item-subheader" *ngIf='p.relevantAgencies'>Experience with {{p.relevantAgencies[0]}}</div>
-              <div class="search-item-subheader" *ngIf='p.relevantSkills'>Skilled at {{p.relevantSkills[0]}}</div>
+              <div class="search-item-subheader" *ngIf='p.relevantAgencies.length > 0'>Experience with {{p.relevantAgencies[0]}}</div>
+              <div class="search-item-subheader" *ngIf='p.relevantSkills.length > 0'>Skilled at {{p.relevantSkills[0]}}</div>
+              <div class="search-item-subheader" *ngIf='p.relevantPositions.length > 0'>Rated {{p.relevantPositions[0].score}} as {{p.relevantPositions[0].title}}</div>
               <div class="search-item-subheader" *ngIf='p.currentCompany'>Works at {{p.currentCompany}}</div>
               <div class="search-item-subheader" *ngIf='!p.currentCompany'>Freelancer</div>
             </div>
@@ -82,6 +86,7 @@
       <p style="text-align: center" >Find people highly rated for a specific position</p>
       <input type="text" name="test" value="" class="col-xs-12" [(ngModel)]='searchTerms.position'>
     </div>
-    <button type="button" name="button" class="col-xs-8 col-xs-offset-2" style="position: absolute; bottom: 20px; background-color: blue; left: 5px;" (click)='search()'>Search</button>
+    <button type="button" name="button" class="col-xs-8 col-xs-offset-2 search-ready" (click)='search()' *ngIf='searchReady()'>Search</button>
+    <button type="button" name="button" class="col-xs-8 col-xs-offset-2 search-nope" *ngIf='!searchReady()'>Search</button>
   </div>
 </div>

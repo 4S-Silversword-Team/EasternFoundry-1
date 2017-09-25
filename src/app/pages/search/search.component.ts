@@ -39,6 +39,7 @@ export class SearchComponent implements OnInit {
     pastPerformances: []
   };
   searchRunning = false
+  noResults = false
 
   constructor(
     private router: Router,
@@ -67,8 +68,18 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
   }
 
+  searchReady(){
+    if (this.searchTerms.company || this.searchTerms.person || this.searchTerms.pastPerformance) {
+      if (this.searchTerms.name || this.searchTerms.agency || this.searchTerms.skill || this.searchTerms.position) {
+        return true
+      }
+    }
+    return false
+  }
+
   search(){
     this.searchRunning = true
+    this.noResults = false
     this.searchResults.companies = []
     this.searchResults.people = []
     this.searchResults.pastPerformances = []
@@ -89,6 +100,7 @@ export class SearchComponent implements OnInit {
         var matchFound = false
         newPerson.relevantAgencies = []
         newPerson.relevantSkills = []
+        newPerson.relevantPositions = []
         if (this.searchTerms.agency) {
           for (let j of newPerson.positionHistory){
             for (let a of j.agencyExperience) {
@@ -110,10 +122,90 @@ export class SearchComponent implements OnInit {
             }
           }
         }
-
-
+        if (this.searchTerms.position) {
+          var toolsToPush = []
+          for (let tool of newPerson.foundTools) {
+            var matchFound = false
+            for (let position of tool.position) {
+              for (let toolDone of toolsToPush) {
+                if (position == toolDone.title) {
+                  toolDone.score += 5
+                  matchFound = true
+                }
+              }
+              if (!matchFound) {
+                var newPosition = {
+                  title: '',
+                  score: 0
+                }
+                newPosition.title = position
+                newPosition.score = 5
+                toolsToPush.push(newPosition)
+              }
+            }
+          }
+          if (toolsToPush.length < 2) {
+            for (let o of person.occupations) {
+              var newOccupation = {
+                title: '',
+                score: 0
+              }
+              newOccupation.title = o.title
+              newOccupation.score = o.score
+              if (newOccupation.title.toLowerCase().includes(this.searchTerms.position.toLowerCase())) {
+                newPerson.relevantPositions.push(newOccupation)
+              }
+            }
+          } else {
+            for (let tool of toolsToPush) {
+              for (let o of person.occupations) {
+                if (tool.title == o.title) {
+                  tool.score += (o.score / 5)
+                }
+              }
+              if (tool.score > 50) {
+                if (tool.title.toLowerCase().includes(this.searchTerms.position.toLowerCase())) {
+                  newPerson.relevantPositions.push(tool)
+                }
+              }
+            }
+          }
+        }
         if (matchFound){
-          this.searchResults.people.push(newPerson)
+          // if (this.searchTerms.agency && this.searchTerms.skill && this.searchTerms.position) {
+          //   if (newPerson.relevantAgencies.length > 0 && newPerson.relevantSkills.length > 0 && newPerson.relevantPositions.length > 0) {
+          //     this.searchResults.people.push(newPerson)
+          //   }
+          // }
+          if (this.searchTerms.agency && this.searchTerms.skill && this.searchTerms.position) {
+            if (newPerson.relevantAgencies.length > 0 && newPerson.relevantSkills.length > 0 && newPerson.relevantPositions.length > 0) {
+              this.searchResults.people.push(newPerson)
+            }
+          } else if (this.searchTerms.agency && this.searchTerms.skill && !this.searchTerms.position) {
+            if (newPerson.relevantAgencies.length > 0 && newPerson.relevantSkills.length > 0) {
+              this.searchResults.people.push(newPerson)
+            }
+          } else if (this.searchTerms.skill && this.searchTerms.position && !this.searchTerms.agency) {
+            if (newPerson.relevantSkills.length > 0 && newPerson.relevantPositions.length > 0) {
+              this.searchResults.people.push(newPerson)
+            }
+          } else if (this.searchTerms.position && this.searchTerms.agency && !this.searchTerms.skill) {
+            if (newPerson.relevantPositions.length > 0 && newPerson.relevantAgencies.length > 0) {
+              this.searchResults.people.push(newPerson)
+            }
+          } else if (this.searchTerms.agency && !this.searchTerms.skill && !this.searchTerms.position) {
+            if (newPerson.relevantAgencies.length > 0) {
+              this.searchResults.people.push(newPerson)
+            }
+          } else if (this.searchTerms.skill && !this.searchTerms.position && !this.searchTerms.agency) {
+            if (newPerson.relevantSkills.length > 0) {
+              this.searchResults.people.push(newPerson)
+            }
+          } else if (this.searchTerms.position && !this.searchTerms.agency && !this.searchTerms.skill) {
+            if (newPerson.relevantPositions.length > 0) {
+              this.searchResults.people.push(newPerson)
+            }
+          }
         }
         for (let p of this.searchResults.people) {
           for (let c of p.companyUserProxies) {
@@ -133,6 +225,9 @@ export class SearchComponent implements OnInit {
           }
         }
         Promise.all(subPromises).then(values => {
+          if (this.searchResults.companies.length < 1 && this.searchResults.people.length < 1 && this.searchResults.pastPerformances.length < 1) {
+            this.noResults = true
+          }
           this.searchRunning = false
         })
       }

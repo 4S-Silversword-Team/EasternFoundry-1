@@ -64,3 +64,18 @@
   width: 40px;
   top: inherit;
 }
+
+.search-ready {
+  position: absolute;
+  bottom: 20px;
+  background-color: blue;
+  left: 5px;
+}
+
+.search-nope {
+  position: absolute;
+  bottom: 20px;
+  background-color: rgb(129, 129, 129);
+  color: rgb(150, 150, 150);
+  left: 5px;
+}
