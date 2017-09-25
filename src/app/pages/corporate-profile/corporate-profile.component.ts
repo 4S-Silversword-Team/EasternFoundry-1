@@ -270,13 +270,13 @@ changeToTeam(){
               labels: {
                   format: '{value}%',
                   style: {
-                      color: Highcharts.getOptions().colors[1]
+                      // color: Highcharts.getOptions().colors[1]
                   },
               },
               title: {
                   text: 'Proficiency',
                   style: {
-                      color: Highcharts.getOptions().colors[1]
+                      // color: Highcharts.getOptions().colors[1]
                   }
               },
           }, { // Secondary yAxis

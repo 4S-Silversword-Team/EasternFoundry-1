@@ -107,6 +107,7 @@ export class CorporateProfileEditComponent implements OnInit {
       if(!this.checkIfEmployee()){
           // this.router.navigateByUrl("/corporate-profile/"+this.route.snapshot.params['id'])
       }
+      console.log('???????')
       this.promiseFinished = true
     };
     }
