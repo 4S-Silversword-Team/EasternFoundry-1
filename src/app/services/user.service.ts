@@ -145,7 +145,7 @@ export class UserService {
         Industry: {
           Name: ''
         },
-        isGovernment: false,
+        employmentType: 2,
         agencyExperience: [
          {
             main: {
@@ -155,7 +155,13 @@ export class UserService {
                     title: '',
                     score: 50
                 }
-              ]
+              ],
+              isPM: false,
+              pmDescription: '',
+              pmScore: 0,
+              isKO: false,
+              koDescription: '',
+              koScore: 0
             },
             offices: [
               {
@@ -165,13 +171,17 @@ export class UserService {
                       title: '',
                       score: 50
                   }
-                ]
+                ],
+                isPM: false,
+                pmDescription: '',
+                pmScore: 0,
+                isKO: false,
+                koDescription: '',
+                koScore: 0
               }
             ]
           }
         ],
-        isPM: false,
-        isKO: false,
         Description: ''
       }
     ];

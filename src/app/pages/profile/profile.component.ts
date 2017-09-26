@@ -36,6 +36,9 @@ export class ProfileComponent implements OnInit {
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'
   ]
 
+  yearsOfSchool: number = 0;
+  yearsOfWork: number = 0;
+  professionalPoints: number = 0;
 
   constructor(
     private userService: UserService,
@@ -206,9 +209,9 @@ export class ProfileComponent implements OnInit {
           }
         }
       }
-      for (let o of this.occupations) {
-        console.log(o.title + ' ' + o.score)
-      }
+      // for (let o of this.occupations) {
+      //   console.log(o.title + ' ' + o.score)
+      // }
 
       function stringToBool(val) {
         return (val + '').toLowerCase() === 'true';
@@ -220,14 +223,21 @@ export class ProfileComponent implements OnInit {
         this.currentUser.disabled = stringToBool(this.currentUser.disabled)
       }
       for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
-        if (typeof this.currentUser.positionHistory[i].isGovernment === "string") {
-          this.currentUser.positionHistory[i].isGovernment = stringToBool(this.currentUser.positionHistory[i].isGovernment)
-        }
-        if (typeof this.currentUser.positionHistory[i].isPM === "string") {
-          this.currentUser.positionHistory[i].isPM = stringToBool(this.currentUser.positionHistory[i].isPM)
-        }
-        if (typeof this.currentUser.positionHistory[i].isKO === "string") {
-          this.currentUser.positionHistory[i].isKO = stringToBool(this.currentUser.positionHistory[i].isKO)
+        for (var x = 0; x < this.currentUser.positionHistory[i].agencyExperience.length; x++) {
+          if (typeof this.currentUser.positionHistory[i].agencyExperience[x].main.isPM === "string") {
+            this.currentUser.positionHistory[i].agencyExperience[x].main.isPM = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].main.isPM)
+          }
+          if (typeof this.currentUser.positionHistory[i].agencyExperience[x].main.isKO === "string") {
+            this.currentUser.positionHistory[i].agencyExperience[x].main.isKO = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].main.isKO)
+          }
+          for (var y = 0; y < this.currentUser.positionHistory[i].agencyExperience[x].offices.length; y++) {
+            if (typeof this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isPM === "string") {
+              this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isPM = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isPM)
+            }
+            if (typeof this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isKO === "string") {
+              this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isKO = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isKO)
+            }
+          }
         }
       }
 
@@ -261,6 +271,33 @@ export class ProfileComponent implements OnInit {
       if (this.currentUser.education[0].DegreeType[0] == null) {
         this.currentUser.education[0].DegreeType.push({Name: ''})
       }
+
+      // for (let e of this.currentUser.education) {
+      //   var years =
+      // }
+      // yearsOfSchool
+      for (let j of this.currentUser.positionHistory) {
+        if (j.EndDate !== "Current") {
+          var endYear = +j.EndDate.slice(0, 4)
+          var startYear = +j.StartDate.slice(0, 4)
+        } else {
+          var endYear = new Date().getFullYear()
+          var startYear = +j.StartDate.slice(0, 4)
+        }
+        this.yearsOfWork += (endYear - startYear)
+
+        if (j.EndDate !== "Current") {
+          var endMonth = +(((+j.EndDate.slice(5, 7))/12).toFixed(2))
+          var startMonth = +(((+j.StartDate.slice(5, 7))/12).toFixed(2))
+        } else {
+          var endMonth = new Date().getMonth()
+          var endMonth = +((+endMonth/12).toFixed(2))
+          var startMonth = +(((+j.StartDate.slice(5, 7))/12).toFixed(2))
+        }
+        this.yearsOfWork += (endMonth - startMonth)
+      }
+      this.professionalPoints = (this.yearsOfWork + this.currentUser.certification.length) * 50
+      console.log(this.professionalPoints)
       this.promiseFinished = true;
     }
 

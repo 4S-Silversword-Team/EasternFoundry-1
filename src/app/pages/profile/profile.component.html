@@ -1,4 +1,8 @@
-<div class="container">
+<div class="container" *ngIf='!this.promiseFinished'>
+  <div class="loader"></div>
+  <!-- <p class="loading">Loading</p> -->
+</div>
+<div class="container" *ngIf='this.promiseFinished'>
   <div *ngIf="this.isActiveProfile" class="btn-edit" (click) = 'editProfile()'>Edit</div>
   <div class="btn-back" (click) = 'this.location.back()'></div>
     <div class="basic-info col-xs-12" *ngIf = this.promiseFinished>

@@ -78,23 +78,33 @@ export class User {
       Industry: {
         Name: string,
       },
-      isGovernment: boolean,
+      employmentType: number,
       agencyExperience: [
         {
           main: {
             title: string,
             data: any[]
+            isPM: boolean,
+            pmDescription: string,
+            pmScore: number,
+            isKO: boolean,
+            koDescription: string,
+            koScore: number
           },
           offices: [
             {
               title: string,
-              data: any[]
+              data: any[],
+              isPM: boolean,
+              pmDescription: string,
+              pmScore: number,
+              isKO: boolean,
+              koDescription: string,
+              koScore: number
             }
           ]
         }
       ],
-      isPM: boolean,
-      isKO: boolean,
       Description: string
     }
     ]

@@ -10,6 +10,7 @@ import { UserService } from '../../services/user.service'
 import { Tool } from '../../classes/tool'
 import { ToolService } from '../../services/tool.service'
 import { ToolSubmissionService } from '../../services/toolsubmission.service'
+import { AgencyService } from '../../services/agency.service'
 import {isUndefined} from "util";
 import { AuthService} from "../../services/auth.service"
 import { s3Service } from "../../services/s3.service"
@@ -24,7 +25,7 @@ declare var $: any;
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html',
   styleUrls: ['./profile-edit.component.css'],
-  providers: [ UserService, AuthService, ToolService, ToolSubmissionService, s3Service ]
+  providers: [ UserService, AuthService, ToolService, ToolSubmissionService, s3Service, AgencyService ]
 })
 export class ProfileEditComponent implements OnInit {
 
@@ -50,6 +51,10 @@ export class ProfileEditComponent implements OnInit {
   months: any[] = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'
   ]
+  employmentCheck: any[] = []
+  dont: boolean = true
+  allAgencies: any[] = []
+
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -78,7 +83,8 @@ export class ProfileEditComponent implements OnInit {
     private auth: AuthService,
     private toolService: ToolService,
     private toolSubmissionService: ToolSubmissionService,
-    private s3Service: s3Service
+    private s3Service: s3Service,
+    private agencyService: AgencyService
   ) {
     auth.isLoggedIn().then(res => {
       !res ? this.router.navigateByUrl("/login"): afterLogin()
@@ -115,6 +121,7 @@ export class ProfileEditComponent implements OnInit {
           if (pos.EndDate.toLowerCase() == "current"){
             avail = false
           }
+
         }
 
         var currentDate = month + ', ' + year.toString().slice(2,4)
@@ -183,17 +190,37 @@ export class ProfileEditComponent implements OnInit {
           this.currentUser.disabled = stringToBool(this.currentUser.disabled)
         }
           for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
-            if (typeof this.currentUser.positionHistory[i].isGovernment === "string") {
-              this.currentUser.positionHistory[i].isGovernment = stringToBool(this.currentUser.positionHistory[i].isGovernment)
-            }
-            if (typeof this.currentUser.positionHistory[i].isPM === "string") {
-              this.currentUser.positionHistory[i].isPM = stringToBool(this.currentUser.positionHistory[i].isPM)
-            }
-            if (typeof this.currentUser.positionHistory[i].isKO === "string") {
-              this.currentUser.positionHistory[i].isKO = stringToBool(this.currentUser.positionHistory[i].isKO)
+            for (var x = 0; x < this.currentUser.positionHistory[i].agencyExperience.length; x++) {
+              if (typeof this.currentUser.positionHistory[i].agencyExperience[x].main.isPM === "string") {
+                this.currentUser.positionHistory[i].agencyExperience[x].main.isPM = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].main.isPM)
+              }
+              if (typeof this.currentUser.positionHistory[i].agencyExperience[x].main.isKO === "string") {
+                this.currentUser.positionHistory[i].agencyExperience[x].main.isKO = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].main.isKO)
+              }
+              for (var y = 0; y < this.currentUser.positionHistory[i].agencyExperience[x].offices.length; y++) {
+                if (typeof this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isPM === "string") {
+                  this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isPM = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isPM)
+                }
+                if (typeof this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isKO === "string") {
+                  this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isKO = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isKO)
+                }
+              }
             }
             if (this.currentUser.positionHistory[i].EndDate == null) {
               this.currentUser.positionHistory[i].EndDate = "Current"
+            }
+            if (this.currentUser.positionHistory[i].agencyExperience[0]) {
+              if (this.currentUser.positionHistory[i].agencyExperience[0].offices[0]) {
+                if (this.currentUser.positionHistory[i].agencyExperience[0].offices[0].title == "") {
+                  this.currentUser.positionHistory[i].agencyExperience[0].offices.splice(0,1)
+                }
+              }
+            }
+
+            if (this.currentUser.positionHistory[i].agencyExperience[0]) {
+              if (this.currentUser.positionHistory[i].agencyExperience[0].main.title == "") {
+                this.currentUser.positionHistory[i].agencyExperience.splice(0,1)
+              }
             }
 
           }
@@ -228,7 +255,11 @@ export class ProfileEditComponent implements OnInit {
             this.currentUser.education[0].DegreeType.push({Name: ''})
           }
           this.checkFields()
-          this.promiseFinished = true;
+
+          this.agencyService.getAgencies().then(val => {
+            this.allAgencies = val
+            this.promiseFinished = true;
+          });
         });
       }
     }
@@ -253,6 +284,47 @@ export class ProfileEditComponent implements OnInit {
         this.updateProfile(this.currentUser, true);
       }).catch((reason) =>console.log("reason ", reason));
     }
+  }
+
+  autocompleListFormatter (data: any) {
+    return data.agency;
+  }
+
+  subagencyListFormatter (data: any) {
+    console.log(JSON.stringify(data))
+    return data.agency;
+  }
+
+
+  agencyValidCheck (agency) {
+    var match = false
+    for (let a of this.allAgencies) {
+      if (a.agency.toString().toLowerCase() == agency.toString().toLowerCase()){
+        match = true
+      }
+    }
+    return match;
+  }
+
+  findSubAgencies(agency) {
+    var subagencies = ['No Subagencies Found']
+    for (let a of this.allAgencies){
+      if (a.agency.toString().toLowerCase() == agency.toString().toLowerCase()){
+        subagencies = a.subagencies
+      }
+    }
+    return subagencies
+  }
+
+  subagencyValidCheck (agency, subagency) {
+    var match = false
+    var subagencies = this.findSubAgencies(agency)
+    for (let i of subagencies) {
+      if (i.toString().toLowerCase() == subagency.toString().toLowerCase()){
+        match = true
+      }
+    }
+    return match;
   }
 
   checkFields(){
@@ -413,6 +485,12 @@ export class ProfileEditComponent implements OnInit {
     // }
   }
 
+  setEmployment(job, num){
+    console.log(job.employmentType)
+    job.employmentType = num
+    console.log(job.employmentType)
+  }
+
   submitNewTool(tool){
     var newTool = {
       userName: '',
@@ -449,7 +527,7 @@ export class ProfileEditComponent implements OnInit {
         Industry: {
           Name: ''
         },
-        isGovernment: false,
+        employmentType: 2,
         agencyExperience: [
          {
             main: {
@@ -459,7 +537,13 @@ export class ProfileEditComponent implements OnInit {
                     title: '',
                     score: 50
                 }
-              ]
+              ],
+              isPM: false,
+              pmDescription: '',
+              pmScore: 0,
+              isKO: false,
+              koDescription: '',
+              koScore: 0
             },
             offices: [
               {
@@ -469,13 +553,17 @@ export class ProfileEditComponent implements OnInit {
                       title: '',
                       score: 50
                   }
-                ]
+                ],
+                isPM: false,
+                pmDescription: '',
+                pmScore: 0,
+                isKO: false,
+                koDescription: '',
+                koScore: 0
               }
             ]
           }
         ],
-        isPM: false,
-        isKO: false,
         Description: ''
       }
     );
@@ -568,14 +656,26 @@ export class ProfileEditComponent implements OnInit {
         data: [{
           title: 'Years Agency Experience',
           score: 100
-        }]
+        }],
+        isPM: false,
+        pmDescription: '',
+        pmScore: 0,
+        isKO: false,
+        koDescription: '',
+        koScore: 0
       },
       offices: [{
         title: '',
         data: [{
           title: 'Years Agency Experience',
           score: 100
-        }]
+        }],
+        isPM: false,
+        pmDescription: '',
+        pmScore: 0,
+        isKO: false,
+        koDescription: '',
+        koScore: 0
       }]
     });
   }
@@ -590,7 +690,13 @@ export class ProfileEditComponent implements OnInit {
       data: [{
         title: 'Years Agency Experience',
         score: 100
-      }]
+      }],
+      isPM: false,
+      pmDescription: '',
+      pmScore: 0,
+      isKO: false,
+      koDescription: '',
+      koScore: 0
     });
   }
 
@@ -641,7 +747,7 @@ export class ProfileEditComponent implements OnInit {
       }
     }
     for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
-      if (this.currentUser.positionHistory[i].isGovernment) {
+      if (this.currentUser.positionHistory[i].employmentType == 0) {
         this.currentUser.positionHistory[i].agencyExperience[0].main.title = this.currentUser.positionHistory[i].Employer
       }
       for (var x = 0; x < this.currentUser.positionHistory[i].agencyExperience.length; x++) {

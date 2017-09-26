@@ -87,6 +87,20 @@ button {
     line-height: 40px;
 }
 
+.cert-container {
+  overflow: auto;
+}
+
+.degree-box {
+  background: rgba(255, 255, 255, 0.75);
+  border: 2px solid rgba(0, 0, 0, 0.6);
+  margin-top: 2px;
+  margin-bottom: 2px;
+  padding: 1px;
+  text-align: center;
+  color: black;
+}
+
 .div-title {
     margin-top: 50px;
     display: inline-block;
