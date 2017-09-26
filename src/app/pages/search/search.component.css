@@ -15,7 +15,8 @@
   border: 2px solid rgba(0, 0, 0, 0.2);
   background: rgba(0, 0, 0, 0.2);
   height: 90vh;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .search-results-interior {
@@ -60,7 +61,7 @@
   padding: 2px;
   border-bottom: 4px solid rgba(0, 0, 0, 0.2);
   min-height: 40px;
-  z-index: 0;
+  overflow-x: hidden;
 }
 
 .search-item-header {
@@ -73,12 +74,34 @@
   text-align: center;
 }
 
+.search-item-expand {
+  margin-top: 5px;
+  margin-left: 0px;
+  margin-right: 0px;
+  width: 102%;
+  border-top: 1px solid rgb(220, 220, 220);
+  background: rgb(220, 220, 220);
+  color: rgb(130, 130, 130);
+  margin-bottom: -2px;
+  margin-left: -1%;
+  text-align: center;
+}
+
+.search-item-expand:hover {
+  background: rgb(240, 240, 240);
+  color: rgb(150, 150, 150);
+}
+
+.search-item-not-expand {
+  padding: 3px;
+  margin: 0px;
+}
+
 .search-item-category {
   background: rgb(250, 250, 250);
   font-weight: bold;
   font-size: 26px;
   text-align: center;
-  padding: 5px;
   border-bottom: 8px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -87,6 +110,26 @@
   height: 40px;
   width: 40px;
   top: inherit;
+}
+
+.avatar-expand {
+  height: 60px;
+  width: 60px;
+}
+
+.miniheader {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.search-item-sublist {
+  text-align: left
+}
+
+.search-item-link {
+  text-align: center;
+  font-size: 18;
+  font-weight: bold;
 }
 
 .search-ready {

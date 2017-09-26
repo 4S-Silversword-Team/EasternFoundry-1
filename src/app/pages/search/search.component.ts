@@ -77,6 +77,10 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
   }
 
+  expandResult(i){
+    i.expand = !i.expand
+  }
+
   autocompleListFormatter (data: any) {
     return data.agency;
   }
@@ -254,9 +258,6 @@ export class SearchComponent implements OnInit {
               }
             }
           }
-          for (let a of newCompany.relevantSkills) {
-            console.log(a.name + ', ' + a.count)
-          }
         }
 
         if (this.searchTerms.position) {
@@ -336,6 +337,7 @@ export class SearchComponent implements OnInit {
             resultValid = false
           }
           if (resultValid){
+            newCompany.expand = false
             this.searchResults.companies.push(newCompany)
           }
         }
@@ -482,6 +484,7 @@ export class SearchComponent implements OnInit {
           }
           if (resultValid){
             if (person.public) {
+              newPerson.expand = false
               this.searchResults.people.push(newPerson)
             } else {
               this.searchResults.privatePeople++
@@ -511,6 +514,7 @@ export class SearchComponent implements OnInit {
           }
 
           if (resultValid) {
+            newPP.expand = false
             this.searchResults.pastPerformances.push(newPP)
           }
         }
