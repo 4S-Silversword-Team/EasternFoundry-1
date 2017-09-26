@@ -349,6 +349,11 @@ textarea {
   border-left: 4px solid #3e3e3e;
 }
 
+.noWrapScroll {
+  white-space: nowrap;
+  overflow: auto;
+}
+
 @media screen and (min-width: 1000px) {
   .leadership.leadership-small, .performance.performance-small {
     display: none;
