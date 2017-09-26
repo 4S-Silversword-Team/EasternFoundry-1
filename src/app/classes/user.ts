@@ -226,6 +226,8 @@ export class User {
     }
   ]
   resumeText: string
+  public: boolean
+  finished: boolean
   companyUserProxies: [
     any
   ]

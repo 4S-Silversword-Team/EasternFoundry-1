@@ -4,25 +4,28 @@ import { Router } from '@angular/router';
 import { Company } from '../../classes/company';
 import { User } from '../../classes/user';
 import { PastPerformance } from '../../classes/past-performance';
+import { Agency } from '../../classes/agency';
 
 import { CompanyService } from '../../services/company.service';
 import { AuthService } from '../../services/auth.service'
 import { UserService } from '../../services/user.service'
 import { PastperformanceService } from '../../services/pastperformance.service'
 import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
+import { AgencyService } from '../../services/agency.service'
 
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css'],
-  providers: [CompanyService, AuthService, UserService, PastperformanceService, CompanyUserProxyService]
+  providers: [CompanyService, AuthService, UserService, PastperformanceService, CompanyUserProxyService, AgencyService]
 })
 export class SearchComponent implements OnInit {
 
   companies: Company[] = [];
   users: User[] = [];
   pastPerformances: PastPerformance[] = [];
+  agencies: Agency[] = [];
   promiseFinished: boolean = false
   searchTerms = {
     company: false,
@@ -30,12 +33,15 @@ export class SearchComponent implements OnInit {
     pastPerformance: false,
     name: '',
     agency: '',
+    subagency: '',
     skill: '',
-    position: ''
+    position: '',
+    freelancer: false
   };
   searchResults = {
     companies: [],
     people: [],
+    privatePeople: 0,
     pastPerformances: []
   };
   searchRunning = false
@@ -47,8 +53,8 @@ export class SearchComponent implements OnInit {
     private auth: AuthService,
     private userService: UserService,
     private pastPerformanceService: PastperformanceService,
-    private companyUserProxyService: CompanyUserProxyService
-
+    private companyUserProxyService: CompanyUserProxyService,
+    private agencyService: AgencyService
 
   ) {
     this.companyService.getCompanies().then(val =>{
@@ -57,7 +63,10 @@ export class SearchComponent implements OnInit {
        this.users = u
        this.pastPerformanceService.getPastPerformances().then(pp =>{
          this.pastPerformances = pp
-         this.promiseFinished = true
+         this.agencyService.getAgencies().then(a =>{
+           this.agencies = a
+           this.promiseFinished = true
+         })
        })
      })
    });
@@ -66,6 +75,26 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  autocompleListFormatter (data: any) {
+    return data.agency;
+  }
+
+  subagencyListFormatter (data: any) {
+    console.log(JSON.stringify(data))
+    return data.agency;
+  }
+
+
+  agencyValidCheck (agency) {
+    var match = false
+    for (let a of this.agencies) {
+      if (a.agency.toString().toLowerCase() == agency.toString().toLowerCase()){
+        match = true
+      }
+    }
+    return match;
   }
 
   searchReady(){
@@ -77,21 +106,240 @@ export class SearchComponent implements OnInit {
     return false
   }
 
+  clearSubagency() {
+    this.searchTerms.subagency = ''
+  }
+
+  findSubAgencies(agency) {
+    var subagencies = ['No Subagencies Found']
+    for (let a of this.agencies){
+      if (a.agency.toString().toLowerCase() == agency.toString().toLowerCase()){
+        subagencies = a.subagencies
+      }
+    }
+    return subagencies
+  }
+
+  subagencyValidCheck (agency, subagency) {
+    var match = false
+    var subagencies = this.findSubAgencies(agency)
+    for (let i of subagencies) {
+      if (i.toString().toLowerCase() == subagency.toString().toLowerCase()){
+        match = true
+      }
+    }
+    return match;
+  }
+
   search(){
     this.searchRunning = true
     this.noResults = false
     this.searchResults.companies = []
     this.searchResults.people = []
+    this.searchResults.privatePeople = 0
     this.searchResults.pastPerformances = []
 
     if (this.searchTerms.company){
-      console.log
       for (let company of this.companies) {
-        if (company.name.toLowerCase().includes(this.searchTerms.name.toLowerCase())) {
-          this.searchResults.companies.push(company)
+        var newCompany: any = company
+        newCompany.relevantAgencies = []
+        newCompany.relevantSubagencies = []
+        newCompany.relevantSkills = []
+        newCompany.relevantPositions = []
+        newCompany.nameMatch = false
+        if (this.searchTerms.name){
+          if (newCompany.name.toLowerCase().includes(this.searchTerms.name.toLowerCase())) {
+            newCompany.nameMatch = true
+            matchFound = true
+          }
+        }
+        if (this.searchTerms.agency) {
+          for (let p of newCompany.userProfileProxies) {
+            var agenciesDone = []
+            if (p.userProfile){
+              for (let j of p.userProfile.positionHistory) {
+                for (let a of j.agencyExperience) {
+                  if (a.main.title.toLowerCase().includes(this.searchTerms.agency.toLowerCase())) {
+                    if (!this.searchTerms.subagency) {
+                      matchFound = true
+                    }
+                    var agencyFound = false
+                    if (!agenciesDone.includes(a.main.title)){
+                      for (let ra of newCompany.relevantAgencies) {
+                        if (ra.name.toLowerCase() == a.main.title.toLowerCase()){
+                          agencyFound = true
+                          ra.count++
+                          agenciesDone.push(a.main.title);
+                        }
+                      }
+                      if (!agencyFound) {
+                        newCompany.relevantAgencies.push({
+                          name: a.main.title,
+                          count: 1,
+                        })
+                        agenciesDone.push(a.main.title);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          if (this.searchTerms.subagency) {
+            for (let p of newCompany.userProfileProxies) {
+              var subagenciesDone = []
+              if (p.userProfile){
+                for (let j of p.userProfile.positionHistory) {
+                  for (let a of j.agencyExperience) {
+                    if (a.offices[0]) {
+                      if (a.offices[0].title.length > 0) {
+                        for (let s of a.offices) {
+                          if (s.title.toLowerCase().includes(this.searchTerms.subagency.toLowerCase())) {
+                            matchFound = true
+                            var agencyFound = false
+                            if (!subagenciesDone.includes(s.title)){
+                              for (let rs of newCompany.relevantSubagencies) {
+                                if (rs.name.toLowerCase() == s.title.toLowerCase()){
+                                  agencyFound = true
+                                  rs.count++
+                                  subagenciesDone.push(s.title);
+                                }
+                              }
+                              if (!agencyFound) {
+                                newCompany.relevantSubagencies.push({
+                                  name: s.title,
+                                  count: 1,
+                                })
+                                subagenciesDone.push(s.title);
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        if (this.searchTerms.skill) {
+          for (let p of newCompany.userProfileProxies) {
+            var skillsDone = []
+            if (p.userProfile){
+              if (p.userProfile.foundTools) {
+                var newPerson = p.userProfile
+                for (let t of newPerson.foundTools) {
+                  if (t.title.toLowerCase().includes(this.searchTerms.skill.toLowerCase())) {
+                    matchFound = true
+                    var skillFound = false
+                    if (!skillsDone.includes(t.title)){
+                      for (let s of newCompany.relevantSkills) {
+                        if (s.name.toLowerCase() == t.title.toLowerCase()){
+                          skillFound = true
+                          s.count++
+                          skillsDone.push(s.title);
+                        }
+                      }
+                      if (!skillFound) {
+                        newCompany.relevantSkills.push({
+                          name: t.title,
+                          count: 1,
+                        })
+                        skillsDone.push(t.title);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          for (let a of newCompany.relevantSkills) {
+            console.log(a.name + ', ' + a.count)
+          }
+        }
+
+        if (this.searchTerms.position) {
+          var toolsToPush = []
+          for (let p of newCompany.userProfileProxies) {
+            if (p.userProfile) {
+              if (p.userProfile.foundTools) {
+                for (let tool of p.userProfile.foundTools) {
+                  var matchFound = false
+                  for (let position of tool.position) {
+                    for (let toolDone of toolsToPush) {
+                      if (position == toolDone.title) {
+                        toolDone.score += 5
+                        matchFound = true
+                      }
+                    }
+                    if (!matchFound) {
+                      var newPosition = {
+                        title: '',
+                        score: 0
+                      }
+                      newPosition.title = position
+                      newPosition.score = 5
+                      toolsToPush.push(newPosition)
+                    }
+                  }
+                }
+                for (let tool of toolsToPush) {
+                  var toolsDone = []
+                  if (tool.title.toLowerCase().includes(this.searchTerms.position.toLowerCase())) {
+                    for (let o of p.userProfile.occupations) {
+                      if (tool.title == o.title) {
+                        tool.score += (o.score / 5)
+                      }
+                    }
+                    if (tool.score > 50) {
+                      var agencyFound = false
+                      if (!toolsDone.includes(tool.title)){
+                        for (let rp of newCompany.relevantPositions) {
+                          if (rp.name.toLowerCase() == tool.title.toLowerCase()){
+                            agencyFound = true
+                            rp.count++
+                            toolsDone.push(tool.title);
+                          }
+                        }
+                        if (!agencyFound) {
+                          newCompany.relevantPositions.push({
+                            name: tool.title,
+                            count: 1,
+                          })
+                          toolsDone.push(tool.title);
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        if (matchFound){
+          var resultValid = true
+
+          if (this.searchTerms.name && !newCompany.nameMatch) {
+            resultValid = false
+          }
+          if (this.searchTerms.agency && newCompany.relevantAgencies.length < 1) {
+            resultValid = false
+          }
+          if (this.searchTerms.subagency && newCompany.relevantSubagencies.length < 1) {
+            resultValid = false
+          }
+          if (this.searchTerms.skill && newCompany.relevantSkills.length < 1) {
+            resultValid = false
+          }
+          if (this.searchTerms.position && newCompany.relevantPositions.length < 1) {
+            resultValid = false
+          }
+          if (resultValid){
+            this.searchResults.companies.push(newCompany)
+          }
         }
       }
-      this.searchRunning = false
     }
     if (this.searchTerms.person) {
       for (let person of this.users) {
@@ -99,11 +347,43 @@ export class SearchComponent implements OnInit {
         var subPromises = []
         var matchFound = false
         newPerson.relevantAgencies = []
+        newPerson.relevantSubagencies = []
         newPerson.relevantSkills = []
         newPerson.relevantPositions = []
         if (this.searchTerms.agency) {
           for (let j of newPerson.positionHistory){
             for (let a of j.agencyExperience) {
+              if (a.main.title.toLowerCase().includes(this.searchTerms.agency.toLowerCase())) {
+                if (!this.searchTerms.subagency) {
+                  matchFound = true
+                }
+                newPerson.relevantAgencies.push(a.main.title)
+              }
+            }
+          }
+        }
+        if (this.searchTerms.subagency) {
+          var subagenciesDone = []
+          for (let j of newPerson.positionHistory){
+            for (let a of j.agencyExperience) {
+              for (let s of a.offices) {
+                if (s.title.toLowerCase().includes(this.searchTerms.subagency.toLowerCase())) {
+                  matchFound = true
+                  var agencyFound = false
+                  if (!subagenciesDone.includes(s.title)){
+                    for (let rs of newPerson.relevantSubagencies) {
+                      if (rs.toLowerCase() == s.title.toLowerCase()){
+                        agencyFound = true
+                        subagenciesDone.push(s.title);
+                      }
+                    }
+                    if (!agencyFound) {
+                      newPerson.relevantSubagencies.push(s.title)
+                      subagenciesDone.push(s.title);
+                    }
+                  }
+                }
+              }
               if (a.main.title.toLowerCase().includes(this.searchTerms.agency.toLowerCase())) {
                 matchFound = true
                 newPerson.relevantAgencies.push(a.main.title)
@@ -113,7 +393,6 @@ export class SearchComponent implements OnInit {
         }
         if (this.searchTerms.skill) {
           if (newPerson.foundTools){
-
             for (let t of newPerson.foundTools) {
               if (t.title.toLowerCase().includes(this.searchTerms.skill.toLowerCase())) {
                 matchFound = true
@@ -171,67 +450,76 @@ export class SearchComponent implements OnInit {
             }
           }
         }
-        if (matchFound){
-          // if (this.searchTerms.agency && this.searchTerms.skill && this.searchTerms.position) {
-          //   if (newPerson.relevantAgencies.length > 0 && newPerson.relevantSkills.length > 0 && newPerson.relevantPositions.length > 0) {
-          //     this.searchResults.people.push(newPerson)
-          //   }
-          // }
-          if (this.searchTerms.agency && this.searchTerms.skill && this.searchTerms.position) {
-            if (newPerson.relevantAgencies.length > 0 && newPerson.relevantSkills.length > 0 && newPerson.relevantPositions.length > 0) {
-              this.searchResults.people.push(newPerson)
-            }
-          } else if (this.searchTerms.agency && this.searchTerms.skill && !this.searchTerms.position) {
-            if (newPerson.relevantAgencies.length > 0 && newPerson.relevantSkills.length > 0) {
-              this.searchResults.people.push(newPerson)
-            }
-          } else if (this.searchTerms.skill && this.searchTerms.position && !this.searchTerms.agency) {
-            if (newPerson.relevantSkills.length > 0 && newPerson.relevantPositions.length > 0) {
-              this.searchResults.people.push(newPerson)
-            }
-          } else if (this.searchTerms.position && this.searchTerms.agency && !this.searchTerms.skill) {
-            if (newPerson.relevantPositions.length > 0 && newPerson.relevantAgencies.length > 0) {
-              this.searchResults.people.push(newPerson)
-            }
-          } else if (this.searchTerms.agency && !this.searchTerms.skill && !this.searchTerms.position) {
-            if (newPerson.relevantAgencies.length > 0) {
-              this.searchResults.people.push(newPerson)
-            }
-          } else if (this.searchTerms.skill && !this.searchTerms.position && !this.searchTerms.agency) {
-            if (newPerson.relevantSkills.length > 0) {
-              this.searchResults.people.push(newPerson)
-            }
-          } else if (this.searchTerms.position && !this.searchTerms.agency && !this.searchTerms.skill) {
-            if (newPerson.relevantPositions.length > 0) {
-              this.searchResults.people.push(newPerson)
-            }
-          }
-        }
-        for (let p of this.searchResults.people) {
-          for (let c of p.companyUserProxies) {
-            var subPromise = this.companyUserProxyService.getCompanyUserProxiesByID(c).toPromise().then(proxy => {
-              if (proxy) {
-                if (proxy.stillAffiliated) {
-                  if (proxy.company) {
-                    var companyProxy: any = proxy.company
-                    if (companyProxy.name) {
-                      p.currentCompany = companyProxy.name
-                    }
-                  }
-                }
+        for (let c of newPerson.companyUserProxies) {
+          if (c.stillAffiliated) {
+            if (c.company) {
+              if (c.company.name) {
+                newPerson.currentCompany = c.company.name
               }
-            });
-            subPromises.push(subPromise)
+            }
           }
         }
-        Promise.all(subPromises).then(values => {
-          if (this.searchResults.companies.length < 1 && this.searchResults.people.length < 1 && this.searchResults.pastPerformances.length < 1) {
-            this.noResults = true
+        if (matchFound){
+          var resultValid = true
+
+          if (this.searchTerms.agency && newPerson.relevantAgencies.length < 1) {
+            resultValid = false
           }
-          this.searchRunning = false
-        })
+          if (this.searchTerms.subagency && newPerson.relevantSubagencies.length < 1) {
+            resultValid = false
+          }
+          if (this.searchTerms.skill && newPerson.relevantSkills.length < 1) {
+            resultValid = false
+          }
+          if (this.searchTerms.position && newPerson.relevantPositions.length < 1) {
+            resultValid = false
+          }
+          if (this.searchTerms.agency && newPerson.relevantAgencies.length < 1) {
+            resultValid = false
+          }
+          if (this.searchTerms.freelancer && newPerson.currentCompany) {
+            resultValid = false
+          }
+          if (resultValid){
+            if (person.public) {
+              this.searchResults.people.push(newPerson)
+            } else {
+              this.searchResults.privatePeople++
+            }
+          }
+        }
       }
     }
+    if (this.searchTerms.pastPerformance) {
+      for (let pp of this.pastPerformances) {
+        var newPP: any = pp
+        newPP.nameMatch = false
+        var subPromises = []
+        var matchFound = false
+        if (this.searchTerms.name) {
+          if (newPP.title) {
+            if (newPP.title.toLowerCase().includes(this.searchTerms.name.toLowerCase())) {
+              matchFound = true
+              newPP.nameMatch = true
+            }
+          }
+        }
+        if (matchFound) {
+          var resultValid = true
+          if (this.searchTerms.name.length > 0 && !newPP.nameMatch) {
+            resultValid = false
+          }
+
+          if (resultValid) {
+            this.searchResults.pastPerformances.push(newPP)
+          }
+        }
+      }
+    }
+    if (this.searchResults.companies.length < 1 && this.searchResults.people.length < 1 && this.searchResults.pastPerformances.length < 1 && this.searchResults.privatePeople < 1 ) {
+      this.noResults = true
+    }
+    this.searchRunning = false
   }
 
   goTo(which: string, id: string) {
