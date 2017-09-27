@@ -72,22 +72,28 @@
               </div>
             </div>
           </div>
-          <div class="" *ngIf='this.currentUser.award && this.currentUser.award[0].length > 0'>
-            <p>Awards:</p>
-            <div class="" *ngFor="let award of this.currentUser.award" class="degree-box">
-              <p *ngIf="award.length > 0">{{award }}</p>
+          <div class="" *ngIf='this.currentUser.award'>
+            <div class="" *ngIf='this.currentUser.award[0]'>
+              <p>Awards:</p>
+              <div class="" *ngFor="let award of this.currentUser.award" class="degree-box">
+                <p *ngIf="award.length > 0">{{award }}</p>
+              </div>
             </div>
           </div>
-          <div class="" *ngIf='this.currentUser.clearance && this.currentUser.clearance[0].clearanceType.length > 0'>
-            <p>Clearances:</p>
-            <div class="" *ngFor="let clearance of this.currentUser.clearance">
-              <div class="" *ngIf="clearance.clearanceType.length > 0">
-                <div class="" *ngIf="clearance.awarded.length > 0">
-                  <div class="degree-box" *ngIf="clearance.expiration.length > 0">
-                    <p>{{clearance.clearanceType}} Clearance</p>
-                    <p>Awarded {{clearance.awarded}}, expires {{clearance.expiration}}
+          <div class="" *ngIf='this.currentUser.clearance'>
+            <div class="" *ngIf='this.currentUser.clearance[0]'>
+              <div class="" *ngIf='this.currentUser.clearance[0].clearanceType.length > 0'>
+                <p>Clearances:</p>
+                <div class="" *ngFor="let clearance of this.currentUser.clearance">
+                  <div class="" *ngIf="clearance.clearanceType.length > 0">
+                    <div class="" *ngIf="clearance.awarded.length > 0">
+                      <div class="degree-box" *ngIf="clearance.expiration.length > 0">
+                        <p>{{clearance.clearanceType}} Clearance</p>
+                        <p>Awarded {{clearance.awarded}}, expires {{clearance.expiration}}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
               </div>
             </div>
           </div>
