@@ -19,6 +19,7 @@ export const ROUTES: Routes = [
 
   { path: '',      component: LoginComponent },
   { path: 'login', component: LoginComponent},
+  { path: 'login/new', component: LoginComponent},
   { path: 'companies', component: CompaniesComponent},
   { path: 'my-companies', component: CompaniesComponent},
   { path: 'my-pastperformances', component: MyPastPerformancesComponent},

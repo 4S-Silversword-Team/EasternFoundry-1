@@ -7,6 +7,19 @@
     margin-top: calc(50vh - 150px);
 }
 
+.new-profile-alert {
+  position: absolute;
+  background: rgba(250, 250, 250, 1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 5px #888888;
+  width: 10%;
+  left: 76%;
+  padding: 4px;
+  text-align: center;
+  height: 33%;
+  min-height: 300px;
+}
+
 .input-group {
     margin-top: 10px;
 }

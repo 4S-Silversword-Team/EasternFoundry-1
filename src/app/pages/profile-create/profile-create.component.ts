@@ -6,8 +6,6 @@ import { Location } from '@angular/common';
 import { User } from '../../classes/user';
 import { UserService } from '../../services/user.service';
 
-
-
 declare var $: any;
 
 @Component({
@@ -30,6 +28,7 @@ export class ProfileCreateComponent implements OnInit {
     password: ''
   };
   paramsError:string = ""
+  registerInProcess: boolean = false
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -54,6 +53,7 @@ export class ProfileCreateComponent implements OnInit {
   // }
 
   registerUser() {
+    this.registerInProcess = true
     //const fileList: FileList = event.target.files;
     let fileBrowser = this.fileInput.nativeElement;
     if(this.userParam.username == '' || this.userParam.username.trim() == ''){
@@ -88,9 +88,7 @@ export class ProfileCreateComponent implements OnInit {
       formData.append('resume', file);
       this.userService.registerUser(formData).toPromise().then((result) => {
         var res: any = result
-        console.log(JSON.parse(res))
-        var userId = JSON.parse(res._body)._id
-        this.router.navigate(['user-profile-edit', userId]);
+        this.router.navigate(['login/new']);
       });
     }
   }

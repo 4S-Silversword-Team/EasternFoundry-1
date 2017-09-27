@@ -1,3 +1,12 @@
+<div class="container loader-container" *ngIf='this.registerInProcess'>
+  <div class="loader-box">
+    <div class="loader"></div>
+    <h2>We're working on your account.</h2>
+    <h2>It might take a while. Please don't navigate away from this page.</h2>
+    <p>(unless it takes like five minutes, THEN navigate away because it probably broke)</p>
+  </div>
+  <!-- <p class="loading">Loading</p> -->
+</div>
 <div class="form-container">
   <h2>Register</h2>
   <div class="alert alert-danger" [class.hidden] = '!this.paramsError'>

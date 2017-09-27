@@ -15,13 +15,18 @@ export class LoginComponent implements OnInit {
   authError: boolean = false
   email: string
   password: string
+  new: boolean = false
 
 
   constructor(
     private auth: AuthService,
     private router: Router,
     private nav: AppComponent
-  ) { }
+  ) {
+      if (this.router.url == '/login/new') {
+        this.new = true
+      }
+    }
 
   ngOnInit() {
   }

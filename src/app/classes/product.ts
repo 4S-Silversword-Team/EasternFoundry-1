@@ -33,4 +33,5 @@ export class Product {
             }
         ]
     }
+    public: boolean
 }

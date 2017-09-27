@@ -41,8 +41,10 @@ export class SearchComponent implements OnInit {
   searchResults = {
     companies: [],
     people: [],
+    pastPerformances: [],
+    privateCompanies: 0,
     privatePeople: 0,
-    pastPerformances: []
+    privatePP: 0
   };
   searchRunning = false
   noResults = false
@@ -140,8 +142,10 @@ export class SearchComponent implements OnInit {
     this.noResults = false
     this.searchResults.companies = []
     this.searchResults.people = []
-    this.searchResults.privatePeople = 0
     this.searchResults.pastPerformances = []
+    this.searchResults.privateCompanies = 0
+    this.searchResults.privatePeople = 0
+    this.searchResults.privatePP = 0
 
     if (this.searchTerms.company){
       for (let company of this.companies) {
@@ -337,8 +341,12 @@ export class SearchComponent implements OnInit {
             resultValid = false
           }
           if (resultValid){
-            newCompany.expand = false
-            this.searchResults.companies.push(newCompany)
+            if (newCompany.public) {
+              newCompany.expand = false
+              this.searchResults.companies.push(newCompany)
+            } else {
+              this.searchResults.privateCompanies++
+            }
           }
         }
       }
@@ -514,8 +522,12 @@ export class SearchComponent implements OnInit {
           }
 
           if (resultValid) {
-            newPP.expand = false
-            this.searchResults.pastPerformances.push(newPP)
+            if (newPP.public) {
+              newPP.expand = false
+              this.searchResults.pastPerformances.push(newPP)
+            } else {
+              this.searchResults.privatePP++
+            }
           }
         }
       }
@@ -528,7 +540,6 @@ export class SearchComponent implements OnInit {
         this.noResults = true
         for (let p of this.searchResults.people) {
           if (!p.currentCompany) {
-            console.log(p.currentCompany)
             this.noResults = false
           }
         }

@@ -53,7 +53,11 @@ export class ProfileComponent implements OnInit {
 
     this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
       this.currentUser = result;
-      myCallback();
+      if (!this.currentUser.finished && this.isActiveProfile){
+        this.router.navigateByUrl("/user-profile-edit/" + this.currentUser._id)
+      } else {
+        myCallback();
+      }
     });
 
     var myCallback = () => {

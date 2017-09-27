@@ -11,6 +11,18 @@
   border: 2px solid #757575;
 }
 
+.not-finished-alert {
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  top: 50px;
+  background: rgb(255, 98, 98);
+  text-align: center;
+  padding: 0 auto;
+  margin-bottom: 2px;
+  color: black;
+}
+
 button {
   padding: 0px;
 }

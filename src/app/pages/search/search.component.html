@@ -7,9 +7,6 @@
     <h3 style="text-align: center">Results</h3>
     <div class="search-results-interior">
       <div class="search-results-interior-2">
-        <!-- <div class="search-item-category">
-          Companies
-        </div> -->
         <div class="" *ngIf='this.searchRunning'>
           <div class="loader"></div>
         </div>
@@ -72,6 +69,9 @@
                 </div>
                 <div class="search-item-expand col-xs-12" (click)='expandResult(c)'>^------RETRACT------^</div>
               </div>
+            </div>
+            <div class="search-item" *ngIf='searchResults.privateCompanies > 0'>
+              <div class="search-item-subheader">{{searchResults.privateCompanies}} private companies</div>
             </div>
           </div>
           <div class="" *ngIf='searchResults.people.length > 0'>
@@ -149,6 +149,9 @@
               </div>
               <div class="search-item-expand col-xs-12" (click)='expandResult(pp)'>v------EXPAND------v</div>
               <!-- <div class="search-item-expand col-xs-12" >v------EXPAND------v</div> -->
+            </div>
+            <div class="search-item" *ngIf='searchResults.privatePP > 0'>
+              <div class="search-item-subheader">{{searchResults.privatePP}} private past performances</div>
             </div>
           </div>
         </div>

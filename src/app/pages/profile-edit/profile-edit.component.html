@@ -2,6 +2,7 @@
   <div class="loader"></div>
   <!-- <p class="loading">Loading</p> -->
 </div>
+<div class="not-finished-alert" *ngIf='!this.currentUser.finished && this.promiseFinished'>Fill in the empty fields to complete your user profile!</div>
 <div class="container" *ngIf='this.promiseFinished'>
   <div class="btn-back" (click) = 'this.location.back()'></div>
   <div class="basic-info col-xs-10 col-xs-offset-1 clear">

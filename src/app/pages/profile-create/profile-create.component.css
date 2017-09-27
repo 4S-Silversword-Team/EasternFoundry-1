@@ -5,7 +5,29 @@ body {
 .form-container {
   width: 400px;
   margin: auto;
+  z-index: -1;
 }
+
+.loader-container {
+  position: absolute;
+  width: 100%;
+  height: 110%;
+  margin-top: -10%;
+  padding-top: 20%;
+  overflow-y: hidden;
+  z-index: 1;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.75);
+  color: rgb(250,250,250);
+  animation: 3s ease-in;
+
+}
+
+@keyframes ease-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 
 .credits {
   border-top: 1px solid #ddd;

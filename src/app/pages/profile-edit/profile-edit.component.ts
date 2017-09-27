@@ -189,6 +189,12 @@ export class ProfileEditComponent implements OnInit {
         if (typeof this.currentUser.disabled === "string") {
           this.currentUser.disabled = stringToBool(this.currentUser.disabled)
         }
+        if (typeof this.currentUser.public === "string") {
+          this.currentUser.public = stringToBool(this.currentUser.public)
+        }
+        if (typeof this.currentUser.finished === "string") {
+          this.currentUser.finished = stringToBool(this.currentUser.finished)
+        }
           for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
             for (var x = 0; x < this.currentUser.positionHistory[i].agencyExperience.length; x++) {
               if (typeof this.currentUser.positionHistory[i].agencyExperience[x].main.isPM === "string") {
@@ -764,6 +770,7 @@ export class ProfileEditComponent implements OnInit {
     }
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     delete model['_id']
+    model.finished = true;
     this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => {console.log(result); this.currentUser = result});
     if(!noNav) {
       window.scrollTo(0, 0);

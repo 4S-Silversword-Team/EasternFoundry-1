@@ -96,6 +96,7 @@ export class CompanyService {
         content: 'Schedule 3'
       }
     ]
+    temp.public = false
     return temp
   }
 
