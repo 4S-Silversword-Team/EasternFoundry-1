@@ -523,6 +523,17 @@ export class SearchComponent implements OnInit {
     if (this.searchResults.companies.length < 1 && this.searchResults.people.length < 1 && this.searchResults.pastPerformances.length < 1 && this.searchResults.privatePeople < 1 ) {
       this.noResults = true
     }
+    if (this.searchResults.companies.length < 1 && this.searchResults.pastPerformances.length < 1) {
+      if (this.searchTerms.freelancer) {
+        this.noResults = true
+        for (let p of this.searchResults.people) {
+          if (!p.currentCompany) {
+            console.log(p.currentCompany)
+            this.noResults = false
+          }
+        }
+      }
+    }
     this.searchRunning = false
   }
 

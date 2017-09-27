@@ -74,6 +74,19 @@
   text-align: center;
 }
 
+.search-item-header-expand {
+  font-weight: bold;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.search-item-subheader-expand {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 5px;
+}
+
 .search-item-expand {
   margin-top: 5px;
   margin-left: 0px;
@@ -107,14 +120,16 @@
 
 .search-item-avatar {
   position: absolute;
-  height: 40px;
-  width: 40px;
+  height: 60px;
+  width: 60px;
   top: inherit;
+  left: 3px;
 }
 
 .avatar-expand {
-  height: 60px;
-  width: 60px;
+  height: 70px;
+  width: 70px;
+  left: 0px;
 }
 
 .miniheader {
