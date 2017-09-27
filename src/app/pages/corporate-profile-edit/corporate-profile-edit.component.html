@@ -20,6 +20,10 @@
           <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
           <button class="btn btn-primary" (click)="editPhoto()">Edit Logo</button>
         </div>
+        <div class="col-xs-12">
+          <p class="col-xs-7 text-right vertically-centered">Make your account publically viewable?</p>
+          <input type="checkbox" class="col-xs-2" [(ngModel)] = 'this.currentAccount.public'>
+        </div>
       </div>
       <!--<div class="col-xs-12" [style.height]="'130px'">
           <p clvehicleType"left">Set-Aside</p>

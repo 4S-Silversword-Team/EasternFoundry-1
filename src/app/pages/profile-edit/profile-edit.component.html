@@ -51,7 +51,10 @@
         <p class="col-xs-3 text-right vertically-centered">Zip</p>
         <input class="col-xs-9 left" type="number" max="99999" maxlength="5" [(ngModel)] = 'this.currentUser.address.zip' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.address.zip}">
       </div>
-
+      <div class="col-xs-12">
+        <p class="col-xs-6 text-right vertically-centered">Make your account publically viewable?</p>
+        <input type="checkbox" class="col-xs-1" [(ngModel)] = 'this.currentUser.public'>
+      </div>
     </div>
   </div>
 

@@ -9,7 +9,7 @@ import { CompanyService } from '../../services/company.service'
 import { UserPastPerformanceProxyService } from '../../services/userpastperformanceproxy.service'
 import { AuthService } from "../../services/auth.service"
 import { RoleService } from "../../services/role.service"
-import  { CompanyPastperformanceProxyService } from "../../services/companypastperformanceproxy.service"
+import { CompanyPastperformanceProxyService } from "../../services/companypastperformanceproxy.service"
 import { s3Service } from "../../services/s3.service"
 
 import { environment } from "../../../environments/environment"
@@ -136,23 +136,33 @@ export class PastPerformanceEditComponent implements OnInit {
     var userId = this.auth.getLoggedInUser()
     //get user
     this.userService.getUserbyID(userId).toPromise().then((user) => {
-      //get the company ids where the user is admin
-      var relevantCompanyIds = user.companyUserProxies.filter(async (proxy) =>{
-        let returnVal;
-        await this.roleService.getRoleByID(proxy.role).toPromise().then(async (roleObj) => {
-         await roleObj.title == "admin"? returnVal = true: returnVal = false;
-        })
-        return returnVal
-      }).map((proxy) => proxy.company["_id"])
-      console.log("Relevent companies", relevantCompanyIds)
-      //then get the company ids associated with the past performance
-      var ppCompanyIds = this.currentPastPerformance.companyProxies.map((cproxy) => cproxy.company["_id"])
-      console.log("pp companies", ppCompanyIds)
-      //finally check if the two sets have anything in common.
-      for (const companyId of ppCompanyIds){
-        if(relevantCompanyIds.includes(companyId)){
+      console.log(user.power)
+      var superUser = false
+      if (user.power) {
+        if (user.power > 3) {
           this.isUserAdmin = true;
-          console.log("I'm a pp admin")
+          superUser = true
+        }
+      }
+      if (!superUser) {
+        //get the company ids where the user is admin
+        var relevantCompanyIds = user.companyUserProxies.filter(async (proxy) =>{
+          let returnVal;
+          await this.roleService.getRoleByID(proxy.role).toPromise().then(async (roleObj) => {
+            await roleObj.title == "admin"? returnVal = true: returnVal = false;
+          })
+          return returnVal
+        }).map((proxy) => proxy.company["_id"])
+        console.log("Relevent companies", relevantCompanyIds)
+        //then get the company ids associated with the past performance
+        var ppCompanyIds = this.currentPastPerformance.companyProxies.map((cproxy) => cproxy.company["_id"])
+        console.log("pp companies", ppCompanyIds)
+        //finally check if the two sets have anything in common.
+        for (const companyId of ppCompanyIds){
+          if(relevantCompanyIds.includes(companyId)){
+            this.isUserAdmin = true;
+            console.log("I'm a pp admin")
+          }
         }
       }
     })

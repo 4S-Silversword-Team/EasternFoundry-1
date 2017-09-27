@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PastPerformanceCreateComponent } from './past-performance-create.component';
+import { PastPerformanceEditComponent } from './past-performance-edit.component';
 
-describe('PastPerformanceCreateComponent', () => {
-  let component: PastPerformanceCreateComponent;
-  let fixture: ComponentFixture<PastPerformanceCreateComponent>;
+describe('PastPerformanceEditComponent', () => {
+  let component: PastPerformanceEditComponent;
+  let fixture: ComponentFixture<PastPerformanceEditComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PastPerformanceCreateComponent ]
+      declarations: [ PastPerformanceEditComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PastPerformanceCreateComponent);
+    fixture = TestBed.createComponent(PastPerformanceEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

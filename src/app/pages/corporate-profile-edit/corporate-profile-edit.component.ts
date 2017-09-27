@@ -115,6 +115,7 @@ export class CorporateProfileEditComponent implements OnInit {
       console.log('New Account!')
       this.currentAccount = companyService.getEmptyCompany();
       this.creatingNew = true;
+      this.promiseFinished = true
     }
   }
   }
