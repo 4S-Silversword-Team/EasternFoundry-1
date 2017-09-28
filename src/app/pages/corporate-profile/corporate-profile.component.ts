@@ -90,6 +90,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
             });
           }
         }
+        this.changeToTeam();
         this.promiseFinished = true;
       };
 
@@ -131,7 +132,6 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
       }
 
 //TIM
-    this.changeToTeam();
 
 //
   };
@@ -203,7 +203,7 @@ changeToTeam(){
 
 
 
-  showTeam(){
+  showTeam() {
     var data_prof = new Map();
     var data_peop = new Map();
     var skill = [];
@@ -225,9 +225,7 @@ changeToTeam(){
             data_prof.set(member.strength[j].skill, member.strength[j].score);
             data_peop.set(member.strength[j].skill, 1);
             skill.push(member.strength[j].skill);
-
           }
-
         }
       }
     }
@@ -238,90 +236,87 @@ changeToTeam(){
     }
 
     this.chart = new Chart({
-          chart: {
-              type: 'bar',
-              backgroundColor: '#FDF5EB',
-              renderTo: "team_chart",
-              height: 400
+      chart: {
+          type: 'bar',
+          backgroundColor: '#FDF5EB',
+          renderTo: "team_chart",
+          height: 400
+      },
+      title: {
+          text: 'Skills'
+      },
+      xAxis: [{
+          categories: skill,
+          options : {
+              endOnTick: false
           },
-          title: {
-              text: 'Skills'
-          },
-          xAxis: [{
-              categories: skill,
-              options : {
-                  endOnTick: false
-              },
-
-
-          }],
-          yAxis: [{ // Primary yAxis
+      }],
+      yAxis: [{ // Primary yAxis
 //            tickInterval: Math.round(100/numPeop),
 //            tickAmount: numPeop,
 //            max: 100,
-              // endOnTick:false ,
-              max:100,
-              min:0,
-              endOnTick: false,
-              alignTicks: false,
+          // endOnTick:false ,
+          max:100,
+          min:0,
+          endOnTick: false,
+          alignTicks: false,
 
-              ceiling: 100,
-              labels: {
-                  format: '{value}%',
-                  style: {
-                      color: '#434348'
-                  },
+          ceiling: 100,
+          labels: {
+              format: '{value}%',
+              style: {
+                  color: '#434348'
               },
-              title: {
-                  text: 'Proficiency',
-                  style: {
-                      color: '#434348'
-                  }
-              },
-          }, { // Secondary yAxis
-              max: numPeop,
-              tickInterval: 1,
+          },
+          title: {
+              text: 'Proficiency',
+              style: {
+                  color: '#434348'
+              }
+          },
+      }, { // Secondary yAxis
+          max: numPeop,
+          tickInterval: 1,
 //            tickAmount: numPeop,
 //              endOnTick:false ,
-              min:0,
-              endOnTick: false,
-              alignTicks: false,
+          min:0,
+          endOnTick: false,
+          alignTicks: false,
 
-              title: {
-                  text: 'Number of Employees',
-                  style: {
-                      color: '#7cb5ec'
-                  }
-              },
-              labels: {
-                  step: 1,
-                  format: '{value:.0f}',
-                  style: {
-                      color: '#7cb5ec'
-                  }
-              },
-              opposite: true
-          }],
-          tooltip: {
-              shared: true
+          title: {
+              text: 'Number of Employees',
+              style: {
+                  color: '#7cb5ec'
+              }
           },
-          series: [{
-              name: 'People',
-              type: 'column',
-              yAxis: 1,
-              data: peop,
-              tooltip: {
-                  valueSuffix: ' '
+          labels: {
+              step: 1,
+              format: '{value:.0f}',
+              style: {
+                  color: '#7cb5ec'
               }
-
-          }, {
-              name: 'Proficiency',
-              type: 'column',
-              data: prof,
-              tooltip: {
-                  valueSuffix: '%'
-              }
-          }]
+          },
+          opposite: true
+      }],
+      tooltip: {
+          shared: true
+      },
+      series: [{
+          name: 'People',
+          type: 'column',
+          yAxis: 1,
+          data: peop,
+          tooltip: {
+              valueSuffix: ' '
+          }
+      }, {
+          name: 'Proficiency',
+          type: 'column',
+          data: prof,
+          tooltip: {
+              valueSuffix: '%'
+          }
+      }]
     });
   }
 
