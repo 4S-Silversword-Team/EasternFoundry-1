@@ -53,6 +53,14 @@ export class CorporateProfileEditComponent implements OnInit {
   companyAdminCount: number;
   adminRoleId: string;
 
+  searchTerms = {
+    name: ''
+  };
+  searchResults = {
+    people: []
+  };
+  noResults = false
+
   promiseFinished: boolean = false;
 
   constructor(
@@ -198,9 +206,8 @@ export class CorporateProfileEditComponent implements OnInit {
   }
 
 
-  addEmployee(employeeId) {
+  addEmployee(employeeId, searchResultIndex) {
     if (!this.isUserAdmin){return;}
-
     let request = {
       "userProfile": employeeId,
       "company": this.route.snapshot.params['id'],
@@ -209,7 +216,11 @@ export class CorporateProfileEditComponent implements OnInit {
       "stillAffiliated": false
     }
     this.companyUserProxyService.addCompanyUserProxy(request).then(() =>
-    this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }));
+    this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => {
+      this.currentAccount.userProfileProxies = result.userProfileProxies;
+      this.refreshEmployees();
+      this.searchResults.people.splice(searchResultIndex, 1)
+    }));
   }
 
   deleteEmployee(proxyId, proxyRoleId){
@@ -300,6 +311,32 @@ export class CorporateProfileEditComponent implements OnInit {
     return this.userProfiles.map((profile) => {
       return profile.userId
     }).includes(this.auth.getLoggedInUser())
+  }
+
+  search() {
+    if (this.searchTerms.name) {
+      this.noResults = false
+      this.searchResults.people = []
+      for (let person of this.userProfilesAll) {
+        if (person.public) {
+          var name: string = person.firstName + ' ' + person.lastName
+          if (name.toLowerCase().includes(this.searchTerms.name.toLowerCase())) {
+            var alreadyThere = false
+            for (let employee of this.userProfiles) {
+              if (employee.username == person.username){
+                alreadyThere = true
+              }
+            }
+            if (!alreadyThere) {
+              this.searchResults.people.push(person)
+            }
+          }
+        }
+      }
+    }
+    if (this.searchResults.people.length < 1) {
+      this.noResults = true
+    }
   }
 
   addProduct() {

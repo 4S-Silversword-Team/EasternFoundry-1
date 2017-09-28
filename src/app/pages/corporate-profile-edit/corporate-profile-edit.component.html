@@ -79,34 +79,70 @@
     <div></div>
   </div>
   <div *ngIf="!creatingNew" class="container">
-    <div class="col-xs-12">
-      <table class="table">
-        <tr>
-        <th><span></span></th>
-        <th><span>Name</span></th>
-        <th><span>Email</span></th>
-        <th><span>Started</span></th>
-        <th><span>Ended</span></th>
-        <th><span>Affiliated?</span></th>
-        <th><span>Admin?</span></th>
-        <th><span>Leader?</span></th>
-        </tr>
-        <tr *ngFor='let employee of this.userProfiles'>
-          <td><span><button *ngIf="this.isUserAdmin" class="col-xs-2 col-sm-2 col-md-2 text-center" (click)="deleteEmployee(employee.proxyId, employee.role)">X</button></span></td>
-          <td><span>{{employee.name}}</span></td>
-          <td><span>{{employee.username}}</span></td>
-          <td><span><input style="width: 100%" (change)="updateEmployee(employee.proxyId,'startDate',employee.startDate)" [(ngModel)]="employee.startDate" onblur="(this.type='text')" onfocus="(this.type='date')"></span></td>
-          <td><span><input style="width: 100%" (change)="updateEmployee(employee.proxyId,'endDate',employee.endDate)" [(ngModel)]="employee.endDate" onblur="(this.type='text')" onfocus="(this.type='date')"></span></td>
-          <td><span><input type="checkbox" (change)="updateEmployee(employee.proxyId,'stillAffiliated',employee.stillAffiliated)" [(ngModel)]="employee.stillAffiliated" /></span></td>
-          <td><span><input *ngIf="this.isUserAdmin && employee.role != this.adminRoleId" class="btn btn-primary" (click)="updateEmployee(employee.proxyId, 'role', this.adminRoleId)" type="button" value="Make Admin"></span></td>
-          <td><span><input type="checkbox" (change)="updateEmployee(employee.proxyId,'leader',employee.leader)" [(ngModel)]="employee.leader" /></span></td>
-        </tr>
-      </table>
+    <div class="col-xs-12" style="width: 100%; position: relative">
+      <div class="col-xs-8 employee-item" *ngFor='let employee of this.userProfiles'>
+        <div class="search-item-x" (click)='deleteEmployee(employee.proxyId, employee.role)'>
+          X
+        </div>
+        <div class="col-xs-7" style="width: 60%; margin-right: -5px">
+          <div class="col-xs-7" style="margin-top: 15px">
+            <div class="col-xs-12">{{employee.name}}</div>
+            <div class="col-xs-12" style="margin-top: 20px">{{employee.username}}</div>
+          </div>
+          <div class="col-xs-5">
+            <input style="width: 100%" (change)="updateEmployee(employee.proxyId,'startDate',employee.startDate)" [(ngModel)]="employee.startDate" onblur="(this.type='text')" onfocus="(this.type='date')">
+            <input style="width: 100%" (change)="updateEmployee(employee.proxyId,'endDate',employee.endDate)" [(ngModel)]="employee.endDate" onblur="(this.type='text')" onfocus="(this.type='date')">
+          </div>
+        </div>
+        <div class="col-xs-5" style="margin-top: 15px; width: 40%">
+          <div style="width: 60%">
+            <div class="col-xs-12">
+              <div class="col-xs-9">
+                Leader?
+              </div>
+              <input class="col-xs-3" type="checkbox" (change)="updateEmployee(employee.proxyId,'leader',employee.leader)" [(ngModel)]="employee.leader" />
+            </div>
+            <div class="col-xs-12">
+              <div class="col-xs-9">
+                Still Affiliated?
+              </div>
+              <input class="col-xs-3" type="checkbox" (change)="updateEmployee(employee.proxyId,'stillAffiliated',employee.stillAffiliated)" [(ngModel)]="employee.stillAffiliated" />
+            </div>
+          </div>
+          <input style="width: 40%" class="col-xs-5" *ngIf="this.isUserAdmin && employee.role != this.adminRoleId" class="btn btn-primary" (click)="updateEmployee(employee.proxyId, 'role', this.adminRoleId)" type="button" value="Make Admin">
+        </div>
+      </div>
 
-      <select *ngIf="this.isUserAdmin" class="form-control" [(ngModel)]="this.newUserSelected">
+      <!-- <select *ngIf="this.isUserAdmin" class="form-control" [(ngModel)]="this.newUserSelected">
         <option *ngFor="let user of this.userProfilesAll" value={{user._id}}>{{user.firstName + " " + user.lastName + ": " + user.username }}</option>
-      </select>
-      <input *ngIf="this.isUserAdmin" type="button" value="Add employee" (click)="addEmployee(this.newUserSelected)"/>
+      </select> -->
+      <div class="col-xs-4 search-results-box">
+        <h3 style="text-align: center; margin-top: 10px; margin-bottom: 2px;">User Search</h3>
+        <input type="text" name="test" value="" class="col-xs-10" [(ngModel)]='searchTerms.name' (keyup.enter)="search()">
+        <button type="button" name="button" class="col-xs-2" style="font-size: 14px; text-align: center; padding: 0px" (click)='search()'>Search</button>
+        <div class="search-results-interior" style="padding-top: 0px">
+          <div class="search-results-interior-2" style="padding-top: 0px">
+            <div class="" *ngIf='this.searchRunning'>
+              <div class="loader"></div>
+            </div>
+            <div class="" *ngIf='!this.searchRunning'>
+              <div class="" *ngIf='this.noResults'>
+                <h4 style="text-align: center">No Results Found</h4>
+              </div>
+              <div class="" *ngIf='searchResults.people.length > 0'>
+                <div class="" *ngFor='let p of searchResults.people; let i = index'>
+                  <div class="search-item" (click)='addEmployee(p._id, i)'>
+                    <div class="search-item-not-expand col-xs-12">
+                      <div class="search-item-header">{{p.firstName}} {{p.lastName}}</div>
+                      <div class="search-item-subheader">{{p.username}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div *ngIf="creatingNew" class="container">

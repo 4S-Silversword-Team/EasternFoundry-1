@@ -8,7 +8,7 @@ import { Service } from '../../classes/service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { Highcharts } from 'angular-highcharts';
+import { Chart } from 'angular-highcharts';
 
 
 import { UserService } from '../../services/user.service';
@@ -45,7 +45,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   promiseFinished: boolean = false;
   team: User[]  = [];
   renderChart: boolean;
-  chart: Highcharts;
+  chart: any;
   isUserAdmin: boolean = false;
 
   constructor(
@@ -237,8 +237,7 @@ changeToTeam(){
       peop[k] = data_peop.get( skill[k] );
     }
 
-    var options = {
-
+    this.chart = new Chart({
           chart: {
               type: 'bar',
               backgroundColor: '#FDF5EB',
@@ -270,13 +269,13 @@ changeToTeam(){
               labels: {
                   format: '{value}%',
                   style: {
-                      // color: Highcharts.getOptions().colors[1]
+                      color: '#434348'
                   },
               },
               title: {
                   text: 'Proficiency',
                   style: {
-                      // color: Highcharts.getOptions().colors[1]
+                      color: '#434348'
                   }
               },
           }, { // Secondary yAxis
@@ -291,14 +290,14 @@ changeToTeam(){
               title: {
                   text: 'Number of Employees',
                   style: {
-                      color: Highcharts.getOptions().colors[0]
+                      color: '#7cb5ec'
                   }
               },
               labels: {
                   step: 1,
                   format: '{value:.0f}',
                   style: {
-                      color: Highcharts.getOptions().colors[0]
+                      color: '#7cb5ec'
                   }
               },
               opposite: true
@@ -323,8 +322,7 @@ changeToTeam(){
                   valueSuffix: '%'
               }
           }]
-    };
-    this.chart = new Highcharts.chart(options);
+    });
   }
 
 
