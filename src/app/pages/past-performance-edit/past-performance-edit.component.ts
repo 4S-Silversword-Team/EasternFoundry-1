@@ -41,6 +41,7 @@ export class PastPerformanceEditComponent implements OnInit {
   writeWidth: number = 800;
   rate: number = 0;
   isUserAdmin: boolean = false;
+  fieldsFilled: boolean = false;
   promiseFinished: boolean = false
 
   constructor(
@@ -171,6 +172,23 @@ export class PastPerformanceEditComponent implements OnInit {
     })
   }
 
+  checkFields(){
+    if (
+      this.currentPastPerformance.title &&
+      this.currentPastPerformance.client &&
+      this.currentPastPerformance.topic &&
+      this.currentPastPerformance.startDate &&
+      this.currentPastPerformance.endDate &&
+      this.currentPastPerformance.location &&
+      this.currentPastPerformance.value &&
+      this.currentPastPerformance.FTE
+    )
+    {
+      this.fieldsFilled = true
+    } else {
+      this.fieldsFilled = false
+    }
+  }
 
   uploadPhoto() {
     let fileBrowser = this.fileInput.nativeElement;
@@ -218,6 +236,9 @@ export class PastPerformanceEditComponent implements OnInit {
     // require auth of a signed in user with admin priveleges to the company that this past performance will be associated with.
     if (!this.isUserAdmin){return;}
 
+    if (!model.avatar) {
+      model.avatar = '../../assets/img/defaultLogo.png'
+    }
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     if ( !this.createMode ) {
     delete model['_id'];

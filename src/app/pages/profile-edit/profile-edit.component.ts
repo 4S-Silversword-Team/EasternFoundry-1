@@ -335,7 +335,12 @@ export class ProfileEditComponent implements OnInit {
 
   checkFields(){
     var profileCheck = true
-    if (!this.currentUser.firstName || !this.currentUser.lastName || !this.currentUser.username || !this.currentUser.cell || !this.currentUser.address.city || !this.currentUser.address.state){
+    if (!this.currentUser.firstName ||
+       !this.currentUser.lastName ||
+       !this.currentUser.username ||
+       !this.currentUser.cell ||
+       !this.currentUser.address.city ||
+       !this.currentUser.address.state){
       profileCheck = false
     }
 

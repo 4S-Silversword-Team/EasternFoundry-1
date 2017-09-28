@@ -25,7 +25,6 @@
             <div class="srow"><p class="left leftBorder two-p" [style.line-height]="'25px'">Information<br>accuracy</p><rating [(ngModel)]="this.currentAccount.informationAccuracy" [max]="5" class="right"></rating></div>
             <!--<div class="srow"><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">Service disable vetran owned</p></div>-->
         </div>
-
   </div>
 
   <div class="leadership leadership-big col-xs-12 clear">
@@ -265,8 +264,8 @@
         <div class="halfwidth left" *ngFor="let pp of pastperformances">
           <img src="{{pp.avatar}}" class="left avatar">
           <p class="col-xs-12">{{pp.title}}</p>
-          <p class="srow"><strong>Client</strong><br>{{pp.client}}</p>
-          <p class="srow"><strong>Project</strong><br>{{pp.topic}}</p>
+          <p><strong>Client</strong></p><p class="srow">{{pp.client}}</p>
+          <p><strong>Project</strong></p><p class="srow">{{pp.topic}}</p>
           <button class="col-xs-8 col-xs-offset-2" (click)='toPastPerformance(pp._id)'>More Information</button>
         </div>
       </div>
@@ -287,8 +286,8 @@
           <div *ngFor="let pp of pastperformances">
             <img src="{{pp.avatar}}" class="avatar">
             <p class="col-xs-12">{{pp.title}}</p>
-            <p class="srow"><strong>Client</strong><br>{{pp.client}}</p>
-            <p class="srow"><strong>Project</strong><br>{{pp.topic}}</p>
+            <p class="srow"><strong>Client</strong> {{pp.client}}</p>
+            <p class="srow"><strong>Project</strong> {{pp.topic}}</p>
             <button style="height: 4em;" (click)='toPastPerformance(pp._id)'>More Information</button>
           </div>
       </div>
