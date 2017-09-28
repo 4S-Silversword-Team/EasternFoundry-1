@@ -2,6 +2,11 @@
     height: 50px;
 }
 
+.empty-field {
+  border: 1px solid red;
+  background-color: rgba(255, 0, 0, 0.25);
+}
+
 selector {
     margin-top: 8px;
 }
