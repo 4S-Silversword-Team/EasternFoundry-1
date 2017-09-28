@@ -52,6 +52,7 @@ export class CorporateProfileEditComponent implements OnInit {
   isUserAdmin: boolean = false;
   companyAdminCount: number;
   adminRoleId: string;
+  fieldsFilled: boolean = false;
 
   searchTerms = {
     name: ''
@@ -116,6 +117,7 @@ export class CorporateProfileEditComponent implements OnInit {
           // this.router.navigateByUrl("/corporate-profile/"+this.route.snapshot.params['id'])
       }
       console.log('???????')
+      this.checkFields()
       this.promiseFinished = true
     };
     }
@@ -169,7 +171,6 @@ export class CorporateProfileEditComponent implements OnInit {
         this.s3Service.deletePhoto("/companyPhotos/"+uid+"_"+(i).toString()).toPromise().then( res => console.log("Old photo deleted " + res))
       }).catch((reason) =>console.log("reason ", reason));
     }
-
   }
 
   getAdminStatus() {
@@ -193,6 +194,23 @@ export class CorporateProfileEditComponent implements OnInit {
         })
       }
     })
+  }
+
+  checkFields(){
+    if (
+      this.currentAccount.name &&
+      this.currentAccount.email &&
+      this.currentAccount.contactNumber &&
+      this.currentAccount.address &&
+      this.currentAccount.city &&
+      this.currentAccount.state &&
+      this.currentAccount.zip
+    )
+    {
+      this.fieldsFilled = true
+    } else {
+      this.fieldsFilled = false
+    }
   }
 
   checkCompanyAdminCount() {
