@@ -94,11 +94,20 @@ selector {
   border: 2px solid #757575;
 }
 
+.employee-avatar {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 0px;
+  bottom: 0px;
+}
+
 .employee-item {
   border: 1px solid rgba(0, 0, 0, 0.1);
   background: rgba(0, 0, 0, 0.1);
   margin-bottom: 5px;
   padding-bottom: 5px;
+  padding-left: 20px;
 }
 
 .search-results-box {

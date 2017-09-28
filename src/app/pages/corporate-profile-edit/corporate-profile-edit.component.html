@@ -85,6 +85,8 @@
   <div *ngIf="!creatingNew" class="container">
     <div class="col-xs-12" style="width: 100%; position: relative">
       <div class="col-xs-8 employee-item" *ngFor='let employee of this.userProfiles'>
+        {{employee.avatar}}
+        <img src={{employee.avatar}} alt="" class="employee-avatar col-xs-12">
         <div (click)='deleteEmployee(employee.proxyId, employee.role)'>
           <img src="./assets/img/btn-close.png" alt="" class="search-item-x">
         </div>

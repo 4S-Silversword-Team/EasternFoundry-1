@@ -309,6 +309,7 @@ export class CorporateProfileEditComponent implements OnInit {
           "username": i.userProfile.username,
           "startDate": new Date(i.startDate).toDateString(),
           "endDate": new Date(i.endDate).toDateString(),
+          "avatar": i.userProfile.avatar,
           "stillAffiliated": i.stillAffiliated,
           "role": i.role,
           "leader": i.leader

@@ -153,6 +153,12 @@ textarea {
     background: none;
 }
 
+.half-panel {
+  background: rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.15);
+  padding-top: 12px;
+}
+
 .basic-info .div-title p{
     width: 250px;
 }

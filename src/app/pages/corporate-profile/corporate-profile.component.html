@@ -33,12 +33,14 @@
           <div></div>
       </div>
       <div *ngIf="users[0]" class="main clear">
-          <div class="halfwidth left" *ngFor='let index of users'>
+          <div class="halfwidth left" style="padding: 2px" *ngFor='let index of users'>
+            <div class="half-panel col-xs-12">
               <img src='{{ index.avatar }}' class="left avatar" [style.width]="'150px'">
               <p class="srow">{{ index.firstName + ' ' + index.lastName}}</p>
               <p *ngIf="index.positionHistory[0]" class="srow">{{ index.positionHistory[0].PositionTitle }}</p>
               <p class="srow">{{ index.username }}</p>
               <button class="col-xs-8 col-xs-offset-2" (click)="toUserProfile(index._id)">More Information</button>
+            </div>
           </div>
       </div>
     <div class="main clear" *ngIf="!users[0]">No leadership to show</div>
@@ -51,12 +53,14 @@
     </div>
     <div class="main clear"></div>
     <div style="display: flex; flex-wrap: wrap" *ngIf="users[0]" class="main main-collapse clear">
-      <div *ngFor='let index of users'>
-        <img src='{{ index.avatar }}' class="avatar" [style.width]="'150px'">
-        <p class="srow">{{ index.firstName + ' ' + index.lastName}}</p>
-        <p *ngIf="index.positionHistory[0]" class="srow">{{ index.positionHistory[0].PositionTitle }}</p>
-        <p class="srow">{{ index.username }}</p>
-        <button style="height: 4em" (click)="toUserProfile(index._id)">More Information</button>
+      <div class="halfwidth left" style="padding: 2px" *ngFor='let index of users'>
+        <div class="half-panel col-xs-12">
+          <img src='{{ index.avatar }}' class="avatar" [style.width]="'150px'">
+          <p class="srow">{{ index.firstName + ' ' + index.lastName}}</p>
+          <p *ngIf="index.positionHistory[0]" class="srow">{{ index.positionHistory[0].PositionTitle }}</p>
+          <p class="srow">{{ index.username }}</p>
+          <button style="height: 4em" (click)="toUserProfile(index._id)">More Information</button>
+        </div>
       </div>
     </div>
     <div class="main clear" *ngIf="!users[0]">No leadership to show</div>
@@ -69,13 +73,15 @@
       </div>
       <div class="main clear">
         <div class="" *ngIf='this.currentAccount.userProfileProxies'>
-          <div class="halfwidth left" *ngFor='let index of this.currentAccount.userProfileProxies'>
-            <div *ngIf="index.userProfile">
-              <img src='{{ index.userProfile.avatar }}' class="left avatar" [style.width]="'150px'">
-              <p class="srow">{{ index.userProfile.firstName + ' ' + index.userProfile.lastName}}</p>
-              <p *ngIf="index.userProfile.positionHistory[0]" class="srow">{{ index.userProfile.positionHistory[0].PositionTitle }}</p>
-              <p class="srow">{{ index.userProfile.username }}</p>
-              <button class="col-xs-8 col-xs-offset-2" (click)="toUserProfile(index.userProfile._id)">More Information</button>
+          <div class="halfwidth left" style="padding: 2px" *ngFor='let index of this.currentAccount.userProfileProxies'>
+            <div class="half-panel col-xs-12">
+              <div *ngIf="index.userProfile">
+                <img src='{{ index.userProfile.avatar }}' class="left avatar" [style.width]="'150px'">
+                <p class="srow">{{ index.userProfile.firstName + ' ' + index.userProfile.lastName}}</p>
+                <p *ngIf="index.userProfile.positionHistory[0]" class="srow">{{ index.userProfile.positionHistory[0].PositionTitle }}</p>
+                <p class="srow">{{ index.userProfile.username }}</p>
+                <button class="col-xs-8 col-xs-offset-2" (click)="toUserProfile(index.userProfile._id)">More Information</button>
+              </div>
             </div>
           </div>
         </div>
@@ -97,13 +103,15 @@
     <div class="main clear"></div>
     <div class="main main-collapse clear">
       <div style="display: flex; flex-wrap: wrap" class="" *ngIf='this.currentAccount.userProfileProxies'>
-        <div *ngFor='let index of this.currentAccount.userProfileProxies'>
-          <div *ngIf="index.userProfile">
-            <img src='{{ index.userProfile.avatar }}' class="avatar" [style.width]="'150px'">
-            <p class="srow">{{ index.userProfile.firstName + ' ' + index.userProfile.lastName}}</p>
-            <p *ngIf="index.userProfile.positionHistory[0]" class="srow">{{ index.userProfile.positionHistory[0].PositionTitle }}</p>
-            <p class="srow">{{ index.userProfile.username }}</p>
-            <button (click)="toUserProfile(index.userProfile._id)">More Information</button>
+        <div class="" style="padding: 2px" *ngFor='let index of this.currentAccount.userProfileProxies'>
+          <div class="half-panel col-xs-12">
+            <div *ngIf="index.userProfile">
+              <img src='{{ index.userProfile.avatar }}' class="avatar" [style.width]="'150px'">
+              <p class="srow">{{ index.userProfile.firstName + ' ' + index.userProfile.lastName}}</p>
+              <p *ngIf="index.userProfile.positionHistory[0]" class="srow">{{ index.userProfile.positionHistory[0].PositionTitle }}</p>
+              <p class="srow">{{ index.userProfile.username }}</p>
+              <button (click)="toUserProfile(index.userProfile._id)">More Information</button>
+            </div>
           </div>
         </div>
       </div>
@@ -261,15 +269,19 @@
     <div class="main clear">
       <div *ngIf="!pastperformances[0]">No past performance to show</div>
       <div *ngIf="pastperformances[0]">
-        <div class="halfwidth left" *ngFor="let pp of pastperformances">
-          <img src="{{pp.avatar}}" class="left avatar">
-          <p class="col-xs-12">{{pp.title}}</p>
-          <p><strong>Client</strong></p><p class="srow">{{pp.client}}</p>
-          <p><strong>Project</strong></p><p class="srow">{{pp.topic}}</p>
-          <button class="col-xs-8 col-xs-offset-2" (click)='toPastPerformance(pp._id)'>More Information</button>
+        <div class="halfwidth left" style="padding: 2px" *ngFor="let pp of pastperformances">
+          <div class="half-panel col-xs-12">
+            <img src="{{pp.avatar}}" class="left avatar">
+            <p class="col-xs-12">{{pp.title}}</p>
+            <p><strong>Client</strong></p><p class="srow">{{pp.client}}</p>
+            <p><strong>Project</strong></p><p class="srow">{{pp.topic}}</p>
+            <button class="col-xs-8 col-xs-offset-2" (click)='toPastPerformance(pp._id)'>More Information</button>
+          </div>
         </div>
       </div>
-      <button *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
+      <div class="col-xs-12">
+        <button class="col-xs-4 col-xs-offset-4" *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
+      </div>
     </div>
   </div>
 
@@ -283,12 +295,14 @@
     <div class="main main-collapse clear">
       <div *ngIf="!pastperformances[0]">No past performance to show</div>
       <div style="display: flex; flex-wrap: wrap" *ngIf="pastperformances[0]">
-          <div *ngFor="let pp of pastperformances">
-            <img src="{{pp.avatar}}" class="avatar">
-            <p class="col-xs-12">{{pp.title}}</p>
-            <p class="srow"><strong>Client</strong> {{pp.client}}</p>
-            <p class="srow"><strong>Project</strong> {{pp.topic}}</p>
-            <button style="height: 4em;" (click)='toPastPerformance(pp._id)'>More Information</button>
+          <div style="padding: 2px" *ngFor="let pp of pastperformances">
+            <div class="half-panel col-xs-12">
+              <img src="{{pp.avatar}}" class="avatar">
+              <p class="col-xs-12">{{pp.title}}</p>
+              <p class="srow"><strong>Client</strong> {{pp.client}}</p>
+              <p class="srow"><strong>Project</strong> {{pp.topic}}</p>
+              <button style="height: 4em;" (click)='toPastPerformance(pp._id)'>More Information</button>
+            </div>
           </div>
       </div>
       <button *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
