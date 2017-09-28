@@ -216,15 +216,61 @@ changeToTeam(){
       console.log(numPeop);
       var member = i.userProfile;
       if (member) {
-        for (var j = 0; j < member.strength.length; j++) {
-          if (data_prof.has(member.strength[j].skill)) {
-            data_prof.set(member.strength[j].skill, data_prof.get(member.strength[j].skill) + member.strength[j].score);
-            data_peop.set(member.strength[j].skill, data_peop.get(member.strength[j].skill) + 1);
+        var occupations = []
+        var toolsToPush = []
+        for (let tool of member.foundTools) {
+          var matchFound = false
+          for (let position of tool.position) {
+            for (let toolDone of toolsToPush) {
+              if (position == toolDone.title) {
+                toolDone.score += 5
+                matchFound = true
+              }
+            }
+            if (!matchFound) {
+              var newPosition = {
+                title: '',
+                score: 0
+              }
+              newPosition.title = position
+              newPosition.score = 5
+              toolsToPush.push(newPosition)
+            }
           }
-          if (!data_prof.has(member.strength[j].skill)) {
-            data_prof.set(member.strength[j].skill, member.strength[j].score);
-            data_peop.set(member.strength[j].skill, 1);
-            skill.push(member.strength[j].skill);
+        }
+        if (toolsToPush.length < 2) {
+          for (let o of member.occupations) {
+            var newOccupation = {
+              title: '',
+              score: 0
+            }
+            newOccupation.title = o.title
+            newOccupation.score = o.score
+            occupations.push(newOccupation)
+
+          }
+        } else {
+          for (let tool of toolsToPush) {
+            for (let o of member.occupations) {
+              if (tool.title == o.title) {
+                tool.score += (o.score / 5)
+              }
+            }
+            if (tool.score > 50) {
+              occupations.push(tool)
+            }
+          }
+        }
+
+        for (var j = 0; j < occupations.length; j++) {
+          if (data_prof.has(occupations[j].title)) {
+            data_prof.set(occupations[j].title, data_prof.get(occupations[j].title) + occupations[j].score);
+            data_peop.set(occupations[j].title, data_peop.get(occupations[j].title) + 1);
+          }
+          if (!data_prof.has(occupations[j].title)) {
+            data_prof.set(occupations[j].title, occupations[j].score);
+            data_peop.set(occupations[j].title, 1);
+            skill.push(occupations[j].title);
           }
         }
       }

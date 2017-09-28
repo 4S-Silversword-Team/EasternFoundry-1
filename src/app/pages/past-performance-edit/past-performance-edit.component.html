@@ -1,161 +1,170 @@
-<div class="past-performance col-xs-12 clear">
-  <div class="btn-back" (click) = 'this.location.back()'></div>
+<div class="container" *ngIf='!this.promiseFinished'>
+  <div class="loader"></div>
+  <!-- <p class="loading">Loading</p> -->
+</div>
+<div class="past-performance col-xs-12 clear" *ngIf='this.promiseFinished && !this.isUserAdmin'>
+  <h3>You don't have permission to edit this Past Performance.</h3>
+</div>
+<div class="" *ngIf='this.isUserAdmin'>
+  <div class="past-performance col-xs-12 clear">
+    <div class="btn-back" (click) = 'this.location.back()'></div>
     <div class="div-title col-xs-12">
-        <img src="./assets/img/performance.png">
-        <p>PAST PERFORMANCE</p>
-        <div></div>
+      <img src="./assets/img/performance.png">
+      <p>PAST PERFORMANCE</p>
+      <div></div>
     </div>
     <div class="container">
-        <div class="form-horizontal col-xs-6 left" [style.border-right] = "'3px solid #757575'">
-            <div class="form-group col-xs-12 col-sm-12 srow">
-                <p class="col-xs-3 col-sm-3 left lh-50">Title of PP</p>
-              <div class="col-xs-9 col-sm-9"><input type="text" placeholder="Past Performance" style="width: 100%" class="right" [(ngModel)] = 'this.currentPastPerformance.title'></div>
-            </div>
-            <div class="form-group col-xs-12 col-sm-12 srow">
-                <p class="col-xs-3 col-sm-3 left lh-50">Client</p>
-              <div class="col-xs-9 col-sm-9"><input type="text" placeholder="Client" style="width: 100%" class="right" [(ngModel)] = "this.currentPastPerformance.client"></div>
-            </div>
-            <div class="form-group col-xs-12 col-sm-12 srow">
-                <p class="col-xs-3 col-sm-3 left lh-50">Topic</p>
-              <div class="col-xs-9 col-sm-9"><input type="text" placeholder="Topic" style="width: 100%" class="right" [(ngModel)] = "this.currentPastPerformance.topic"></div>
-            </div>
-            <div class="form-group col-xs-12 col-sm-12 srow">
-                <p class="col-xs-3 col-sm-3 left lh-50">Cleared</p>
-              <div class="col-xs-9 col-sm-9"><input type="checkbox" [(ngModel)] = "this.currentPastPerformance.cleared" name="cleared" class="right"></div>
-            </div>
-            <div class="form-group col-xs-12 col-sm-12 srow">
-                <p class="col-xs-3 col-sm-3 left lh-50">Publically Viewable</p>
-              <div class="col-xs-9 col-sm-9"><input type="checkbox" [(ngModel)] = "this.currentPastPerformance.public" name="public" class="right"></div>
-            </div>
-            <div *ngIf="!createMode" class="col-xs-12">
-                <p class="left lh-50">Image</p>
-                <img *ngIf="this.currentPastPerformance.avatar" src="{{this.currentPastPerformance.avatar}}" class="avatar right">
-                <div *ngIf="!createMode && (!this.currentPastPerformance.avatar || this.currentPastPerformance.avatar.startsWith('..'))" style="clear: both">
-                  <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
-                  <button style="color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;" class="btn btn-primary" (click)="uploadPhoto()">Upload Photo</button>
-                </div>
-                <div *ngIf="this.currentPastPerformance.avatar && !this.currentPastPerformance.avatar.startsWith('..')" style="clear: both">
-                  <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
-                  <button style="color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;" class="btn btn-primary" (click)="editPhoto()">Edit Photo</button>
-                </div>
-                <!--<div class="right text-container div-uploadImage" [style.width]="''+ppInputWidth+'px'">-->
-                    <!--<p class="left lh-50" [style.cursor] = "'pointer'" (click) = 'uploadImage()' >Upload Image</p>-->
-                <!--</div>-->
-            </div>
+      <div class="form-horizontal col-xs-6 left" [style.border-right] = "'3px solid #757575'">
+        <div class="form-group col-xs-12 col-sm-12 srow">
+          <p class="col-xs-3 col-sm-3 left lh-50">Title of PP</p>
+          <div class="col-xs-9 col-sm-9"><input type="text" placeholder="Past Performance" style="width: 100%" class="right" [(ngModel)] = 'this.currentPastPerformance.title'></div>
         </div>
-        <div class="form-horizontal col-xs-6 right">
-            <div class="form-group col-xs-12 col-sm-12 srow">
-                <p class="col-xs-3 col-sm-3 left lh-25">Functional<br>area in PP</p>
-              <div class="col-xs-9 col-sm-9"><input type="text" placeholder="Functional area in PP" class="right" style="width: 100%"></div>
-            </div>
-            <div class="form-group col-xs-12 col-sm-12 srow">
-                <p class="col-xs-3 col-sm-3 left lh-50">Start Date</p>
-              <div class="col-xs-9 col-sm-9"><input [(ngModel)]="this.currentPastPerformance.startDate" placeholder="Start Date" style="width: 100%" class="right"></div>
-            </div>
-            <div class="form-group col-xs-12 col-sm-12 srow">
-                <p class="col-xs-3 col-sm-3 left lh-50">End Date</p>
-              <div class="col-xs-9 col-sm-9"><input [(ngModel)]="this.currentPastPerformance.endDate" placeholder="End Date" style="width: 100%" class="right"></div>
-            </div>
-            <div class="form-group col-xs-12 col-sm-12 srow">
-                <p class="col-xs-3 col-sm-3 left lh-50">Rating</p>
-              <div class="col-xs-9 col-sm-9"><rating [(ngModel)]="this.currentPastPerformance.rating" [max]="5" [readonly]="isReadOnly" class="right srow" [style.line-height]="'50px'"></rating></div>
-            </div>
-            <div class="form-group col-xs-12 col-sm-12 srow mt15">
-                <p class="col-xs-3 col-sm-3 left lh-25">Location<br>(zipcode)</p>
-              <div class="col-xs-9 col-sm-9"><input type="text" [(ngModel)] = "this.currentPastPerformance.location" placeholder="Your zipcode" class="right" style="width: 100%"></div>
-            </div>
-            <div class="form-group col-xs-12 col-sm-12 srow mt15">
-                <p class="col-xs-3 col-sm-3 left lh-25">Value of work<br>done ($)</p>
-              <div class="col-xs-9 col-sm-9"><input type="text" [(ngModel)] = "this.currentPastPerformance.value" placeholder="Value in $" class="right" style="width: 100%"></div>
-            </div>
-            <div class="form-group col-xs-12 col-sm-12 srow mt15">
-                <p class="col-xs-3 col-sm-3 left lh-50"># of FTE</p>
-              <div class="col-xs-9 col-sm-9"><input type="text" [(ngModel)] = "this.currentPastPerformance.FTE" placeholder="FTE" class="right" style="width: 100%"></div>
-            </div>
+        <div class="form-group col-xs-12 col-sm-12 srow">
+          <p class="col-xs-3 col-sm-3 left lh-50">Client</p>
+          <div class="col-xs-9 col-sm-9"><input type="text" placeholder="Client" style="width: 100%" class="right" [(ngModel)] = "this.currentPastPerformance.client"></div>
         </div>
+        <div class="form-group col-xs-12 col-sm-12 srow">
+          <p class="col-xs-3 col-sm-3 left lh-50">Topic</p>
+          <div class="col-xs-9 col-sm-9"><input type="text" placeholder="Topic" style="width: 100%" class="right" [(ngModel)] = "this.currentPastPerformance.topic"></div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 srow">
+          <p class="col-xs-3 col-sm-3 left lh-50">Cleared</p>
+          <div class="col-xs-9 col-sm-9"><input type="checkbox" [(ngModel)] = "this.currentPastPerformance.cleared" name="cleared" class="right"></div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 srow">
+          <p class="col-xs-3 col-sm-3 left lh-50">Publically Viewable</p>
+          <div class="col-xs-9 col-sm-9"><input type="checkbox" [(ngModel)] = "this.currentPastPerformance.public" name="public" class="right"></div>
+        </div>
+        <div *ngIf="!createMode" class="col-xs-12">
+          <p class="left lh-50">Image</p>
+          <img *ngIf="this.currentPastPerformance.avatar" src="{{this.currentPastPerformance.avatar}}" class="avatar right">
+          <div *ngIf="!createMode && (!this.currentPastPerformance.avatar || this.currentPastPerformance.avatar.startsWith('..'))" style="clear: both">
+            <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
+            <button style="color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;" class="btn btn-primary" (click)="uploadPhoto()">Upload Photo</button>
+          </div>
+          <div *ngIf="this.currentPastPerformance.avatar && !this.currentPastPerformance.avatar.startsWith('..')" style="clear: both">
+            <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
+            <button style="color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;" class="btn btn-primary" (click)="editPhoto()">Edit Photo</button>
+          </div>
+          <!--<div class="right text-container div-uploadImage" [style.width]="''+ppInputWidth+'px'">-->
+          <!--<p class="left lh-50" [style.cursor] = "'pointer'" (click) = 'uploadImage()' >Upload Image</p>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="form-horizontal col-xs-6 right">
+        <div class="form-group col-xs-12 col-sm-12 srow">
+          <p class="col-xs-3 col-sm-3 left lh-25">Functional<br>area in PP</p>
+          <div class="col-xs-9 col-sm-9"><input type="text" placeholder="Functional area in PP" class="right" style="width: 100%"></div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 srow">
+          <p class="col-xs-3 col-sm-3 left lh-50">Start Date</p>
+          <div class="col-xs-9 col-sm-9"><input [(ngModel)]="this.currentPastPerformance.startDate" placeholder="Start Date" style="width: 100%" class="right"></div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 srow">
+          <p class="col-xs-3 col-sm-3 left lh-50">End Date</p>
+          <div class="col-xs-9 col-sm-9"><input [(ngModel)]="this.currentPastPerformance.endDate" placeholder="End Date" style="width: 100%" class="right"></div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 srow">
+          <p class="col-xs-3 col-sm-3 left lh-50">Rating</p>
+          <div class="col-xs-9 col-sm-9"><rating [(ngModel)]="this.currentPastPerformance.rating" [max]="5" [readonly]="isReadOnly" class="right srow" [style.line-height]="'50px'"></rating></div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 srow mt15">
+          <p class="col-xs-3 col-sm-3 left lh-25">Location<br>(zipcode)</p>
+          <div class="col-xs-9 col-sm-9"><input type="text" [(ngModel)] = "this.currentPastPerformance.location" placeholder="Your zipcode" class="right" style="width: 100%"></div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 srow mt15">
+          <p class="col-xs-3 col-sm-3 left lh-25">Value of work<br>done ($)</p>
+          <div class="col-xs-9 col-sm-9"><input type="text" [(ngModel)] = "this.currentPastPerformance.value" placeholder="Value in $" class="right" style="width: 100%"></div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 srow mt15">
+          <p class="col-xs-3 col-sm-3 left lh-50"># of FTE</p>
+          <div class="col-xs-9 col-sm-9"><input type="text" [(ngModel)] = "this.currentPastPerformance.FTE" placeholder="FTE" class="right" style="width: 100%"></div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
-<div *ngIf="!this.createMode" class="employee col-xs-12 clear">
+  <div *ngIf="!this.createMode" class="employee col-xs-12 clear">
     <div class="div-title col-xs-12">
-        <img src="./assets/img/employee.png">
-        <p>EMPLOYEES</p>
-        <div></div>
+      <img src="./assets/img/employee.png">
+      <p>EMPLOYEES</p>
+      <div></div>
     </div>
     <div class="container">
 
 
 
-        <table style="margin-top: 1em" class="table">
-          <tr>
-            <th></th>
-            <th><span>Name</span></th>
-            <th><span>Start Date</span></th>
-            <th><span>End Date</span></th>
-            <th><span>Still Affiliated?</span></th>
-            <th><span>Role</span></th>
+      <table style="margin-top: 1em" class="table">
+        <tr>
+          <th></th>
+          <th><span>Name</span></th>
+          <th><span>Start Date</span></th>
+          <th><span>End Date</span></th>
+          <th><span>Still Affiliated?</span></th>
+          <th><span>Role</span></th>
 
-          </tr>
-	          <tr *ngFor=" let employee of this.userProfiles">
-	            <td>
-	              <button *ngIf="this.isUserAdmin" (click)="deleteEmployee(employee.proxyId)" style="width: 1.5em; height: 1.75em; margin-right: 1em;">X</button>
-	            </td>
-	            <td>
-	              <span>{{employee.name}}</span>
-	            </td>
-              <!-- <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" onblur="(this.type='text')" onfocus="(this.type='date')" placeholder="{{employee.startDate}}"></span> -->
+        </tr>
+        <tr *ngFor=" let employee of this.userProfiles">
+          <td>
+            <button *ngIf="this.isUserAdmin" (click)="deleteEmployee(employee.proxyId)" style="width: 1.5em; height: 1.75em; margin-right: 1em;">X</button>
+          </td>
+          <td>
+            <span>{{employee.name}}</span>
+          </td>
+          <!-- <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" onblur="(this.type='text')" onfocus="(this.type='date')" placeholder="{{employee.startDate}}"></span> -->
 
-              <td>
-	              <span><input (change)="updateEmployee(employee.proxyId, 'startDate', employee.startDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="employee.startDate"></span>
-	            </td>
-              <td>
-	              <span><input (change)="updateEmployee(employee.proxyId, 'endDate', employee.endDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="employee.endDate"></span>
-	            </td>
+          <td>
+            <span><input (change)="updateEmployee(employee.proxyId, 'startDate', employee.startDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="employee.startDate"></span>
+          </td>
+          <td>
+            <span><input (change)="updateEmployee(employee.proxyId, 'endDate', employee.endDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="employee.endDate"></span>
+          </td>
 
-	            <td>
-                <span><input (change)="updateEmployee(employee.proxyId, 'stillAffiliated', employee.stillAffiliated)" type="checkbox" [(ngModel)]="employee.stillAffiliated" /></span>
-	              <!-- <input style="margin-top:.75em; margin-left:1em" type="checkbox" [(ngModel)] = "this.currentPastPerformance.employees[i].stillWith" name="stillWith"> -->
-	          </td>
-            <td>
-              <span><input (blur)="updateEmployee(employee.proxyId, 'role', employee.role)" type="text" [(ngModel)]="employee.role" /></span>
-            </td>
-            </tr>
+          <td>
+            <span><input (change)="updateEmployee(employee.proxyId, 'stillAffiliated', employee.stillAffiliated)" type="checkbox" [(ngModel)]="employee.stillAffiliated" /></span>
+            <!-- <input style="margin-top:.75em; margin-left:1em" type="checkbox" [(ngModel)] = "this.currentPastPerformance.employees[i].stillWith" name="stillWith"> -->
+          </td>
+          <td>
+            <span><input (blur)="updateEmployee(employee.proxyId, 'role', employee.role)" type="text" [(ngModel)]="employee.role" /></span>
+          </td>
+        </tr>
 
-	        </table>
-          <select *ngIf="this.isUserAdmin" style="margin-top: 1em" class="form-control" [(ngModel)]="this.newUserSelected">
-            <option *ngFor="let user of this.allCompanyEmployees" value={{user._id}}>{{user.firstName}} {{user.lastName}}: {{user.username}}</option>
-          </select>
+      </table>
+      <select *ngIf="this.isUserAdmin" style="margin-top: 1em" class="form-control" [(ngModel)]="this.newUserSelected">
+        <option *ngFor="let user of this.allCompanyEmployees" value={{user._id}}>{{user.firstName}} {{user.lastName}}: {{user.username}}</option>
+      </select>
 
-        <div *ngIf="this.isUserAdmin" class="col-xs-12" [style.margin]="'auto'" [style.margin-top]="'1em'"><button class="center-block" (click)="addEmployee(this.newUserSelected)">Add</button></div>
+      <div *ngIf="this.isUserAdmin" class="col-xs-12" [style.margin]="'auto'" [style.margin-top]="'1em'"><button class="center-block" (click)="addEmployee(this.newUserSelected)">Add</button></div>
 
     </div>
-</div>
+  </div>
 
-<div class="write-up col-xs-12 clear">
+  <div class="write-up col-xs-12 clear">
     <div class="div-title col-xs-12">
-        <img src="./assets/img/write-up.png">
-        <p>WRITE UP</p>ˀ
-        <div></div>
+      <img src="./assets/img/write-up.png">
+      <p>WRITE UP</p>ˀ
+      <div></div>
     </div>
     <div [style.width]="''+writeWidth+'px'">
-        <div class="text-container col-xs-12" [style.height]="'200px'"><p class="col-xs-12">Synopsis</p><textarea [(ngModel)] = 'this.currentPastPerformance.synopsis'></textarea></div>
-        <div class="text-container col-xs-6" [style.height]="'300px'"><p class="col-xs-12">Technical Challenge, approach and outcome</p><textarea [(ngModel)] = 'this.currentPastPerformance.technical'></textarea></div>
-        <div class="text-container col-xs-6" [style.height]="'300px'"><p class="col-xs-12">Management Challenge, approach and outcome</p><textarea [(ngModel)] = 'this.currentPastPerformance.management'></textarea></div>
-        <div class="text-container col-xs-12" [style.height]="'200px'"><p class="col-xs-12">Other</p><textarea [(ngModel)] = 'this.currentPastPerformance.other'></textarea></div>
+      <div class="text-container col-xs-12" [style.height]="'200px'"><p class="col-xs-12">Synopsis</p><textarea [(ngModel)] = 'this.currentPastPerformance.synopsis'></textarea></div>
+      <div class="text-container col-xs-6" [style.height]="'300px'"><p class="col-xs-12">Technical Challenge, approach and outcome</p><textarea [(ngModel)] = 'this.currentPastPerformance.technical'></textarea></div>
+      <div class="text-container col-xs-6" [style.height]="'300px'"><p class="col-xs-12">Management Challenge, approach and outcome</p><textarea [(ngModel)] = 'this.currentPastPerformance.management'></textarea></div>
+      <div class="text-container col-xs-12" [style.height]="'200px'"><p class="col-xs-12">Other</p><textarea [(ngModel)] = 'this.currentPastPerformance.other'></textarea></div>
     </div>
-</div>
+  </div>
 
-<div class="relates-to col-xs-12 clear">
+  <div class="relates-to col-xs-12 clear">
     <div class="div-title col-xs-12">
-        <img src="./assets/img/profile/capabilities-1.png">
-        <p>CAPABILITIES THIS PP RELATES TO</p>
-        <div></div>
+      <img src="./assets/img/profile/capabilities-1.png">
+      <p>CAPABILITIES THIS PP RELATES TO</p>
+      <div></div>
     </div>
     <div [style.width]="''+writeWidth+'px'">
-        <div class="col-xs-6 srow"><input type="text" placeholder="Capability 1" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
-        <div class="col-xs-6 srow"><input type="text" placeholder="Capability 2" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
-        <div class="col-xs-6 srow"><input type="text" placeholder="Capability 3" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
-        <div class="col-xs-6 srow"><input type="text" placeholder="Capability 4" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
-        <div *ngIf="this.isUserAdmin" class="col-xs-12" [style.margin]="'auto'"><button style="margin-top: 1.5em" class="center-block" (click)="updatePP(this.currentPastPerformance)">Save</button></div>
+      <div class="col-xs-6 srow"><input type="text" placeholder="Capability 1" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
+      <div class="col-xs-6 srow"><input type="text" placeholder="Capability 2" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
+      <div class="col-xs-6 srow"><input type="text" placeholder="Capability 3" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
+      <div class="col-xs-6 srow"><input type="text" placeholder="Capability 4" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
+      <div *ngIf="this.isUserAdmin" class="col-xs-12" [style.margin]="'auto'"><button style="margin-top: 1.5em" class="center-block" (click)="updatePP(this.currentPastPerformance)">Save</button></div>
     </div>
+  </div>
 </div>

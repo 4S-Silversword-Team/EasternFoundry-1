@@ -41,6 +41,7 @@ export class PastPerformanceEditComponent implements OnInit {
   writeWidth: number = 800;
   rate: number = 0;
   isUserAdmin: boolean = false;
+  promiseFinished: boolean = false
 
   constructor(
     private pastPerformanceService: PastperformanceService,
@@ -94,6 +95,7 @@ export class PastPerformanceEditComponent implements OnInit {
         "role": i.role
       })
     }
+    this.promiseFinished = true
   }
 
   myCallback2() {
@@ -126,6 +128,7 @@ export class PastPerformanceEditComponent implements OnInit {
           if (role.title && role.title == "admin") {
             this.isUserAdmin = true;
             console.log("I'm admin")
+            this.promiseFinished = true
           }
         })
       }

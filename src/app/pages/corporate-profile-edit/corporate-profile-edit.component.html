@@ -81,8 +81,8 @@
   <div *ngIf="!creatingNew" class="container">
     <div class="col-xs-12" style="width: 100%; position: relative">
       <div class="col-xs-8 employee-item" *ngFor='let employee of this.userProfiles'>
-        <div class="search-item-x" (click)='deleteEmployee(employee.proxyId, employee.role)'>
-          X
+        <div (click)='deleteEmployee(employee.proxyId, employee.role)'>
+          <img src="./assets/img/btn-close.png" alt="" class="search-item-x">
         </div>
         <div class="col-xs-7" style="width: 60%; margin-right: -5px">
           <div class="col-xs-7" style="margin-top: 15px">
