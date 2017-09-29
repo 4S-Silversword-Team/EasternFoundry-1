@@ -97,18 +97,13 @@ export class ProfileEditComponent implements OnInit {
         for (let tool of this.allTools) {
           for (let t of this.currentUser.foundTools) {
             if (t.title.toLowerCase() == tool.title.toLowerCase() && t.position.length < 1) {
-              console.log('WE GOT IT')
+              console.log('Adding missing tool data to ' + tool.title + '...')
               t.category = tool.category
               t.classification = tool.classification
               t.position = tool.position
-              console.log(t.position[0])
             }
           }
         }
-        for (let t of this.currentUser.foundTools) {
-          console.log(t.position[0])
-        }
-
       });
 
     if (this.router.url !== '/user-profile-create') {

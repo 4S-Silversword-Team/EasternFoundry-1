@@ -245,6 +245,7 @@ export class ProfileComponent implements OnInit {
           }
           newOccupation.title = o.title
           newOccupation.score = o.score
+          console.log(newOccupation.title)
           this.occupations.push(newOccupation)
 
         }
@@ -255,10 +256,15 @@ export class ProfileComponent implements OnInit {
               tool.score += (o.score / 5)
             }
           }
-          if (tool.score > 50) {
-            this.occupations.push(tool)
-          }
         }
+        toolsToPush.sort(function(a,b){
+          return parseFloat(b.score) - parseFloat(a.score);
+        })
+        for (var i = 0; i < 5; i++) {
+          this.occupations.push(toolsToPush[i])
+          console.log(toolsToPush[i].score)
+        }
+
       }
       // for (let o of this.occupations) {
       //   console.log(o.title + ' ' + o.score)

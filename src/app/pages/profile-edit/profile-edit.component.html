@@ -515,8 +515,9 @@
       </div>
   </div>
   <div class="col-xs-6 col-xs-offset-3" style="margin-bottom: 1%">
-    <button class="btn btn-primary btn-block" (click)="updateProfile(this.currentUser)" *ngIf='this.fieldsFilled'>Save Changes</button>
+    <button class="btn btn-primary btn-block" (click)="updateProfile(this.currentUser)" *ngIf='this.fieldsFilled && this.allTools.length > 0'>Save Changes</button>
     <button class="btn btn-primary btn-block" style="background-color: red" *ngIf='!this.fieldsFilled'>Page Unfinished</button>
+    <button class="btn btn-primary btn-block" style="background-color: red" *ngIf='this.fieldsFilled && this.allTools.length < 1'>Please wait...</button>
   </div>
   <br>
 
