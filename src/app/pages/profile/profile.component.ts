@@ -153,35 +153,31 @@ export class ProfileComponent implements OnInit {
       for (let job of this.currentUser.positionHistory) {
         job.Year = +job.StartDate.slice(0, 4);
         var endYear = 0
-        if (job.EndDate.slice(0, 4)) {
+        if (job.EndDate.slice(0, 4) == "Curr") {
           endYear = new Date().getFullYear()
         } else {
           endYear = +job.EndDate.slice(0, 4)
         }
         for (let agency of job.agencyExperience) {
+          var newAgency: any = agency
+          newAgency.years = (endYear - job.Year)
+          if (newAgency.years == 0) {
+            newAgency.years = 1
+          }
           var nameMatch = false
           for (let i of this.agencyExperience) {
-            if (agency.main.title.length !=- "") {
-              if (agency.main.title == i.main.title) {
-                i.main.data[0].score = (i.main.data[0].score + agency.main.data[0].score)
-                nameMatch = true
+            if (newAgency.main.title.length != "") {
+              if (newAgency.main.title == i.main.title) {
+                i.years =+ newAgency.years
               }
             }
           }
           if (nameMatch == false && job.agencyExperience[0].main.title.length > 0) {
             if (this.agencyExperience[0] == null) {
-              var newAgency: any = job.agencyExperience[0]
-              newAgency.years = (endYear - job.Year)
-              if (newAgency.years == 0) {
-                newAgency.years = 1
-              }
+              console.log(agency.main.title + ': ' + endYear + ', ' + job.Year)
               this.agencyExperience[0] = newAgency
             } else {
-              var newAgency: any = agency
-              newAgency.years = (endYear - job.Year)
-              if (newAgency.years == 0) {
-                newAgency.years = 1
-              }
+              console.log(agency.main.title + ': ' + endYear + ', ' + job.Year)
               this.agencyExperience.push(newAgency)
             }
           }
@@ -330,10 +326,6 @@ export class ProfileComponent implements OnInit {
         var prof = [];
         var peop = [];
         var numPeop = 0;
-
-        for (let i of this.agencyExperience) {
-          console.log(i)
-        }
         for (var j = 0; j < this.agencyExperience.length; j++) {
           if (data_prof.has(this.agencyExperience[j].main.title)) {
 
