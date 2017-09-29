@@ -435,36 +435,41 @@
       <p>(this is slow right now, please be patient)</p>
       <input type="text" style="width: 100%" [(ngModel)] = 'this.toolSearch' (ngModelChange)="updateToolList($event)" >
       <div class="tool-search-box">
-        <div class="no-tool-found" *ngIf='this.toolSearch.length >= 1 && this.filteredTools.length == 0 && this.filteredToolsFromProfile.length == 0 && !this.toolSubmitted' >
-          <p>No matches found. Submit {{this.toolSearch}} as a new tool?</p>
-          <button class="btn btn-primary btn-block" type="button" name="button" (click)='submitNewTool(this.toolSearch)'>Submit</button>
+        <div class="" *ngIf='this.allTools.length < 1'>
+          <p>We're still retrieving the tools. Wait a moment...</p>
         </div>
-        <div class="no-tool-found" *ngIf='this.toolSearch.length >= 1 && this.filteredTools.length == 0 && this.toolSubmitted' >
-          <p>{{this.toolSearch}} has been submitted. If it's approved we'll add it to the list!</p>
-        </div>
-        <div class="" *ngIf='this.toolSearch.length >= 1'>
-          <div class="" *ngFor='let tool of this.filteredToolsFromProfile; let i = index; trackBy:customTrackBy'>
-            <div class="tool-search-item" *ngIf='toolIsNotListedAlready(tool)' (click)='findAndAddTool(tool)'>
-              <p>{{tool.title}}</p>
-            </div>
-          </div>
-        </div>
-        <div class="" *ngIf='this.toolSearch.length >= 1'>
-          <div class="" *ngFor='let tool of this.filteredTools; let i = index; trackBy:customTrackBy'>
-            <div class="tool-search-item" *ngIf='toolIsValid(tool)' (click)='addTool(this.filteredTools[i])'>
-              <p>{{tool.title}}</p>
-            </div>
-          </div>
-        </div>
-        <div class="" *ngIf='this.toolSearch.length >= 1 && !this.toolSubmitted' >
-          <div class="no-tool-found" *ngIf='this.filteredTools.length > 0 || this.filteredToolsFromProfile.length > 0'>
-            <p>Can't find what you're looking for? Submit {{this.toolSearch}} as a new tool.</p>
+        <div class="" *ngIf='this.allTools.length > 0'>
+          <div class="no-tool-found" *ngIf='this.toolSearch.length >= 1 && this.filteredTools.length == 0 && this.filteredToolsFromProfile.length == 0 && !this.toolSubmitted' >
+            <p>No matches found. Submit {{this.toolSearch}} as a new tool?</p>
             <button class="btn btn-primary btn-block" type="button" name="button" (click)='submitNewTool(this.toolSearch)'>Submit</button>
           </div>
-        </div>
-        <div class="" *ngIf='this.toolSearch.length >= 1 && this.toolSubmitted' >
-          <div class="no-tool-found" *ngIf='this.filteredTools.length > 0 || this.filteredToolsFromProfile.length > 0'>
+          <div class="no-tool-found" *ngIf='this.toolSearch.length >= 1 && this.filteredTools.length == 0 && this.toolSubmitted' >
             <p>{{this.toolSearch}} has been submitted. If it's approved we'll add it to the list!</p>
+          </div>
+          <div class="" *ngIf='this.toolSearch.length >= 1'>
+            <div class="" *ngFor='let tool of this.filteredToolsFromProfile; let i = index; trackBy:customTrackBy'>
+              <div class="tool-search-item" *ngIf='toolIsNotListedAlready(tool)' (click)='findAndAddTool(tool)'>
+                <p>{{tool.title}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="" *ngIf='this.toolSearch.length >= 1'>
+            <div class="" *ngFor='let tool of this.filteredTools; let i = index; trackBy:customTrackBy'>
+              <div class="tool-search-item" *ngIf='toolIsValid(tool)' (click)='addTool(this.filteredTools[i])'>
+                <p>{{tool.title}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="" *ngIf='this.toolSearch.length >= 1 && !this.toolSubmitted' >
+            <div class="no-tool-found" *ngIf='this.filteredTools.length > 0 || this.filteredToolsFromProfile.length > 0'>
+              <p>Can't find what you're looking for? Submit {{this.toolSearch}} as a new tool.</p>
+              <button class="btn btn-primary btn-block" type="button" name="button" (click)='submitNewTool(this.toolSearch)'>Submit</button>
+            </div>
+          </div>
+          <div class="" *ngIf='this.toolSearch.length >= 1 && this.toolSubmitted' >
+            <div class="no-tool-found" *ngIf='this.filteredTools.length > 0 || this.filteredToolsFromProfile.length > 0'>
+              <p>{{this.toolSearch}} has been submitted. If it's approved we'll add it to the list!</p>
+            </div>
           </div>
         </div>
       </div>

@@ -94,6 +94,21 @@ export class ProfileEditComponent implements OnInit {
       this.auth.getLoggedInUser() == this.route.snapshot.params['id']? console.log("welcome to your profile edit page"): (() => { console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})()
       this.toolService.getTools().then(val => {
         this.allTools = val
+        for (let tool of this.allTools) {
+          for (let t of this.currentUser.foundTools) {
+            if (t.title.toLowerCase() == tool.title.toLowerCase() && t.position.length < 1) {
+              console.log('WE GOT IT')
+              t.category = tool.category
+              t.classification = tool.classification
+              t.position = tool.position
+              console.log(t.position[0])
+            }
+          }
+        }
+        for (let t of this.currentUser.foundTools) {
+          console.log(t.position[0])
+        }
+
       });
 
     if (this.router.url !== '/user-profile-create') {
@@ -432,13 +447,25 @@ export class ProfileEditComponent implements OnInit {
     this.currentUser.foundTools.push(tool);
   }
 
-  toolIsNotListedAlready(tool){
-    if (!this.validNames.includes(tool.title.toLowerCase())) {
-      return true
-    } else {
-      return false
+  findAndAddTool(tool) {
+    var pushDone = false
+    for (let t of this.allTools) {
+      if (tool.title.toLowerCase() == t.title.toLowerCase() && !pushDone) {
+        this.currentUser.foundTools.push(t);
+        pushDone = true
+      }
     }
   }
+
+  toolIsNotListedAlready(tool){
+    for (let t of this.currentUser.foundTools) {
+      if (t.title == tool.title) {
+        return false
+      }
+    }
+    return true
+  }
+
   toolIsValid(tool) {
     var toolNames = []
     for (let tool of this.currentUser.foundTools) {
@@ -715,7 +742,6 @@ export class ProfileEditComponent implements OnInit {
     agency.offices.splice(i, 1);
     this.checkFields()
   }
-
 
   currentYear() {
     let year = new Date().getFullYear()

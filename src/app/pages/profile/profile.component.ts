@@ -30,6 +30,7 @@ export class ProfileComponent implements OnInit {
     dates: []
   }
   agencyExperience: any[] = []
+  subagencyCountForChart = 0
   isActiveProfile: boolean = false
   currentJob: any = null
   positionHistory: any[] = []
@@ -161,23 +162,54 @@ export class ProfileComponent implements OnInit {
         for (let agency of job.agencyExperience) {
           var newAgency: any = agency
           newAgency.years = (endYear - job.Year)
+          newAgency.jobs = 1
+          newAgency.subagencies = []
           if (newAgency.years == 0) {
             newAgency.years = 1
           }
-          var nameMatch = false
-          for (let i of this.agencyExperience) {
-            if (newAgency.main.title.length != "") {
-              if (newAgency.main.title == i.main.title) {
-                i.years =+ newAgency.years
+
+          for (let s of agency.offices) {
+            var newSubagency: any = s
+            newSubagency.years = newAgency.years
+            newSubagency.jobs = 1
+            if (newSubagency.years == 0) {
+              newSubagency.years = 1
+            }
+            var nameMatch = false
+            for (let i of newAgency.subagencies) {
+              if (newSubagency.title == i.title) {
+                nameMatch = true;
+                i.years += newSubagency.years
+                i.jobs++
+              }
+            }
+            if (nameMatch == false && newSubagency.title.length > 0) {
+              if (newAgency.subagencies[0] == null) {
+                newAgency.subagencies[0] = newSubagency
+                this.subagencyCountForChart++
+              } else {
+                newAgency.subagencies.push(newSubagency)
+                this.subagencyCountForChart++
               }
             }
           }
+
+          var nameMatch = false
+          for (let i of this.agencyExperience) {
+            if (newAgency.main.title == i.main.title) {
+              console.log('merging ' + newAgency.main.title + ' & ' + i.main.title)
+              nameMatch = true;
+              i.years += newAgency.years
+              i.jobs++
+            }
+          }
+
           if (nameMatch == false && job.agencyExperience[0].main.title.length > 0) {
             if (this.agencyExperience[0] == null) {
-              console.log(agency.main.title + ': ' + endYear + ', ' + job.Year)
+              console.log('setting first one as ' + newAgency.main.title)
               this.agencyExperience[0] = newAgency
             } else {
-              console.log(agency.main.title + ': ' + endYear + ', ' + job.Year)
+              console.log('pushing in ' + newAgency.main.title)
               this.agencyExperience.push(newAgency)
             }
           }
@@ -322,29 +354,37 @@ export class ProfileComponent implements OnInit {
 
         var data_prof = new Map();
         var data_peop = new Map();
+        var data_prof_sub = new Map();
+        var data_peop_sub = new Map();
         var agencyNames = []
+        var subagencyNames = []
         var prof = [];
         var peop = [];
-        var numPeop = 0;
+        var prof_sub = [];
+        var peop_sub = [];
         for (var j = 0; j < this.agencyExperience.length; j++) {
+          console.log(j + ': ' + this.agencyExperience[j].main.title + ', ' + this.agencyExperience[j].years)
           if (data_prof.has(this.agencyExperience[j].main.title)) {
-
-            // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
-            // we'll see if it clears up when all the profiles in the database have full data on them
-
-            // if ((data_prof.get(occupations[j].title) + occupations[j].score) <= 100){
-            //   data_prof.set(occupations[j].title, data_prof.get(occupations[j].title) + occupations[j].score);
-            // } else {
-            //   data_prof.set(occupations[j].title, data_prof.get(occupations[j].title) + occupations[j].score);
-            // }
-
-            data_prof.set(this.agencyExperience[j].main.title, data_prof.get(this.agencyExperience[j].main.title) + this.agencyExperience[j].years);
-            data_peop.set(this.agencyExperience[j].main.title, data_peop.get(this.agencyExperience[j].main.title) + 1);
+            data_prof.set(this.agencyExperience[j].main.title, data_prof.get(this.agencyExperience[j].main.title) + (this.agencyExperience[j].years * this.agencyExperience[j].jobs));
+            data_peop.set(this.agencyExperience[j].main.title, data_peop.get(this.agencyExperience[j].main.title) + this.agencyExperience[j].jobs);
           }
           if (!data_prof.has(this.agencyExperience[j].main.title)) {
-            data_prof.set(this.agencyExperience[j].main.title, this.agencyExperience[j].years);
-            data_peop.set(this.agencyExperience[j].main.title, 1);
+            data_prof.set(this.agencyExperience[j].main.title, (this.agencyExperience[j].years * this.agencyExperience[j].jobs));
+            data_peop.set(this.agencyExperience[j].main.title, this.agencyExperience[j].jobs);
             agencyNames.push(this.agencyExperience[j].main.title);
+          }
+
+          for (var x = 0; x < this.agencyExperience[j].subagencies.length; x++) {
+            console.log(x + ': ' + this.agencyExperience[j].subagencies[x].title + ', ' + this.agencyExperience[j].subagencies[x].years)
+            if (data_prof_sub.has(this.agencyExperience[j].subagencies[x].title)) {
+              data_prof_sub.set(this.agencyExperience[j].subagencies[x].title, data_prof.get(this.agencyExperience[j].subagencies[x].title) + (this.agencyExperience[j].subagencies[x].years * this.agencyExperience[j].subagencies[x].jobs));
+              data_peop_sub.set(this.agencyExperience[j].subagencies[x].title, data_peop.get(this.agencyExperience[j].subagencies[x].title) + this.agencyExperience[j].subagencies[x].jobs);
+            }
+            if (!data_prof_sub.has(this.agencyExperience[j].subagencies[x].title)) {
+              data_prof_sub.set(this.agencyExperience[j].subagencies[x].title, (this.agencyExperience[j].subagencies[x].years * this.agencyExperience[j].subagencies[x].jobs));
+              data_peop_sub.set(this.agencyExperience[j].subagencies[x].title, this.agencyExperience[j].subagencies[x].jobs);
+              subagencyNames.push(this.agencyExperience[j].subagencies[x].title);
+            }
           }
         }
 
@@ -422,19 +462,19 @@ export class ProfileComponent implements OnInit {
               shared: true
           },
           series: [{
-              name: '',
-              type: '',
+              name: 'Times Worked With',
+              type: 'column',
               yAxis: 1,
-              data: '',
+              data: peop,
               tooltip: {
-                  valueSuffix: ' '
+                  valueSuffix: ' times'
               }
           }, {
               name: 'Years',
               type: 'column',
               data: prof,
               tooltip: {
-                  valueSuffix: '%'
+                  valueSuffix: ' years'
               }
           }]
         });

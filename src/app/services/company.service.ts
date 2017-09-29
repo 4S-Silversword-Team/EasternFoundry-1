@@ -5,6 +5,9 @@ import { environment } from '../../environments/environment'
 import { Observable } from 'rxjs/Observable'
 import { Company } from '../classes/company'
 import {AuthHttp} from '../classes/auth-http'
+let months: any[] = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'
+]
 
 @Injectable()
 export class CompanyService {
@@ -42,6 +45,10 @@ export class CompanyService {
 
 
   getEmptyCompany(): Company {
+    var year = new Date().getFullYear()
+    var month = new Date().getMonth()
+    month = months[month-1]
+    var currentTime = month + ', ' + year
     let temp: Company = new Company()
     temp._id = '1'
     temp.name = ''
@@ -51,9 +58,9 @@ export class CompanyService {
     temp.city = ''
     temp.state = ''
     temp.zip = ''
-    temp.address = 'Washington, DC'
+    temp.address = ''
     temp.informationAccuracy = 5
-    temp.lastUpdated = 'Dec, 2016'
+    temp.lastUpdated = currentTime
     temp.leadership = [null]
     temp.product = [null]
     temp.service = [null]
