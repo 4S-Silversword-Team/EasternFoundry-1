@@ -3,6 +3,8 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
 
+import { Chart } from 'angular-highcharts';
+
 import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
 import { AuthService } from '../../services/auth.service'
@@ -35,6 +37,8 @@ export class ProfileComponent implements OnInit {
   months: any[] = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'
   ]
+
+  chart: any;
 
   yearsOfSchool: number = 0;
   yearsOfWork: number = 0;
@@ -148,9 +152,14 @@ export class ProfileComponent implements OnInit {
 
       for (let job of this.currentUser.positionHistory) {
         job.Year = +job.StartDate.slice(0, 4);
+        var endYear = 0
+        if (job.EndDate.slice(0, 4)) {
+          endYear = new Date().getFullYear()
+        } else {
+          endYear = +job.EndDate.slice(0, 4)
+        }
         for (let agency of job.agencyExperience) {
           var nameMatch = false
-
           for (let i of this.agencyExperience) {
             if (agency.main.title.length !=- "") {
               if (agency.main.title == i.main.title) {
@@ -161,9 +170,19 @@ export class ProfileComponent implements OnInit {
           }
           if (nameMatch == false && job.agencyExperience[0].main.title.length > 0) {
             if (this.agencyExperience[0] == null) {
-              this.agencyExperience[0] = job.agencyExperience[0]
+              var newAgency: any = job.agencyExperience[0]
+              newAgency.years = (endYear - job.Year)
+              if (newAgency.years == 0) {
+                newAgency.years = 1
+              }
+              this.agencyExperience[0] = newAgency
             } else {
-              this.agencyExperience.push(agency)
+              var newAgency: any = agency
+              newAgency.years = (endYear - job.Year)
+              if (newAgency.years == 0) {
+                newAgency.years = 1
+              }
+              this.agencyExperience.push(newAgency)
             }
           }
         }
@@ -302,6 +321,134 @@ export class ProfileComponent implements OnInit {
       }
       this.professionalPoints = (this.yearsOfWork + this.currentUser.certification.length) * 50
       console.log(this.professionalPoints)
+
+      // here is some CHART CALCULATION!
+
+        var data_prof = new Map();
+        var data_peop = new Map();
+        var agencyNames = []
+        var prof = [];
+        var peop = [];
+        var numPeop = 0;
+
+        for (let i of this.agencyExperience) {
+          console.log(i)
+        }
+        for (var j = 0; j < this.agencyExperience.length; j++) {
+          if (data_prof.has(this.agencyExperience[j].main.title)) {
+
+            // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
+            // we'll see if it clears up when all the profiles in the database have full data on them
+
+            // if ((data_prof.get(occupations[j].title) + occupations[j].score) <= 100){
+            //   data_prof.set(occupations[j].title, data_prof.get(occupations[j].title) + occupations[j].score);
+            // } else {
+            //   data_prof.set(occupations[j].title, data_prof.get(occupations[j].title) + occupations[j].score);
+            // }
+
+            data_prof.set(this.agencyExperience[j].main.title, data_prof.get(this.agencyExperience[j].main.title) + this.agencyExperience[j].years);
+            data_peop.set(this.agencyExperience[j].main.title, data_peop.get(this.agencyExperience[j].main.title) + 1);
+          }
+          if (!data_prof.has(this.agencyExperience[j].main.title)) {
+            data_prof.set(this.agencyExperience[j].main.title, this.agencyExperience[j].years);
+            data_peop.set(this.agencyExperience[j].main.title, 1);
+            agencyNames.push(this.agencyExperience[j].main.title);
+          }
+        }
+
+        for(var k = 0; k < agencyNames.length; k++){
+          data_prof.set( agencyNames[k], ( data_prof.get( agencyNames[k] )/data_peop.get( agencyNames[k] ) ) );
+          prof[k] = data_prof.get( agencyNames[k] );
+          peop[k] = data_peop.get( agencyNames[k] );
+        }
+
+
+        this.chart = new Chart({
+          chart: {
+              type: 'bar',
+              backgroundColor: '#FDF5EB',
+              renderTo: "team_chart",
+              height: 400
+          },
+          title: {
+              text: 'Agency Experience'
+          },
+          xAxis: [{
+              categories: agencyNames,
+              options : {
+                  endOnTick: false
+              },
+          }],
+          yAxis: [{ // Primary yAxis
+    //            tickInterval: Math.round(100/numPeop),
+    //            tickAmount: numPeop,
+    //            max: 100,
+              // endOnTick:false ,
+              min:0,
+              tickInterval: 1,
+              endOnTick: false,
+              alignTicks: false,
+              ceiling: 20,
+              labels: {
+                  format: '{value}',
+                  style: {
+                      color: '#434348'
+                  },
+              },
+              title: {
+                  text: 'Years Experience',
+                  style: {
+                      color: '#434348'
+                  }
+              }
+          },
+          {
+             // Secondary yAxis
+              tickInterval: 1,
+    //            tickAmount: numPeop,
+    //              endOnTick:false ,
+              min:0,
+              endOnTick: false,
+              alignTicks: false,
+
+              title: {
+                  text: '',
+                  style: {
+                      color: '#7cb5ec'
+                  }
+              },
+              labels: {
+                  step: 1,
+                  format: '{value:.0f}',
+                  style: {
+                      color: '#7cb5ec'
+                  }
+              },
+              opposite: true
+          }],
+          tooltip: {
+              shared: true
+          },
+          series: [{
+              name: '',
+              type: '',
+              yAxis: 1,
+              data: '',
+              tooltip: {
+                  valueSuffix: ' '
+              }
+          }, {
+              name: 'Years',
+              type: 'column',
+              data: prof,
+              tooltip: {
+                  valueSuffix: '%'
+              }
+          }]
+        });
+
+
+
       this.promiseFinished = true;
     }
 

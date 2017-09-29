@@ -31,7 +31,9 @@ export class PastPerformanceEditComponent implements OnInit {
   officeType: string[] = ['Pro', 'Amature'];
   clearedType: string[] = ['true', 'false'];
   userProfiles: any[] = [];
+  companies: any[] = [];
   allCompanyEmployees: any[] = [];
+  allUserCompanies: any[] = [];
   newUserSelected: string;
   isReadOnly: boolean = false;
   createMode: boolean = false;
@@ -96,22 +98,44 @@ export class PastPerformanceEditComponent implements OnInit {
         "role": i.role
       })
     }
+    this.companies = [];
+    for (const i of this.currentPastPerformance.companyProxies){
+      this.companies.push({
+        "name": i.company.name,
+        "companyId": i.company._id,
+        "proxyId": i._id,
+        "startDate": new Date(i.startDate).toDateString(),
+        "endDate": new Date(i.endDate).toDateString(),
+        "activeContract": i.activeContract
+      })
+    }
     this.promiseFinished = true
   }
 
   myCallback2() {
-    this.allCompanyEmployees = [];
+  this.allCompanyEmployees = [];
   var allCompanyEmployees = [];
-
+  this.allUserCompanies = [];
+  var allUserCompanies = [];
   for (const companyProxy of this.currentPastPerformance.companyProxies) {
     var myCompany;
-
     this.companyService.getCompanyByID(companyProxy.company._id).toPromise().then((res) => {myCompany = res; (() => {
       for (const userProfileProxy of myCompany.userProfileProxies) {
         allCompanyEmployees.push(userProfileProxy.userProfile)
       }
       this.allCompanyEmployees = allCompanyEmployees.filter((employee) => {
         return !this.currentPastPerformance.userProfileProxies.map((userProxy) => userProxy.user._id).includes(employee._id)
+      })
+    })()});
+  }
+  for (const userProxy of this.currentPastPerformance.userProfileProxies) {
+    var myUser;
+    this.userService.getUserbyID(userProxy.user._id).toPromise().then((res) => {myUser = res; (() => {
+      for (const companyProxy of myUser.companyUserProxies) {
+        allUserCompanies.push(companyProxy.company)
+      }
+      this.allUserCompanies = allUserCompanies.filter((company) => {
+        return !this.currentPastPerformance.companyProxies.map((companyProxy) => companyProxy.company._id).includes(company._id)
       })
     })()});
   }
@@ -140,7 +164,6 @@ export class PastPerformanceEditComponent implements OnInit {
     var userId = this.auth.getLoggedInUser()
     //get user
     this.userService.getUserbyID(userId).toPromise().then((user) => {
-      console.log(user.power)
       var superUser = false
       if (user.power) {
         if (user.power > 3) {
@@ -157,7 +180,7 @@ export class PastPerformanceEditComponent implements OnInit {
           })
           return returnVal
         }).map((proxy) => proxy.company["_id"])
-        console.log("Relevent companies", relevantCompanyIds)
+        console.log("Relevant companies", relevantCompanyIds)
         //then get the company ids associated with the past performance
         var ppCompanyIds = this.currentPastPerformance.companyProxies.map((cproxy) => cproxy.company["_id"])
         console.log("pp companies", ppCompanyIds)
@@ -315,11 +338,42 @@ export class PastPerformanceEditComponent implements OnInit {
 
   updateEmployee(proxyId,key, value){
     if(!this.isUserAdmin){return;}
-  let req = {};
-  req[key] = value;
-  this.userPastPerformanceProxyService.updateUserPPProxies(proxyId, req).toPromise().then(() =>
-  {});
-}
+    let req = {};
+    req[key] = value;
+    this.userPastPerformanceProxyService.updateUserPPProxies(proxyId, req).toPromise().then(() =>
+    {});
+  }
+
+  addCompany(companyId) {
+    if(!this.isUserAdmin){return;}
+    let request = {
+        "company": companyId,
+        "pastPerformance": this.route.snapshot.params['id'],
+        "startDate": "01/01/2001",
+        "endDate": "01/02/2001",
+        "stillAffiliated": false
+    }
+    console.log(request)
+    this.companyPastPerformanceProxyService.addCompanyPPProxy(request).then(() => {
+      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2() });
+    })
+  }
+
+  deleteCompany(proxyId){
+    if(!this.isUserAdmin){return;}
+    this.companyPastPerformanceProxyService.deleteCompanyPPProxy(proxyId).then(() => {
+      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2() });
+    })
+  }
+
+  updateCompany(proxyId, key, value){
+    if(!this.isUserAdmin){return;}
+    let req = {};
+    req[key] = value;
+    this.companyPastPerformanceProxyService.updateCompanyPPProxies(proxyId, req).toPromise().then(() =>
+    {});
+  }
+
 
 
   // addEmployee(modelEmployees: Array<Object>){

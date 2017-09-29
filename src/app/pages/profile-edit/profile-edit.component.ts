@@ -666,7 +666,7 @@ export class ProfileEditComponent implements OnInit {
         title: '',
         data: [{
           title: 'Years Agency Experience',
-          score: 100
+          score: 0
         }],
         isPM: false,
         pmDescription: '',
@@ -679,7 +679,7 @@ export class ProfileEditComponent implements OnInit {
         title: '',
         data: [{
           title: 'Years Agency Experience',
-          score: 100
+          score: 0
         }],
         isPM: false,
         pmDescription: '',
@@ -700,7 +700,7 @@ export class ProfileEditComponent implements OnInit {
       title: '',
       data: [{
         title: 'Years Agency Experience',
-        score: 100
+        score: 0
       }],
       isPM: false,
       pmDescription: '',
@@ -742,6 +742,36 @@ export class ProfileEditComponent implements OnInit {
 
     //this SHOULD automatically arrange jobs by date so more recent ones are on top. it doesnt seem to work 100% but it kind of works?
     for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
+      if (this.currentUser.positionHistory[i].employmentType > 1) {
+        this.currentUser.positionHistory[i].agencyExperience = [{
+          main: {
+            title: '',
+            data: [{
+              title: 'Years Agency Experience',
+              score: 0
+            }],
+            isPM: false,
+            pmDescription: '',
+            pmScore: 0,
+            isKO: false,
+            koDescription: '',
+            koScore: 0
+          },
+          offices: [{
+            title: '',
+            data: [{
+              title: 'Years Agency Experience',
+              score: 0
+            }],
+            isPM: false,
+            pmDescription: '',
+            pmScore: 0,
+            isKO: false,
+            koDescription: '',
+            koScore: 0
+          }]
+        }]
+      }
       if (this.currentUser.positionHistory[i].EndDate == "Current") {
         moveObject(this.currentUser.positionHistory, i, 0)
       } else {

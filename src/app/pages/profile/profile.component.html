@@ -141,7 +141,11 @@
           <p>AGENCY EXPERIENCE</p>
           <div ></div>
         </div>
-        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-container" *ngIf="this.promiseFinished">
+        <div class="col-xs-12">
+          <div id="team_chart"  style="max-width: 75%; margin: 0 auto" [chart]="chart"></div>
+        </div>
+
+        <!-- <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-container" *ngIf="this.promiseFinished">
           <div class="" *ngFor='let agency of this.agencyExperience; let i = index'>
             <div class="" *ngIf="agency.main.title">
               <app-color-comment-box *ngFor="let index of agency.main.data" color='{{ expColors[i] }}' text='{{agency.main.title}}' class="col-xs-12 col-md-12"></app-color-comment-box>
@@ -154,16 +158,8 @@
             <div class="app-exp-chart" *ngIf="agency.main.title">
               <app-exp-chart width='500' height='500' divID='exp-main-chart' [values]='expMainValues(this.currentUser, i, x)'></app-exp-chart>
             </div>
-            <!-- <div class="app-exp-chart right" *ngFor='let office of agency.offices; let y = index'>
-            <app-exp-chart id='sub1' width='250' height='250' divID='exp-sub1-chart' [values]='expSub1Values(this.currentUser, i, x, y)' class="right"></app-exp-chart>
-            <p id="exp-sub1-title" class="left">{{office.title}}</p>
-          </div> -->
-          <!-- <div class="app-exp-chart left">
-          <app-exp-chart id='sub2' width='250' height='250' divID='exp-sub2-chart' [values]='expSub2Values(this.currentUser)' class="left"></app-exp-chart>
-          <p id="exp-sub2-title" class="right">Office 2</p>
-        </div> -->
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

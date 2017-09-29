@@ -82,10 +82,6 @@
         </div>
       </div>
     </div>
-    <div *ngIf="this.isUserAdmin" class="col-xs-12">
-      <button class="btn btn-primary btn-block col-xs-4 col-xs-offset-5" style="color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;left: 90px" (click)="updatePP(this.currentPastPerformance)" *ngIf='this.fieldsFilled'>Save</button>
-      <button class="btn btn-primary btn-block col-xs-4 col-xs-offset-5" style="color: #fff; background-color: red; border-color: rgba(0, 0, 0, 0.5); font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;left: 90px" *ngIf='!this.fieldsFilled'>Page Unfinished</button>
-    </div>
   </div>
 
   <div *ngIf="!this.createMode" class="employee col-xs-12 clear">
@@ -95,9 +91,6 @@
       <div></div>
     </div>
     <div class="container">
-
-
-
       <table style="margin-top: 1em" class="table">
         <tr>
           <th></th>
@@ -106,7 +99,6 @@
           <th><span>End Date</span></th>
           <th><span>Still Affiliated?</span></th>
           <th><span>Role</span></th>
-
         </tr>
         <tr *ngFor=" let employee of this.userProfiles">
           <td>
@@ -116,7 +108,6 @@
             <span>{{employee.name}}</span>
           </td>
           <!-- <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" onblur="(this.type='text')" onfocus="(this.type='date')" placeholder="{{employee.startDate}}"></span> -->
-
           <td>
             <span><input (change)="updateEmployee(employee.proxyId, 'startDate', employee.startDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="employee.startDate"></span>
           </td>
@@ -132,14 +123,53 @@
             <span><input (blur)="updateEmployee(employee.proxyId, 'role', employee.role)" type="text" [(ngModel)]="employee.role" /></span>
           </td>
         </tr>
-
       </table>
       <select *ngIf="this.isUserAdmin" style="margin-top: 1em" class="form-control" [(ngModel)]="this.newUserSelected">
         <option *ngFor="let user of this.allCompanyEmployees" value={{user._id}}>{{user.firstName}} {{user.lastName}}: {{user.username}}</option>
       </select>
-
       <div *ngIf="this.isUserAdmin" class="col-xs-12" [style.margin]="'auto'" [style.margin-top]="'1em'"><button class="center-block" (click)="addEmployee(this.newUserSelected)">Add</button></div>
+    </div>
+  </div>
 
+  <div *ngIf="!this.createMode" class="employee col-xs-12 clear">
+    <div class="div-title col-xs-12">
+      <img src="./assets/img/commercia.png">
+      <p>COMPANIES</p>
+      <div></div>
+    </div>
+    <div class="container">
+      <table style="margin-top: 1em" class="table">
+        <tr>
+          <th></th>
+          <th><span>Name</span></th>
+          <th><span>Start Date</span></th>
+          <th><span>End Date</span></th>
+          <th><span>Still Affiliated?</span></th>
+        </tr>
+        <tr *ngFor=" let company of this.companies">
+          <td>
+            <button *ngIf="this.isUserAdmin" (click)="deleteCompany(company.proxyId)" style="width: 1.5em; height: 1.75em; margin-right: 1em;">X</button>
+          </td>
+          <td>
+            <span>{{company.name}}</span>
+          </td>
+          <td>
+            <span><input (change)="updateCompany(company.proxyId, 'startDate', company.startDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="company.startDate"></span>
+          </td>
+          <td>
+            <span><input (change)="updateCompany(company.proxyId, 'endDate', company.endDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="company.endDate"></span>
+          </td>
+
+          <td>
+            <span><input (change)="updateCompany(company.proxyId, 'activeContract', company.activeContract)" type="checkbox" [(ngModel)]="company.activeContract" /></span>
+            <!-- <input style="margin-top:.75em; margin-left:1em" type="checkbox" [(ngModel)] = "this.currentPastPerformance.employees[i].stillWith" name="stillWith"> -->
+          </td>
+        </tr>
+      </table>
+      <select *ngIf="this.isUserAdmin" style="margin-top: 1em" class="form-control" [(ngModel)]="this.newCompanySelected">
+        <option *ngFor="let company of this.allUserCompanies" value={{company._id}}>{{company.name}}</option>
+      </select>
+      <div *ngIf="this.isUserAdmin" class="col-xs-12" [style.margin]="'auto'" [style.margin-top]="'1em'"><button class="center-block" (click)="addCompany(this.newCompanySelected)">Add</button></div>
     </div>
   </div>
 
@@ -169,5 +199,10 @@
       <div class="col-xs-6 srow"><input type="text" placeholder="Capability 3" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
       <div class="col-xs-6 srow"><input type="text" placeholder="Capability 4" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
     </div>
+  </div>
+  <div *ngIf="this.isUserAdmin" class="col-xs-12" style="margin-bottom: 10px">
+    <h2 style="text-align: center">SAVE CHANGES</h2>
+    <button class="btn btn-primary btn-block col-xs-4 col-xs-offset-5" style="color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;left: 50px" (click)="updatePP(this.currentPastPerformance)" *ngIf='this.fieldsFilled'>Save</button>
+    <button class="btn btn-primary btn-block col-xs-4 col-xs-offset-5" style="color: #fff; background-color: red; border-color: rgba(0, 0, 0, 0.5); font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;left: 50px" *ngIf='!this.fieldsFilled'>Page Unfinished</button>
   </div>
 </div>

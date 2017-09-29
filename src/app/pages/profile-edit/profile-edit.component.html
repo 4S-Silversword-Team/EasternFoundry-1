@@ -38,7 +38,7 @@
       </div>
       <div id="user-contact" class="col-xs-8 col-lg-4 col-lg-offset-0" style="margin-left: 0px" *ngIf = this.promiseFinished>
         <p class="col-xs-3 text-right vertically-centered">Email</p>
-        <input class="col-xs-9 left" type="email" [(ngModel)] = 'this.currentUser.username' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.username}">
+        <input class="col-xs-9 left" type="email" [(ngModel)] = 'this.currentUser.username' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.username}" disabled>
 
         <p class="col-xs-3 text-right" style="transform: translateY(10%)">Contact Number</p>
         <input class="col-xs-9 left" type="tel" maxlength="10" [(ngModel)] = 'this.currentUser.cell' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.cell}">
@@ -165,7 +165,8 @@
     </div>
 
     <div *ngFor="let job of this.currentUser.positionHistory; let i = index" class="col-xs-12 job text-container" style="margin: 1%">
-      <button class="tiny-button-job" (click)="deleteJob(i)"><div class="tiny-button-job-text">x</div></button>
+      <button class="tiny-button-job" (click)="deleteJob(i)"><img src="./assets/img/btn-close.png" alt="" class="tiny-button-job-text"></button>
+
       <p class="col-xs-12 left">Job {{i+1}}</p>
       <div class="col-xs-12">
         <p class="text-center">Employment Type</p>
@@ -418,6 +419,7 @@
       <div ></div>
     </div>
 
+    <p style="text-align: center">Use the right panel to search the tools database, and click one to add it to your list</p>
     <div class="col-xs-6 text-center text-container" style="padding-top: 15px">
       <p>Your Skills</p>
       <div class="tool-list-box">
