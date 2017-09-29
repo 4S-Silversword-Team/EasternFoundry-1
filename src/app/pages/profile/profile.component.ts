@@ -222,7 +222,7 @@ export class ProfileComponent implements OnInit {
         for (let position of tool.position) {
           for (let toolDone of toolsToPush) {
             if (position == toolDone.title) {
-              toolDone.score += 5
+              toolDone.score += 7
               matchFound = true
             }
           }
@@ -232,7 +232,7 @@ export class ProfileComponent implements OnInit {
               score: 0
             }
             newPosition.title = position
-            newPosition.score = 5
+            newPosition.score = 7
             toolsToPush.push(newPosition)
           }
         }

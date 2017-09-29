@@ -85,8 +85,6 @@
   <div *ngIf="!creatingNew" class="container">
     <div class="col-xs-12" style="width: 100%; position: relative">
       <div class="col-xs-8 employee-item" *ngFor='let employee of this.userProfiles'>
-        {{employee.avatar}}
-        <img src={{employee.avatar}} alt="" class="employee-avatar col-xs-12">
         <div (click)='deleteEmployee(employee.proxyId, employee.role)'>
           <img src="./assets/img/btn-close.png" alt="" class="search-item-x">
         </div>
@@ -206,23 +204,17 @@
       </div>
     </div>
     <div class="col-xs-12 mt30">
-      <div class="col-xs-12 col-md-4 srow">
+      <div class="col-xs-12 col-md-4">
         <p class="left">Will you customize the product?</p>
-        <button class="right mt5" [class.btn-primary] = 'product.customization' (click)='product.customization = !product.customization'>
-          {{product.customization?'YES':'NO'}}
-        </button>
+        <input class="right" type="checkbox" [(ngModel)]="product.customization" />
       </div>
-      <div class="col-xs-12 col-md-4 srow">
+      <div class="col-xs-12 col-md-4">
         <p class="left">Do you provide training?</p>
-        <button class="right mt5" [class.btn-primary] = 'product.training' (click)='product.training = !product.training'>
-          {{product.training?'YES':'NO'}}
-        </button>
+        <input class="right" type="checkbox" [(ngModel)]="product.training" />
       </div>
-      <div class="col-xs-12 col-md-4 srow">
+      <div class="col-xs-12 col-md-4">
         <p class="left">Do you provide maintenance?</p>
-        <button class="right mt5" [class.btn-primary] = 'product.maintenance' (click)='product.maintenance = !product.maintenance'>
-          {{product.maintenance?'YES':'NO'}}
-        </button>
+        <input class="right" type="checkbox" [(ngModel)]="product.maintenance" />
       </div>
     </div>
     <div class="col-xs-12 fs-20 mt20">Defense</div>

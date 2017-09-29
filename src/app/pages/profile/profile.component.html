@@ -122,11 +122,9 @@
         </div>
         <div class="col-xs-12 col-sm-6 text-container">
             <div class="row">
-                <div class="col-xs-12 col-md-10">
+                <div class="col-xs-12 col-md-12">
                     <app-color-comment-box *ngFor='let feature of this.occupations' color='{{getCapaChartColor(feature.score)}}' text='{{feature.title}}' class="col-xs-12"></app-color-comment-box>
-                </div>
-                <div class="col-xs-12 col-md-6">
-                    <p *ngFor='let skill of this.currentUser.skill'>{{ skill }} </p>
+                    <p *ngFor='let skill of this.currentUser.skill'>{{ skill }}</p>
                 </div>
             </div>
         </div>
