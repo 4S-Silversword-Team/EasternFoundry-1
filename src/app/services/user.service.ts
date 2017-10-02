@@ -194,6 +194,8 @@ export class UserService {
       temp.certification = [
       {
         CertificationName: '',
+        Organization: '',
+        Type: '',
         DateEarned: ''
       }
     ];

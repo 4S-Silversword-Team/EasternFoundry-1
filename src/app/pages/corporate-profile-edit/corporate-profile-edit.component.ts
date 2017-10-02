@@ -619,7 +619,6 @@ export class CorporateProfileEditComponent implements OnInit {
       var productPromises = []
       var servicePromises = []
       var accountPromises = []
-      //this whole thing updates a bunch of times with nesting promises so it can create a new product and simultaneously add it to the company
       if(model.product) {
         for (const i of this.products) {
           if (i._id == "NEW") {
@@ -636,9 +635,8 @@ export class CorporateProfileEditComponent implements OnInit {
           delete productModel['_id'];
           productPromises.push(this.productService.updateProduct(productId, productModel).toPromise().then(result => {
             var res: any = result
-            console.log(JSON.parse(res._body)._id)
-          }
-          ));
+            console.log(res)
+          }));
           }
         }
       }
@@ -658,9 +656,8 @@ export class CorporateProfileEditComponent implements OnInit {
           delete serviceModel['_id'];
           servicePromises.push(this.serviceService.updateService(serviceId, serviceModel).toPromise().then(result => {
             var res: any = result
-            console.log(JSON.parse(res._body)._id)
-          }
-          ));
+            console.log(res)
+          }));
           }
         }
       }
