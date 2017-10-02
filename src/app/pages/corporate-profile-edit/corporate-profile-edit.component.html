@@ -252,6 +252,27 @@
           <input class="right" type="checkbox" [(ngModel)]="product.maintenance" />
         </div>
       </div>
+      <div class="col-xs-12">
+        <p>Features:</p>
+        <p *ngIf='product.feature.length > 0'>Describe your feature and assign it a score</p>
+        <p *ngIf='product.feature.length > 0'>(more in-depth feature scoring will come in a future update)</p>
+        <div class="col-xs-12" *ngFor='let feature of product.feature; let i = index' style="background: rgba(255,255,255,0.2); border: 1px solid rgba(0,0,0,0.1); margin-top: 1px; margin-bottom: 1px">
+          <div class="col-xs-12" style="margin-bottom: -5px; margin-top: -5px;">
+            <div class="col-xs-12 col-sm-7 srow info-input">
+              <p class="left col-xs-2">Title</p>
+              <input class="right col-xs-10" [(ngModel)]='feature.name'>
+            </div>
+            <div class="col-xs-12 col-sm-5 srow info-input">
+              <p class="left col-xs-2">Score</p>
+              <input class="right col-xs-10" [(ngModel)]='feature.score'>
+            </div>
+            <button class="tiny-button-skills" (click)="deleteFeature(product, i)"><div class="tiny-button-text">x</div></button>
+          </div>
+        </div>
+        <div class="col-xs-6 col-xs-offset-3 text-center">
+          <button class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4" (click)="addFeature(product)">Add Feature</button>
+        </div>
+      </div>
     </div>
   </div>
   <div class='col-sm-6 col-sm-offset-3 col-xs-12'>

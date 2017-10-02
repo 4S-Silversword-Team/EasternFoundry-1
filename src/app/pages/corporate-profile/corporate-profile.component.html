@@ -363,22 +363,22 @@
       </div>
   </div>
 
-  <div class="schedule col-xs-12 clear">
-      <div class="div-title col-xs-12">
-          <img src="./assets/img/schedule.png">
-          <p>SCHEDULES</p>
-          <div></div>
+  <!-- <div class="schedule col-xs-12 clear">
+    <div class="div-title col-xs-12">
+        <img src="./assets/img/schedule.png">
+        <p>SCHEDULES</p>
+        <div></div>
+    </div>
+    <div class="row main main-collapse">
+      <div class="col-xs-12 text-container">
+        <div *ngIf="!currentAccount.schedule">No schedule to show</div>
+        <div class="" *ngIf="currentAccount.schedule">
+          <div *ngIf="!currentAccount.schedule[0]">No schedule to show</div>
+        </div>
+        <div class="col-xs-12" [style.overflow] = "'auto'" [style.max-height]="'250px'">
+           <h5 *ngFor='let index of currentAccount.schedule'>{{index.date + ': ' + index.content}}</h5>
+        </div>
       </div>
-      <div class="row main main-collapse">
-          <div class="col-xs-12 text-container">
-            <div *ngIf="!currentAccount.schedule">No schedule to show</div>
-            <div class="" *ngIf="currentAccount.schedule">
-              <div *ngIf="!currentAccount.schedule[0]">No schedule to show</div>
-            </div>
-              <div class="col-xs-12" [style.overflow] = "'auto'" [style.max-height]="'250px'">
-                 <h5 *ngFor='let index of currentAccount.schedule'>{{index.date + ': ' + index.content}}</h5>
-              </div>
-          </div>
-      </div>
-  </div>
+    </div>
+  </div> -->
 </div>

@@ -261,34 +261,34 @@ changeToTeam(){
             }
           }
         }
+        occupations.sort(function(a,b){
+          return parseFloat(b.score) - parseFloat(a.score);
+        })
 
         for (var j = 0; j < occupations.length; j++) {
-          if (data_prof.has(occupations[j].title)) {
+          if (j < 8) {
+            if (data_prof.has(occupations[j].title)) {
 
-            // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
-            // we'll see if it clears up when all the profiles in the database have full data on them
-
-            // if ((data_prof.get(occupations[j].title) + occupations[j].score) <= 100){
-            //   data_prof.set(occupations[j].title, data_prof.get(occupations[j].title) + occupations[j].score);
-            // } else {
-            //   data_prof.set(occupations[j].title, data_prof.get(occupations[j].title) + occupations[j].score);
-            // }
-
-            data_prof.set(occupations[j].title, data_prof.get(occupations[j].title) + occupations[j].score);
-            data_peop.set(occupations[j].title, data_peop.get(occupations[j].title) + 1);
-          }
-          if (!data_prof.has(occupations[j].title)) {
-            data_prof.set(occupations[j].title, occupations[j].score);
-            data_peop.set(occupations[j].title, 1);
-            skill.push(occupations[j].title);
+              // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
+              // we'll see if it clears up when all the profiles in the database have full data on them
+              data_prof.set(occupations[j].title, data_prof.get(occupations[j].title) + occupations[j].score);
+              data_peop.set(occupations[j].title, data_peop.get(occupations[j].title) + 1);
+            }
+            if (!data_prof.has(occupations[j].title)) {
+              data_prof.set(occupations[j].title, occupations[j].score);
+              data_peop.set(occupations[j].title, 1);
+              skill.push(occupations[j].title);
+            }
           }
         }
       }
     }
     for(var k = 0; k < skill.length; k++){
-      data_prof.set( skill[k], ( data_prof.get( skill[k] )/data_peop.get( skill[k] ) ) );
-      prof[k] = data_prof.get( skill[k] );
-      peop[k] = data_peop.get( skill[k] );
+      if (k < 8) {
+        data_prof.set( skill[k], ( data_prof.get( skill[k] )/data_peop.get( skill[k] ) ) );
+        prof[k] = data_prof.get( skill[k] );
+        peop[k] = data_peop.get( skill[k] );
+      }
     }
 
     this.chart = new Chart({
