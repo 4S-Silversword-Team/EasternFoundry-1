@@ -117,6 +117,8 @@ export class User {
   certification: [
       {
         CertificationName: string,
+        Organization: string,
+        Type: string,
         DateEarned: string
       }
     ]

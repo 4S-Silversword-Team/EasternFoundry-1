@@ -11,6 +11,7 @@ import { Tool } from '../../classes/tool'
 import { ToolService } from '../../services/tool.service'
 import { ToolSubmissionService } from '../../services/toolsubmission.service'
 import { AgencyService } from '../../services/agency.service'
+import { CertService } from '../../services/cert.service'
 import {isUndefined} from "util";
 import { AuthService} from "../../services/auth.service"
 import { s3Service } from "../../services/s3.service"
@@ -25,7 +26,7 @@ declare var $: any;
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html',
   styleUrls: ['./profile-edit.component.css'],
-  providers: [ UserService, AuthService, ToolService, ToolSubmissionService, s3Service, AgencyService ]
+  providers: [ UserService, AuthService, ToolService, ToolSubmissionService, s3Service, AgencyService, CertService ]
 })
 export class ProfileEditComponent implements OnInit {
 
@@ -54,6 +55,7 @@ export class ProfileEditComponent implements OnInit {
   employmentCheck: any[] = []
   dont: boolean = true
   allAgencies: any[] = []
+  allCerts: any[] = []
 
 
   customTrackBy(index: number, obj: any): any {
@@ -83,6 +85,7 @@ export class ProfileEditComponent implements OnInit {
     private auth: AuthService,
     private toolService: ToolService,
     private toolSubmissionService: ToolSubmissionService,
+    private certService: CertService,
     private s3Service: s3Service,
     private agencyService: AgencyService
   ) {
@@ -274,7 +277,10 @@ export class ProfileEditComponent implements OnInit {
 
           this.agencyService.getAgencies().then(val => {
             this.allAgencies = val
-            this.promiseFinished = true;
+            this.certService.getCerts().then(v => {
+              this.allCerts = v
+              this.promiseFinished = true;
+            })
           });
         });
       }
@@ -311,6 +317,11 @@ export class ProfileEditComponent implements OnInit {
     return data.agency;
   }
 
+  certListFormatter (data: any) {
+    return data.name;
+  }
+
+
 
   agencyValidCheck (agency) {
     var match = false
@@ -337,6 +348,16 @@ export class ProfileEditComponent implements OnInit {
     var subagencies = this.findSubAgencies(agency)
     for (let i of subagencies) {
       if (i.toString().toLowerCase() == subagency.toString().toLowerCase()){
+        match = true
+      }
+    }
+    return match;
+  }
+
+  certValidCheck (cert) {
+    var match = false
+    for (let a of this.allCerts) {
+      if (a.name.toString().toLowerCase() == cert.toString().toLowerCase()){
         match = true
       }
     }
@@ -673,6 +694,8 @@ export class ProfileEditComponent implements OnInit {
   addCertificate() {
     this.currentUser.certification.push({
       CertificationName: '',
+      Organization: '',
+      Type: '',
       DateEarned: ''
     });
   }
@@ -751,6 +774,18 @@ export class ProfileEditComponent implements OnInit {
   }
 
   updateProfile(model, noNav?: boolean) {
+
+    for (let cert of model.certification) {
+      var matchFound = false
+      for (let c of this.allCerts) {
+        if (cert.CertificationName == c.name && !matchFound) {
+          cert.Organization = c.organization;
+          cert.Type = c.type;
+          matchFound = true;
+        }
+      }
+    }
+
     function moveObject (array, old_index, new_index) {
       if (new_index >= array.length) {
           var k = new_index - array.length;

@@ -18,6 +18,7 @@ import { PastPerformanceEditComponent } from './pages/past-performance-edit/past
 import { NoContentComponent } from './pages/no-content/no-content.component';
 import { MyPastPerformancesComponent } from './pages/my-pastperformances/my-pastperformances.component';
 import { SearchComponent } from './pages/search/search.component';
+import { AdminComponent } from './pages/admin/admin.component';
 
 import { ComponentNameComponent } from './component-name/component-name.component';
 
@@ -53,6 +54,7 @@ import { ChartModule } from 'angular-highcharts';
     CorporateProfileComponent,
     PastPerformanceComponent,
     PastPerformanceEditComponent,
+    AdminComponent,
     NoContentComponent,
     BentBarsChartComponent,
     ColorCommentBoxComponent,

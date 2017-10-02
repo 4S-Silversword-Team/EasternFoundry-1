@@ -215,7 +215,7 @@ button {
 }
 
 .div-title div {
-  width: calc(100% - 320px);
+  width: calc(100% - 350px);
   height: 3px;
   margin-bottom: 8px;
   background-color: #827e7c;
