@@ -398,7 +398,7 @@ export class CorporateProfileEditComponent implements OnInit {
     this.products.push(
       {
         _id: "NEW",
-        name: "product 1",
+        name: "",
         feature: [
           {
             name: "feature 1",
@@ -614,28 +614,31 @@ export class CorporateProfileEditComponent implements OnInit {
       });
     } else {
       if(!this.isUserAdmin){return;}
+      var companyId = model._id
       delete model['_id'];
+      var productPromises = []
+      var servicePromises = []
+      var accountPromises = []
       //this whole thing updates a bunch of times with nesting promises so it can create a new product and simultaneously add it to the company
-      this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then(result => this.currentAccount = result);
       if(model.product) {
         for (const i of this.products) {
           if (i._id == "NEW") {
             const productModel = i
             delete productModel['_id'];
-            this.productService.createProduct(productModel).toPromise().then(result => {
+            productPromises.push(this.productService.createProduct(productModel).toPromise().then((result) => {
               var res: any = result
-              var productId = JSON.parse(res._body)._id
-              model.product.push(productId)
-              this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then((result) => {
-                console.log(JSON.stringify(model.product))
-                this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then(result => model = result);
-              });
-            });
+              console.log(JSON.parse(res._body)._id)
+              model.product.push(JSON.parse(res._body)._id)
+            }))
           } else {
-            const productModel = i
-            var productId = i._id
-            delete productModel['_id'];
-            this.productService.updateProduct(productId, productModel).toPromise().then(result => console.log(result));
+          const productModel = i
+          var productId = i._id
+          delete productModel['_id'];
+          productPromises.push(this.productService.updateProduct(productId, productModel).toPromise().then(result => {
+            var res: any = result
+            console.log(JSON.parse(res._body)._id)
+          }
+          ));
           }
         }
       }
@@ -644,27 +647,33 @@ export class CorporateProfileEditComponent implements OnInit {
           if (i._id == "NEW") {
             const serviceModel = i
             delete serviceModel['_id'];
-            this.serviceService.createService(serviceModel).toPromise().then(result => {
+            servicePromises.push(this.serviceService.createService(serviceModel).toPromise().then((result) => {
               var res: any = result
-              var serviceId = JSON.parse(res._body)._id
-              model.service.push(serviceId)
-              this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then((result) => {
-                console.log(JSON.stringify(model.service))
-                this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then(result => model = result);
-               });
-            });
+              console.log(JSON.parse(res._body)._id)
+              model.service.push(JSON.parse(res._body)._id)
+            }))
           } else {
-            const serviceModel = i
-            var serviceId = i._id
-            delete serviceModel['_id'];
-            this.serviceService.updateService(serviceId, serviceModel).toPromise().then(result => console.log(result));
+          const serviceModel = i
+          var serviceId = i._id
+          delete serviceModel['_id'];
+          servicePromises.push(this.serviceService.updateService(serviceId, serviceModel).toPromise().then(result => {
+            var res: any = result
+            console.log(JSON.parse(res._body)._id)
+          }
+          ));
           }
         }
       }
-      if (!noNav) {
-        window.scrollTo(0, 0);
-        this.router.navigate(['corporate-profile', this.route.snapshot.params['id']]);
-      }
+      Promise.all(productPromises).then(products=>{
+        Promise.all(servicePromises).then(services=>{
+          this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then((result) => {
+            if (!noNav) {
+              window.scrollTo(0, 0);
+              this.router.navigate(['corporate-profile', this.route.snapshot.params['id']]);
+            }
+         });
+        })
+      })
     }
   }
 
