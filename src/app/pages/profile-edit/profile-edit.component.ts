@@ -328,6 +328,7 @@ export class ProfileEditComponent implements OnInit {
     for (let a of this.allAgencies) {
       if (a.agency.toString().toLowerCase() == agency.toString().toLowerCase()){
         match = true
+        agency = a.agency
       }
     }
     return match;
@@ -349,6 +350,7 @@ export class ProfileEditComponent implements OnInit {
     for (let i of subagencies) {
       if (i.toString().toLowerCase() == subagency.toString().toLowerCase()){
         match = true
+        subagency = i
       }
     }
     return match;

@@ -1,6 +1,5 @@
 import {Http} from '@angular/http';
 
-
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -11,8 +10,6 @@ import { ToolService } from '../../services/tool.service';
 import { CertService } from '../../services/cert.service';
 import { AgencyService } from '../../services/agency.service';
 import { AuthService } from '../../services/auth.service'
-
-
 
 @Component({
   selector: 'app-admin',
@@ -29,8 +26,6 @@ export class AdminComponent implements OnInit {
   uploadCounter: number = 0;
   isUserAdmin: boolean = false;
   govtNames: any[] = [];
-
-
 
   constructor(
     private route: ActivatedRoute,
@@ -50,9 +45,6 @@ export class AdminComponent implements OnInit {
       this.getAdminStatus()
 
     }
-
-
-
 
     this.http.get('../../../assets/certs.json')
       .map((res: any) => res.json())
@@ -99,9 +91,6 @@ export class AdminComponent implements OnInit {
     })
   }
 
-
-
-
   ngOnInit() {
   }
 
@@ -117,11 +106,9 @@ export class AdminComponent implements OnInit {
 
   sort() {
     console.log('god help us.')
-
-
-  console.log('DONE. We have sorted ' + this.sortedObjects.length + ' so far.')
-}
-
+    // no code here right now
+    console.log('DONE. We have sorted ' + this.sortedObjects.length + ' so far.')
+  }
 
   //     while (this.sortCounter < this.toSort.length) {
   //       var matchFound = false
@@ -178,4 +165,4 @@ export class AdminComponent implements OnInit {
     console.log('DONE. We have finished ' + this.uploadCounter + ' so far.')
   }
 
-  }
+}

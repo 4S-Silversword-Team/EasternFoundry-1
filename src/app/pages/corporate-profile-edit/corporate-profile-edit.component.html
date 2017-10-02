@@ -160,110 +160,98 @@
     <p>PRODUCTS</p>
     <div></div>
   </div>
-  <div *ngFor='let product of this.products; let prodIndex = index' class="container mt50 product-container">
-    <div class="col-xs-12 srow">
-      <div class="col-xs-12 col-md-6 right">
-        <div class="col-xs-12 srow info-input">
-          <p class="left">More info</p>
-          <input class="right" type="text" placeholder="URL to show more info." [(ngModel)]="product.moreInfoLink">
+  <div class="col-xs-12">
+    <div *ngFor='let product of this.products; let prodIndex = index' class="container mt50 product-container" style="padding: 5px; position: relative">
+      <div (click)='deleteProduct(prodIndex)' style="position: absolute; z-index: 4">
+        <div class="">
+          <img src="./assets/img/btn-close.png" alt="" class="search-item-x">
         </div>
       </div>
-    </div>
-    <div class="col-xs-12">
-      <div class="col-xs-12 col-md-6 left">
-        <div class="col-xs-12 srow info-input">
-          <p class="left">Product name</p>
-          <input class="right" type="text" placeholder="Product name." [(ngModel)]='product.name'>
+      <div class="col-xs-12 srow">
+        <div class="col-xs-12 col-md-6 right">
+          <div class="col-xs-12 srow info-input">
+            <p class="left">More info</p>
+            <input class="right" type="text" placeholder="URL to show more info." [(ngModel)]="product.moreInfoLink">
+          </div>
         </div>
       </div>
-      <div class="col-xs-12 col-md-6 right">
-        <div class="col-xs-12 srow info-input">
-          <p class="left">Video demo</p>
-          <input class="right" type="text" placeholder="URL to Video demo." [(ngModel)]="product.viewDemoLink">
+      <div class="col-xs-12">
+        <div class="col-xs-12 col-md-6 left">
+          <div class="col-xs-12 srow info-input">
+            <p class="left">Name</p>
+            <input class="right" type="text" placeholder="Product name." [(ngModel)]='product.name'>
+          </div>
+        </div>
+        <div class="col-xs-12 col-md-6 right">
+          <div class="col-xs-12 srow info-input">
+            <p class="left">Video demo</p>
+            <input class="right" type="text" placeholder="URL to Video demo." [(ngModel)]="product.viewDemoLink">
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col-xs-12">
-      <div class="col-xs-12 col-sm-6">
-        <p class="col-xs-12 lh-50">Product Description</p>
-        <div class="col-xs-12 text-container" [style.height]="'300px'"><textarea [(ngModel)]='product.description'></textarea></div>
-      </div>
-      <div class="col-xs-12 col-sm-6">
-        <p class="col-xs-12 lh-50">Agencies using it today</p>
-        <div class="col-xs-12 text-container" [style.overflow] = "'auto'" [style.height]="'300px'">
-          <div class="col-xs-12" *ngFor='let customer of '><input type="checkbox" class="left"><p >XXX</p></div>
-          <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
-          <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
-          <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
-          <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
-          <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
-          <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
-          <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
-          <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
+      <div class="col-xs-12">
+        <div class="col-xs-12 col-sm-6">
+          <p class="col-xs-12 lh-50">Product Description</p>
+          <div class="col-xs-12 text-container" [style.height]="'326px'" style="margin-top: -1px"><textarea [(ngModel)]='product.description'></textarea></div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          <p class="col-xs-12 lh-50">Agencies using it today</p>
+          <div class="col-xs-4 customer-tab" (click)='changeCustomerTab(prodIndex, 0)' [ngClass]="{'customer-tab-active': productTabs[prodIndex] == 0}">
+            Defense
+          </div>
+          <div class="col-xs-4 customer-tab"  (click)='changeCustomerTab(prodIndex, 1)' [ngClass]="{'customer-tab-active': productTabs[prodIndex] == 1}">
+            Commercial
+          </div>
+          <div class="col-xs-4 customer-tab"  (click)='changeCustomerTab(prodIndex, 2)' [ngClass]="{'customer-tab-active': productTabs[prodIndex] == 2}">
+            Civilian
+          </div>
+          <div class="col-xs-12 text-container" [style.overflow] = "'auto'" [style.height]="'300px'">
+            <div class="" *ngIf='this.productTabs[prodIndex] == 0'>
+              <div class="col-xs-12" *ngFor='let customer of product.customers.defense; let i = index' style="color: black">
+                <input ngui-auto-complete class="col-xs-12" placeholder="Defense Customer" [(ngModel)] = 'customer.name' [source]='this.allAgencies' [list-formatter]="agencyListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': agencyValidCheck(customer.name) == false}">
+                <button class="tiny-button-skills" (click)="deleteCustomerDefense(product, i)"><div class="tiny-button-text">x</div></button>
+              </div>
+              <button type="button"class="col-xs-4 col-xs-offset-4" name="button" (click)='addCustomerDefense(product)'>Add Another</button>
+            </div>
+            <div class="" *ngIf='this.productTabs[prodIndex] == 1'>
+              <div class="col-xs-12" *ngFor='let customer of product.customers.commercial' style="color: black">
+                <input class="col-xs-12" placeholder="Commercial Customer" [(ngModel)]='customer.name'>
+                <button class="tiny-button-skills" (click)="deleteCustomerCommercial(product, i)"><div class="tiny-button-text">x</div></button>
+              </div>
+              <button type="button"class="col-xs-4 col-xs-offset-4" name="button" (click)='addCustomerCommercial(product)'>Add Another</button>
+            </div>
+            <div class="" *ngIf='this.productTabs[prodIndex] == 2'>
+              <div class="col-xs-12" *ngFor='let customer of product.customers.civilian' style="color: black">
+                <input class="col-xs-12" placeholder="Civilian Customer" [(ngModel)]='customer.name'>
+                <button class="tiny-button-skills" (click)="deleteCustomerCivilian(product, i)"><div class="tiny-button-text">x</div></button>
+              </div>
+              <button type="button"class="col-xs-4 col-xs-offset-4" name="button" (click)='addCustomerCivilian(product)'>Add Another</button>
+            </div>
+            <!-- <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
+            <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
+            <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
+            <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
+            <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
+            <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
+            <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
+            <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div> -->
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col-xs-12 mt30">
-      <div class="col-xs-12 col-md-4">
-        <p class="left">Will you customize the product?</p>
-        <input class="right" type="checkbox" [(ngModel)]="product.customization" />
+      <div class="col-xs-12 mt30">
+        <div class="col-xs-12 col-md-4">
+          <p class="left">Will you customize the product?</p>
+          <input class="right" type="checkbox" [(ngModel)]="product.customization" />
+        </div>
+        <div class="col-xs-12 col-md-4">
+          <p class="left">Do you provide training?</p>
+          <input class="right" type="checkbox" [(ngModel)]="product.training" />
+        </div>
+        <div class="col-xs-12 col-md-4">
+          <p class="left">Do you provide maintenance?</p>
+          <input class="right" type="checkbox" [(ngModel)]="product.maintenance" />
+        </div>
       </div>
-      <div class="col-xs-12 col-md-4">
-        <p class="left">Do you provide training?</p>
-        <input class="right" type="checkbox" [(ngModel)]="product.training" />
-      </div>
-      <div class="col-xs-12 col-md-4">
-        <p class="left">Do you provide maintenance?</p>
-        <input class="right" type="checkbox" [(ngModel)]="product.maintenance" />
-      </div>
-    </div>
-    <div class="col-xs-12 fs-20 mt20">Defense</div>
-    <div class="col-xs-12" *ngFor='let customer of product.customers.defense; let i = index'>
-      <div class="col-xs-12 col-md-5 srow info-input">
-        <p class="left">Name</p>
-        <input class="right" [(ngModel)]='customer.name'>
-      </div>
-      <div class="col-xs-12 col-md-5 srow info-input">
-        <p class="left">Avatar</p>
-        <input class="right" [(ngModel)]='customer.avatar'>
-      </div>
-      <button class="col-xs-offset-5 col-md-2 col-md-offset-0" (click)="deleteDefense(product, i)">REMOVE</button>
-    </div>
-    <div class="col-xs-12 text-center   mt20   mb20">
-      <button class="mr10" (click)="addDefense(product)">ADD</button>
-    </div>
-    <div class="col-xs-12 fs-20">Civilian</div>
-    <div class="col-xs-12" *ngFor='let customer of product.customers.civilian; let i = index'>
-      <div class="col-xs-12 col-md-5 srow info-input">
-        <p class="left">Name</p>
-        <input class="right" [(ngModel)]='customer.name'>
-      </div>
-      <div class="col-xs-12 col-md-5 srow info-input">
-        <p class="left">Avatar</p>
-        <input class="right" [(ngModel)]='customer.avatar'>
-      </div>
-      <button class="col-xs-offset-5 col-md-2 col-md-offset-0" (click)="deleteCivilian(product, i)">REMOVE</button>
-    </div>
-    <div class="col-xs-12 text-center   mt20   mb20">
-      <button class="mr10" (click)="addCivilian(product)">ADD</button>
-    </div>
-    <div class="col-xs-12 fs-20">Commercial</div>
-    <div class="col-xs-12" *ngFor='let customer of product.customers.commercial; let i = index'>
-      <div class="col-xs-12 col-md-5 srow info-input">
-        <p class="left">Name</p>
-        <input class="right" [(ngModel)]='customer.name'>
-      </div>
-      <div class="col-xs-12 col-md-5 srow info-input">
-        <p class="left">Avatar</p>
-        <input class="right" [(ngModel)]='customer.avatar'>
-      </div>
-      <button class="col-xs-offset-5 col-md-2 col-md-offset-0" (click)="deleteCommercial(product, i)">REMOVE</button>
-    </div>
-    <div class="col-xs-12 text-center   mt20   mb20">
-      <button class="mr10" (click)="addCommercial(product)">ADD</button>
-    </div>
-    <div class='col-xs-12'>
-      <button class='col-xs-4 col-xs-offset-4' type="button" name="button" (click)='deleteProduct(prodIndex)'>Delete This Product</button>
     </div>
   </div>
   <div class='col-xs-12'>

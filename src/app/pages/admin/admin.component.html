@@ -1,13 +1,24 @@
-<div class="container mt100">
+<div class="container mt100" *ngIf='this.isUserAdmin'>
   <h1 style="text-align: center">this is the admin super page. the buttons here do crazy stuff.</h1>
-  <h1 style="text-align: center">if you somehow got here please don't click anything and click Report a Bug to let me know my rad security failed</h1>
+  <h1 style="text-align: center">if you somehow got here please don't click anything and send a bug report to let me know my rad security failed</h1>
 
-  <div class="col-xs-6" style='background: whitesmoke; border: 1px solid black'>
+<div class="col-xs-6" style="padding: 2px">
+  <div class="col-xs-12" style='background: whitesmoke; border: 1px solid black; padding: 2px'>
     <h4>CERTS SORT/UPLOAD</h4>
     <p>(there really isn't any sorting involved with these though)</p>
     <button type="button" name="button" class="col-xs-6" (click)="sort()">Sort From {{this.sortCounter}}</button>
     <button type="button" name="button" class="col-xs-6" (click)="uploadSortedObjects()">Upload From {{this.uploadCounter}}</button>
   </div>
+</div>
+<div class="col-xs-6" style="padding: 2px">
+  <div class="col-xs-12" style='background: whitesmoke; border: 1px solid black; padding: 2px'>
+    <h4>CERTS SORT/UPLOAD</h4>
+    <p>(there really isn't any sorting involved with these though)</p>
+    <button type="button" name="button" class="col-xs-6" (click)="sort()">Sort From {{this.sortCounter}}</button>
+    <button type="button" name="button" class="col-xs-6" (click)="uploadSortedObjects()">Upload From {{this.uploadCounter}}</button>
+  </div>
+</div>
+
 
   <!-- <div class="col-xs-12 text-container" *ngFor='let user of users' (click) = "goTo(user._id)">
     <div class="col-xs-2">

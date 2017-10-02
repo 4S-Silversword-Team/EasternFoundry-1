@@ -12,6 +12,7 @@ import { ProductService } from '../../services/product.service';
 import { ServiceService } from '../../services/service.service';
 import { PastperformanceService } from '../../services/pastperformance.service';
 import { UserService } from '../../services/user.service'
+import { AgencyService } from '../../services/agency.service'
 import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
 import { CompanyPastperformanceProxyService } from '../../services/companypastperformanceproxy.service'
 
@@ -27,7 +28,7 @@ declare var $: any;
   selector: 'app-corporate-profile-edit',
   templateUrl: './corporate-profile-edit.component.html',
   styleUrls: ['./corporate-profile-edit.component.css'],
-  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, CompanyUserProxyService, CompanyPastperformanceProxyService, RoleService, s3Service]
+  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, AgencyService, CompanyUserProxyService, CompanyPastperformanceProxyService, RoleService, s3Service]
 })
 export class CorporateProfileEditComponent implements OnInit {
 
@@ -61,6 +62,9 @@ export class CorporateProfileEditComponent implements OnInit {
     people: []
   };
   noResults = false
+  productTabs = [0]
+
+  allAgencies: any[] = []
 
   promiseFinished: boolean = false;
 
@@ -71,6 +75,7 @@ export class CorporateProfileEditComponent implements OnInit {
     private companyService: CompanyService,
     private productService: ProductService,
     private serviceService: ServiceService,
+    private agencyService: AgencyService,
     private ppService: PastperformanceService,
     private userService: UserService,
     private companyUserProxyService: CompanyUserProxyService,
@@ -118,7 +123,18 @@ export class CorporateProfileEditComponent implements OnInit {
       }
       console.log('???????')
       this.checkFields()
-      this.promiseFinished = true
+      for (let p of this.currentAccount.product) {
+        if (this.productTabs.length > 0) {
+          this.productTabs.push(0)
+        } else {
+          this.productTabs[0] = 0
+        }
+      }
+      this.agencyService.getAgencies().then(val => {
+        this.allAgencies = val
+        this.promiseFinished = true
+      });
+
     };
     }
     else {
@@ -173,6 +189,21 @@ export class CorporateProfileEditComponent implements OnInit {
     }
   }
 
+  agencyListFormatter (data: any) {
+    return data.agency;
+  }
+
+  agencyValidCheck (agency) {
+    var match = false
+    for (let a of this.allAgencies) {
+      if (a.agency.toString().toLowerCase() == agency.toString().toLowerCase()){
+        match = true
+        agency = a.agency
+      }
+    }
+    return match;
+  }
+
   getAdminStatus() {
     var userId = this.auth.getLoggedInUser()
     this.userService.getUserbyID(userId).toPromise().then((user) =>{
@@ -194,6 +225,11 @@ export class CorporateProfileEditComponent implements OnInit {
         })
       }
     })
+  }
+
+  changeCustomerTab(index, num) {
+    this.productTabs[index] = num
+    console.log(this.productTabs[index])
   }
 
   checkFields(){
@@ -377,29 +413,22 @@ export class CorporateProfileEditComponent implements OnInit {
         maintenance: true,
         customers: {
           defense: [
-            {
-              avatar: "./assets/img/customer1.png",
-              name: "customer 1"
-            }
+
           ],
           civilian: [
-            {
-              avatar: "./assets/img/customer5.png",
-              name: "customer 1"
-            }
+
           ],
           commercial: [
-            {
-              avatar: "./assets/img/customer6.png",
-              name: "customer 1"
-            }
+
           ]
         }
       }
     );
+    this.productTabs.push(0)
   }
 
   deleteProduct(i) {
+    console.log('?')
     var toDelete = this.products[i]
     var toDeleteId = 0
     this.products.splice(i, 1);
@@ -466,6 +495,39 @@ export class CorporateProfileEditComponent implements OnInit {
 
   deleteVehicle(vehicle, i) {
     this.currentAccount.vehicles.splice(i,1)
+  }
+
+  addCustomerDefense(product){
+    product.customers.defense.push({
+      name: '',
+      avatar: ''
+    })
+  }
+
+  addCustomerCommercial(product){
+    product.customers.commercial.push({
+      name: '',
+      avatar: ''
+    })
+  }
+
+  addCustomerCivilian(product){
+    product.customers.civilian.push({
+      name: '',
+      avatar: ''
+    })
+  }
+
+  deleteCustomerDefense(product, i){
+    product.customers.defense.splice(i, 1)
+  }
+
+  deleteCustomerCommercial(product, i){
+    product.customers.commercial.splice(i, 1)
+  }
+
+  deleteCustomerCivilian(product, i){
+    product.customers.civilian.splice(i, 1)
   }
 
   addUserWithRole(company, user, role){
