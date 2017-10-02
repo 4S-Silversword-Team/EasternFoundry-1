@@ -177,13 +177,13 @@
           <div class="col-xs-12 col-sm-4"><p class="col-xs-11">Ongoing Maintenance</p><input type="checkbox" class="col-xs-1" [attr.checked]="index.maintenance ? true : null">
           </div>
       </div>
-      <div class="customer div-title col-xs-12" *ngIf='currentTab== 2'>
+      <div class="customer div-title col-xs-12" *ngIf='currentTab== 2 && (index.customers.defense.length > 0 || index.customers.civilian.length > 0 || index.customers.defense.commercial > 0)'>
           <img src="./assets/img/customer.png">
           <p>CUSTOMERS USING THE PRODUCT</p>
           <div></div>
       </div>
-      <div class="main" *ngIf='currentTab== 2'>
-          <div class="row col-xs-12 text-container text-center">
+      <div class="main" *ngIf='currentTab== 2 && (index.customers.defense.length > 0 || index.customers.civilian.length > 0 || index.customers.defense.commercial > 0)'>
+          <div class="row col-xs-12 text-container text-center" *ngIf='index.customers.defense.length > 0'>
               <div class="left" [style.width]="'120px'">
                   <p class="col-xs-12">DEFENSE</p>
                   <img src="./assets/img/defense.png" [style.width]="'100px'" [style.margin-left]="'10px'">
@@ -193,7 +193,7 @@
                   <p class="col-xs-12">{{jendex.name}}</p>
               </div>
           </div>
-          <div class="row col-xs-12 text-container">
+          <div class="row col-xs-12 text-container" *ngIf='index.customers.civilian.length > 0'>
               <div class="left" [style.width]="'120px'">
                   <p class="col-xs-12">CIVILIAN</p>
                   <img src="./assets/img/civilian.png" [style.width]="'100px'" [style.margin-left]="'10px'">
@@ -203,9 +203,9 @@
                   <p class="col-xs-12">{{jendex.name}}</p>
               </div>
           </div>
-          <div class="row col-xs-12 text-container">
+          <div class="row col-xs-12 text-container" *ngIf='index.customers.commercial.length > 0'>
               <div class="left" [style.width]="'120px'">
-                  <p class="col-xs-12">COMMERCIA</p>
+                  <p class="col-xs-12">COMMERCIAL</p>
                   <img src="./assets/img/commercia.png" [style.width]="'100px'" [style.margin-left]="'10px'">
               </div>
               <div class="left text-center" *ngFor='let jendex of index.customers.commercial' [style.width]="'120px'">
@@ -219,28 +219,30 @@
 
 <!-- START -- FOR SERVICE IN SERVICES -->
   <div class="service col-xs-12 clear main" *ngIf="!services[0] && currentTab == 3">No Services</div>
-  <div class="service col-xs-12 clear" *ngFor='let index of services'>
-    <div class="div-title col-md-12" *ngIf='currentTab == 2'>
+  <div class="" *ngIf='currentTab == 3'>
+    <div class="service col-xs-12 clear" *ngFor='let index of services'>
+      <div class="div-title col-md-12">
         <img src="./assets/img/profile/capabilities-1.png">
         <p>{{index.name}}</p>
         <div></div>
-    </div>
-    <div class="capa-main col-md-12" *ngIf='currentTab == 3'>
+      </div>
+      <div class="capa-main col-md-12">
         <div class="col-xl-12 col-lg-6">
-            <div class="capa-chart col-xs-12">
-                <app-bent-bars-chart width='300' height='300' divID='bbChart{{index._id}}' [values]='getServiceChartValue(index._id)'></app-bent-bars-chart>
-            </div>
+          <div class="capa-chart col-xs-12">
+            <app-bent-bars-chart width='300' height='300' divID='bbChart{{index._id}}' [values]='getServiceChartValue(index._id)'></app-bent-bars-chart>
+          </div>
         </div>
         <div class="col-xs-12 col-lg-6 text-container">
-            <div class="row">
-                <div class="col-xs-12 col-md-6 left">
-                    <app-color-comment-box *ngFor='let feature of index.feature' color='{{getServiceChartColor(feature.score)}}' text='{{feature.title}}' class="col-xs-12 col-sm-6 col-md-12"></app-color-comment-box>
-                </div>
-                <div class="col-xs-12 col-md-6 right">
-                    <p *ngFor='let skill of index.skills' class="col-xs-12 col-sm-6 col-md-12">{{ skill }} </p>
-                </div>
+          <div class="row">
+            <div class="col-xs-12 col-md-6 left">
+              <app-color-comment-box *ngFor='let feature of index.feature' color='{{getServiceChartColor(feature.score)}}' text='{{feature.title}}' class="col-xs-12 col-sm-6 col-md-12"></app-color-comment-box>
             </div>
+            <div class="col-xs-12 col-md-6 right">
+              <p *ngFor='let skill of index.skills' class="col-xs-12 col-sm-6 col-md-12">{{ skill }} </p>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
   </div>
 <!-- END -- FOR SERVICE IN SERVICES -->
