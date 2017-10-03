@@ -23,6 +23,20 @@
   color: black;
 }
 
+.score-panel-outer {
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(0,0,0,0.25);
+  padding: 2px;
+}
+
+.score-panel {
+  background: rgba(0,0,0,0.02);
+  border: 1px solid rgba(0,0,0,0.2);
+  overflow-y: auto;
+  padding: 5px;
+  margin: 5px;
+}
+
 button {
   padding: 0px;
 }
@@ -92,7 +106,8 @@ button {
 }
 
 .tiny-button-text {
-  transform: translateY(-14px);
+  transform: translateY(-12px);
+  font-size: 16px;
 }
 
 .tiny-button-job {

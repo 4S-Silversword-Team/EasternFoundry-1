@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   email: string
   password: string
   new: boolean = false
+  activeTab: number = 0
 
 
   constructor(
@@ -29,6 +30,10 @@ export class LoginComponent implements OnInit {
     }
 
   ngOnInit() {
+  }
+
+  switchTab(t) {
+    this.activeTab = t
   }
 
   logIn() {

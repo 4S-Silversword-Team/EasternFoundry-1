@@ -402,6 +402,7 @@ export class ProfileEditComponent implements OnInit {
 
     if (this.availablePoints <= 0) {
       this.availablePoints = 0
+      this.maxToolScores = []
       var maxPoints = this.professionalPoints
       for (var i = 0; i < this.currentUser.foundTools.length; i++) {
         if (i !== index) {

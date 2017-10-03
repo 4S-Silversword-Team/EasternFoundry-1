@@ -21,26 +21,33 @@
         <input id="password" type="password" class="form-control" placeholder="Password" [(ngModel)]='password'>
       </div>
       <button class="btn btn-primary col-sm-12" (click) = 'logIn()'>Log In</button>
-      <div class="sidebar" style="margin-top: 60px">
-        <div class="">
-          <h4>Known Issues</h4>
-          <li>Autocomplete dropdowns are misaligned</li>
-          <li>Text overlaps on small screens/mobile</li>
-          <li>more things i'll fill this out more later</li>
-        </div>
-      </div>
 
     </div>
     <div class="col-xs-12 col-md-8">
-      <div class="sidebar">
-        <div class="">
+      <div class="col-xs-12" style="margin-left: -15px">
+        <div class="col-md-3 col-xs-6 tab" (click)='switchTab(0)' [ngClass]="{'tab-active': activeTab == 0}">
+          Welcome
+        </div>
+        <div class="col-md-3 col-xs-6 tab" (click)='switchTab(1)' [ngClass]="{'tab-active': activeTab == 1}">
+          Known Issues
+        </div>
+      </div>
+      <div class="sidebar col-xs-12">
+        <div class="" *ngIf='activeTab == 0'>
           <h4>Welcome to the Federal Foundry Forge.</h4>
           <p>This site is in beta and unfinished. You'll probably run into some issues along the way.</p><br>
           <p>If you do, we'd appreciate it if you used the <strong>Report a Bug</strong> button in the upper right to send us a note.</p><br>
           <p>If you don't already have an account, click the <strong>Sign Up</strong> button in the upper right to register.</p>
           <p>Then you can begin creating and joining companies, past performances, and more.</p><br>
-          <p>The UI is still very early - over the coming weeks, the whole site will be redesigned to improve the styling and make it mobile-friendly.</p><br>
+          <p>The UI is still early - over the coming weeks, the whole site will be redesigned to improve the styling and make it mobile-friendly.</p><br>
           <p>Thank you for being a part of the Forge project. Stay tuned - it'll only get bigger and better.</p><br>
+        </div>
+        <div class="" *ngIf='activeTab == 1'>
+          <h4>Known Issues</h4>
+          <li>Autocomplete dropdowns are misaligned</li>
+          <li>Text overlaps in various places on small screens/mobile</li>
+          <li>Tool scoring sometimes lets you assign more points than you have available</li>
+          <li>more things i'll fill this out more later</li>
         </div>
       </div>
     </div>

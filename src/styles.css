@@ -182,15 +182,15 @@ p {
 }
 
 button {
-    width: 120px;
-    height: 40px;
-    border: none;
+    width: 70px;
+    height: 35px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 10px;
-    background-color: #585858;
+    background-color: rgba(80, 80, 80, 1);
     text-align: center;
-    font-size: 20px;
+    font-size: 16px;
     color: white;
-    line-height: 40px;
+    line-height: 35px;
 }
 
 input {
