@@ -68,6 +68,42 @@ button {
   color: darkslategray;
 }
 
+.job-tab {
+  background: rgba(155, 155, 155, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: rgba(50, 50, 50, 0.5);
+  margin-bottom: -9px;
+  padding-bottom: 2px;
+  padding-top: 1px;
+  cursor: pointer;
+}
+
+.job-tab:hover {
+  background: rgba(200, 200, 200, 0.6);
+  color: rgba(50, 50, 50, 0.75);
+  border: 1px solid rgba(0, 0, 0, 0.4);
+}
+.job-tab-active {
+  background: rgba(255, 255, 255, 0.6);
+  color: rgba(50, 50, 50, 1);
+  border: 1px solid rgba(0, 0, 0, 0.4);
+}
+.job-tab-active:hover {
+  background: rgba(255, 255, 255, 0.6);
+  color: rgba(50, 50, 50, 1);
+  border: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.job-interior {
+  margin-top: 10px;
+  margin-top: 8px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.4);
+}
+
 .tiny-button-skills {
   position: absolute;
   right: 22px;
