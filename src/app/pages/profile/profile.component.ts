@@ -24,6 +24,8 @@ export class ProfileComponent implements OnInit {
   expColors: string[] = ['rgb(0,178,255)', 'rgb(69,199,255)', 'rgb(138,220,255)', 'rgb(198,241,255)' ];
   strengthChartDatas: any[] = []
   strengthChartLabels: string[] = []
+  toolChartDatas: any[] = []
+  toolChartLabels: string[] = []
   promiseFinished: boolean = false
   availabilityData: any = {
     values: [],
@@ -514,7 +516,7 @@ export class ProfileComponent implements OnInit {
         });
 
 
-
+      this.calculateSkillChart()
       this.promiseFinished = true;
     }
 
@@ -522,6 +524,23 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  calculateSkillChart(){
+    var temp: number[] = []
+    this.toolChartLabels = []
+    this.toolChartDatas = []
+    if(this.currentUser.foundTools) {
+      for (let index of this.currentUser.foundTools) {
+        if (!index.score) {
+          index.score = 0
+        }
+        this.toolChartLabels.push(index.title)
+        temp.push(+index.score)
+      }
+    }
+    this.toolChartDatas.push({data: temp, label: 'Score'})
+  }
+
 
   // getCapaChartValues(tempUser: User): number[] {
   //   let temp: number[] = []

@@ -35,8 +35,8 @@ export class ProfileEditComponent implements OnInit {
   currentUser: User = new User()
   newSkill: string = ''
   expColors: string[] = ['rgb(0,178,255)', 'rgb(69,199,255)', 'rgb(138,220,255)', 'rgb(198,241,255)' ];
-  strengthChartDatas: any[] = []
-  strengthChartLabels: string[] = []
+  toolChartDatas: any[] = []
+  toolChartLabels: string[] = []
   availabilityData: any = {
     values: [],
     dates: []
@@ -81,6 +81,7 @@ export class ProfileEditComponent implements OnInit {
   professionalPoints = 0
   professionalPointsUsed = 0
   availablePoints = 0
+  maxToolScores: number[] = []
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -371,18 +372,18 @@ export class ProfileEditComponent implements OnInit {
 
   calculateSkillChart(){
     var temp: number[] = []
-    this.strengthChartLabels = []
-    this.strengthChartDatas = []
+    this.toolChartLabels = []
+    this.toolChartDatas = []
     if(this.currentUser.foundTools) {
       for (let index of this.currentUser.foundTools) {
         if (!index.score) {
-          index.score = 5
+          index.score = 0
         }
-        this.strengthChartLabels.push(index.title)
+        this.toolChartLabels.push(index.title)
         temp.push(+index.score)
       }
     }
-    this.strengthChartDatas.push({data: temp, label: 'Score'})
+    this.toolChartDatas.push({data: temp, label: 'Score'})
     this.availablePoints = this.professionalPoints
     for (let f of this.currentUser.foundTools) {
       this.availablePoints -= f.score
@@ -392,6 +393,9 @@ export class ProfileEditComponent implements OnInit {
   calculateAvailablePoints(tool, index){
     this.availablePoints = this.professionalPoints
     this.professionalPointsUsed = 0
+    if (tool.score < 0) {
+      tool.score = 0
+    }
     for (let f of this.currentUser.foundTools) {
       this.availablePoints -= f.score
     }
@@ -404,10 +408,15 @@ export class ProfileEditComponent implements OnInit {
           maxPoints -= this.currentUser.foundTools[i].score
           tool.score = maxPoints
         }
+        this.maxToolScores[i] = this.currentUser.foundTools[i].score
       }
-      // if (tool.score == maxPoints + 1)
-      console.log(tool.score)
+    } else {
+      for (var i = 0; i < this.currentUser.foundTools.length; i++) {
+        this.maxToolScores[i] = 9999
+      }
     }
+
+
   }
 
   uploadPhoto() {
