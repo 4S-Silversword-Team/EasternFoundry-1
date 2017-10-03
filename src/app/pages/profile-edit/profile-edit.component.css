@@ -75,6 +75,7 @@ button {
   font-size: 16px;
   font-weight: bold;
   color: rgba(50, 50, 50, 0.5);
+  margin-top: 9px;
   margin-bottom: -9px;
   padding-bottom: 2px;
   padding-top: 1px;
@@ -90,6 +91,9 @@ button {
   background: rgba(255, 255, 255, 0.6);
   color: rgba(50, 50, 50, 1);
   border: 1px solid rgba(0, 0, 0, 0.4);
+  margin-top: 0px;
+  padding-bottom: 6px;
+  padding-top: 6px;
 }
 .job-tab-active:hover {
   background: rgba(255, 255, 255, 0.6);
@@ -102,6 +106,7 @@ button {
   margin-top: 8px;
   background: rgba(255, 255, 255, 0.6);
   border: 1px solid rgba(0, 0, 0, 0.4);
+  padding-bottom: 4px;
 }
 
 .tiny-button-skills {
