@@ -68,7 +68,10 @@
         <div class="text-left text-container" style="padding-bottom: 14em" [style.height] = "'260px'" *ngFor="let degree of this.currentUser.education; let i = index">
           <div class="col-xs-6 col-md-5">
             <p class="col-xs-6 col-md-5 vertically-centered">Type: </p>
-            <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.DegreeType[0].Name' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !degree.DegreeType[0].Name}">
+            <select class="col-xs-6 col-md-7" name="" [(ngModel)] = 'degree.DegreeType[0].Name' (ngModelChange)="checkFields(); calculateProfessionalPoints()" [ngClass]="{'empty-field': !degree.DegreeType[0].Name}" style="margin-top: 12px; height: 32px">
+              <option *ngFor='let d of this.degreeType' [value]='d.name'>{{d.name}}</option>
+            </select>
+            <!-- <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.DegreeType[0].Name'> -->
             <p class="col-xs-6 col-md-5 vertically-centered">Concentration: </p>
             <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.MajorProgramName' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !degree.MajorProgramName}">
             <p class="col-xs-6 col-md-5 vertically-centered">School: </p>
@@ -112,7 +115,7 @@
           <button class="col-xs-12 side-button" style="height: 12%; margin-top: -24px" (click)="deleteCertificate(i)">DELETE</button>
         </div>
       </div>
-    <button class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4" (click)="addCertificate()">Add Certificate</button>
+    <button class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4" (click)="addCertificate(); calculateProfessionalPoints()">Add Certificate</button>
   </div>
 
   <div class="certification col-xs-12">
@@ -199,9 +202,9 @@
         <p class="col-xs-5 col-md-4 vertically-centered">Title</p>
         <input class="col-xs-7 col-md-8 left" placeholder="The title you held" [(ngModel)] = 'job.PositionTitle'>
         <p class="col-xs-5 col-md-4 vertically-centered">End Date</p>
-        <input class="col-xs-7 col-md-8 left" placeholder="" [(ngModel)] = 'job.EndDate'>
+        <input class="col-xs-7 col-md-8 left" placeholder="" [(ngModel)] = 'job.EndDate' (ngModelChange)='calculateProfessionalPoints()'>
         <p class="col-xs-5 col-md-4 vertically-centered">Start Date</p>
-        <input class="col-xs-7 col-md-8 left" placeholder="" [(ngModel)] = 'job.StartDate'>
+        <input class="col-xs-7 col-md-8 left" placeholder="" [(ngModel)] = 'job.StartDate' (ngModelChange)='calculateProfessionalPoints()'>
       </div>
       <div class="col-xs-7">
         <textarea class="col-xs-12 left" rows="9" placeholder="Description:" [(ngModel)] = 'job.Description'></textarea>
@@ -474,6 +477,25 @@
               <p>{{this.toolSearch}} has been submitted. If it's approved we'll add it to the list!</p>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-8">
+      <canvas baseChart
+      [datasets]="strengthChartDatas"
+      [labels]="strengthChartLabels"
+      [options]="{ scaleShowVerticalLines: true, responsive: true, scales: { yAxes: [{ticks: {beginAtZero: true }}]} }"
+      [legend]="false"
+      [chartType]="'bar'"></canvas>
+    </div>
+    <div class="col-xs-4" style='backgroundColor=white; border: 1px solid black'>
+      you have {{this.availablePoints}} points left out of a total {{this.professionalPoints}}
+      <div class="" *ngFor='let t of this.currentUser.foundTools; let i = index'>
+        <div class="col-xs-8">
+          {{t.title}}
+        </div>
+        <div class="col-xs-4">
+          <input class="col-xs-12" type="number" name="" value="" max="t.score" [(ngModel)]='t.score' (ngModelChange)='calculateAvailablePoints(t, i); calculateSkillChart()'>
         </div>
       </div>
     </div>

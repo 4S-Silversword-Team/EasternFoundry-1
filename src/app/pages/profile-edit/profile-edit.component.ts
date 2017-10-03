@@ -52,11 +52,35 @@ export class ProfileEditComponent implements OnInit {
   months: any[] = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'
   ]
+  degreeType: any[] = [
+    {
+      name: 'Associate',
+      years: 2
+    },
+    {
+      name: "Bachelor's",
+      years: 4
+    },
+    {
+      name: "Master's",
+      years: 6
+    },
+    {
+      name: "Ph.D.",
+      years: 8
+    },
+    {
+      name: 'Other',
+      years: 2
+    },
+  ]
   employmentCheck: any[] = []
   dont: boolean = true
   allAgencies: any[] = []
   allCerts: any[] = []
-
+  professionalPoints = 0
+  professionalPointsUsed = 0
+  availablePoints = 0
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -175,7 +199,8 @@ export class ProfileEditComponent implements OnInit {
                   title: '',
                   category: '',
                   classification: '',
-                  position: []
+                  position: [],
+                  score: 0
                 }
                 toolToAdd.title = tool.title
                 toolToAdd.category = tool.category
@@ -186,7 +211,8 @@ export class ProfileEditComponent implements OnInit {
                       title: '',
                       category: '',
                       classification: '',
-                      position: []
+                      position: [],
+                      score: 0
                     }
                   ]
                   this.currentUser.foundTools[0] = toolToAdd
@@ -274,7 +300,23 @@ export class ProfileEditComponent implements OnInit {
             this.currentUser.education[0].DegreeType.push({Name: ''})
           }
           this.checkFields()
+          for (let d of this.currentUser.education){
+            var degreeName = d.DegreeType[0].Name.toLowerCase()
+            if (degreeName.includes('associate') || degreeName == "ass.") {
+              d.DegreeType[0].Name = "Associate"
+            } else if (degreeName.includes('bachelor') || degreeName == 'ba' || degreeName == 'b.a.') {
+              d.DegreeType[0].Name = "Bachelor's"
+            } else if (degreeName.includes('master')) {
+              d.DegreeType[0].Name = "Master's"
+            } else if (degreeName.includes('doctor') || degreeName == "phd" || degreeName == 'ph.d.') {
+              d.DegreeType[0].Name = "Ph.D."
+            } else {
+              d.DegreeType[0].Name = 'Other'
+            }
+          }
 
+          this.calculateProfessionalPoints();
+          this.calculateSkillChart();
           this.agencyService.getAgencies().then(val => {
             this.allAgencies = val
             this.certService.getCerts().then(v => {
@@ -290,6 +332,83 @@ export class ProfileEditComponent implements OnInit {
   ngOnInit() {
   }
 
+  calculateProfessionalPoints(){
+    var yearsOfWork = 0
+    var yearsOfSchool = 0
+    for (let j of this.currentUser.positionHistory) {
+      if (j.EndDate !== "Current") {
+        var endYear = +j.EndDate.slice(0, 4)
+        var startYear = +j.StartDate.slice(0, 4)
+      } else {
+        var endYear = new Date().getFullYear()
+        var startYear = +j.StartDate.slice(0, 4)
+      }
+      yearsOfWork += (endYear - startYear)
+
+      if (j.EndDate !== "Current") {
+        var endMonth = +(((+j.EndDate.slice(5, 7))/12).toFixed(2))
+        var startMonth = +(((+j.StartDate.slice(5, 7))/12).toFixed(2))
+      } else {
+        var endMonth = new Date().getMonth()
+        var endMonth = +((+endMonth/12).toFixed(2))
+        var startMonth = +(((+j.StartDate.slice(5, 7))/12).toFixed(2))
+      }
+      yearsOfWork += (endMonth - startMonth)
+    }
+    for (let d of this.currentUser.education) {
+      for (let t of this.degreeType) {
+        if (d.DegreeType[0].Name == t.name) {
+          yearsOfSchool += t.years
+        }
+      }
+    }
+    var points = Math.round(Math.sqrt((yearsOfSchool * 2) + yearsOfWork + this.currentUser.certification.length) * 50)
+    if (!isNaN(points)) {
+      this.professionalPoints = points
+      console.log(this.professionalPoints)
+    }
+  }
+
+  calculateSkillChart(){
+    var temp: number[] = []
+    this.strengthChartLabels = []
+    this.strengthChartDatas = []
+    if(this.currentUser.foundTools) {
+      for (let index of this.currentUser.foundTools) {
+        if (!index.score) {
+          index.score = 5
+        }
+        this.strengthChartLabels.push(index.title)
+        temp.push(+index.score)
+      }
+    }
+    this.strengthChartDatas.push({data: temp, label: 'Score'})
+    this.availablePoints = this.professionalPoints
+    for (let f of this.currentUser.foundTools) {
+      this.availablePoints -= f.score
+    }
+  }
+
+  calculateAvailablePoints(tool, index){
+    this.availablePoints = this.professionalPoints
+    this.professionalPointsUsed = 0
+    for (let f of this.currentUser.foundTools) {
+      this.availablePoints -= f.score
+    }
+
+    if (this.availablePoints <= 0) {
+      this.availablePoints = 0
+      var maxPoints = this.professionalPoints
+      for (var i = 0; i < this.currentUser.foundTools.length; i++) {
+        if (i !== index) {
+          maxPoints -= this.currentUser.foundTools[i].score
+          tool.score = maxPoints
+        }
+      }
+      // if (tool.score == maxPoints + 1)
+      console.log(tool.score)
+    }
+  }
 
   uploadPhoto() {
     let fileBrowser = this.fileInput.nativeElement;
@@ -463,6 +582,7 @@ export class ProfileEditComponent implements OnInit {
 
   addTool(tool) {
     this.currentUser.foundTools.push(tool);
+    this.calculateSkillChart()
   }
 
   findAndAddTool(tool) {
@@ -471,6 +591,7 @@ export class ProfileEditComponent implements OnInit {
       if (tool.title.toLowerCase() == t.title.toLowerCase() && !pushDone) {
         this.currentUser.foundTools.push(t);
         pushDone = true
+        this.calculateSkillChart()
       }
     }
   }
@@ -564,6 +685,7 @@ export class ProfileEditComponent implements OnInit {
   deleteTool(i) {
     this.currentUser.foundTools.splice(i, 1);
     this.checkFields()
+    this.calculateSkillChart()
   }
 
   addJob() {

@@ -225,6 +225,7 @@ export class User {
       category: string
       classification: string
       position: string[]
+      score: number
     }
   ]
   resumeText: string

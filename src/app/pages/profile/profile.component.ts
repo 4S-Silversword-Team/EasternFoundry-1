@@ -38,6 +38,28 @@ export class ProfileComponent implements OnInit {
   months: any[] = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'
   ]
+  degreeType: any[] = [
+    {
+      name: 'Associate',
+      years: 2
+    },
+    {
+      name: "Bachelor's",
+      years: 4
+    },
+    {
+      name: "Master's",
+      years: 6
+    },
+    {
+      name: "Ph.D.",
+      years: 8
+    },
+    {
+      name: 'Other',
+      years: 2
+    },
+  ]
 
   chart: any;
 
@@ -197,7 +219,7 @@ export class ProfileComponent implements OnInit {
           var nameMatch = false
           for (let i of this.agencyExperience) {
             if (newAgency.main.title == i.main.title) {
-              console.log('merging ' + newAgency.main.title + ' & ' + i.main.title)
+              // console.log('merging ' + newAgency.main.title + ' & ' + i.main.title)
               nameMatch = true;
               i.years += newAgency.years
               i.jobs++
@@ -206,10 +228,10 @@ export class ProfileComponent implements OnInit {
 
           if (nameMatch == false && job.agencyExperience[0].main.title.length > 0) {
             if (this.agencyExperience[0] == null) {
-              console.log('setting first one as ' + newAgency.main.title)
+              // console.log('setting first one as ' + newAgency.main.title)
               this.agencyExperience[0] = newAgency
             } else {
-              console.log('pushing in ' + newAgency.main.title)
+              // console.log('pushing in ' + newAgency.main.title)
               this.agencyExperience.push(newAgency)
             }
           }
@@ -245,9 +267,8 @@ export class ProfileComponent implements OnInit {
           }
           newOccupation.title = o.title
           newOccupation.score = o.score
-          console.log(newOccupation.title)
+          // console.log(newOccupation.title)
           this.occupations.push(newOccupation)
-
         }
       } else {
         for (let tool of toolsToPush) {
@@ -262,7 +283,7 @@ export class ProfileComponent implements OnInit {
         })
         for (var i = 0; i < 5; i++) {
           this.occupations.push(toolsToPush[i])
-          console.log(toolsToPush[i].score)
+          // console.log(toolsToPush[i].score)
         }
 
       }
@@ -353,7 +374,14 @@ export class ProfileComponent implements OnInit {
         }
         this.yearsOfWork += (endMonth - startMonth)
       }
-      this.professionalPoints = (this.yearsOfWork + this.currentUser.certification.length) * 50
+      for (let d of this.currentUser.education) {
+        for (let t of this.degreeType) {
+          if (d.DegreeType[0].Name == t.name) {
+            this.yearsOfSchool += t.years
+          }
+        }
+      }
+      this.professionalPoints = Math.round(Math.sqrt((this.yearsOfSchool * 2) + this.yearsOfWork + this.currentUser.certification.length) * 50)
       console.log(this.professionalPoints)
 
       // here is some CHART CALCULATION!
