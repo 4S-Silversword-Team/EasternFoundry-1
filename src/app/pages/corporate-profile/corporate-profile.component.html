@@ -345,23 +345,25 @@
       </div>
     </div>
 
-  <div class="vehicle col-xs-12 clear">
-      <div class="div-title col-xs-12">
-          <img src="./assets/img/vehicle.png">
-          <p>VEHICLES</p>
-          <div></div>
-      </div>
-      <div class="row main main-collapse">
-          <div class="col-xs-12 text-container">
-            <div *ngIf="!currentAccount.vehicles">No vehicles to show</div>
-            <div class="" *ngIf=currentAccount.vehicles>
-              <div *ngIf="!currentAccount.vehicles[0]">No vehicles to show</div>
-            </div>
-              <div class="col-xs-12" [style.overflow] = "'auto'" [style.max-height]="'250px'">
-                   <h5 *ngFor='let index of currentAccount.vehicles'>{{index.vehicleType + ': ' + index.quantity}}</h5>
-              </div>
+  <div class="" *ngIf="currentAccount.vehicles">
+    <div class="" *ngIf="currentAccount.vehicles[0]">
+      <div class="" *ngIf="currentAccount.vehicles[0].vehicleType">
+        <div class="vehicle col-xs-12 clear">
+          <div class="div-title col-xs-12">
+            <img src="./assets/img/vehicle.png">
+            <p>VEHICLES</p>
+            <div></div>
           </div>
+          <div class="row main main-collapse">
+            <div class="col-xs-12 text-container">
+              <div class="col-xs-12" [style.overflow] = "'auto'" [style.max-height]="'250px'">
+                <h5 *ngFor='let index of currentAccount.vehicles'>{{index.vehicleType + ': ' + index.quantity}}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
   </div>
 
   <!-- <div class="schedule col-xs-12 clear">

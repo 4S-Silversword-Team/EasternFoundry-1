@@ -162,14 +162,18 @@ export class ProfileEditComponent implements OnInit {
 
         }
 
-        if (!this.currentUser.certification[0].CertificationName) {
-            this.currentUser.certification.splice(0,1)
+        if (!this.currentUser.certification[0]) {
+          this.currentUser.certification.splice(0,1)
+        } else if (!this.currentUser.certification[0].CertificationName) {
+          this.currentUser.certification.splice(0,1)
         }
-        if (!this.currentUser.clearance[0].clearanceType) {
-            this.currentUser.clearance.splice(0,1)
+        if (!this.currentUser.clearance[0]) {
+          this.currentUser.clearance.splice(0,1)
+        } else if (!this.currentUser.clearance[0].clearanceType) {
+          this.currentUser.clearance.splice(0,1)
         }
         if (!this.currentUser.award[0]) {
-            this.currentUser.award.splice(0,1)
+          this.currentUser.award.splice(0,1)
         }
 
         var currentDate = month + ', ' + year.toString().slice(2,4)
