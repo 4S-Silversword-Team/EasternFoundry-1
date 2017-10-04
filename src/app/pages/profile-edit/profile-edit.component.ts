@@ -175,6 +175,9 @@ export class ProfileEditComponent implements OnInit {
         if (!this.currentUser.award[0]) {
           this.currentUser.award.splice(0,1)
         }
+        if (this.currentUser.cell) {
+          this.onPhoneChange(this.currentUser.cell, false)
+        }
 
         var currentDate = month + ', ' + year.toString().slice(2,4)
         while (this.currentUser.availability.length > 1 && this.currentUser.availability[0].date != currentDate) {
@@ -530,6 +533,7 @@ export class ProfileEditComponent implements OnInit {
        !this.currentUser.lastName ||
        !this.currentUser.username ||
        !this.currentUser.cell ||
+       this.currentUser.cell.length < 14 ||
        !this.currentUser.address.city ||
        !this.currentUser.address.state){
       profileCheck = false
@@ -938,6 +942,37 @@ export class ProfileEditComponent implements OnInit {
         month = date.toLocaleString(locale, { month: "long" });
     return month;
   }
+
+  onPhoneChange(event, backspace) {
+    // remove all mask characters (keep only numeric)
+    var newVal: string = event.replace(/\D/g, '');
+    // special handling of backspace necessary otherwise
+    // deleting of non-numeric characters is not recognized
+    // this laves room for improvement for example if you delete in the
+    // middle of the string
+    if (backspace) {
+      newVal = newVal.substring(0, newVal.length);
+    }
+
+    // don't show braces for empty value
+    if (newVal.length == 0) {
+      newVal = '';
+    } else if (newVal.length < 3) {
+      newVal = newVal
+    }
+    // don't show braces for empty groups at the end
+    else if (newVal.length == 3) {
+      newVal = newVal.replace(/^(\d{0,3})/, '($1)');
+    } else if (newVal.length <= 6) {
+      newVal = newVal.replace(/^(\d{0,3})(\d{0,3})/, '($1)-$2');
+    } else {
+      newVal = newVal.replace(/^(\d{0,3})(\d{0,3})(.*)/, '($1)-$2-$3');
+    }
+    // set the new value
+    this.currentUser.cell = newVal;
+
+  }
+
 
   updateProfile(model, noNav?: boolean) {
 

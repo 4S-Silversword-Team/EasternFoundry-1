@@ -244,6 +244,7 @@ export class CorporateProfileEditComponent implements OnInit {
       this.currentAccount.name &&
       this.currentAccount.email &&
       this.currentAccount.contactNumber &&
+      this.currentAccount.contactNumber.length == 14 &&
       this.currentAccount.address &&
       this.currentAccount.city &&
       this.currentAccount.state &&
@@ -535,6 +536,36 @@ export class CorporateProfileEditComponent implements OnInit {
 
   deleteCustomerCivilian(product, i){
     product.customers.civilian.splice(i, 1)
+  }
+
+  onPhoneChange(event, backspace) {
+    // remove all mask characters (keep only numeric)
+    var newVal: string = event.replace(/\D/g, '');
+    // special handling of backspace necessary otherwise
+    // deleting of non-numeric characters is not recognized
+    // this laves room for improvement for example if you delete in the
+    // middle of the string
+    if (backspace) {
+      newVal = newVal.substring(0, newVal.length);
+    }
+
+    // don't show braces for empty value
+    if (newVal.length == 0) {
+      newVal = '';
+    } else if (newVal.length < 3) {
+      newVal = newVal
+    }
+    // don't show braces for empty groups at the end
+    else if (newVal.length == 3) {
+      newVal = newVal.replace(/^(\d{0,3})/, '($1)');
+    } else if (newVal.length <= 6) {
+      newVal = newVal.replace(/^(\d{0,3})(\d{0,3})/, '($1)-$2');
+    } else {
+      newVal = newVal.replace(/^(\d{0,3})(\d{0,3})(.*)/, '($1)-$2-$3');
+    }
+    // set the new value
+    this.currentAccount.contactNumber = newVal;
+
   }
 
   addUserWithRole(company, user, role){

@@ -41,7 +41,7 @@
         <input class="col-xs-9 left" type="email" [(ngModel)] = 'this.currentUser.username' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.username}" disabled>
 
         <p class="col-xs-3 text-right" style="transform: translateY(10%)">Contact Number</p>
-        <input class="col-xs-9 left" type="tel" maxlength="10" [(ngModel)] = 'this.currentUser.cell' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.cell}">
+        <input class="col-xs-9 left" type="tel" maxlength="14" [(ngModel)] = 'this.currentUser.cell' (ngModelChange)="onPhoneChange(this.currentUser.cell); checkFields()" (keydown.backspace)='onPhoneChange(this.currentUser.cell, true)' [ngClass]="{'empty-field': !this.currentUser.cell || this.currentUser.cell.length < 14}">
         <p class="col-xs-3 text-right vertically-centered">City</p>
         <input class="col-xs-9 left" type="text"  [(ngModel)] = 'this.currentUser.address.city' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': this.currentUser.address.city.length < 1}">
 
