@@ -396,23 +396,24 @@ export class ProfileEditComponent implements OnInit {
 
   makeCurrent(i){
     if (this.currentJobs[i]) {
+      console.log('the first one!')
       for (var x = 0; x < this.currentJobs.length; x++){
         if (x != i) {
           this.currentJobs[x] = false
           if (this.lastUsedEndDate[x] == 'Current') {
             this.currentUser.positionHistory[x].EndDate = this.currentUser.positionHistory[x].StartDate
           } else {
-            this.currentUser.positionHistory[x].EndDate == this.lastUsedEndDate[x]
+            this.currentUser.positionHistory[x].EndDate = this.lastUsedEndDate[x]
           }
         }
       }
       this.lastUsedEndDate[i] = this.currentUser.positionHistory[i].EndDate
-      this.currentUser.positionHistory[i].EndDate == 'Current'
+      this.currentUser.positionHistory[i].EndDate = 'Current'
     } else {
-      if (this.lastUsedEndDate[i] == 'Current') {
+      console.log('the second one')
+      this.currentUser.positionHistory[i].EndDate = this.lastUsedEndDate[i]
+      if (this.currentUser.positionHistory[i].EndDate == 'Current') {
         this.currentUser.positionHistory[i].EndDate = this.currentUser.positionHistory[i].StartDate
-      } else {
-        this.currentUser.positionHistory[i].EndDate == this.lastUsedEndDate[i]
       }
     }
   }
