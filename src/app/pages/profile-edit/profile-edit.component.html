@@ -258,7 +258,7 @@
               <p class="col-xs-8 vertically-centered" style="text-align: right">Did you work for a subagency?</p>
               <button class="col-xs-4" (click)="addOffice(job.agencyExperience[0])">Yes</button>
             </div>
-            <div class="" *ngIf='job.agencyExperience[0].offices.length > 0'>
+            <div class="col-xs-12" *ngIf='job.agencyExperience[0].offices.length > 0' style="position: relative">
               <p class="col-md-3 col-xs-5 col-xs-offset-1 vertically-centered">Employer (Subagency)</p>
               <div class="autocomplete-form">
                 <input ngui-auto-complete class="col-md-8 col-xs-6" placeholder="Must match an existing subagency" [(ngModel)] = 'job.agencyExperience[0].offices[0].title' [source]='findSubAgencies(job.Employer)'  auto-select-first-item='true' [ngClass]="{'empty-field': subagencyValidCheck(job.Employer, job.agencyExperience[0].offices[0].title) == false}">
