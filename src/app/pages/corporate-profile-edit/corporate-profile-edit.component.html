@@ -329,7 +329,7 @@
         <p>Skills:</p>
         <p *ngIf='service.skills.length > 0'>Describe any skills used in this service</p>
         <p *ngIf='service.skills.length > 0'>(this will be integrated with tools in a future update)</p>
-        <div class="col-xs-12" *ngFor='let skill of service.skills; let i = index; trackBy:customTrackBy'>
+        <div class="col-xs-12" *ngFor='let skill of service.skills; let i = index; trackBy:trackByFn'>
           <input class="col-xs-12" [(ngModel)]='service.skills[i]'>
           <button class="tiny-button-skills" (click)="deleteSkill(service, i)"><div class="tiny-button-text">x</div></button>
         </div>

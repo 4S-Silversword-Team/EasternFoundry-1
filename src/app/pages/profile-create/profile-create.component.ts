@@ -54,6 +54,7 @@ export class ProfileCreateComponent implements OnInit {
 
   registerUser() {
     this.registerInProcess = true
+    this.paramsError = ''
     //const fileList: FileList = event.target.files;
     let fileBrowser = this.fileInput.nativeElement;
     if(this.userParam.username == '' || this.userParam.username.trim() == ''){

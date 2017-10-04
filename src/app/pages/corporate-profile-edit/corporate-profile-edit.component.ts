@@ -151,6 +151,10 @@ export class CorporateProfileEditComponent implements OnInit {
   ngOnInit() {
   }
 
+  trackByFn(index: any, item: any) {
+    return index;
+  }
+
   uploadPhoto() {
     let fileBrowser = this.fileInput.nativeElement;
     if (fileBrowser.files && fileBrowser.files[0]) {

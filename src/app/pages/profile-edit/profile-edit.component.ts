@@ -162,6 +162,16 @@ export class ProfileEditComponent implements OnInit {
 
         }
 
+        if (!this.currentUser.certification[0].CertificationName) {
+            this.currentUser.certification.splice(0,1)
+        }
+        if (!this.currentUser.clearance[0].clearanceType) {
+            this.currentUser.clearance.splice(0,1)
+        }
+        if (!this.currentUser.award[0]) {
+            this.currentUser.award.splice(0,1)
+        }
+
         var currentDate = month + ', ' + year.toString().slice(2,4)
         while (this.currentUser.availability.length > 1 && this.currentUser.availability[0].date != currentDate) {
           this.currentUser.availability.splice(0,1)
@@ -372,8 +382,10 @@ export class ProfileEditComponent implements OnInit {
 
   calculateSkillChart(){
     var temp: number[] = []
-    this.toolChartLabels = []
+    var labels: string[] = []
     this.toolChartDatas = []
+    this.toolChartLabels = []
+
     if(this.currentUser.foundTools) {
       for (let index of this.currentUser.foundTools) {
         if (!index.score) {
@@ -388,6 +400,17 @@ export class ProfileEditComponent implements OnInit {
     for (let f of this.currentUser.foundTools) {
       this.availablePoints -= f.score
     }
+  }
+
+  refreshSkillChartBars(){
+    var labels: string[] = []
+    this.toolChartLabels = []
+    if(this.currentUser.foundTools) {
+      for (let index of this.currentUser.foundTools) {
+        labels.push(index.title)
+      }
+    }
+    setTimeout(() => this.toolChartLabels = labels, 0);
   }
 
   calculateAvailablePoints(tool, index){
@@ -488,8 +511,10 @@ export class ProfileEditComponent implements OnInit {
   certValidCheck (cert) {
     var match = false
     for (let a of this.allCerts) {
-      if (a.name.toString().toLowerCase() == cert.toString().toLowerCase()){
-        match = true
+      if (a.name && cert) {
+        if (a.name.toString().toLowerCase() == cert.toString().toLowerCase()){
+          match = true
+        }
       }
     }
     return match;
@@ -593,6 +618,7 @@ export class ProfileEditComponent implements OnInit {
   addTool(tool) {
     this.currentUser.foundTools.push(tool);
     this.calculateSkillChart()
+    this.refreshSkillChartBars()
   }
 
   findAndAddTool(tool) {
@@ -602,6 +628,7 @@ export class ProfileEditComponent implements OnInit {
         this.currentUser.foundTools.push(t);
         pushDone = true
         this.calculateSkillChart()
+        this.refreshSkillChartBars()
       }
     }
   }
@@ -696,6 +723,7 @@ export class ProfileEditComponent implements OnInit {
     this.currentUser.foundTools.splice(i, 1);
     this.checkFields()
     this.calculateSkillChart()
+    this.refreshSkillChartBars()
   }
 
   addJob() {

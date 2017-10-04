@@ -1,4 +1,4 @@
-<div class="container loader-container" *ngIf='this.registerInProcess'>
+<div class="container loader-container" *ngIf='this.registerInProcess && !this.paramsError'>
   <div class="loader-box">
     <div class="loader"></div>
     <h2>We're working on your account.</h2>
