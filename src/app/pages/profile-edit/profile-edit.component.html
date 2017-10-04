@@ -229,8 +229,8 @@
         <div class="col-xs-12 col-md-10 col-md-offset-2" *ngIf = 'job.employmentType == 0'>
           <div class="col-xs-12">
             <p class="col-md-3 col-xs-5 vertically-centered">Employer (Agency)</p>
-            <div class="autocomplete-form">
-              <input ngui-auto-complete class="col-md-9 col-xs-7" placeholder="Must match an existing agency" [(ngModel)] = 'job.Employer' [source]='this.allAgencies' [list-formatter]="autocompleListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': agencyValidCheck(job.Employer) == false}">
+            <div class="col-md-9 col-xs-7 autocomplete-form">
+              <input ngui-auto-complete class="col-xs-12" placeholder="Must match an existing agency" [(ngModel)] = 'job.Employer' [source]='this.allAgencies' [list-formatter]="autocompleListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': agencyValidCheck(job.Employer) == false}">
             </div>
             <div class="col-xs-12" style="height: 60px">
               <p class="col-xs-4 col-md-3 col-xs-offset-1" style="margin-top: 15px">Were you a PM?</p>
@@ -260,8 +260,8 @@
             </div>
             <div class="col-xs-12" *ngIf='job.agencyExperience[0].offices.length > 0' style="position: relative">
               <p class="col-md-3 col-xs-5 col-xs-offset-1 vertically-centered">Employer (Subagency)</p>
-              <div class="autocomplete-form">
-                <input ngui-auto-complete class="col-md-8 col-xs-6" placeholder="Must match an existing subagency" [(ngModel)] = 'job.agencyExperience[0].offices[0].title' [source]='findSubAgencies(job.Employer)'  auto-select-first-item='true' [ngClass]="{'empty-field': subagencyValidCheck(job.Employer, job.agencyExperience[0].offices[0].title) == false}">
+              <div class="col-md-8 col-xs-6 autocomplete-form">
+                <input ngui-auto-complete class="col-xs-12" placeholder="Must match an existing subagency" [(ngModel)] = 'job.agencyExperience[0].offices[0].title' [source]='findSubAgencies(job.Employer)'  auto-select-first-item='true' [ngClass]="{'empty-field': subagencyValidCheck(job.Employer, job.agencyExperience[0].offices[0].title) == false}">
               </div>
               <button class="tiny-button-skills" (click)="deleteOffice(job.agencyExperience[0], 0)" style="margin-top: 177px; margin-right: -5px"><div class="tiny-button-text">x</div></button>
               <div class="col-xs-12" style="height: 60px">
@@ -328,8 +328,8 @@
               <div class="" *ngIf='agency.offices.length > 0'>
                 <div class="" *ngFor='let office of agency.offices; let i = index; trackBy:customTrackBy'>
                   <p class="col-md-3 col-xs-5 col-xs-offset-1 vertically-centered">Subagency</p>
-                  <div class="autocomplete-form">
-                    <input ngui-auto-complete class="col-md-8 col-xs-6" placeholder="Must match an existing subagency" [(ngModel)] = 'office.title' [source]='findSubAgencies(agency.main.title)' auto-select-first-item='true' [ngClass]="{'empty-field': subagencyValidCheck(agency.agency, office.title) == false}">
+                  <div class="col-md-8 col-xs-6 autocomplete-form">
+                    <input ngui-auto-complete class="col-xs-12" placeholder="Must match an existing subagency" [(ngModel)] = 'office.title' [source]='findSubAgencies(agency.main.title)' auto-select-first-item='true' [ngClass]="{'empty-field': subagencyValidCheck(agency.agency, office.title) == false}">
                   </div>
                   <!-- <input class="col-md-8 col-xs-6" [(ngModel)] = 'office.title'> -->
                   <!-- BUG: if you have multiple agencies, the button only appears on the topmost one and deletes the bottommost one -->
@@ -359,8 +359,8 @@
               <div class="">
                 <div class="">
                   <p class="col-md-3 col-xs-5 vertically-centered">Agency {{i}}</p>
-                  <div class="autocomplete-form">
-                    <input ngui-auto-complete class="col-md-9 col-xs-7" placeholder="Must match an existing agency" [(ngModel)] = 'agency.main.title' [source]='this.allAgencies' [list-formatter]="autocompleListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': agencyValidCheck(agency.main.title) == false}">
+                  <div class="col-md-9 col-xs-7 autocomplete-form">
+                    <input ngui-auto-complete class="col-xs-12" placeholder="Must match an existing agency" [(ngModel)] = 'agency.main.title' [source]='this.allAgencies' [list-formatter]="autocompleListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': agencyValidCheck(agency.main.title) == false}">
                   </div>
                   <!-- <input class="col-md-9 col-xs-7" [(ngModel)] = 'agency.main.title'> -->
                   <div class="col-xs-12" style="height: 50px">
@@ -393,8 +393,8 @@
                     <div class="" *ngFor='let office of agency.offices; let i = index; trackBy:customTrackBy' style="position: relative">
                       <div class="col-xs-12" style="position: relative">
                         <p class="col-md-3 col-xs-5 col-xs-offset-1 vertically-centered">Subagency</p>
-                        <div class="autocomplete-form">
-                          <input ngui-auto-complete class="col-md-8 col-xs-6" placeholder="Must match an existing subagency" [(ngModel)] = 'office.title' [source]='findSubAgencies(agency.main.title)' auto-select-first-item='true' [ngClass]="{'empty-field': subagencyValidCheck(agency.main.title, office.title) == false}">
+                        <div class="col-md-8 col-xs-6 autocomplete-form">
+                          <input ngui-auto-complete class="col-xs-12" placeholder="Must match an existing subagency" [(ngModel)] = 'office.title' [source]='findSubAgencies(agency.main.title)' auto-select-first-item='true' [ngClass]="{'empty-field': subagencyValidCheck(agency.main.title, office.title) == false}">
                         </div>
                         <button class="tiny-button-tools" (click)="deleteOffice(agency, i)" style="right: 16px; top: 11px;"><div class="tiny-button-text">X</div></button>
                         <div class="col-xs-12" style="height: 50px">

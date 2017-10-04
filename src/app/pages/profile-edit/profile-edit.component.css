@@ -60,12 +60,12 @@ button {
 }
 
 .autocomplete-form /deep/ .ngui-auto-complete {
-  min-width: 300px;
+  min-width: 300px !important;
   max-width: 800px !important;
   position: absolute;
   height: 300px;
   overflow: auto;
-  right: 0px;
+  left: 0px;
   top: 8px;
   bottom: 0px;
 }
