@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { Company } from '../../classes/company';
 import { Product } from '../../classes/product';
 import { Service } from '../../classes/service';
+import { User } from '../../classes/user';
 import { PastPerformance } from '../../classes/past-performance';
 
 import { Router, ActivatedRoute } from '@angular/router';
@@ -54,6 +55,7 @@ export class CorporateProfileEditComponent implements OnInit {
   companyAdminCount: number;
   adminRoleId: string;
   fieldsFilled: boolean = false;
+  currentUser: User = new User();
 
   searchTerms = {
     name: ''
@@ -207,6 +209,7 @@ export class CorporateProfileEditComponent implements OnInit {
   getAdminStatus() {
     var userId = this.auth.getLoggedInUser()
     this.userService.getUserbyID(userId).toPromise().then((user) =>{
+      this.currentUser = user
       var currentUserProxy = user.companyUserProxies.filter((proxy)=> {
         return proxy.company
       }).filter((proxy) => {

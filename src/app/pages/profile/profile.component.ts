@@ -378,8 +378,10 @@ export class ProfileComponent implements OnInit {
       }
       for (let d of this.currentUser.education) {
         for (let t of this.degreeType) {
-          if (d.DegreeType[0].Name == t.name) {
-            this.yearsOfSchool += t.years
+          if (d.DegreeType[0]) {
+            if (d.DegreeType[0].Name == t.name) {
+              this.yearsOfSchool += t.years
+            }
           }
         }
       }
