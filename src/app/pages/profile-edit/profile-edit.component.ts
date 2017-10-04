@@ -18,8 +18,6 @@ import { s3Service } from "../../services/s3.service"
 
 import { environment } from "../../../environments/environment"
 
-
-
 declare var $: any;
 
 @Component({
@@ -82,6 +80,8 @@ export class ProfileEditComponent implements OnInit {
   professionalPointsUsed = 0
   availablePoints = 0
   maxToolScores: number[] = []
+  currentJobs: boolean[] = []
+  lastUsedEndDate: string[] = []
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -253,6 +253,13 @@ export class ProfileEditComponent implements OnInit {
           this.currentUser.finished = stringToBool(this.currentUser.finished)
         }
           for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
+            if (this.currentUser.positionHistory[i].EndDate == "Current") {
+              this.currentJobs[i] = true
+            } else {
+              this.currentJobs[i] = false
+            }
+            this.lastUsedEndDate[i] = this.currentUser.positionHistory[i].EndDate
+
             for (var x = 0; x < this.currentUser.positionHistory[i].agencyExperience.length; x++) {
               if (typeof this.currentUser.positionHistory[i].agencyExperience[x].main.isPM === "string") {
                 this.currentUser.positionHistory[i].agencyExperience[x].main.isPM = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].main.isPM)
@@ -384,6 +391,29 @@ export class ProfileEditComponent implements OnInit {
     if (!isNaN(points)) {
       this.professionalPoints = points
       console.log(this.professionalPoints)
+    }
+  }
+
+  makeCurrent(i){
+    if (this.currentJobs[i]) {
+      for (var x = 0; x < this.currentJobs.length; x++){
+        if (x != i) {
+          this.currentJobs[x] = false
+          if (this.lastUsedEndDate[x] == 'Current') {
+            this.currentUser.positionHistory[x].EndDate = this.currentUser.positionHistory[x].StartDate
+          } else {
+            this.currentUser.positionHistory[x].EndDate == this.lastUsedEndDate[x]
+          }
+        }
+      }
+      this.lastUsedEndDate[i] = this.currentUser.positionHistory[i].EndDate
+      this.currentUser.positionHistory[i].EndDate == 'Current'
+    } else {
+      if (this.lastUsedEndDate[i] == 'Current') {
+        this.currentUser.positionHistory[i].EndDate = this.currentUser.positionHistory[i].StartDate
+      } else {
+        this.currentUser.positionHistory[i].EndDate == this.lastUsedEndDate[i]
+      }
     }
   }
 

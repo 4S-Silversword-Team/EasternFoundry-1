@@ -83,7 +83,7 @@
             <p class="col-xs-6 col-md-5 vertically-centered">School: </p>
             <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.School' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !degree.School}">
             <p class="col-xs-6 col-md-5 vertically-centered">Graduation Date: </p>
-            <input class="col-xs-6 col-md-7" [(ngModel)] = 'degree.AttendanceEndDate' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !degree.AttendanceEndDate}">
+            <input class="col-xs-6 col-md-7" type='date' [(ngModel)] = 'degree.AttendanceEndDate' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !degree.AttendanceEndDate}">
           </div>
           <div class="col-xs-4 col-md-6">
             <textarea name="" id="" rows="8" placeholder="Description:" [(ngModel)] = 'degree.Comment'></textarea>
@@ -114,7 +114,7 @@
         <input ngui-auto-complete class="col-xs-11" placeholder="Must match an existing certification" [(ngModel)] = 'certificate.CertificationName' [source]='this.allCerts' [list-formatter]="certListFormatter" display-property-name='name' select-value-of='name' auto-select-first-item='true' [ngClass]="{'empty-field': certValidCheck(certificate.CertificationName) == false}">
       </div>
       <div class="col-xs-4">
-        <input class="col-xs-11" type="text" [(ngModel)] = 'certificate.DateEarned' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !certificate.DateEarned}">
+        <input class="col-xs-11" type="date" [(ngModel)] = 'certificate.DateEarned' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !certificate.DateEarned}">
       </div>
       <div class="col-xs-3 col-xs-offset-1" style="padding-top: 1%; height: 100%; margin-top: 20px">
         <button class="col-xs-12 side-button" style="height: 12%; margin-top: -24px" (click)="deleteCertificate(i)">DELETE</button>
@@ -139,7 +139,7 @@
         </div>
         <div class="col-xs-4 text-left">
           <p class="col-xs-12">Awarded: </p>
-          <input class="col-xs-12" [(ngModel)] = 'index.awarded' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.awarded}">
+          <input class="col-xs-12" type='date' [(ngModel)] = 'index.awarded' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.awarded}">
         </div>
         <div class="col-xs-4 text-left">
           <p class="col-xs-12">Expiration: </p>
@@ -215,12 +215,24 @@
       </div>
       <div class="col-xs-12 job-interior">
         <div class="col-xs-5">
-          <p class="col-xs-5 col-md-4 vertically-centered">Title</p>
-          <input class="col-xs-7 col-md-8 left" placeholder="The title you held" [(ngModel)] = 'job.PositionTitle'>
-          <p class="col-xs-5 col-md-4 vertically-centered">End Date</p>
-          <input class="col-xs-7 col-md-8 left" placeholder="" [(ngModel)] = 'job.EndDate' (ngModelChange)='calculateProfessionalPoints()'>
-          <p class="col-xs-5 col-md-4 vertically-centered">Start Date</p>
-          <input class="col-xs-7 col-md-8 left" placeholder="" [(ngModel)] = 'job.StartDate' (ngModelChange)='calculateProfessionalPoints()'>
+          <div class="col-xs-12">
+            <p class="col-xs-5 col-md-4 vertically-centered">Title</p>
+            <input class="col-xs-7 col-md-8 left" placeholder="The title you held" [(ngModel)] = 'job.PositionTitle'>
+          </div>
+          <div class="col-xs-12" style="height: 35px">
+            <p class="col-xs-5 col-md-4 vertically-centered">Current?</p>
+            <div class="col-xs-7 col-md-8 left" style="position: relative; height: 100%">
+              <input class="col-sm-6; col-md-2" style="position: absolute; left: 0px; height: 100%" type='checkbox' placeholder="" [(ngModel)] = 'this.currentJobs[i]' (ngModelChange)='makeCurrent(i); calculateProfessionalPoints()'>
+            </div>
+          </div>
+          <div class="col-xs-12" *ngIf='!this.currentJobs[i]'>
+            <p class="col-xs-5 col-md-4 vertically-centered">End Date</p>
+            <input class="col-xs-7 col-md-8 left" type='date' placeholder="" [(ngModel)] = 'job.EndDate' (ngModelChange)='calculateProfessionalPoints()'>
+          </div>
+          <div class="col-xs-12">
+            <p class="col-xs-5 col-md-4 vertically-centered">Start Date</p>
+            <input class="col-xs-7 col-md-8 left" type='date' placeholder="" [(ngModel)] = 'job.StartDate' (ngModelChange)='calculateProfessionalPoints()'>
+          </div>
         </div>
         <div class="col-xs-7">
           <textarea class="col-xs-12 left" rows="9" placeholder="Description:" [(ngModel)] = 'job.Description'></textarea>
