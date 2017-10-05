@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiRoot: ' https://easternfoundrybackend.herokuapp.com/',
+  apiRoot: 'http://13.58.193.226:80/',
   baseHref: '/',
   bucketName: 'ef-photos'
 };
