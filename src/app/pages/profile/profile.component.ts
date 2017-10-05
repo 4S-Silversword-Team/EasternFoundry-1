@@ -386,7 +386,7 @@ export class ProfileComponent implements OnInit {
         }
       }
       this.professionalPoints = Math.round(Math.sqrt((this.yearsOfSchool * 2) + this.yearsOfWork + this.currentUser.certification.length) * 50)
-      console.log(this.professionalPoints)
+      console.log('You have ' + this.professionalPoints + ' professional points')
 
       // here is some CHART CALCULATION!
 
@@ -401,7 +401,6 @@ export class ProfileComponent implements OnInit {
         var prof_sub = [];
         var peop_sub = [];
         for (var j = 0; j < this.agencyExperience.length; j++) {
-          console.log(j + ': ' + this.agencyExperience[j].main.title + ', ' + this.agencyExperience[j].years)
           if (data_prof.has(this.agencyExperience[j].main.title)) {
             data_prof.set(this.agencyExperience[j].main.title, data_prof.get(this.agencyExperience[j].main.title) + (this.agencyExperience[j].years * this.agencyExperience[j].jobs));
             data_peop.set(this.agencyExperience[j].main.title, data_peop.get(this.agencyExperience[j].main.title) + this.agencyExperience[j].jobs);
@@ -413,7 +412,6 @@ export class ProfileComponent implements OnInit {
           }
 
           for (var x = 0; x < this.agencyExperience[j].subagencies.length; x++) {
-            console.log(x + ': ' + this.agencyExperience[j].subagencies[x].title + ', ' + this.agencyExperience[j].subagencies[x].years)
             if (data_prof_sub.has(this.agencyExperience[j].subagencies[x].title)) {
               data_prof_sub.set(this.agencyExperience[j].subagencies[x].title, data_prof.get(this.agencyExperience[j].subagencies[x].title) + (this.agencyExperience[j].subagencies[x].years * this.agencyExperience[j].subagencies[x].jobs));
               data_peop_sub.set(this.agencyExperience[j].subagencies[x].title, data_peop.get(this.agencyExperience[j].subagencies[x].title) + this.agencyExperience[j].subagencies[x].jobs);

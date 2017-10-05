@@ -396,7 +396,6 @@ export class ProfileEditComponent implements OnInit {
 
   makeCurrent(i){
     if (this.currentJobs[i]) {
-      console.log('the first one!')
       for (var x = 0; x < this.currentJobs.length; x++){
         if (x != i) {
           this.currentJobs[x] = false
@@ -410,7 +409,6 @@ export class ProfileEditComponent implements OnInit {
       this.lastUsedEndDate[i] = this.currentUser.positionHistory[i].EndDate
       this.currentUser.positionHistory[i].EndDate = 'Current'
     } else {
-      console.log('the second one')
       this.currentUser.positionHistory[i].EndDate = this.lastUsedEndDate[i]
       if (this.currentUser.positionHistory[i].EndDate == 'Current') {
         this.currentUser.positionHistory[i].EndDate = this.currentUser.positionHistory[i].StartDate
@@ -793,6 +791,8 @@ export class ProfileEditComponent implements OnInit {
                     score: 50
                 }
               ],
+              score: 0,
+              description: '',
               isPM: false,
               pmDescription: '',
               pmScore: 0,
@@ -809,6 +809,8 @@ export class ProfileEditComponent implements OnInit {
                       score: 50
                   }
                 ],
+                score: 0,
+                description: '',
                 isPM: false,
                 pmDescription: '',
                 pmScore: 0,
@@ -914,6 +916,8 @@ export class ProfileEditComponent implements OnInit {
           title: 'Years Agency Experience',
           score: 0
         }],
+        score: 0,
+        description: '',
         isPM: false,
         pmDescription: '',
         pmScore: 0,
@@ -927,6 +931,8 @@ export class ProfileEditComponent implements OnInit {
           title: 'Years Agency Experience',
           score: 0
         }],
+        score: 0,
+        description: '',
         isPM: false,
         pmDescription: '',
         pmScore: 0,
@@ -948,6 +954,8 @@ export class ProfileEditComponent implements OnInit {
         title: 'Years Agency Experience',
         score: 0
       }],
+      score: 0,
+      description: '',
       isPM: false,
       pmDescription: '',
       pmScore: 0,
@@ -960,6 +968,38 @@ export class ProfileEditComponent implements OnInit {
   deleteOffice(agency, i) {
     agency.offices.splice(i, 1);
     this.checkFields()
+  }
+
+  scoreChange(job, office, which, up){
+    if (office) {
+      if (which == 'main' && up && job.score < 5) {
+        job.score = job.score + 1
+      } else if (which == 'main' && !up && job.score > 0){
+        job.score = job.score - 1
+      } else if (which == 'pm' && up && job.pmScore < 5) {
+        job.pmScore = job.pmScore + 1
+      } else if (which == 'pm' && !up && job.pmScore > 0) {
+        job.pmScore = job.pmScore - 1
+      } else if (which == 'ko' && up && job.koScore < 5) {
+        job.koScore = job.koScore + 1
+      } else if (which == 'ko' && !up && job.koScore > 0)  {
+        job.koScore = job.koScore - 1
+      }
+    } else {
+      if (which == 'main' && up && job.main.score < 5) {
+        job.main.score = job.main.score + 1
+      } else if (which == 'main' && !up && job.main.score > 0){
+        job.main.score = job.main.score - 1
+      } else if (which == 'pm' && up && job.main.pmScore < 5) {
+        job.main.pmScore = job.main.pmScore + 1
+      } else if (which == 'pm' && !up && job.main.pmScore > 0) {
+        job.main.pmScore = job.main.pmScore - 1
+      } else if (which == 'ko' && up && job.main.koScore < 5) {
+        job.main.koScore = job.main.koScore + 1
+      } else if (which == 'ko' && !up && job.main.koScore > 0)  {
+        job.main.koScore = job.main.koScore - 1
+      }
+    }
   }
 
   currentYear() {
@@ -1038,6 +1078,8 @@ export class ProfileEditComponent implements OnInit {
               title: 'Years Agency Experience',
               score: 0
             }],
+            score: 0,
+            description: '',
             isPM: false,
             pmDescription: '',
             pmScore: 0,
@@ -1051,6 +1093,8 @@ export class ProfileEditComponent implements OnInit {
               title: 'Years Agency Experience',
               score: 0
             }],
+            score: 0,
+            description: '',
             isPM: false,
             pmDescription: '',
             pmScore: 0,

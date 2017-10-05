@@ -83,7 +83,9 @@ export class User {
         {
           main: {
             title: string,
-            data: any[]
+            data: any[],
+            score: number,
+            description: string,
             isPM: boolean,
             pmDescription: string,
             pmScore: number,
@@ -95,6 +97,8 @@ export class User {
             {
               title: string,
               data: any[],
+              score: number,
+              description: string,
               isPM: boolean,
               pmDescription: string,
               pmScore: number,

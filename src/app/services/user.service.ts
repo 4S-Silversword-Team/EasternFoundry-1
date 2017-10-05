@@ -156,6 +156,8 @@ export class UserService {
                     score: 50
                 }
               ],
+              score: 0,
+              description: '',
               isPM: false,
               pmDescription: '',
               pmScore: 0,
@@ -172,6 +174,8 @@ export class UserService {
                       score: 50
                   }
                 ],
+                score: 0,
+                description: '',
                 isPM: false,
                 pmDescription: '',
                 pmScore: 0,
