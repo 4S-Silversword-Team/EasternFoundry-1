@@ -36,6 +36,7 @@ export class SearchComponent implements OnInit {
     subagency: '',
     skill: '',
     position: '',
+    cert: '',
     freelancer: false
   };
   searchResults = {
@@ -105,7 +106,7 @@ export class SearchComponent implements OnInit {
 
   searchReady(){
     if (this.searchTerms.company || this.searchTerms.person || this.searchTerms.pastPerformance) {
-      if (this.searchTerms.name || this.searchTerms.agency || this.searchTerms.skill || this.searchTerms.position) {
+      if (this.searchTerms.name || this.searchTerms.agency || this.searchTerms.skill || this.searchTerms.position || this.searchTerms.cert) {
         return true
       }
     }
@@ -154,6 +155,7 @@ export class SearchComponent implements OnInit {
         newCompany.relevantSubagencies = []
         newCompany.relevantSkills = []
         newCompany.relevantPositions = []
+        newCompany.relevantCerts = []
         newCompany.nameMatch = false
         if (this.searchTerms.name){
           if (newCompany.name.toLowerCase().includes(this.searchTerms.name.toLowerCase())) {
@@ -322,6 +324,48 @@ export class SearchComponent implements OnInit {
             }
           }
         }
+        if (this.searchTerms.cert) {
+          var certsToPush = []
+          for (let p of newCompany.userProfileProxies) {
+            if (p.userProfile) {
+              if (p.userProfile.certification) {
+                for (let cert of p.userProfile.certification) {
+                  var matchFound = false
+                  for (let certDone of certsToPush) {
+                    if (cert.CertificationName == certDone) {
+                      matchFound = true
+                    }
+                  }
+                  if (!matchFound) {
+                    certsToPush.push(cert.CertificationName)
+                  }
+                }
+                for (let cert of certsToPush) {
+                  var certsDone = []
+                  if (cert.toLowerCase().includes(this.searchTerms.cert.toLowerCase())) {
+                    var certFound = false
+                    if (!certsDone.includes(cert)){
+                      for (let c of newCompany.relevantCerts) {
+                        if (c.name.toLowerCase() == cert.toLowerCase()){
+                          certFound = true
+                          c.count++
+                          certsDone.push(cert)
+                        }
+                      }
+                      if (!certFound) {
+                        newCompany.relevantCerts.push({
+                          name: cert,
+                          count: 1
+                        })
+                        certsDone.push(cert);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
         if (matchFound){
           var resultValid = true
 
@@ -338,6 +382,9 @@ export class SearchComponent implements OnInit {
             resultValid = false
           }
           if (this.searchTerms.position && newCompany.relevantPositions.length < 1) {
+            resultValid = false
+          }
+          if (this.searchTerms.cert && newCompany.relevantCerts.length < 1) {
             resultValid = false
           }
           if (resultValid){
@@ -360,6 +407,7 @@ export class SearchComponent implements OnInit {
         newPerson.relevantSubagencies = []
         newPerson.relevantSkills = []
         newPerson.relevantPositions = []
+        newPerson.relevantCerts = []
         if (this.searchTerms.agency) {
           for (let j of newPerson.positionHistory){
             for (let a of j.agencyExperience) {
@@ -460,6 +508,19 @@ export class SearchComponent implements OnInit {
             }
           }
         }
+        if (this.searchTerms.cert) {
+          if (newPerson.certification) {
+            for (let cert of newPerson.certification) {
+              var matchFound = false
+              if (cert.CertificationName.toLowerCase().includes(this.searchTerms.cert.toLowerCase())) {
+                if (!newPerson.relevantCerts.includes(cert.CertificationName)){
+                  matchFound = true
+                  newPerson.relevantCerts.push(cert.CertificationName)
+                }
+              }
+            }
+          }
+        }
         for (let c of newPerson.companyUserProxies) {
           if (c.stillAffiliated) {
             if (c.company) {
@@ -484,7 +545,7 @@ export class SearchComponent implements OnInit {
           if (this.searchTerms.position && newPerson.relevantPositions.length < 1) {
             resultValid = false
           }
-          if (this.searchTerms.agency && newPerson.relevantAgencies.length < 1) {
+          if (this.searchTerms.cert && newPerson.relevantCerts.length < 1) {
             resultValid = false
           }
           if (this.searchTerms.freelancer && newPerson.currentCompany) {
