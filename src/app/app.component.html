@@ -1,1 +1,61 @@
+<!-- Nav Bar Here -->
+<div *ngIf="this.signedIn">
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">EF</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#/search">Search</a></li>
+
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Profile <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#/user-profile/{{this.currentUser}}">My Profile</a></li>
+            <li><a href="#/my-companies">My Companies</a></li>
+            <li><a href="#/my-pastperformances">My Past Performances</a></li>
+          </ul>
+        </li>
+        <li><a href="#/corporate-profile-create">Create Company</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="">Report a Bug</a></li>
+        <li><a href="#/login" (click) = "this.navLogOut()"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+</div>
+
+<div *ngIf="!this.signedIn">
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">EF</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#/">Home</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="">Report a Bug</a></li>
+        <li><a href="#/user-profile-create"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+</div>
+
 <router-outlet></router-outlet>

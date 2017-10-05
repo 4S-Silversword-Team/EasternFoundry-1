@@ -31,35 +31,49 @@ export class AuthService {
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,
-    private userService: UserService
+    private userService: UserService,
   ) {
     this.authHttp = new AuthHttp(http)
 
-    // check if the user is logged or if token is expired. If true then login
-    if (this.isLoggedIn()) {
-      this.router.navigateByUrl("/login")
-    } else { // else if already logged in go to corporate profile page
-      this.router.navigateByUrl("/companies")
-    }
+    //This should not be here because it is called anytime auth service is invoked: i.e. it redirects at inappropriate times
+    // // check if the user is logged or if token is expired. If true then login
+    // if (!this.isLoggedIn()) {
+    //   this.router.navigateByUrl("/login")
+    // } else { // else if already logged in go to corporate profile page
+    //   this.router.navigateByUrl("/companies")
+    // }
   }
 
-  doLogin(username, password) {
+  doLogin(email, password, callback) {
     let body = {
-      username: username,
+      email: email,
       password: password
     }
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
+    //get User Id from email
+    var userId
+    this.userService.getUserIdByEmail(body.email).toPromise().then((user) => {
+      if (user.id) {
 
-    this.http.post(environment.apiRoot + "login", body, options).toPromise()
-           .then(this.extractData)
-           .catch(this.handleErrorPromise);
+      localStorage.setItem('uid', user.id)//this sets a current user just for submitting a valid email, this could introduce security issues we should be mindful of addressing.
+      this.current_user = user.id
+      console.log("CU", this.current_user)
+
+      userId = user.id
+      this.http.post(environment.apiRoot + "auth/login/" + userId , body, options).toPromise()
+      .then(res => {this.extractData(res); callback()} )
+      .catch(err => {this.handleErrorPromise(err); callback();});
+    } else {
+      callback();
+    }
+    })
   }
 
   private extractData(res: Response) {
   	let body = res.json();
     console.log(body)
-    return body.data || {};
+    localStorage.setItem('token', body.message) //TODO: ideally in the future, we should look into finding more secure ways to handle tokens than local storage
   }
   private handleErrorObservable (error: Response | any) {
   	console.error(error.message || error);
@@ -72,10 +86,29 @@ export class AuthService {
 
   doLogout(redirect = null) {
     localStorage.removeItem('token')
+    //localStorage.removeItem('uid')
+    this.current_user = null;
   }
 
-  isLoggedIn() {
-    return localStorage.getItem('token') != null
+  async isLoggedIn(): Promise<boolean> {
+    var userId = this.getLoggedInUser()
+    var returnVal
+    await this.userService.getUserbyID(userId).toPromise().then(async (user) => {
+      var body = {
+        token: localStorage.getItem("token"),
+        email: user.primaryEmail
+      }
+      await this.http.post(environment.apiRoot + "auth/verify/" + userId , body).toPromise().then(async (res) => {
+        console.log("in isLoggedIn promise")
+        await res.status === 200 ? returnVal = true: returnVal = false
+      })
+    })
+    console.log("logged in return val is: ", returnVal)
+    return returnVal
+    //return localStorage.getItem('token') != null
+  }
+
+  getLoggedInUser() {
+    return localStorage.getItem('uid'); //TODO: Another way to go about this. Pass token to a getUserIdByToken function to the backend. If respone doesn't eql localstorage uid, doLogout. Else return uid.
   }
 }
-

@@ -12,6 +12,20 @@
     border: 2px solid #757575;
 }
 
+.cert-container {
+  overflow: auto;
+}
+
+.degree-box {
+  background: rgba(255, 255, 255, 0.75);
+  border: 2px solid rgba(0, 0, 0, 0.6);
+  margin-top: 2px;
+  margin-bottom: 2px;
+  padding: 1px;
+  text-align: center;
+  color: black;
+}
+
 #user-job {
     padding-top: 15px;
 }
@@ -96,10 +110,10 @@
 }
 
 .div-title div {
-    width: calc(100% - 320px);    
-    height: 3px; 
+    width: calc(100% - 320px);
+    height: 3px;
     margin-bottom: 8px;
-    background-color: #827e7c; 
+    background-color: #827e7c;
     display: inline-block;
 }
 
@@ -133,7 +147,7 @@
     width: calc(100% - 440px);
 }
 
-#exp-main-title {
+.exp-main-title {
     text-align: center;
     font-size: 40px;
     font-weight: bold;
@@ -159,11 +173,11 @@
 }
 
 .strength .div-title p{
-    color: #198fcf; 
+    color: #198fcf;
 }
 
 .strength .div-title div{
-    background-color: #0e6daf; 
+    background-color: #0e6daf;
     width: calc(100% - 272px);
 }
 
@@ -174,4 +188,9 @@ app-availablebar {
     margin-top: 50px;
     margin-bottom: 100px;
     display: inherit;
+}
+
+.noWrapScroll {
+  white-space: nowrap;
+  overflow: auto;
 }

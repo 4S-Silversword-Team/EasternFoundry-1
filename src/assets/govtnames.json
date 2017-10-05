@@ -1,0 +1,222 @@
+[
+  {
+    "name": "Executive Office Of The President",
+    "alternatives": [
+      "EOP"
+    ]
+  },
+  {
+    "name": "Department Of Agriculture",
+    "alternatives": [
+      "AGRICULTURE, DEPARTMENT OF",
+      "Dept. Agriculture",
+      "Dept Agriculture",
+      "DOA"
+    ]
+  },
+  {
+    "name": "Department Of Commerce",
+    "alternatives": [
+      "COMMERCE, DEPARTMENT OF",
+      "AGRICULTURE, DEPARTMENT OF",
+      "Dept. Commerce",
+      "Dept Commerce",
+      "DOC"
+    ]
+  },
+  {
+    "name": "Department Of The Interior",
+    "alternatives": [
+      "Dept. Of The Interior",
+      "INTERIOR, DEPARTMENT OF THE",
+      "Dept Of The Interior",
+      "DOI"
+    ]
+  },
+  {
+    "name": "Department Of Justice",
+    "alternatives": [
+      "Dept. Of Justice",
+      "JUSTICE, DEPARTMENT OF",
+      "Dept Of Justice",
+      "DOJ"
+    ]
+  },
+  {
+    "name": "Department Of Labor",
+    "alternatives": [
+      "Dept. Of Labor",
+      "LABOR, DEPARTMENT OF",
+      "Dept Of Labor",
+      "DOL"
+    ]
+  },
+  {
+    "name": "Department Of State",
+    "alternatives": [
+      "Dept. Of State",
+      "State, DEPARTMENT OF",
+      "Dept Of State",
+      "DOS"
+    ]
+  },
+  {
+    "name": "Department Of The Treasury",
+    "alternatives": [
+      "Dept. Of The Treasury",
+      "TREASURY, DEPARTMENT OF THE",
+      "Dept Of The Treasury"
+    ]
+  },
+  {
+    "name": "Office of Personnel Management",
+    "alternatives": [
+      "OPM"
+    ]
+  },
+  {
+    "name": "Federal Communications Commission",
+    "alternatives": [
+      "FCC"
+    ]
+  },
+  {
+    "name": "Social Security Administration",
+    "alternatives": [
+      "SCA"
+    ]
+  },
+  {
+    "name": "Federal Trade Commission",
+    "alternatives": [
+      "FTC"
+    ]
+  },
+  {
+    "name": "Nuclear Regulatory Commission",
+    "alternatives": [
+      "NRC"
+    ]
+  },
+  {
+    "name": "Department Of Veterans Affairs",
+    "alternatives": [
+      "Dept. of Veterans Affairs",
+      "Veterans Affairs, department of",
+      "Dept Of Veterans Affairs"
+    ]
+  },
+  {
+    "name": "General Services Administration",
+    "alternatives": [
+      "GSA"
+    ]
+  },
+  {
+    "name": "National Science Foundation",
+    "alternatives": [
+      "NSF"
+    ]
+  },
+  {
+    "name": "Securities And Exchange Commission",
+    "alternatives": [
+      "SEC"
+    ]
+  },
+  {
+    "name": "Consumer Product Safety Commission",
+    "alternatives": [
+      "CPSC"
+    ]
+  },
+  {
+    "name": "United States Marine Corps.",
+    "alternatives": [
+      "United States Marine Corps",
+      "US Marine Corps",
+      "Marine Corps",
+      "USMC"
+    ]
+  },
+  {
+    "name": "National Labor Relations Board",
+    "alternatives": [
+      "NLRB"
+    ]
+  },
+  {
+    "name": "Environmental Protection Agency",
+    "alternatives": [
+      "EPA"
+    ]
+  },
+  {
+    "name": "Department of Transportation",
+    "alternatives": [
+      "Dept. of Transportation",
+      "TRANSPORTATION, DEPARTMENT OF",
+      "Dept of Transportation"
+    ]
+  },
+  {
+    "name": "Department of Homeland Security",
+    "alternatives": [
+      "HOMELAND SECURITY, DEPARTMENT OF",
+      "DHS"
+    ]
+  },
+  {
+    "name": "U.S. Agency For International Development",
+    "alternatives": [
+      "AGENCY FOR INTERNATIONAL DEVELOPMENT",
+      "USAID"
+    ]
+  },
+  {
+    "name": "Small Business Administration",
+    "alternatives": [
+      "SBA"
+    ]
+  },
+  {
+    "name": "Dept. Of Health And Human Services",
+    "alternatives": [
+      "Department Of Health And Human Services",
+      "Health And Human Services, department of",
+      "Dept Of Health And Human Services",
+      "HHS"
+    ]
+  },
+  {
+    "name": "Department Of Energy",
+    "alternatives": [
+      "Dept. Of Energy",
+      "ENERGY, DEPARTMENT OF",
+      "Dept Of Energy"
+    ]
+  },
+  {
+    "name": "Department Of Education",
+    "alternatives": [
+      "Dept. Of Education",
+      "EDUCATION, DEPARTMENT OF",
+      "Dept Of Education"
+    ]
+  },
+  {
+    "name": "Commodity Futures Trading Commission",
+    "alternatives": [
+      "CFTC"
+    ]
+  },
+  {
+    "name": "Department Of Defense",
+    "alternatives": [
+      "Dept. Of Defense",
+      "DEFENSE, DEPARTMENT OF",
+      "Dept Of Defense",
+      "DOD"
+    ]
+  }
+]

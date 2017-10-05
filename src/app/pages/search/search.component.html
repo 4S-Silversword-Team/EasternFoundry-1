@@ -1,0 +1,246 @@
+<div class="container" *ngIf='!this.promiseFinished'>
+  <div class="loader"></div>
+  <!-- <p class="loading">Loading</p> -->
+</div>
+<div class="container" *ngIf='this.promiseFinished'>
+  <div class="col-xs-7 search-results-box">
+    <h3 style="text-align: center">Results</h3>
+    <div class="search-results-interior">
+      <div class="search-results-interior-2">
+        <div class="" *ngIf='this.searchRunning'>
+          <div class="loader"></div>
+        </div>
+        <div class="" *ngIf='!this.searchRunning'>
+          <div class="" *ngIf='this.noResults'>
+            <h1 style="text-align: center">No Results Found</h1>
+          </div>
+          <div class="" *ngIf='searchResults.companies.length > 0'>
+            <div class="search-item-category" *ngIf='searchResults.people.length > 0 || searchResults.pastPerformances.length > 0'>
+              Companies
+            </div>
+            <div class="" *ngFor='let c of searchResults.companies'>
+              <div class="search-item" *ngIf='!c.expand'>
+                <div class="search-item-not-expand">
+                  <div class="" style="position: relative">
+                    <img src="{{c.avatar}}" alt="" class="search-item-avatar">
+                  </div>
+                  <div class="search-item-header">{{c.name}}</div>
+                  <div class="search-item-subheader">A company with {{c.userProfileProxies.length}} employees</div>
+                  <div class="search-item-subheader" *ngIf='c.relevantAgencies.length > 0 && c.relevantSubagencies.length < 1'>{{c.relevantAgencies[0].count}} employees with experience in {{c.relevantAgencies[0].name}}</div>
+                  <div class="search-item-subheader" *ngIf='c.relevantSubagencies.length > 0'>{{c.relevantSubagencies[0].count}} employees with experience in {{c.relevantSubagencies[0].name}}</div>
+                  <div class="search-item-subheader" *ngIf='c.relevantPositions.length > 0'>{{c.relevantPositions[0].count}} employees rated as {{c.relevantPositions[0].name}}</div>
+                  <div class="search-item-subheader" *ngIf='c.relevantSkills.length > 0'>{{c.relevantSkills[0].count}} employees with experience in {{c.relevantSkills[0].name}}</div>
+                  <div class="search-item-subheader" *ngIf='c.relevantCerts.length > 0'>{{c.relevantCerts[0].count}} employees certified as {{c.relevantCerts[0].name}}</div>
+                  <div class="search-item-link" style="margin-bottom: -5px">
+                    <a href="#/corporate-profile/{{c._id}}">Visit {{c.name}}</a>
+                  </div>
+                </div>
+                <div class="search-item-expand" (click)='expandResult(c)'>v------EXPAND------v</div>
+              </div>
+              <div class="search-item" *ngIf='c.expand'>
+                <div class="search-item-not-expand col-xs-12">
+                  <div class="col-xs-12" style="height: 70px; margin-bottom: 1px;">
+                    <img src="{{c.avatar}}" alt="" class="search-item-avatar avatar-expand">
+                    <div class="search-item-header-expand">{{c.name}}</div>
+                    <div class="search-item-subheader-expand">A company with {{c.userProfileProxies.length}} employees</div>
+                  </div>
+                  <div class="col-xs-6">
+                    <div class="" *ngIf='c.relevantAgencies.length > 0' style="text-align: left">
+                      <div class="search-item-subheader miniheader">Agencies:</div>
+                      <div class="search-item-sublist" *ngFor='let a of c.relevantAgencies'>{{a.count}} with exp. in {{a.name}}</div>
+                    </div>
+                    <div class="" *ngIf='c.relevantSubagencies.length > 0' style="text-align: left">
+                      <div class="search-item-subheader miniheader">Subagencies:</div>
+                      <div class="search-item-sublist" *ngFor='let s of c.relevantSubagencies'>{{s.count}} with exp. in {{s.name}}</div>
+                    </div>
+                  </div>
+                  <div class="col-xs-6">
+                    <div class="" *ngIf='c.relevantSkills.length > 0' style="text-align: left">
+                      <div class="search-item-subheader miniheader">Skills:</div>
+                      <div class="search-item-sublist" *ngFor='let s of c.relevantSkills'>{{s.count}} with exp. in {{s.name}}</div>
+                    </div>
+                    <div class="" *ngIf='c.relevantPositions.length > 0' style="text-align: left">
+                      <div class="search-item-subheader miniheader">Positions:</div>
+                      <div class="search-item-sublist" *ngFor='let p of c.relevantPositions'>{{p.count}} rated as {{p.name}}</div>
+                    </div>
+                  </div>
+                  <div class="col-xs-6">
+                    <div class="" *ngIf='c.relevantCerts.length > 0' style="text-align: left">
+                      <div class="search-item-subheader miniheader">Certifications:</div>
+                      <div class="search-item-sublist" *ngFor='let i of c.relevantCerts'>{{i.count}} rated as {{i.name}}</div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-xs-12 search-item-link">
+                  <a href="#/corporate-profile/{{c._id}}">Visit {{c.name}}</a>
+                </div>
+                <div class="search-item-expand col-xs-12" (click)='expandResult(c)'>^------RETRACT------^</div>
+              </div>
+            </div>
+            <div class="search-item" *ngIf='searchResults.privateCompanies > 0'>
+              <div class="search-item-subheader">{{searchResults.privateCompanies}} private companies</div>
+            </div>
+          </div>
+          <div class="" *ngIf='searchResults.people.length > 0'>
+            <div class="search-item-category" *ngIf='searchResults.companies.length > 0 || searchResults.pastPerformances.length > 0'>
+              People
+            </div>
+            <div class="" *ngFor='let p of searchResults.people'>
+              <div class="search-item" *ngIf='p.public && !p.expand'>
+                <div class="search-item-not-expand col-xs-12">
+                  <img src="{{p.avatar}}" alt="" class="search-item-avatar">
+                  <div class="search-item-header">{{p.firstName}} {{p.lastName}}</div>
+                  <div class="search-item-subheader" *ngIf='p.currentCompany'>Works at {{p.currentCompany}}</div>
+                  <div class="search-item-subheader" *ngIf='!p.currentCompany'>Freelancer</div>
+                  <div class="search-item-subheader" *ngIf='p.relevantAgencies.length > 0 && p.relevantSubagencies.length < 1'>Experience with {{p.relevantAgencies[0]}}</div>
+                  <div class="search-item-subheader" *ngIf='p.relevantSubagencies.length > 0'>Experience with {{p.relevantSubagencies[0]}}</div>
+                  <div class="search-item-subheader" *ngIf='p.relevantSkills.length > 0'>Skilled at {{p.relevantSkills[0]}}</div>
+                  <div class="search-item-subheader" *ngIf='p.relevantPositions.length > 0'>Rated {{p.relevantPositions[0].score}} as {{p.relevantPositions[0].title}}</div>
+                  <div class="search-item-subheader" *ngIf='p.relevantCerts.length > 0'>Certified as {{p.relevantCerts[0]}}</div>
+                  <div class="search-item-link col-xs-12" style="margin-bottom: -5px">
+                    <a href="#/user-profile/{{p._id}}">Visit {{p.firstName}} {{p.lastName}}</a>
+                  </div>
+                </div>
+                <div class="search-item-expand col-xs-12" (click)='expandResult(p)'>v------EXPAND------v</div>
+              </div>
+              <div class="search-item" *ngIf='p.public && p.expand'>
+                <div class="search-item-not-expand col-xs-12">
+                  <div class="col-xs-12" style="height: 70px; margin-bottom: 1px;">
+                    <img src="{{p.avatar}}" alt="" class="search-item-avatar avatar-expand">
+                    <div class="search-item-header-expand">{{p.firstName}} {{p.lastName}}</div>
+                    <div class="search-item-subheader-expand" *ngIf='p.currentCompany'>Works at {{p.currentCompany}}</div>
+                    <div class="search-item-subheader-expand" *ngIf='!p.currentCompany'>Freelancer</div>
+                  </div>
+                  <div class="col-xs-6">
+                    <div class="" *ngIf='p.relevantAgencies.length > 0' style="text-align: left">
+                      <div class="search-item-subheader miniheader">Agency experience:</div>
+                      <div class="search-item-sublist" *ngFor='let a of p.relevantAgencies'>{{a}}</div>
+                    </div>
+                    <div class="" *ngIf='p.relevantSubagencies.length > 0' style="text-align: left">
+                      <div class="search-item-subheader miniheader">Subagency experience:</div>
+                      <div class="search-item-sublist" *ngFor='let s of p.relevantSubagencies'>{{s}}</div>
+                    </div>
+                  </div>
+                  <div class="col-xs-6">
+                    <div class="" *ngIf='p.relevantSkills.length > 0' style="text-align: left">
+                      <div class="search-item-subheader miniheader">Skilled at:</div>
+                      <div class="search-item-sublist" *ngFor='let s of p.relevantSkills'>{{s}}</div>
+                    </div>
+                    <div class="" *ngIf='p.relevantPositions.length > 0' style="text-align: left">
+                      <div class="search-item-subheader miniheader">Positions:</div>
+                      <div class="search-item-sublist" *ngFor='let p of p.relevantPositions'>Rated {{p.score}} in {{p.title}}</div>
+                    </div>
+                  </div>
+                  <div class="col-xs-6">
+                    <div class="" *ngIf='p.relevantCerts.length > 0' style="text-align: left">
+                      <div class="search-item-subheader miniheader">Certified as:</div>
+                      <div class="search-item-sublist" *ngFor='let c of p.relevantCerts'>{{c}}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="search-item-link col-xs-12" style="margin-bottom: -5px">
+                  <a href="#/user-profile/{{p._id}}">Visit {{p.firstName}} {{p.lastName}}</a>
+                </div>
+                <div class="search-item-expand col-xs-12" (click)='expandResult(p)'>^------RETRACT------^</div>
+              </div>
+            </div>
+            <div class="search-item" *ngIf='searchResults.privatePeople > 0'>
+              <div class="search-item-subheader">{{searchResults.privatePeople}} private users</div>
+            </div>
+          </div>
+          <div class="" *ngIf='searchResults.pastPerformances.length > 0'>
+            <div class="search-item-category" *ngIf='searchResults.people.length > 0 || searchResults.companies.length > 0'>
+              Past Performances
+            </div>
+            <div class="search-item" *ngFor='let pp of searchResults.pastPerformances'>
+              <div class="search-item-not-expand col-xs-12">
+                <img src="{{pp.avatar}}" alt="" class="search-item-avatar">
+                <div class="search-item-header">{{pp.title}}</div>
+                <div class="search-item-subheader" *ngIf='pp.topic'>{{pp.topic}}</div>
+              </div>
+              <div class="search-item-link col-xs-12" style="margin-bottom: -5px">
+                <a href="#/past-performance/{{pp._id}}">Visit {{pp.title}}</a>
+              </div>
+              <div class="search-item-expand col-xs-12" (click)='expandResult(pp)'>v------EXPAND------v</div>
+              <!-- <div class="search-item-expand col-xs-12" >v------EXPAND------v</div> -->
+            </div>
+            <div class="search-item" *ngIf='searchResults.privatePP > 0'>
+              <div class="search-item-subheader">{{searchResults.privatePP}} private past performances</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-4 col-xs-offset-1 search-terms-box">
+    <h3 style="text-align: center">Search Terms</h3>
+    <div class="col-xs-12" style="width: 100%; text-align: right">
+      <div class="col-xs-12">
+        <p class="col-xs-7" style="margin: 0 auto">Company</p>
+        <div class="col-xs-5">
+          <input type="checkbox" name="" value="" style="margin: 0 auto" class="col-xs-12" [(ngModel)]='searchTerms.company'>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <p class="col-xs-7">Person</p>
+        <div class="col-xs-5">
+          <input type="checkbox" name="" value="" style="margin: 0 auto" class="col-xs-12" [(ngModel)]='searchTerms.person'>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <p class="col-xs-7">Past Performance</p>
+        <div class="col-xs-5">
+          <input type="checkbox" name="" value="" style="margin: 0 auto" class="col-xs-12" [(ngModel)]='searchTerms.pastPerformance'>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12" style="margin-bottom: 5px">
+      <p style="text-align: center" >Name</p>
+      <p style="text-align: center" >Find a specific company/performance</p>
+      <input type="text" name="test" value="" class="col-xs-12"  [(ngModel)]='searchTerms.name'>
+    </div>
+    <div class="col-xs-12" style="margin-bottom: 5px">
+      <p style="text-align: center" >Agency</p>
+      <p style="text-align: center" >Find people with experience at an agency</p>
+      <!-- <input type="text" name="test" value="" class="col-xs-12"  [(ngModel)]='searchTerms.agency'> -->
+      <div class="autocomplete-form">
+        <input ngui-auto-complete class="col-xs-12" [(ngModel)] = 'searchTerms.agency' [source]='this.agencies' [list-formatter]="autocompleListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' (ngModelChange)='clearSubagency()' [ngClass]="{'empty-field': agencyValidCheck(searchTerms.agency) == false}">
+      </div>
+    </div>
+    <div class="col-xs-12" style="margin-bottom: 5px">
+      <p style="text-align: center" >Subagency</p>
+      <p style="text-align: center" >Find people with experience at a subagency</p>
+      <!-- <input type="text" name="test" value="" class="col-xs-12"  [(ngModel)]='searchTerms.agency'> -->
+      <div class="autocomplete-form">
+        <input ngui-auto-complete class="col-xs-12" [(ngModel)] = 'searchTerms.subagency' [source]='findSubAgencies(searchTerms.agency)'  auto-select-first-item='true' [ngClass]="{'empty-field': subagencyValidCheck(searchTerms.agency, searchTerms.subagency) == false}">
+      </div>
+    </div>
+
+    <div class="col-xs-12" style="margin-bottom: 5px">
+      <p style="text-align: center" >Skill</p>
+      <p style="text-align: center" >Find people with experience in a certain skills</p>
+      <input type="text" name="test" value="" class="col-xs-12"  [(ngModel)]='searchTerms.skill'>
+    </div>
+    <div class="col-xs-12" style="margin-bottom: 15px">
+      <p style="text-align: center" >Position</p>
+      <p style="text-align: center" >Find people highly rated for a specific position</p>
+      <input type="text" name="test" value="" class="col-xs-12" [(ngModel)]='searchTerms.position'>
+    </div>
+    <div class="col-xs-12" style="margin-bottom: 15px">
+      <p style="text-align: center" >Certification</p>
+      <p style="text-align: center" >Find people with a specific certification</p>
+      <input type="text" name="test" value="" class="col-xs-12" [(ngModel)]='searchTerms.cert'>
+    </div>
+    <div class="col-xs-12">
+      <div class="col-xs-12">
+        <p class="col-xs-7" style="text-align: right">Freelancer</p>
+        <div class="col-xs-5">
+          <input type="checkbox" name="" value="" style="margin: 0 auto" class="col-xs-12" [(ngModel)]='searchTerms.freelancer'>
+        </div>
+      </div>
+    </div>
+    <button type="button" name="button" class="col-xs-8 col-xs-offset-2 search-ready" (click)='search()' *ngIf='searchReady()'>Search</button>
+    <button type="button" name="button" class="col-xs-8 col-xs-offset-2 search-nope" *ngIf='!searchReady()'>Search</button>
+  </div>
+</div>

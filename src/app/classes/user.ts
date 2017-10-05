@@ -1,23 +1,27 @@
+import {CompanyUserProxy} from './company-user-proxy'
+
 export class User {
-  id: string
+  _id: string
   firstName: string
   lastName: string
   cell: string
   office: string
   username: string
+  primaryEmail: string
   avatar: string
   disabled: boolean
+  dateOfBirth: string
   gender: string
-  workeligibility: [
+  workEligibility: [
     {
-      CountryCode: string,
-      Permanent: boolean
+      countryCode: string,
+      permanent: boolean
     }
     ]
   email: [
     {
-      Address: string,
-      Label: string
+      address: string,
+      label: string
     }
   ]
   address: {
@@ -27,8 +31,8 @@ export class User {
   }
   phone: [
     {
-      Number: string,
-      Label: string
+      number: string,
+      label: string
     }
   ]
   education: [
@@ -43,7 +47,7 @@ export class User {
         {
           Name: string
         }
-        ],
+      ],
       AttendanceStatusCode: string,
       AttendanceEndDate: string,
       EducationScore: [string],
@@ -51,14 +55,14 @@ export class User {
         {
           Name: string
         }
-        ],
+      ],
       DegreeDate: string,
       MajorProgramName: [string],
       MinorProgramName: [string],
       Comment: string
     }
     ]
-  positionhistory: [
+  positionHistory: [
     {
       Year: number,
       Employer: string,
@@ -73,28 +77,61 @@ export class User {
       CurrentIndicator: boolean,
       Industry: {
         Name: string,
-      }
-      Description: string,
+      },
+      employmentType: number,
+      agencyExperience: [
+        {
+          main: {
+            title: string,
+            data: any[],
+            score: number,
+            description: string,
+            isPM: boolean,
+            pmDescription: string,
+            pmScore: number,
+            isKO: boolean,
+            koDescription: string,
+            koScore: number
+          },
+          offices: [
+            {
+              title: string,
+              data: any[],
+              score: number,
+              description: string,
+              isPM: boolean,
+              pmDescription: string,
+              pmScore: number,
+              isKO: boolean,
+              koDescription: string,
+              koScore: number
+            }
+          ]
+        }
+      ],
+      Description: string
     }
     ]
-  personcompetency: [
-    {
-      CompetencyName: string,
-      CompetencyLevel: string
-    }
+  personCompetency: [
+      {
+        CompetencyName: string,
+        CompetencyLevel: string
+      }
     ]
   certification: [
-    {
-      CertificationName: string,
-      DateEarned: string
-    }
+      {
+        CertificationName: string,
+        Organization: string,
+        Type: string,
+        DateEarned: string
+      }
     ]
   License: [
-    {
-      LicenseName: string
-    }
+      {
+        LicenseName: string
+      }
     ]
-  EmploymentReferences: [
+  references: [
     {
       RefereeTypeCode: string,
       FormattedName: string,
@@ -104,11 +141,11 @@ export class User {
     }
     ]
 
-  lastupdated: string
-  information_accuracy: number
+  lastUpdated: string
+  informationAccuracy: number
   clearance: [
     {
-      type: string,
+      clearanceType: string,
       awarded: string,
       expiration: string
     }
@@ -122,20 +159,6 @@ export class User {
     ]
   skill: [string]
   interest: string
-  agencyexperience: {
-    main: {
-      title: string,
-      data: any[]
-    },
-    office1: {
-      title: string,
-      data: any[]
-    },
-    office2: {
-      title: string,
-      data: any[]
-    }
-  }
   strength: [
     {
       skill: string,
@@ -147,5 +170,76 @@ export class User {
       date: string
       available: boolean
     }
-  ];
+  ]
+  occupations: [
+    {
+      score: number
+      title: string
+      code: string
+      version: string
+    }
+  ]
+  general_work_activities: [
+    {
+      score: number
+      guid: string
+      code: string
+      version: string
+    }
+  ]
+  intermediate_work_activities: [
+    {
+      score: number
+      guid: string
+      code: string
+      version: string
+    }
+  ]
+  detailed_work_activities: [
+    {
+      score: number
+      guid: string
+      code: string
+      version: string
+    }
+  ]
+  workplace_essentials: [
+    [string]
+  ]
+  knowledges: [
+    [string]
+  ]
+  skills: [
+    [string]
+  ]
+  abilities: [
+    [string]
+  ]
+  tools: [
+    {
+      title: string
+      category: string
+      classification: string
+      score: number
+    }
+  ]
+  foundTools: [
+    {
+      title: string
+      category: string
+      classification: string
+      position: string[]
+      score: number
+    }
+  ]
+  resumeText: string
+  public: boolean
+  finished: boolean
+  power: number
+  companyUserProxies: [
+    any
+  ]
+  pastPerformanceProxies: [
+    any
+  ]
 }

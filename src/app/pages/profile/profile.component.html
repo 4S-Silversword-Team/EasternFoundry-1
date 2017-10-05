@@ -1,29 +1,35 @@
-<div class="container">
-  <div class="btn-edit" (click) = 'editProfile()'>Edit</div>
+<div class="container" *ngIf='!this.promiseFinished'>
+  <div class="loader"></div>
+  <!-- <p class="loading">Loading</p> -->
+</div>
+<div class="container" *ngIf='this.promiseFinished'>
+  <div *ngIf="this.isActiveProfile" class="btn-edit" (click) = 'editProfile()'>Edit</div>
   <div class="btn-back" (click) = 'this.location.back()'></div>
-    <div class="basic-info col-xs-12">
+    <div class="basic-info col-xs-12" *ngIf = this.promiseFinished>
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0" [style.height] = "'150px'">
-                <img class="avatar left" src="{{ this.currentUser.avatar }}" >
-                <div class="right" [style.width] = "'calc(100% - 150px)'" *ngIf = this.promiseFinished>
+                <img class="avatar left" src="{{ this.currentUser.avatar }}">
+                <div class="right" [style.width] = "'calc(100% - 150px)'">
                     <p class="col-xs-12 mt15" [style.height] = "'40px'">{{ this.currentUser.firstName }} {{this.currentUser.lastName}}</p>
-                    <p class="col-xs-12 mt15" [style.height] = "'40px'">{{ this.currentUser.positionhistory[0].PositionTitle }}</p>
-                    <p class="col-xs-12 mb15" [style.height] = "'40px'">{{ this.currentUser.positionhistory[0].Employer}}</p>
+                    <p class="col-xs-12 mt15" [style.height] = "'40px'" *ngIf = this.currentJob>{{
+                      this.currentJob.PositionTitle }}</p>
+                    <p class="col-xs-12 mb15" [style.height] = "'40px'" *ngIf = this.currentJob>{{
+                      this.currentJob.Employer}}</p>
                 </div>
             </div>
-            <div id="user-contact" class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0" *ngIf = this.promiseFinished>
-                <div><img src="../assets/img/glyphicon/email-1.png" class="left"><p class="left">{{ this.currentUser.username }}</p></div>
-                <div><img src="../assets/img/glyphicon/phone-2.png" class="left"><p class="left">{{ this.currentUser.cell }}</p></div>
-                <div><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">{{ this.currentUser.address.city }}, {{ this.currentUser.address.state }}</p></div>
+            <div id="user-contact" class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0">
+                <div><img src="../assets/img/glyphicon/email-1.png" class="left"><p class="left noWrapScroll">{{ this.currentUser.username }}</p></div>
+                <div><img src="../assets/img/glyphicon/phone-2.png" class="left"><p class="left noWrapScroll">{{ this.currentUser.cell }}</p></div>
+                <div><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left noWrapScroll" *ngIf = this.currentUser.address>{{ this.currentUser.address.city }}, {{ this.currentUser.address.state }}</p></div>
             </div>
             <div id="user-info" class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0">
                 <div class="col-xs-12 col-md-6">
                     <p class="lh-30 left">Information<br>Updated</p>
-                    <p class="lh-60 right">{{ this.currentUser.lastupdated}}</p>
+                    <p class="lh-60 right noWrapScroll">{{ this.currentUser.lastUpdated}}</p>
                 </div>
                 <div class="col-xs-12 col-md-6">
                     <p class="lh-60 left">Information Accuracy</p>
-                    <rating [(ngModel)]="this.currentUser.information_accuracy" [max]="5" class="lh-60 right"></rating>
+                    <rating [(ngModel)]="this.currentUser.informationAccuracy" [max]="5" class="lh-60 right"></rating>
                 </div>
             </div>
         </div>
@@ -33,11 +39,64 @@
     <div class="col-xs-12 col-md-6 text-center">
         <p class="fs-28 fc-title">CERTIFICATIONS, DEGREES</p>
         <p class="fs-28 fc-subtitle">AWARDS & CLEARANCES</p>
-        <div class="text-container text-left" [style.height] = "'300px'">
-            <p *ngFor="let cert of this.currentUser.Certification">{{ 'Degree: ' + cert.CertificationName + ',  Earned: ' + cert.DateEarned }}</p>
-            <p *ngFor="let deg of this.currentUser.education">{{ 'Type: ' + deg.DegreeType[0].Name + ', Concentration: ' + deg.MajorProgramName[0] + ', From: ' + deg.School + ', Graduation: ' + deg.AttendanceEndDate }}</p>
-            <p *ngFor="let index of this.currentUser.clearance">{{ 'Type: ' + index.type + ', Awarded: ' + index.awarded + ', Expiration: ' + index.expiration }}</p>
-            <p *ngFor="let award of this.currentUser.award">{{ 'Awarded: ' + award }}</p>
+        <div class="text-container text-left cert-container" [style.height] = "'300px'">
+          <div *ngIf = 'this.currentUser.education'>
+            <p>Degrees:</p>
+            <div class="" *ngFor="let deg of this.currentUser.education">
+              <div *ngIf="deg.DegreeType[0] && deg.DegreeType[0].Name.length > 0">
+                <div *ngIf="deg.MajorProgramName && deg.MajorProgramName.length > 0">
+                  <div *ngIf="deg.School && deg.School.length > 0">
+                    <div *ngIf="deg.AttendanceEndDate && deg.AttendanceEndDate.length > 0" class="degree-box">
+                      <p>
+                        {{deg.DegreeType[0].Name}} in {{deg.MajorProgramName[0]}} from {{deg.School}}
+                      </p>
+                      <p>Graduated {{deg.AttendanceEndDate}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="" *ngIf = 'this.currentUser.certification'>
+            <div class="" *ngIf = 'this.currentUser.certification[0]'>
+              <div class="" *ngIf = 'this.currentUser.certification[0].CertificationName.length > 0'>
+                <p>Certificates:</p>
+                <div class="" *ngFor="let cert of this.currentUser.certification">
+                  <div class="" *ngIf="cert.CertificationName && cert.CertificationName.length > 0">
+                    <div class="degree-box" *ngIf="cert.DateEarned && cert.DateEarned.length > 0">
+                      <p>{{cert.CertificationName}} Certification</p>
+                      <p>Earned {{cert.DateEarned}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="" *ngIf='this.currentUser.award'>
+            <div class="" *ngIf='this.currentUser.award[0]'>
+              <p>Awards:</p>
+              <div class="" *ngFor="let award of this.currentUser.award" class="degree-box">
+                <p *ngIf="award.length > 0">{{award }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="" *ngIf='this.currentUser.clearance'>
+            <div class="" *ngIf='this.currentUser.clearance[0]'>
+              <div class="" *ngIf='this.currentUser.clearance[0].clearanceType.length > 0'>
+                <p>Clearances:</p>
+                <div class="" *ngFor="let clearance of this.currentUser.clearance">
+                  <div class="" *ngIf="clearance.clearanceType.length > 0">
+                    <div class="" *ngIf="clearance.awarded.length > 0">
+                      <div class="degree-box" *ngIf="clearance.expiration.length > 0">
+                        <p>{{clearance.clearanceType}} Clearance</p>
+                        <p>Awarded {{clearance.awarded}}, expires {{clearance.expiration}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
         </div>
     </div>
     <div class="col-xs-12 col-md-6 text-center">
@@ -57,56 +116,60 @@
     </div>
     <div class="capa-main col-xs-12">
         <div class="col-xl-12 col-sm-6">
-            <div class="capa-chart col-xs-12" *ngIf="this.promiseFinished">
-                <app-bent-bars-chart width='300' height='300' divID='bbChart{{this.currentUser.id}}' [values]='getCapaChartValues(this.currentUser)'></app-bent-bars-chart>
+            <div class="capa-chart col-xs-12" *ngIf="this.promiseFinished && this.currentUser.occupations">
+                <app-bent-bars-chart width='300' height='300' divID='bbChart{{this.currentUser.id}}' [values]='getCapaChartValues(this.occupations)'></app-bent-bars-chart>
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 text-container">
             <div class="row">
-                <div class="col-xs-12 col-md-6">
-                    <app-color-comment-box *ngFor='let feature of this.currentUser.capability' color='{{getCapaChartColor(feature.score)}}' text='{{feature.name}}' class="col-xs-12"></app-color-comment-box>
-                </div>
-                <div class="col-xs-12 col-md-6">
-                    <p *ngFor='let skill of this.currentUser.skill'>{{ skill }} </p>
+                <div class="col-xs-12 col-md-12">
+                    <app-color-comment-box *ngFor='let feature of this.occupations' color='{{getCapaChartColor(feature.score)}}' text='{{feature.title}}' class="col-xs-12"></app-color-comment-box>
+                    <p *ngFor='let skill of this.currentUser.skill'>{{ skill }}</p>
                 </div>
             </div>
         </div>
     </div>
   </div>
-  <div class="experience col-xs-12 clear">
-    <div class="div-title col-xs-12">
-        <img src="./assets/img/profile/agency-3.png">
-        <p>AGENCY EXPERIENCE</p>
-        <div ></div>
-    </div>
 
-    <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-container" *ngIf="this.promiseFinished">
-        <app-color-comment-box *ngFor='let index of this.currentUser.agencyexperience.main.data' color='{{ expColors[index.title] }}' text='{{index.title}}' class="col-xs-12 col-sm-6 col-md-12"></app-color-comment-box>
-    </div>
+  <div class="experience col-xs-12 clear" *ngIf='this.agencyExperience'>
+    <div class="" *ngIf='this.agencyExperience[0]'>
+      <div class="" *ngIf='this.agencyExperience[0].main.title'>
+        <div class="div-title col-xs-12">
+          <img src="./assets/img/profile/agency-3.png">
+          <p>AGENCY EXPERIENCE</p>
+          <div ></div>
+        </div>
+        <div class="col-xs-12">
+          <div id="team_chart"  style="max-width: 75%; margin: 0 auto" [chart]="chart"></div>
+        </div>
 
-    <div class="exp-main col-xs-12" *ngIf="this.promiseFinished">
-        <div class="app-exp-chart left">
-            <p id="exp-main-title">{{this.currentUser.agencyexperience.main.title}}</p>
-            <app-exp-chart width='500' height='500' divID='exp-main-chart' [values]='expMainValues(this.currentUser)'></app-exp-chart>
+        <!-- <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-container" *ngIf="this.promiseFinished">
+          <div class="" *ngFor='let agency of this.agencyExperience; let i = index'>
+            <div class="" *ngIf="agency.main.title">
+              <app-color-comment-box *ngFor="let index of agency.main.data" color='{{ expColors[i] }}' text='{{agency.main.title}}' class="col-xs-12 col-md-12"></app-color-comment-box>
+            </div>
+          </div>
         </div>
-        <div class="app-exp-chart right">
-            <app-exp-chart id='sub1' width='250' height='250' divID='exp-sub1-chart' [values]='expSub1Values(this.currentUser)' class="right"></app-exp-chart>
-            <p id="exp-sub1-title" class="left">Office 1</p>
-        </div>
-        <div class="app-exp-chart left">
-            <app-exp-chart id='sub2' width='250' height='250' divID='exp-sub2-chart' [values]='expSub2Values(this.currentUser)' class="left"></app-exp-chart>
-            <p id="exp-sub2-title" class="right">Office 2</p>
-        </div>
+        <div class="exp-main col-xs-12" *ngIf="this.promiseFinished">
+          <div class="col-xs-12" *ngFor='let agency of this.agencyExperience; let x = index'>
+            <p class="exp-main-title">{{agency.main.title}}</p>
+            <div class="app-exp-chart" *ngIf="agency.main.title">
+              <app-exp-chart width='500' height='500' divID='exp-main-chart' [values]='expMainValues(this.currentUser, i, x)'></app-exp-chart>
+            </div>
+          </div>
+        </div> -->
+      </div>
     </div>
-</div>
+  </div>
 
-<div class="career col-xs-12 clear">
+
+<div class="career col-xs-12 clear" *ngIf='this.currentUser.positionHistory'>
     <div class="div-title col-xs-12">
         <img src="./assets/img/profile/career.png">
         <p>CAREER</p>
         <div ></div>
     </div>
-    <career [Data]="this.currentUser.positionhistory" [current]="currentYear()"></career>
+    <career [Data]="this.currentUser.positionHistory" [current]="currentYear()"></career>
 </div>
 
   <!--this does not work right now and i'm not sure why!-->
@@ -117,10 +180,10 @@
         <div ></div>
     </div>
     <canvas baseChart
-            [datasets]="strengthChartDatas"
-            [labels]="strengthChartLabels"
+            [datasets]="toolChartDatas"
+            [labels]="toolChartLabels"
             [options]="{ scaleShowVerticalLines: true, responsive: true, scales: { yAxes: [{ticks: {beginAtZero: true }}]} }"
-            [legend]="true"
+            [legend]="false"
             [chartType]="'bar'"></canvas>
 </div>
 
@@ -134,10 +197,6 @@
         <app-color-comment-box color='#7f7f7f' text='unavailable' class="col-xs-12 col-sm-6 col-md-6"></app-color-comment-box>
         <app-color-comment-box color='#0b6ec1' text='available' class="col-xs-12 col-sm-6 col-md-6"></app-color-comment-box>
     </div>
-     <app-availablebar [values] = 'availabilityData.values' [dates] = 'availabilityData.dates'></app-availablebar>
+     <app-availablebar [values] = 'availabilityData.values' [dates] = 'availabilityData.dates' edit=false ></app-availablebar>
 </div>
 </div>
-
-
-
-

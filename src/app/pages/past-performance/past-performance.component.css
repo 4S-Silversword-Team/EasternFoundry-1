@@ -22,3 +22,97 @@
 .write-up>div:last-child {
     margin: auto;
 }
+
+.halfwidth {
+    width: calc(50% - 2px);
+}
+
+.thirdwidth {/*TIM*/
+  width: calc(33% - 3px);
+}
+
+.left {
+    float: left;
+}
+
+.center {/*TIM*/
+    float: initial;
+    text-align: center;
+}
+
+.right {
+    float: right;
+}
+
+.clear::before {
+    display: table;
+    content: "";
+}
+
+.clear::after {
+    display: table;
+    clear: both;
+    content: "";
+}
+
+.main {
+    margin-left: 100px;
+    margin-right: 30px;
+    width: calc(100% - 130px);
+}
+
+.avatar {
+    width: 150px;
+    height: 150px;
+    margin-right: 30px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+}
+
+.srow {
+    height: 50px;
+    line-height: 50px;
+}
+
+.srow img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.srow p{
+    width: 80px;
+}
+
+.srow input{
+    width: calc(100% - 160px);
+}
+
+.ssrow {
+    height: 30px;
+    line-height: 30px;
+}
+
+.write-up .container .text-container {
+  overflow: auto;
+}
+
+@media screen and (min-width: 1100px) {
+  .employee-small {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1099px) {
+  .employee-big {
+    display: none;
+  }
+}
+
+/*Hacky solution for overlaps in the div-info section for small width screens (Only looks acceptable down to 310px and if the largest label in div-info section is 10 characters)*/
+@media screen and (max-width: 350px) {
+  container, .col-xs-12.past-performance {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

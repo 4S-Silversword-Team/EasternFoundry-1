@@ -1,87 +1,82 @@
 {
-    "id": 1,
     "name": "Jimbo Inc!",
     "email": "jimbo@jimothy.zone",
     "avatar": "../../assets/img/company-account.png",
-    "contactnumber": "202-555-8998",
-    "address": "Arlington, VA",
-    "information_accuracy": 5,
-    "lastupdated": "Feb, 2017",
-    "leadership": [
+    "contactNumber": "202-555-8998",
+    "city": "Arlington",
+    "state": "VA",
+    "zip": "12345",
+    "address": "211112 Street",
+    "lastUpdated": "August 2017",
+    "informationAccuracy": 5,
+    "__v": 0,
+    "userProfileProxies": [],
+    "pastPerformanceProxies": [],
+    "schedule": [
         {
-            "userid": "59514f264bbbec2d8dc56ed7"
+            "date": "Dec, 2016",
+            "content": "Schedule 1",
+            "_id": "5978bab7d4297936b588ea33"
         },
         {
-            "userid": "59514f264bbbec2d8dc56ed7"
-        }
-    ],
-    "product": [
-        {
-            "productid": "595d091509c3022b56f5372a"
+            "date": "Feb, 2017",
+            "content": "Schedule 2",
+            "_id": "5978bab7d4297936b588ea32"
         },
         {
-            "productid": "595d092c09c3022b56f5372b"
-        }
-    ],
-    "service": [
-        {
-            "serviceid": "595d29a31b325b445e3a0236"
-        },
-        {
-            "serviceid": "595d29ae1b325b445e3a0237"
-        }
-    ],
-    "pastperformance": [
-        {
-            "pastperformanceid": "595695dbbdfdc463e9831dab"
-        },
-        {
-            "pastperformanceid": "59569d64bdfdc463e9831dac"
-        }
-    ],
-    "agency_experience": [
-        {
-            "title": "Years agency experience",
-            "score": 90
-        },
-        {
-            "title": "$ (M) of agency revenue",
-            "score": 12
-        },
-        {
-            "title": "Proposals written",
-            "score": 14
+            "date": "Jul, 2017",
+            "content": "Schedule 3",
+            "_id": "5978bab7d4297936b588ea31"
         }
     ],
     "vehicles": [
         {
-            "type": "Vehicle type 1",
-            "quantity": 3
+            "vehicleType": "Vehicle type 1",
+            "quantity": 3,
+            "_id": "5978bab7d4297936b588ea36"
         },
         {
-            "type": "Vehicle type 2",
-            "quantity": 13
+            "vehicleType": "Vehicle type 2",
+            "quantity": 13,
+            "_id": "5978bab7d4297936b588ea35"
         },
         {
-            "type": "Vehicle type 3",
-            "quantity": 22
+            "vehicleType": "Vehicle type 3",
+            "quantity": 22,
+            "_id": "5978bab7d4297936b588ea34"
         }
     ],
-    "schedule": [
+    "agencyExperience": [
         {
-            "date": "Dec, 2016",
-            "content": "Schedule 1"
+            "title": "Years agency experience",
+            "score": 90,
+            "_id": "5978bab7d4297936b588ea39"
         },
         {
-            "date": "Feb, 2017",
-            "content": "Schedule 2"
+            "title": "$ (M) of agency revenue",
+            "score": 12,
+            "_id": "5978bab7d4297936b588ea38"
         },
         {
-            "date": "Jul, 2017",
-            "content": "Schedule 3"
+            "title": "Proposals written",
+            "score": 14,
+            "_id": "5978bab7d4297936b588ea37"
         }
     ],
-    "city": "Washington",
-    "state": "DC",
-    "zip": "11112"
+    "pastPerformance": [
+    	],
+    "service": [
+    	],
+    "product": [
+    ],
+    "leadership": [
+        {
+            "userId": "599464c420130a001104a3b7",
+            "_id": "5978bab7d4297936b588ea41"
+        },
+        {
+            "userId": "599464c420130a001104a3b7",
+            "_id": "5978bab7d4297936b588ea40"
+        }
+    ]
 }

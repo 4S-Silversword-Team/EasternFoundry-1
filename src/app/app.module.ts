@@ -11,9 +11,16 @@ import { CorporateProfileComponent } from './pages/corporate-profile/corporate-p
 import { CorporateProfileEditComponent } from './pages/corporate-profile-edit/corporate-profile-edit.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ProfileEditComponent } from './pages/profile-edit/profile-edit.component';
+import { ProfileCreateComponent } from './pages/profile-create/profile-create.component';
+import { AllProfilesComponent } from './pages/all-profiles/all-profiles.component';
 import { PastPerformanceComponent } from './pages/past-performance/past-performance.component';
 import { PastPerformanceEditComponent } from './pages/past-performance-edit/past-performance-edit.component';
 import { NoContentComponent } from './pages/no-content/no-content.component';
+import { MyPastPerformancesComponent } from './pages/my-pastperformances/my-pastperformances.component';
+import { SearchComponent } from './pages/search/search.component';
+import { AdminComponent } from './pages/admin/admin.component';
+
+import { ComponentNameComponent } from './component-name/component-name.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RatingModule } from 'ng2-bootstrap/rating';
@@ -31,6 +38,10 @@ import { CareerComponent } from './components/career/career.component';
 import { BarchartComponent } from './components/barchart/barchart.component';
 import { AvailablebarComponent } from './components/availablebar/availablebar.component';
 import { SelectorComponent } from './components/selector/selector.component';
+import { NguiAutoCompleteModule } from '@ngui/auto-complete';
+
+import { ChartModule } from 'angular-highcharts';
+
 
 @NgModule({
   declarations: [
@@ -38,16 +49,21 @@ import { SelectorComponent } from './components/selector/selector.component';
     LoginComponent,
     ProfileComponent,
     ProfileEditComponent,
+    ProfileCreateComponent,
+    AllProfilesComponent,
     CorporateProfileComponent,
     PastPerformanceComponent,
     PastPerformanceEditComponent,
+    AdminComponent,
     NoContentComponent,
     BentBarsChartComponent,
     ColorCommentBoxComponent,
     ExpChartComponent,
     CareerComponent,
     BarchartComponent,
-    AvailablebarComponent, SelectorComponent, CompaniesComponent, CorporateProfileEditComponent
+    AvailablebarComponent, SelectorComponent, CompaniesComponent, CorporateProfileEditComponent, MyPastPerformancesComponent,
+    SearchComponent,
+    ComponentNameComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -60,7 +76,9 @@ import { SelectorComponent } from './components/selector/selector.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(ROUTES, {useHash: true})
+    NguiAutoCompleteModule,
+    RouterModule.forRoot(ROUTES, {useHash: true}),
+    ChartModule
   ],
   providers: [],
   bootstrap: [AppComponent]

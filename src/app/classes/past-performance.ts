@@ -1,11 +1,12 @@
 export class PastPerformance {
     id: string
+    _id: string
     title: string
     client: string
     topic: string
-    startdate: string
-    enddate: string
-    cleard: boolean
+    startDate: string
+    endDate: string
+    cleared: boolean
     location: string
     FTE: string
     value: string
@@ -15,11 +16,18 @@ export class PastPerformance {
     employees: [
         {
             title: string,
-            stillwith: boolean
+            stillWith: boolean
         }
     ]
     synopsis: string
     technical: string
     management: string
     other: string
+    public: boolean
+    userProfileProxies: [
+      any
+    ]
+    companyProxies: [
+      any
+    ]
 }

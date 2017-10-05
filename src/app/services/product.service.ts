@@ -22,9 +22,21 @@ export class ProductService {
     return response;
   }
 
+  updateProduct(id: string, request: any): Observable<Product> {
+    var response = this.authHttp.put(environment.apiRoot + "products/" + id, request)
+      .map(response => <Product> response.json());
+    return response;
+  }
+
+  createProduct(request: any): Observable<Product> {
+    var response = this.authHttp.post(environment.apiRoot + "products/add", request)
+      .map(response => <Product> JSON.parse(JSON.stringify(response)));
+    return response;
+  }
+
   getSampleProduct(id: string): Product {
     let temp: Product = new Product()
-    temp.id = '1'
+    temp._id = '1'
     temp.name = 'product 1'
     temp.feature = [
       {
@@ -45,8 +57,8 @@ export class ProductService {
       }
     ]
     temp.description = 'the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog  the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog'
-    temp.moreinfolink = ''
-    temp.viewdemolink = ''
+    temp.moreInfoLink = ''
+    temp.viewDemoLink = ''
     temp.customization = true
     temp.training = false
     temp.maintenance = true
@@ -89,7 +101,7 @@ export class ProductService {
       ]
     }
     if(id == '2') {
-      temp.id = '2'
+      temp._id = '2'
       temp.name = 'product 2'
       temp.feature = [
         {
@@ -164,11 +176,4 @@ export class ProductService {
     return temp
   }
 
-  updateProduct(id: string, request: any): Observable<Product> {
-    var response = this.authHttp.put(environment.apiRoot + "products/" + id, request)
-      .map(response => <Product> response.json());
-    return response;
-  }
-
 }
-

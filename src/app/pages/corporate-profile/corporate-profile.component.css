@@ -5,9 +5,17 @@
 .halfwidth {
     width: calc(50% - 2px);
 }
+.thirdwidth {/*TIM*/
+  width: calc(33% - 3px);
+}
 
 .left {
     float: left;
+}
+
+.center {/*TIM*/
+    float: initial;
+    text-align: center;
 }
 
 .right {
@@ -79,6 +87,20 @@ button {
     line-height: 40px;
 }
 
+.cert-container {
+  overflow: auto;
+}
+
+.degree-box {
+  background: rgba(255, 255, 255, 0.75);
+  border: 2px solid rgba(0, 0, 0, 0.6);
+  margin-top: 2px;
+  margin-bottom: 2px;
+  padding: 1px;
+  text-align: center;
+  color: black;
+}
+
 .div-title {
     margin-top: 50px;
     display: inline-block;
@@ -131,6 +153,12 @@ textarea {
     background: none;
 }
 
+.half-panel {
+  background: rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.15);
+  padding-top: 12px;
+}
+
 .basic-info .div-title p{
     width: 250px;
 }
@@ -180,11 +208,17 @@ textarea {
     color: #555;
     text-align: center;
 }
-
+.div-tab .center{
+  border-bottom: 5px solid #757575;
+}
+.div-tab .center:hover{
+  background-color: #3bbbed;
+  color: #eff;
+  border-bottom: 5px solid #2aaadc;
+}
 .div-tab .left{
     border-bottom: 5px solid #757575;
 }
-
 .div-tab .left:hover{
     background-color: #3bbbed;
     color: #eff;
@@ -242,6 +276,7 @@ textarea {
 
 .pp-slide {
     width: calc(33% - 40px);
+    min-width: 150px;
     margin: 20px;
     border-radius: 2px;
     border: 2px solid #ccc;
@@ -275,7 +310,7 @@ textarea {
     padding-right: 30px;
 }
 
-.pp-slide p.halfwidth strong{    
+.pp-slide p.halfwidth strong{
     line-height: 20px;
 }
 
@@ -298,4 +333,49 @@ textarea {
 
 .schedule .div-title div{
     width: calc(100% - 271px);
+}
+
+
+
+
+
+
+.strength .div-title p{
+    color: #198fcf;
+}
+
+.strength .div-title div{
+    background-color: #0e6daf;
+    width: calc(100% - 272px);
+}
+
+.leftBorder {
+  height: 45px;
+  padding-left: 10px;
+  border-left: 4px solid #3e3e3e;
+}
+
+.noWrapScroll {
+  white-space: nowrap;
+  overflow: visible;
+}
+
+@media screen and (min-width: 1000px) {
+  .leadership.leadership-small, .performance.performance-small {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 999px) {
+  .leadership.leadership-big, .performance.performance-big {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .main.main-collapse {
+    margin-left: 0;
+    margin-right: 0;
+    width: calc(100%);
+  }
 }

@@ -5,6 +5,9 @@ import { environment } from '../../environments/environment'
 import { Observable } from 'rxjs/Observable'
 import { Company } from '../classes/company'
 import {AuthHttp} from '../classes/auth-http'
+let months: any[] = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'
+]
 
 @Injectable()
 export class CompanyService {
@@ -23,9 +26,9 @@ export class CompanyService {
   }
 
   getCompanyByID(id: string): Observable<Company> {
-    var response =  this.authHttp.get(environment.apiRoot + "company/" + id )
-    .map(response => <Company> response.json())
-    return response
+    var response = this.authHttp.get(environment.apiRoot + "company/" + id)
+      .map(response => <Company> response.json())
+    return response;
   }
 
   updateCompany(id: string, request: any): Observable<Company> {
@@ -34,33 +37,35 @@ export class CompanyService {
     return response;
   }
 
-  getTestCompany(): Company {
+  createCompany(request: any): Observable<any> {
+    var response = this.authHttp.post(environment.apiRoot + "company/add", request)
+      .map(response => <Company> JSON.parse(JSON.stringify(response)));
+    return response;
+  }
+
+
+  getEmptyCompany(): Company {
+    var year = new Date().getFullYear()
+    var month = new Date().getMonth()
+    month = months[month-1]
+    var currentTime = month + ', ' + year
     let temp: Company = new Company()
-    temp.id = '1'
-    temp.name = 'Eastern Foundry'
-    temp.email = 'eastern@foundry.com'
-    temp.avatar = '../../assets/img/company-account.png'
-    temp.contactnumber = '(202) 725-7483'
-    temp.address = 'Washington, DC'
-    temp.information_accuracy = 5
-    temp.lastupdated = 'Dec, 2016'
-    temp.leadership = [
-      {userid: '1'},
-      {userid: '2'}
-    ]
-    temp.product = [
-      {productid: '1'},
-      {productid: '2'}
-    ]
-    temp.service = [
-      {serviceid: '1'},
-      {serviceid: '2'}
-    ]
-    temp.pastperformance = [
-      {pastperformanceid: '1'},
-      {pastperformanceid: '2'}
-    ]
-    temp.agencyexperience = [
+    temp._id = '1'
+    temp.name = ''
+    temp.email = ''
+    temp.avatar = '../../assets/img/defaultLogo.png'
+    temp.contactNumber = ''
+    temp.city = ''
+    temp.state = ''
+    temp.zip = ''
+    temp.address = ''
+    temp.informationAccuracy = 5
+    temp.lastUpdated = currentTime
+    temp.leadership = [null]
+    temp.product = [null]
+    temp.service = [null]
+    temp.pastPerformance = [null]
+    temp.agencyExperience = [
       {
         title: 'Years Agency experience',
         score: 90
@@ -80,16 +85,8 @@ export class CompanyService {
     ]
     temp.vehicles = [
       {
-        type: 'Vehicle type 1',
-        quantity: 3
-      },
-      {
-        type: 'Vehicle type 2',
-        quantity: 6
-      },
-      {
-        type: 'Vehicle type 3',
-        quantity: 10
+        vehicleType: '',
+        quantity: 30
       }
     ]
     temp.schedule = [
@@ -106,6 +103,7 @@ export class CompanyService {
         content: 'Schedule 3'
       }
     ]
+    temp.public = false
     return temp
   }
 

@@ -1,0 +1,9 @@
+<div class="container mt100">
+  <div class="" *ngIf='pastperformances.length < 1' style="text-align: center">
+    You don't have any past performances. You can create one from the profile of the company you want to add it to.
+  </div>
+  <div class="col-xs-12 text-container" *ngFor='let pastperformance of pastperformances' (click) = "goTo(pastperformance._id)">
+    <img class="avatar" src='{{pastperformance.avatar}}'>
+    <div class="fs-30 lh-40" [style.display] = "'inline-block'" >{{pastperformance.title}}</div>
+  </div>
+</div>
