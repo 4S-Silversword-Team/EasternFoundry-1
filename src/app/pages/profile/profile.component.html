@@ -7,16 +7,16 @@
   <div class="btn-back" (click) = 'this.location.back()'></div>
     <div class="basic-info col-xs-12" *ngIf = this.promiseFinished>
         <div class="row">
-            <div class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0" [style.height] = "'150px'">
+            <div class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0" [style.height] = "'150px'" style="position: relative">
               <div class="left avatar">
                 <img src='{{ this.currentUser.avatar }}' class="avatar-img">
               </div>
               <div class="right" [style.width] = "'calc(100% - 150px)'">
+                <div class="" style="position: absolute; top: 0px">
                   <p class="col-xs-12 mt15" [style.height] = "'40px'">{{ this.currentUser.firstName }} {{this.currentUser.lastName}}</p>
-                  <p class="col-xs-12 mt15" [style.height] = "'40px'" *ngIf = this.currentJob>{{
-                    this.currentJob.PositionTitle }}</p>
-                  <p class="col-xs-12 mb15" [style.height] = "'40px'" *ngIf = this.currentJob>{{
-                    this.currentJob.Employer}}</p>
+                  <p class="col-xs-12 mt15" [style.height] = "'40px'" *ngIf = this.currentJob>{{this.currentJob.PositionTitle }}</p>
+                  <p class="col-xs-12 mb15" [style.height] = "'40px'" *ngIf = this.currentJob>{{this.currentJob.Employer}}</p>
+                </div>
               </div>
             </div>
             <div id="user-contact" class="col-xs-8 col-xs-offset-2 col-lg-4 col-lg-offset-0">
