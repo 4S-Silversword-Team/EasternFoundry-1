@@ -78,15 +78,20 @@ export class ProfileComponent implements OnInit {
   ) {
 
     // this.currentUser = this.userService.getTempUser();
-    this.auth.isLoggedIn().then(() => this.auth.getLoggedInUser() == this.route.snapshot.params['id']? this.isActiveProfile = true: this.isActiveProfile = false).catch((reason) => "User Login Check failed")
 
     this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
       this.currentUser = result;
-      if (!this.currentUser.finished && this.isActiveProfile){
-        this.router.navigateByUrl("/user-profile-edit/" + this.currentUser._id)
-      } else {
-        myCallback();
-      }
+      this.auth.isLoggedIn().then(() =>
+      {
+        if (this.auth.getLoggedInUser() == this.route.snapshot.params['id']) {
+          this.isActiveProfile = true
+          if (!this.currentUser.finished){
+            this.router.navigateByUrl("/user-profile-edit/" + this.currentUser._id)
+          }
+        } else {
+          this.isActiveProfile = false
+        }}).catch((reason) => "User Login Check failed")
+      myCallback();
     });
 
     var myCallback = () => {
