@@ -68,6 +68,7 @@ export class ProfileComponent implements OnInit {
   yearsOfSchool: number = 0;
   yearsOfWork: number = 0;
   professionalPoints: number = 0;
+  activeTab: number = 0
 
   constructor(
     private userService: UserService,
@@ -528,6 +529,17 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
   }
 
+  switchTab(newTab) {
+    if (this.activeTab == newTab) {
+      this.activeTab = 7
+    } else {
+      this.activeTab = newTab
+    }
+    console.log(newTab)
+  }
+
+
+
   calculateSkillChart(){
     var temp: number[] = []
     this.toolChartLabels = []
@@ -609,6 +621,7 @@ export class ProfileComponent implements OnInit {
     }
     return temp
   }
+
 
   currentYear() {
     let year = new Date().getFullYear()

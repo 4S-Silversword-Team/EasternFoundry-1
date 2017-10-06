@@ -1,8 +1,54 @@
 /*styles for profile content only*/
 
 .basic-info {
-    padding-top: 50px;
+    margin-top: 50px;
     margin-bottom: 50px;
+    padding: 0px;
+    border-radius: 10px;
+    border: 6px solid rgb(99, 147, 186);
+    background: rgb(250,250,250);
+    height: 162px;
+}
+
+.basic-info-text {
+  float: left;
+  position: relative;
+  height: 50px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.basic-info-text-2 {
+  float: left;
+  position: relative;
+  height: 50px;
+}
+
+.profile-navbar {
+  width: 100%;
+  height: 60px;
+  background: rgb(99, 147, 186);
+  border-radius: 5px;
+  border: 4px solid rgba(0,0,0,0.05);
+}
+
+.profile-navbar-tab {
+  cursor: pointer;
+  float: left;
+  line-height: 50px;
+  position: relative;
+  height: 100%;
+  width: calc(100% / 7);
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: rgba(0,0,0,0.65);
+  margin: 0px;
+  border-right: 2px solid rgba(0,0,0,0.25);
+}
+
+.profile-navbar-tab:hover {
+  background: rgba(255,255,255,0.2)
 }
 
 .avatar {
@@ -54,9 +100,8 @@
 }
 
 #user-contact img {
-    height: 45px;
+    height: 40px;
     padding-left: 10px;
-    border-left: 4px solid #3e3e3e;
 }
 
 #user-contact div:hover img {
