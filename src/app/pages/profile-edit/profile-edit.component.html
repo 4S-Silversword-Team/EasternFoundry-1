@@ -8,10 +8,12 @@
   <div class="basic-info col-xs-10 col-xs-offset-1 clear">
     <div class="row">
       <div class="col-xs-8 col-lg-2 col-lg-offset-0" [style.height] = "'150px'">
-        <img *ngIf="this.currentUser.avatar" src="{{this.currentUser.avatar}}" class="avatar left">
+        <div class="left avatar" *ngIf="this.currentUser.avatar">
+          <img src='{{ this.currentUser.avatar }}' class="avatar-img">
+        </div>
         <div *ngIf="!this.currentUser.avatar || this.currentUser.avatar.startsWith('..')" class="left">
-        <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
-        <button class="btn btn-primary" (click)="uploadPhoto()">Upload Avatar</button>
+          <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
+          <button class="btn btn-primary" (click)="uploadPhoto()">Upload Avatar</button>
         </div>
         <div *ngIf="this.currentUser.avatar && !this.currentUser.avatar.startsWith('..')" class="left">
           <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
