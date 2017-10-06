@@ -11,7 +11,9 @@
       </div>
       <div class="col-xs-12 mt10">
         <p class="left lh-50 mt10" [style.width]="'80px'">Logo</p>
-        <img *ngIf="this.currentAccount.avatar" src="{{this.currentAccount.avatar}}" class="avatar left">
+        <div class="left avatar" *ngIf="this.currentAccount.avatar">
+          <img src='{{ this.currentAccount.avatar }}' class="avatar-img">
+        </div>
         <div *ngIf="!creatingNew && (!this.currentAccount.avatar || this.currentAccount.avatar.startsWith('..'))" class="right">
           <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
           <button class="btn btn-primary" (click)="uploadPhoto()">Upload Logo</button>

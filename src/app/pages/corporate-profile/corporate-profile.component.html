@@ -35,7 +35,9 @@
       <div *ngIf="users[0]" class="main clear">
           <div class="halfwidth left" style="padding: 2px" *ngFor='let index of users'>
             <div class="half-panel col-xs-12">
-              <img src='{{ index.avatar }}' class="left avatar" [style.width]="'150px'">
+              <div class="left avatar">
+                <img src='{{ index.avatar }}' class="avatar-img">
+              </div>
               <p class="srow">{{ index.firstName + ' ' + index.lastName}}</p>
               <p *ngIf="index.positionHistory[0]" class="srow">{{ index.positionHistory[0].PositionTitle }}</p>
               <p class="srow">{{ index.username }}</p>
@@ -55,7 +57,9 @@
     <div style="display: flex; flex-wrap: wrap" *ngIf="users[0]" class="main main-collapse clear">
       <div class="halfwidth left" style="padding: 2px" *ngFor='let index of users'>
         <div class="half-panel col-xs-12">
-          <img src='{{ index.avatar }}' class="avatar" [style.width]="'150px'">
+          <div class="left avatar">
+            <img src='{{ index.avatar }}' class="avatar-img">
+          </div>
           <p class="srow">{{ index.firstName + ' ' + index.lastName}}</p>
           <p *ngIf="index.positionHistory[0]" class="srow">{{ index.positionHistory[0].PositionTitle }}</p>
           <p class="srow">{{ index.username }}</p>
@@ -76,7 +80,9 @@
           <div class="halfwidth left" style="padding: 2px" *ngFor='let index of this.currentAccount.userProfileProxies'>
             <div class="half-panel col-xs-12">
               <div *ngIf="index.userProfile">
-                <img src='{{ index.userProfile.avatar }}' class="left avatar" [style.width]="'150px'">
+                <div class="left avatar">
+                  <img src='{{ index.userProfile.avatar }}' class="avatar-img">
+                </div>
                 <p class="srow">{{ index.userProfile.firstName + ' ' + index.userProfile.lastName}}</p>
                 <p *ngIf="index.userProfile.positionHistory[0]" class="srow">{{ index.userProfile.positionHistory[0].PositionTitle }}</p>
                 <p class="srow">{{ index.userProfile.username }}</p>
