@@ -80,6 +80,7 @@ export class ProfileComponent implements OnInit {
     // this.currentUser = this.userService.getTempUser();
 
     this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
+
       this.currentUser = result;
       this.auth.isLoggedIn().then(() =>
       {
@@ -173,7 +174,6 @@ export class ProfileComponent implements OnInit {
           available: avail
         })
       }
-
       for (let index of this.currentUser.availability) {
         this.availabilityData.dates.push(index.date)
         this.availabilityData.values.push(index.available)
@@ -434,8 +434,6 @@ export class ProfileComponent implements OnInit {
           prof[k] = data_prof.get( agencyNames[k] );
           peop[k] = data_peop.get( agencyNames[k] );
         }
-
-
         this.chart = new Chart({
           chart: {
               type: 'bar',
