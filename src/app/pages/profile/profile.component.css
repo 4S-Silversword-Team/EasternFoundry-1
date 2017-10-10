@@ -8,6 +8,12 @@
   margin-bottom: 2vh;
 }
 
+.edit-box {
+  position: absolute;
+  right: 0px;
+  top: 30px;
+}
+
 .box {
   border-radius: 15px;
   border: 10px solid rgba(0,100,200, 0.9);
@@ -94,35 +100,56 @@
 .profile-navbar {
   width: 100%;
   height: 60px;
-  background: rgba(0,50,150,.67);
+  background: rgba(0,50,150,.75);
   border-radius: 5px;
-  border: 4px solid rgba(0,0,0,0.1);
   box-shadow: 0px 3px 10px #888888;
 }
 
 .profile-navbar-tab {
   cursor: pointer;
   float: left;
-  line-height: 50px;
+  line-height: 60px;
   position: relative;
   height: 100%;
-  width: calc(100% / 7);
+  width: calc(100% / 5);
   text-align: center;
   font-size: 20px;
   font-weight: bold;
   color: rgb(255,255,255);
   margin: 0px;
-  border-right: 2px solid rgba(0,0,0,0.25);
+  border-right: 2px solid rgba(0,0,0,0.35);
 }
 
 .profile-navbar-tab-active {
-  background: rgba(255,255,255,0.4);
-  color: rgb(255,255,255);
+  background: rgba(255,255,255,.95);
+  color: rgb(0,0,0);
+}
+.profile-navbar-tab-active-left {
+  background: rgba(255,255,255,.95);
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  color: rgb(0,0,0);
+}
+.profile-navbar-tab-active-right {
+  background: rgba(255,255,255,.95);
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  color: rgb(0,0,0);
 }
 
 .profile-navbar-tab:hover {
   background: rgba(255,255,255,0.5)
 }
+.profile-navbar-tab-active:hover {
+  background: rgba(255,255,255,.95);
+}
+.profile-navbar-tab-active-left:hover {
+  background: rgba(255,255,255,.95);
+}
+.profile-navbar-tab-active-right:hover {
+  background: rgba(255,255,255,.95);
+}
+
 .profile-navbar-tab:active {
   background: rgba(255,255,255,0.6)
 }

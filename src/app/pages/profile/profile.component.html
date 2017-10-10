@@ -5,7 +5,7 @@
 <div class="page" *ngIf='this.promiseFinished'>
   <div class="container top-bar">
     <div class="profile-navbar">
-      <div class="profile-navbar-tab" (click)='switchTab(0)' [ngClass]="{'profile-navbar-tab-active': this.activeTab == 0}">
+      <div class="profile-navbar-tab" (click)='switchTab(0)' style="border-top-left-radius: 5px; border-bottom-left-radius: 5px;" [ngClass]="{'profile-navbar-tab-active-left': this.activeTab == 0}">
         Profile
       </div>
       <div class="profile-navbar-tab" (click)='switchTab(1)' [ngClass]="{'profile-navbar-tab-active': this.activeTab == 1}">
@@ -15,20 +15,15 @@
         Career
       </div>
       <div class="profile-navbar-tab" (click)='switchTab(3)' [ngClass]="{'profile-navbar-tab-active': this.activeTab == 3}">
-        Capabilities
-      </div>
-      <div class="profile-navbar-tab" (click)='switchTab(4)' [ngClass]="{'profile-navbar-tab-active': this.activeTab == 4}">
         Skills
       </div>
-      <div class="profile-navbar-tab" (click)='switchTab(5)' [ngClass]="{'profile-navbar-tab-active': this.activeTab == 5}">
+      <div class="profile-navbar-tab" (click)='switchTab(4)' style="border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-right: 0px solid black;" [ngClass]="{'profile-navbar-tab-active-right': this.activeTab == 4}">
         Experience
       </div>
-      <div class="profile-navbar-tab" style="border-right: 0px solid black;" (click)='switchTab(6)' [ngClass]="{'profile-navbar-tab-active': this.activeTab == 6}">
-        Interests
-      </div>
     </div>
-    <div *ngIf="this.isActiveProfile" class="btn-edit" (click) = 'editProfile()'>Edit</div>
-    <div class="btn-back" (click) = 'this.location.back()'></div>
+    <div class="edit-box">
+      <div *ngIf="this.isActiveProfile" class="btn-edit" (click) = 'editProfile()'>Edit</div>
+    </div>
   </div>
   <!-- PROFILE TAB -->
   <div class="container" *ngIf='this.activeTab == 0'>
@@ -138,6 +133,78 @@
       </div>
     </div>
   </div>
+  <!-- EDUCATION TAB -->
+  <div class="container" *ngIf='this.activeTab == 1'>
+    <div class="col-xs-6 box-left">
+      <div class="certification box col-xs-12">
+        <div class="cert-container">
+          <div *ngIf = 'this.currentUser.education'>
+            <div class="" *ngFor="let deg of this.currentUser.education" class="degree-box">
+              <div *ngIf="deg.DegreeType[0] && deg.DegreeType[0].Name.length > 0">
+                <div *ngIf="deg.MajorProgramName && deg.MajorProgramName.length > 0">
+                  <div *ngIf="deg.School && deg.School.length > 0">
+                    <div *ngIf="deg.AttendanceEndDate && deg.AttendanceEndDate.length > 0">
+                      <p class="degree-text">
+                        {{deg.School}}, {{deg.DegreeType[0].Name}} in {{deg.MajorProgramName[0]}}
+                      </p>
+                      <p class="degree-subtext">Graduated {{deg.AttendanceEndDate}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="" *ngIf='this.currentUser.award'>
+            <div class="" *ngIf='this.currentUser.award[0]'>
+              <div class="" *ngFor="let award of this.currentUser.award" class="degree-box">
+                <p class="degree-text" *ngIf="award.length > 0">{{award}} Award</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-6 box-right">
+      <div class="col-xs-12 certification box">
+        <div class="cert-container">
+          <div class="" *ngIf = 'this.currentUser.certification'>
+            <div class="" *ngIf = 'this.currentUser.certification[0]'>
+              <div class="" *ngIf = 'this.currentUser.certification[0].CertificationName.length > 0'>
+                <div class="" *ngFor="let cert of this.currentUser.certification">
+                  <div class="" *ngIf="cert.CertificationName && cert.CertificationName.length > 0">
+                    <div class="degree-box" *ngIf="cert.DateEarned && cert.DateEarned.length > 0">
+                      <p class="degree-text">
+                        {{cert.CertificationName}} Certification
+                      </p>
+                      <p class="degree-subtext">Earned {{cert.DateEarned}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="" *ngIf='this.currentUser.clearance'>
+            <div class="" *ngIf='this.currentUser.clearance[0]'>
+              <div class="" *ngIf='this.currentUser.clearance[0].clearanceType.length > 0'>
+                <div class="" *ngFor="let clearance of this.currentUser.clearance">
+                  <div class="" *ngIf="clearance.clearanceType.length > 0">
+                    <div class="" *ngIf="clearance.awarded.length > 0">
+                      <div class="degree-box" *ngIf="clearance.expiration.length > 0">
+                        <p class="degree-text">
+                          {{clearance.clearanceType}} Clearance
+                        </p>
+                        <p class="degree-subtext">Awarded {{clearance.awarded}}, expires {{clearance.expiration}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- CAREER TAB -->
   <div class="container"*ngIf='this.activeTab == 2'>
     <div class="col-xs-12" *ngIf = 'this.promiseFinished'>
@@ -153,7 +220,7 @@
   </div>
 
   <!-- SKILLS TAB -->
-  <div class="container" *ngIf='this.activeTab == 4'>
+  <div class="container" *ngIf='this.activeTab == 3'>
     <div class="skill-tab col-xs-5 col-xs-offset-1 col-md-4 col-md-offset-2" (click)='this.skillTab = 0' [ngClass]="{'skill-tab-active': this.skillTab == 0}">
       Skills
     </div>
@@ -178,7 +245,7 @@
     </div>
   </div>
   <!-- EXPERIENCE/AGENCY TAB -->
-  <div class="container" *ngIf='this.activeTab == 5'>
+  <div class="container" *ngIf='this.activeTab == 4'>
     <div class="" *ngIf='this.agencyExperience'>
       <div class="" *ngIf='this.agencyExperience[0]'>
         <div class="experience col-xs-12 box" *ngIf='this.agencyExperience[0].main.title'>

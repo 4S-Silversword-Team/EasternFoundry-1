@@ -12,7 +12,7 @@ h1 {
 * {
     margin: 0;
     padding: 0;
-    transition: all .25s ease-in-out;
+    transition: all .05s ease-in-out;
 }
 
 .box {
@@ -53,7 +53,6 @@ h1 {
   padding-top: 30px;
   padding-bottom: 30px;
   background: #827e7c;
-  transition: all .25s ease-in-out;
 }
 
 .timeline ul li:first-child {
@@ -75,9 +74,7 @@ h1 {
 }
 
 .hidden {
-    transition: all .25s ease-in-out;
     display: none;
-
 }
 
 .career-year:active ~ .hidden {
@@ -94,7 +91,6 @@ h1 {
   background-color: #adc9f9;
   border-radius: 10px;
   border: 2px solid rgba(0,100,200, 0.9);
-  transition: all .25s ease-in-out;
 }
 
 .career-year:hover {
@@ -125,7 +121,6 @@ h1 {
     margin-top: -50px;
     border-radius: 10px;
     border: 2px solid #555;
-    transition: all .25s ease-in-out;
 }
 
 .career-brief .job-title {
@@ -153,7 +148,6 @@ h1 {
     width: 100%;
     padding: 10px 40px 40px 40px;
     height: 40vh;
-    transition: all .25s ease-in-out;
 }
 
 .career-detail .job-title {
