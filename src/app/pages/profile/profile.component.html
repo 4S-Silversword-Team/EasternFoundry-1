@@ -2,28 +2,28 @@
   <div class="loader"></div>
   <!-- <p class="loading">Loading</p> -->
 </div>
-<div class="" *ngIf='this.promiseFinished'>
-  <div class="container">
+<div class="page" *ngIf='this.promiseFinished'>
+  <div class="container top-bar">
     <div class="profile-navbar">
-      <div class="profile-navbar-tab" (click)='switchTab(0)'>
+      <div class="profile-navbar-tab" (click)='switchTab(0)' [ngClass]="{'profile-navbar-tab-active': this.activeTab == 0}">
         Profile
       </div>
-      <div class="profile-navbar-tab" (click)='switchTab(1)'>
+      <div class="profile-navbar-tab" (click)='switchTab(1)' [ngClass]="{'profile-navbar-tab-active': this.activeTab == 1}">
         Education
       </div>
-      <div class="profile-navbar-tab" (click)='switchTab(2)'>
+      <div class="profile-navbar-tab" (click)='switchTab(2)' [ngClass]="{'profile-navbar-tab-active': this.activeTab == 2}">
         Career
       </div>
-      <div class="profile-navbar-tab" (click)='switchTab(3)'>
+      <div class="profile-navbar-tab" (click)='switchTab(3)' [ngClass]="{'profile-navbar-tab-active': this.activeTab == 3}">
         Capabilities
       </div>
-      <div class="profile-navbar-tab" (click)='switchTab(4)'>
+      <div class="profile-navbar-tab" (click)='switchTab(4)' [ngClass]="{'profile-navbar-tab-active': this.activeTab == 4}">
         Skills
       </div>
-      <div class="profile-navbar-tab" (click)='switchTab(5)'>
+      <div class="profile-navbar-tab" (click)='switchTab(5)' [ngClass]="{'profile-navbar-tab-active': this.activeTab == 5}">
         Experience
       </div>
-      <div class="profile-navbar-tab" style="border-right: 0px solid black;" (click)='switchTab(6)'>
+      <div class="profile-navbar-tab" style="border-right: 0px solid black;" (click)='switchTab(6)' [ngClass]="{'profile-navbar-tab-active': this.activeTab == 6}">
         Interests
       </div>
     </div>
@@ -32,7 +32,7 @@
   </div>
   <!-- PROFILE TAB -->
   <div class="container" *ngIf='this.activeTab == 0'>
-    <div class="basic-info col-xs-12" *ngIf = this.promiseFinished>
+    <div class="basic-info box col-xs-12" *ngIf = this.promiseFinished>
       <div class="row">
         <div class="col-xs-7" [style.height] = "'150px'" style="position: relative">
           <div class="left avatar">
@@ -61,6 +61,123 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="col-xs-6 box-left">
+      <div class="certification box col-xs-12">
+        <div class="cert-container" [style.height] = "'300px'">
+          <div *ngIf = 'this.currentUser.education'>
+            <div class="" *ngFor="let deg of this.currentUser.education" class="degree-box">
+              <div *ngIf="deg.DegreeType[0] && deg.DegreeType[0].Name.length > 0">
+                <div *ngIf="deg.MajorProgramName && deg.MajorProgramName.length > 0">
+                  <div *ngIf="deg.School && deg.School.length > 0">
+                    <div *ngIf="deg.AttendanceEndDate && deg.AttendanceEndDate.length > 0">
+                      <p class="degree-text">
+                        {{deg.School}}, {{deg.DegreeType[0].Name}} in {{deg.MajorProgramName[0]}}
+                      </p>
+                      <p class="degree-subtext">Graduated {{deg.AttendanceEndDate}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="" *ngIf='this.currentUser.award'>
+            <div class="" *ngIf='this.currentUser.award[0]'>
+              <div class="" *ngFor="let award of this.currentUser.award" class="degree-box">
+                <p class="degree-text" *ngIf="award.length > 0">{{award}} Award</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-6 box-right">
+      <div class="col-xs-12 certification box">
+        <div class="cert-container" [style.height] = "'300px'">
+          <div class="" *ngIf = 'this.currentUser.certification'>
+            <div class="" *ngIf = 'this.currentUser.certification[0]'>
+              <div class="" *ngIf = 'this.currentUser.certification[0].CertificationName.length > 0'>
+                <div class="" *ngFor="let cert of this.currentUser.certification">
+                  <div class="" *ngIf="cert.CertificationName && cert.CertificationName.length > 0">
+                    <div class="degree-box" *ngIf="cert.DateEarned && cert.DateEarned.length > 0">
+                      <p class="degree-text">
+                        {{cert.CertificationName}} Certification
+                      </p>
+                      <p class="degree-subtext">Earned {{cert.DateEarned}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="" *ngIf='this.currentUser.clearance'>
+            <div class="" *ngIf='this.currentUser.clearance[0]'>
+              <div class="" *ngIf='this.currentUser.clearance[0].clearanceType.length > 0'>
+                <div class="" *ngFor="let clearance of this.currentUser.clearance">
+                  <div class="" *ngIf="clearance.clearanceType.length > 0">
+                    <div class="" *ngIf="clearance.awarded.length > 0">
+                      <div class="degree-box" *ngIf="clearance.expiration.length > 0">
+                        <p class="degree-text">
+                          {{clearance.clearanceType}} Clearance
+                        </p>
+                        <p class="degree-subtext">Awarded {{clearance.awarded}}, expires {{clearance.expiration}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <!-- CAREER TAB -->
+  <div class="container"*ngIf='this.activeTab == 2'>
+    <div class="col-xs-12" *ngIf = 'this.promiseFinished'>
+      <career class="" [Data]="this.currentUser.positionHistory" [current]="currentYear()"></career>
+    </div>
+    <!-- <div class="col-xs-6 box-right">
+      <div class="career box col-xs-12" *ngIf = 'this.promiseFinished'>
+        <p class="job-title">{{careerDetails.PositionTitle}}, {{careerDetails.Employer}}</p>
+        <p class="from">{{careerDetails.StartDate}} - {{careerDetails.EndDate}}</p>
+        <textarea class="" readonly>{{careerDetails.Description}}</textarea>
+      </div>
+    </div> -->
+  </div>
+  <!-- CAPABILITIES TAB -->
+  <div class="container" *ngIf='this.activeTab == 3'>
+    <div class="capabilities col-xs-12 box">
+      <div class="capa-main col-xs-12">
+        <div class="col-xl-12 col-sm-6" style="padding-top: 10px; padding-bottom: -5px">
+          <div class="capa-chart col-xs-12" *ngIf="this.promiseFinished && this.currentUser.occupations">
+            <app-bent-bars-chart width='300' height='300' divID='bbChart{{this.currentUser.id}}' [values]='getCapaChartValues(this.occupations)'></app-bent-bars-chart>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 text-container">
+          <div class="row">
+            <div class="col-xs-12 col-md-12">
+              <app-color-comment-box *ngFor='let feature of this.occupations' color='{{getCapaChartColor(feature.score)}}' text='{{feature.title}}' class="col-xs-12"></app-color-comment-box>
+              <p *ngFor='let skill of this.currentUser.skill'>{{ skill }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- SKILLS TAB -->
+  <div class="container" *ngIf='this.activeTab == 4'>
+    <div class="strength col-xs-12 box" *ngIf="this.promiseFinished">
+      <div class="div-title col-xs-12">
+        <img src="./assets/img/profile/strength.png">
+        <p>STRENGTH</p>
+      </div>
+      <canvas baseChart
+      [datasets]="toolChartDatas"
+      [labels]="toolChartLabels"
+      [options]="{ scaleShowVerticalLines: true, responsive: true, scales: { yAxes: [{ticks: {beginAtZero: true }}]} }"
+      [legend]="false"
+      [chartType]="'bar'"></canvas>
     </div>
   </div>
   <!-- OLD PROFILE PAGE -->

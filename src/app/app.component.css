@@ -2,3 +2,15 @@ a.navbar-brand {
   color:white;
   background-color: #f0a716;
 }
+
+.navbar {
+  background: rgba(0, 25, 125, .67);
+  border-radius: 0px;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  border-bottom: 1px solid rgba(0,0,0,0.25);
+  color: rgba(255,255,255,0.9);
+  font-size: 14px;
+  color: blue;
+}

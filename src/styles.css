@@ -1,7 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 body{
-    background-color: #fdf5eb!important;
+    background-color: rgba(0, 100, 200, 0.03)!important;
+    /*background-color: #fdf5eb!important;*/
 }
 
 * {

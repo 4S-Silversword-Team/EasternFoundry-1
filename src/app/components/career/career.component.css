@@ -15,6 +15,29 @@ h1 {
     transition: all .5s ease-in-out;
 }
 
+.box {
+  border-radius: 15px;
+  border: 10px solid rgba(0,100,200, 0.9);
+  background: rgb(255,255,255);
+  box-shadow: 0px 3px 10px #888888;
+}
+
+.career-box {
+  height: calc(100vh - 170px);
+  overflow-y: auto;
+}
+
+.box-left {
+  padding-left: 0px;
+  padding-right: 5px;
+}
+
+.box-right {
+  padding-left: 5px;
+  padding-right: 0px;
+  height: 400px;
+}
+
 /* TIMELINE
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
@@ -62,6 +85,7 @@ h1 {
 }
 
 .career-year {
+  cursor: pointer;
     margin-left: -40px;
     width: 80px;
     height: 42px;
@@ -71,11 +95,25 @@ h1 {
     line-height: 20px;
     color: #555;
     text-align: center;
-    background-color: #f8cbac;
+    background-color: #adc9f9;
     border-radius: 10px;
-    border: 2px solid #555;
+    border: 2px solid rgba(0,100,200, 0.9);
     transition: all .5s ease-in-out;
 }
+
+.career-year:hover {
+  background-color: #cedcf5;
+}
+
+.career-active {
+  background: #2772f5;
+  color: white;
+}
+.career-active:hover {
+  background: #2772f5;
+  color: white;
+}
+
 
 .career-brief {
     width: 150px;
@@ -108,13 +146,8 @@ h1 {
 }
 
 .career-detail {
-    margin-left: -250px;
-    width: 500px;
-    height: 400px;
+    width: 100%;
     padding: 40px;
-    background-color: #f8cbac;
-    border-radius: 40px;
-    border: 2px solid #555;
     transition: all .5s ease-in-out;
 }
 

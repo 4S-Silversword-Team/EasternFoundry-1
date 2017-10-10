@@ -68,7 +68,7 @@ export class ProfileComponent implements OnInit {
   yearsOfSchool: number = 0;
   yearsOfWork: number = 0;
   professionalPoints: number = 0;
-  activeTab: number = 0
+  activeTab: number = 2
 
   constructor(
     private userService: UserService,

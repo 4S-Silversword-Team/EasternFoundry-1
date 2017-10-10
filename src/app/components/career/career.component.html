@@ -1,18 +1,27 @@
-<section class="col-xs-12 timeline">
-  <ul>
-    <li><div class="career-year" [style.margin-top] = "'32px'">{{current}}</div></li>
-    <li *ngFor="let data of Data" id="{{data.StartDate.replace('', '').replace('', '')}}">
-        <div class="career-year" id="c-year-{{data.StartDate.replace('', '').replace('', '')}}" (click)="refresh(data.StartDate.replace('', '').replace('', ''))">{{data['Year']}}</div>
+<section class="col-xs-6 box-left timeline">
+  <div class="box career-box col-xs-12">
+    <ul>
+      <li><div class="career-year" [style.margin-top] = "'32px'">{{current}}</div></li>
+      <li *ngFor="let data of Data; let i = index" id="{{data.StartDate.replace('', '').replace('', '')}}">
+        <div class="career-year" id="c-year-{{data.StartDate.replace('', '').replace('', '')}}" (click)="setDetails(data, i)" [ngClass]="{'career-active': this.careerDetails.index == i}">{{data['Year']}}</div>
         <div class="career-brief after" id="c-brief-{{data.StartDate.replace('', '').replace('', '')}}">
-            <p class="job-title">{{data['PositionTitle']}}</p>
-            <p class="company">{{data['Employer']}}</p>
-            <p class="from">{{data['StartDate']}}</p>
+          <p class="job-title">{{data['PositionTitle']}}</p>
+          <p class="company">{{data['Employer']}}</p>
+          <p class="from">{{data['StartDate']}}</p>
         </div>
-        <div class="career-detail hidden" id="c-detail-{{data.StartDate.replace('', '').replace('', '')}}">
-            <p class="job-title">{{data['PositionTitle']}}, {{data['Employer']}}</p>
-            <p class="from">{{data['StartDate']}} - {{data['EndDate']}}</p>
-            <textarea class="career" readonly>{{data['Description']}}</textarea>
-        </div>
-    </li>
-  </ul>
+      </li>
+    </ul>
+  </div>
 </section>
+<div class="col-xs-6 box-right">
+  <div class="box col-xs-12">
+    <div class="career-detail" *ngIf='detailsOn'>
+      <p class="job-title">{{careerDetails.PositionTitle}}, {{careerDetails.Employer}}</p>
+      <p class="from">{{careerDetails.StartDate}} - {{careerDetails.EndDate}}</p>
+      <textarea class="career" readonly>{{careerDetails.Description}}</textarea>
+    </div>
+    <div class="career-detail" *ngIf='!detailsOn'>
+      Click one of your jobs on the left to expand its details here
+    </div>
+  </div>
+</div>
