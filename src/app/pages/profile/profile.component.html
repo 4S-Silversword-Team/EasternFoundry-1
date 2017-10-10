@@ -64,7 +64,7 @@
     </div>
     <div class="col-xs-6 box-left">
       <div class="certification box col-xs-12">
-        <div class="cert-container" [style.height] = "'300px'">
+        <div class="cert-container">
           <div *ngIf = 'this.currentUser.education'>
             <div class="" *ngFor="let deg of this.currentUser.education" class="degree-box">
               <div *ngIf="deg.DegreeType[0] && deg.DegreeType[0].Name.length > 0">
@@ -93,7 +93,7 @@
     </div>
     <div class="col-xs-6 box-right">
       <div class="col-xs-12 certification box">
-        <div class="cert-container" [style.height] = "'300px'">
+        <div class="cert-container">
           <div class="" *ngIf = 'this.currentUser.certification'>
             <div class="" *ngIf = 'this.currentUser.certification[0]'>
               <div class="" *ngIf = 'this.currentUser.certification[0].CertificationName.length > 0'>
@@ -121,7 +121,6 @@
                           {{clearance.clearanceType}} Clearance
                         </p>
                         <p class="degree-subtext">Awarded {{clearance.awarded}}, expires {{clearance.expiration}}</p>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -130,6 +129,13 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="col-xs-12 interest box text-center">
+      <p class="fs-28 fc-title">INTERESTS</p>
+      <div class="text-left">
+        <p >{{ this.currentUser.interest }}</p>
+      </div>
     </div>
   </div>
   <!-- CAREER TAB -->
@@ -145,33 +151,16 @@
       </div>
     </div> -->
   </div>
-  <!-- CAPABILITIES TAB -->
-  <div class="container" *ngIf='this.activeTab == 3'>
-    <div class="capabilities col-xs-12 box">
-      <div class="capa-main col-xs-12">
-        <div class="col-xl-12 col-sm-6" style="padding-top: 10px; padding-bottom: -5px">
-          <div class="capa-chart col-xs-12" *ngIf="this.promiseFinished && this.currentUser.occupations">
-            <app-bent-bars-chart width='300' height='300' divID='bbChart{{this.currentUser.id}}' [values]='getCapaChartValues(this.occupations)'></app-bent-bars-chart>
-          </div>
-        </div>
-        <div class="col-xs-12 col-sm-6 text-container">
-          <div class="row">
-            <div class="col-xs-12 col-md-12">
-              <app-color-comment-box *ngFor='let feature of this.occupations' color='{{getCapaChartColor(feature.score)}}' text='{{feature.title}}' class="col-xs-12"></app-color-comment-box>
-              <p *ngFor='let skill of this.currentUser.skill'>{{ skill }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
   <!-- SKILLS TAB -->
   <div class="container" *ngIf='this.activeTab == 4'>
-    <div class="strength col-xs-12 box" *ngIf="this.promiseFinished">
-      <div class="div-title col-xs-12">
-        <img src="./assets/img/profile/strength.png">
-        <p>STRENGTH</p>
-      </div>
+    <div class="skill-tab col-xs-5 col-xs-offset-1 col-md-4 col-md-offset-2" (click)='this.skillTab = 0' [ngClass]="{'skill-tab-active': this.skillTab == 0}">
+      Skills
+    </div>
+    <div class="skill-tab col-xs-5 col-xs-offset-0 col-md-4 col-md-offset-0" (click)='this.skillTab = 1' [ngClass]="{'skill-tab-active': this.skillTab == 1}">
+      Career Capabilities
+    </div>
+    <div class="skills col-xs-12 box" *ngIf="this.skillTab == 0">
       <canvas baseChart
       [datasets]="toolChartDatas"
       [labels]="toolChartLabels"
@@ -179,7 +168,28 @@
       [legend]="false"
       [chartType]="'bar'"></canvas>
     </div>
+    <div class="skills col-xs-12 box" *ngIf='this.skillTab == 1'>
+      <canvas baseChart
+      [datasets]="capaChartDatas"
+      [labels]="capaChartLabels"
+      [options]="{ scaleShowVerticalLines: true, responsive: true, scales: { yAxes: [{ticks: {beginAtZero: true }}]} }"
+      [legend]="false"
+      [chartType]="'bar'"></canvas>
+    </div>
   </div>
+  <!-- EXPERIENCE/AGENCY TAB -->
+  <div class="container" *ngIf='this.activeTab == 5'>
+    <div class="" *ngIf='this.agencyExperience'>
+      <div class="" *ngIf='this.agencyExperience[0]'>
+        <div class="experience col-xs-12 box" *ngIf='this.agencyExperience[0].main.title'>
+          <div class="col-xs-12">
+            <div id="team_chart"  style="max-width: 75%; margin: 0 auto; background: none; border: 1px solid rgba(0,0,0,0.05)" [chart]="chart"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- OLD PROFILE PAGE -->
   <div class="container" *ngIf='this.activeTab == 7'>
     <div class="basic-info col-xs-12" *ngIf = this.promiseFinished>
@@ -321,25 +331,9 @@
             <div class="col-xs-12">
               <div id="team_chart"  style="max-width: 75%; margin: 0 auto" [chart]="chart"></div>
             </div>
-
-            <!-- <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-container" *ngIf="this.promiseFinished">
-            <div class="" *ngFor='let agency of this.agencyExperience; let i = index'>
-            <div class="" *ngIf="agency.main.title">
-            <app-color-comment-box *ngFor="let index of agency.main.data" color='{{ expColors[i] }}' text='{{agency.main.title}}' class="col-xs-12 col-md-12"></app-color-comment-box>
           </div>
         </div>
       </div>
-      <div class="exp-main col-xs-12" *ngIf="this.promiseFinished">
-      <div class="col-xs-12" *ngFor='let agency of this.agencyExperience; let x = index'>
-      <p class="exp-main-title">{{agency.main.title}}</p>
-      <div class="app-exp-chart" *ngIf="agency.main.title">
-      <app-exp-chart width='500' height='500' divID='exp-main-chart' [values]='expMainValues(this.currentUser, i, x)'></app-exp-chart>
-    </div>
-  </div>
-</div> -->
-</div>
-</div>
-</div>
 
 
 <div class="career col-xs-12 clear" *ngIf='this.currentUser.positionHistory'>

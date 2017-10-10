@@ -22,8 +22,8 @@ export class ProfileComponent implements OnInit {
 
   currentUser: User = new User()
   expColors: string[] = ['rgb(0,178,255)', 'rgb(69,199,255)', 'rgb(138,220,255)', 'rgb(198,241,255)' ];
-  strengthChartDatas: any[] = []
-  strengthChartLabels: string[] = []
+  capaChartDatas: any[] = []
+  capaChartLabels: string[] = []
   toolChartDatas: any[] = []
   toolChartLabels: string[] = []
   promiseFinished: boolean = false
@@ -68,7 +68,8 @@ export class ProfileComponent implements OnInit {
   yearsOfSchool: number = 0;
   yearsOfWork: number = 0;
   professionalPoints: number = 0;
-  activeTab: number = 2
+  activeTab: number = 5;
+  skillTab: number = 0;
 
   constructor(
     private userService: UserService,
@@ -135,7 +136,7 @@ export class ProfileComponent implements OnInit {
       let temp: number[] = []
       if(this.currentUser.abilities) {
         for (let index of this.currentUser.abilities) {
-          this.strengthChartLabels.push(index[0])
+          this.capaChartLabels.push(index[0])
           temp.push(+index[1])
         }
       }
@@ -179,7 +180,7 @@ export class ProfileComponent implements OnInit {
         this.availabilityData.dates.push(index.date)
         this.availabilityData.values.push(index.available)
       }
-      this.strengthChartDatas.push({data: temp, label: 'Strength'})
+      this.capaChartDatas.push({data: temp, label: 'Strength'})
 
       for (let job of this.currentUser.positionHistory) {
         job.Year = +job.StartDate.slice(0, 4);
@@ -289,7 +290,7 @@ export class ProfileComponent implements OnInit {
         toolsToPush.sort(function(a,b){
           return parseFloat(b.score) - parseFloat(a.score);
         })
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < 10; i++) {
           this.occupations.push(toolsToPush[i])
           // console.log(toolsToPush[i].score)
         }
@@ -438,7 +439,7 @@ export class ProfileComponent implements OnInit {
         this.chart = new Chart({
           chart: {
               type: 'bar',
-              backgroundColor: '#FDF5EB',
+              backgroundColor: 'rgba(0, 100, 200, 0.00)',
               renderTo: "team_chart",
               height: 400
           },
@@ -521,6 +522,7 @@ export class ProfileComponent implements OnInit {
 
 
       this.calculateSkillChart()
+      this.calculateCapaChart()
       this.promiseFinished = true;
     }
 
@@ -556,24 +558,18 @@ export class ProfileComponent implements OnInit {
     this.toolChartDatas.push({data: temp, label: 'Score'})
   }
 
-
-  // getCapaChartValues(tempUser: User): number[] {
-  //   let temp: number[] = []
-  //   for (let index of tempUser.skills) {
-  //     temp.push(+index[1])
-  //   }
-  //   return temp
-  // }
-
-  // getCapaChartValues(tempUser: User): number[] {
-  //   let temp: number[] = []
-  //   if (tempUser.occupations) {
-  //     for (let index of tempUser.occupations) {
-  //       temp.push(index.score)
-  //     }
-  //   }
-  //   return temp
-  // }
+  calculateCapaChart() {
+    var temp: number[] = []
+    this.capaChartLabels = []
+    this.capaChartDatas = []
+    if(this.occupations) {
+      for (let index of this.occupations) {
+        this.capaChartLabels.push(index.title)
+        temp.push(+index.score)
+      }
+    }
+    this.capaChartDatas.push({data: temp, label: 'Score'})
+  }
 
   getCapaChartValues(occupations): number[] {
     let temp: number[] = []

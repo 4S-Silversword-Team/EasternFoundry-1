@@ -5,7 +5,7 @@
 }
 
 .top-bar {
-  margin-bottom: 20px;
+  margin-bottom: 2vh;
 }
 
 .box {
@@ -18,17 +18,63 @@
 .box-left {
   padding-left: 0px;
   padding-right: 5px;
+  margin-bottom: 0px;
 }
 
 .box-right {
   padding-left: 5px;
   padding-right: 0px;
+  margin-bottom: 0px;
 }
 
 .basic-info {
-    margin-bottom: 30px;
+    margin-bottom: 2vh;
     padding: 0px;
     height: 170px;
+}
+
+.interest {
+  min-height: 200px;
+  height: 27vh;
+}
+
+.certification {
+  min-height: 200px;
+  overflow-y: auto;
+  height: 33vh;
+  margin-bottom: 2vh;
+}
+
+.skill-tab {
+  cursor: pointer;
+  background: rgb(230,230,230);
+  color: rgba(0,0,0,.5);
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 0px;
+  padding: 4px;
+  border-left: 1px solid rgba(0,0,0,0.05);
+  border-top: 1px solid rgba(0,0,0,0.05);
+  border-right: 1px solid rgba(0,0,0,0.05);
+}
+
+.skill-tab:hover {
+  background: rgb(240,240,240);
+}
+
+.skill-tab-active {
+  background: rgb(255,255,255);
+  color: rgb(0,100,200);
+  border-left: 1px solid rgba(0,100,200,.9);
+  border-top: 1px solid rgba(0,100,200,.9);
+  border-right: 1px solid rgba(0,100,200,.9);
+}
+
+.skills {
+  height: 78vh;
+  padding-top: 5vh;
+  overflow-y: auto;
 }
 
 .basic-info-text {
@@ -178,10 +224,6 @@
     line-height: 65px;
 }
 
-.certification {
-    margin-bottom: 50px;
-    text-align: center;
-}
 
 .div-title {
     width: 100%;

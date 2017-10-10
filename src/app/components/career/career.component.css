@@ -12,7 +12,7 @@ h1 {
 * {
     margin: 0;
     padding: 0;
-    transition: all .5s ease-in-out;
+    transition: all .25s ease-in-out;
 }
 
 .box {
@@ -42,7 +42,7 @@ h1 {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 .timeline ul {
-  padding: 50px 0;
+  /*padding: 50px 0;*/
 }
 
 .timeline ul li {
@@ -50,10 +50,10 @@ h1 {
   position: relative;
   width: 6px;
   margin: 0 auto;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 30px;
+  padding-bottom: 30px;
   background: #827e7c;
-  transition: all .5s ease-in-out;
+  transition: all .25s ease-in-out;
 }
 
 .timeline ul li:first-child {
@@ -75,7 +75,7 @@ h1 {
 }
 
 .hidden {
-    transition: all .5s ease-in-out;
+    transition: all .25s ease-in-out;
     display: none;
 
 }
@@ -86,19 +86,15 @@ h1 {
 
 .career-year {
   cursor: pointer;
-    margin-left: -40px;
-    width: 80px;
-    height: 42px;
-    padding: 10px;
-    font-size: 20px;
-    font-weight: bold;
-    line-height: 20px;
-    color: #555;
-    text-align: center;
-    background-color: #adc9f9;
-    border-radius: 10px;
-    border: 2px solid rgba(0,100,200, 0.9);
-    transition: all .5s ease-in-out;
+  margin-left: -12.5vh;
+  width: 25vh;
+  padding: 2px;
+  color: #555;
+  text-align: center;
+  background-color: #adc9f9;
+  border-radius: 10px;
+  border: 2px solid rgba(0,100,200, 0.9);
+  transition: all .25s ease-in-out;
 }
 
 .career-year:hover {
@@ -114,6 +110,14 @@ h1 {
   color: white;
 }
 
+.career-year-head {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.career-year-sub {
+  font-size: 12px;
+}
 
 .career-brief {
     width: 150px;
@@ -121,7 +125,7 @@ h1 {
     margin-top: -50px;
     border-radius: 10px;
     border: 2px solid #555;
-    transition: all .5s ease-in-out;
+    transition: all .25s ease-in-out;
 }
 
 .career-brief .job-title {
@@ -147,8 +151,9 @@ h1 {
 
 .career-detail {
     width: 100%;
-    padding: 40px;
-    transition: all .5s ease-in-out;
+    padding: 10px 40px 40px 40px;
+    height: 40vh;
+    transition: all .25s ease-in-out;
 }
 
 .career-detail .job-title {
@@ -167,8 +172,8 @@ h1 {
 
 .career-detail .career {
     background: none;
-    width: 420px;
-    height: 240px;
+    width: 100%;
+    height: 80%;
     color: #555;
     font-size: 13px;
     border: none;
