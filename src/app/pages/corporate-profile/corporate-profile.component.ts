@@ -46,6 +46,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   team: User[]  = [];
   renderChart: boolean;
   chart: any;
+  activeTab: number = 1;
   isUserAdmin: boolean = false;
 
   constructor(
@@ -138,6 +139,15 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+  }
+
+  switchTab(newTab) {
+    if (this.activeTab == newTab) {
+      this.activeTab = 7
+    } else {
+      this.activeTab = newTab
+    }
+    console.log(newTab)
   }
 
   getAdminStatus() {
