@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
     console.log("Navbar checkin login status")
     this.signedIn = auth.isLoggedIn()
     if (!this.signedIn) {
+      localStorage.removeItem('token');
       localStorage.removeItem('uid');
       this.currentUser = null
     }
@@ -37,8 +38,12 @@ export class AppComponent implements OnInit {
 
   navLogOut() {
     this.auth.doLogout()
-    this.signedIn = this.auth.isLoggedIn()
+    if (this.auth.isLoggedIn) {
+      console.log('this thinks youre logged in!')
+      this.signedIn = true
+    }
     if (!this.signedIn) {
+      localStorage.removeItem('token');
       localStorage.removeItem('uid');
       this.currentUser = null
     }

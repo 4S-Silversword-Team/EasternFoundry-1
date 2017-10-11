@@ -84,9 +84,8 @@ export class AuthService {
 	  return Promise.reject(error.message || error);
   }
 
-  doLogout(redirect = null) {
-    localStorage.removeItem('token')
-    //localStorage.removeItem('uid')
+  doLogout() {
+    localStorage.clear()
     this.current_user = null;
   }
 
