@@ -38,9 +38,11 @@ export class AppComponent implements OnInit {
 
   navLogOut() {
     this.auth.doLogout()
-    if (this.auth.isLoggedIn) {
+    if (this.auth.isLoggedIn()) {
       console.log('this thinks youre logged in!')
       this.signedIn = true
+    } else {
+      this.signedIn = false
     }
     if (!this.signedIn) {
       localStorage.removeItem('token');
