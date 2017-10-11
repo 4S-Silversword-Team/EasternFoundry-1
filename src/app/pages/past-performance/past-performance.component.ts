@@ -45,7 +45,9 @@ export class PastPerformanceComponent implements OnInit {
     //this.currentPastPerformance = this.pastPerformanceService.getPastPerformancebyID(this.currentPastPerformance.id)
     this.pastPerformanceService.getPastPerformancebyID(this.currentPastPerformance.id).toPromise().then(res => {
       this.currentPastPerformance = res ;
-      this.auth.isLoggedIn().then((res) => this.getAdminStatus()).catch((reason => console.log("Login check failed.")))
+      if (auth.isLoggedIn()) {
+        this.getAdminStatus()
+      }
     })
 
   }
