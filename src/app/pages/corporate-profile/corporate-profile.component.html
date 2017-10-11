@@ -55,27 +55,30 @@
 </div>
 <!-- EMPLOYEES TAB -->
 <div class="container" *ngIf='activeTab==1'>
-  <div class="leadership leadership-big col-xs-12 clear">
-      <div class="col-xs-12 srow div-title">
-          <p class="left">LEADERSHIP</p>
-          <div></div>
-      </div>
-      <div *ngIf="users[0]" class="main clear">
-          <div class="halfwidth left" style="padding: 2px" *ngFor='let index of users'>
-            <div class="half-panel col-xs-12">
-              <div class="left avatar">
-                <img src='{{ index.avatar }}' class="avatar-img">
-              </div>
-              <p class="srow">{{ index.firstName + ' ' + index.lastName}}</p>
-              <p *ngIf="index.positionHistory[0]" class="srow">{{ index.positionHistory[0].PositionTitle }}</p>
-              <p class="srow">{{ index.username }}</p>
-              <button class="col-xs-8 col-xs-offset-2" (click)="toUserProfile(index._id)">More Information</button>
-            </div>
+  <div class="leadership col-xs-12 box" style="">
+    <div class="col-xs-12 div-title" style="text-align: center; margin-top: 0.5vh; margin-bottom: 0.5vh;">
+      <p class="" style="">LEADERSHIP</p>
+    </div>
+    <div *ngIf="users[0]" class="main">
+      <div class="halfwidth left" style="padding: 2px" *ngFor='let index of users'>
+        <div class="leader-panel col-xs-12">
+          <div class="left leader-avatar-small">
+            <img src='{{ index.avatar }}' class="leader-avatar-img-small">
           </div>
+          <p class="">{{ index.firstName + ' ' + index.lastName}}</p>
+          <p *ngIf="index.positionHistory[0]" class="">{{ index.positionHistory[0].PositionTitle }}</p>
+          <p class="">{{ index.username }}</p>
+          <a href="{{index._id}}">
+            <div class="leader-link">
+              More<br>Info
+            </div>
+          </a>
+        </div>
       </div>
+    </div>
     <div class="main clear" *ngIf="!users[0]">No leadership to show</div>
   </div>
-  <div class="leadership leadership-small col-xs-12 clear">
+  <!-- <div class="leadership leadership-small col-xs-12 clear">
     <div class="col-xs-12 srow div-title">
       <p class="left">LEADERSHIP</p>
       <div></div>
@@ -83,23 +86,26 @@
     <div class="main clear"></div>
     <div style="display: flex; flex-wrap: wrap" *ngIf="users[0]" class="main main-collapse clear">
       <div class="halfwidth left" style="padding: 2px" *ngFor='let index of users'>
-        <div class="half-panel col-xs-12">
-          <div class="left avatar">
-            <img src='{{ index.avatar }}' class="avatar-img">
+        <div class="leader-panel col-xs-12">
+          <div class="left leader-avatar-small">
+            <img src='{{ index.avatar }}' class="leader-avatar-img-small">
           </div>
-          <p class="srow">{{ index.firstName + ' ' + index.lastName}}</p>
-          <p *ngIf="index.positionHistory[0]" class="srow">{{ index.positionHistory[0].PositionTitle }}</p>
-          <p class="srow">{{ index.username }}</p>
-          <button style="height: 4em" (click)="toUserProfile(index._id)">More Information</button>
+          <p class="">{{ index.firstName + ' ' + index.lastName}}</p>
+          <p *ngIf="index.positionHistory[0]" class="">{{ index.positionHistory[0].PositionTitle }}</p>
+          <p class="">{{ index.username }}</p>
+          <a href="{{index._id}}">
+            <div class="leader-link">
+              More<br>Info
+            </div>
+          </a>
         </div>
       </div>
     </div>
     <div class="main clear" *ngIf="!users[0]">No leadership to show</div>
-  </div>
-  <div class="leadership leadership-big col-xs-12 clear">
-      <div class="col-xs-12 srow div-title">
-          <p class="left">EMPLOYEES</p>
-          <div></div>
+  </div> -->
+  <div class="employees leadership-big box col-xs-12 clear">
+      <div class="col-xs-12 div-title" style="text-align: center; margin-top: 0.5vh; margin-bottom: 0.5vh;">
+        <p class="">EMPLOYEES</p>
       </div>
       <div class="main clear">
         <div class="" *ngIf='this.currentAccount.userProfileProxies'>
@@ -112,7 +118,7 @@
               <p *ngIf="index.userProfile.positionHistory[0]" class="">{{ index.userProfile.positionHistory[0].PositionTitle }}</p>
               <p class="">{{ index.userProfile.username }}</p>
               <a href="{{index.userProfile._id}}">
-                <div class="employee-link" (click)="toUserProfile()">
+                <div class="employee-link">
                   More<br>Info
                 </div>
               </a>
