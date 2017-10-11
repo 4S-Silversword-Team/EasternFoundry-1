@@ -59,10 +59,9 @@ export class PastPerformanceEditComponent implements OnInit {
     private companyPastPerformanceProxyService: CompanyPastperformanceProxyService,
     private s3Service: s3Service,
   ) {
-    auth.isLoggedIn().then(res => {
-      !res ? this.router.navigateByUrl("/login"): afterLogin()
-    }).catch(reason => {console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})
-    let afterLogin = () => {
+    if (!auth.isLoggedIn()) {
+      this.router.navigateByUrl("/login")
+    } else {
       if (!this.router.url.startsWith('/past-performance-create')) {
         console.log('in past performance edit')
         this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {

@@ -84,28 +84,34 @@ export class AuthService {
 	  return Promise.reject(error.message || error);
   }
 
-  doLogout(redirect = null) {
-    localStorage.removeItem('token')
-    //localStorage.removeItem('uid')
+  doLogout() {
+    localStorage.clear()
     this.current_user = null;
   }
 
-  async isLoggedIn(): Promise<boolean> {
-    var userId = this.getLoggedInUser()
-    var returnVal
-    await this.userService.getUserbyID(userId).toPromise().then(async (user) => {
-      var body = {
-        token: localStorage.getItem("token"),
-        email: user.primaryEmail
-      }
-      await this.http.post(environment.apiRoot + "auth/verify/" + userId , body).toPromise().then(async (res) => {
-        console.log("in isLoggedIn promise")
-        await res.status === 200 ? returnVal = true: returnVal = false
-      })
-    })
-    console.log("logged in return val is: ", returnVal)
-    return returnVal
-    //return localStorage.getItem('token') != null
+   isLoggedIn() {
+    // var userId = this.getLoggedInUser()
+    // var returnVal
+    // await this.userService.getUserbyID(userId).toPromise().then(async (user) => {
+    //   var body = {
+    //     token: localStorage.getItem("token"),
+    //     email: user.primaryEmail
+    //   }
+    //   await this.http.post(environment.apiRoot + "auth/verify/" + userId , body).toPromise().then(async (res) => {
+    //     console.log("in isLoggedIn promise")
+    //     await res.status === 200 ? returnVal = true: returnVal = false
+    //   })
+    // }).catch(reason => {
+    //   console.log(reason)
+    //   console.log("Can't reach back end - determining status from local token: " + (localStorage.getItem('token') != null))
+    //   return (localStorage.getItem('token') != null)
+    // })
+    // if (returnVal != undefined) {
+    //   console.log("logged in return val is: ", returnVal)
+    //   return returnVal
+    // }
+    console.log(localStorage.getItem('token'))
+    return (localStorage.getItem('token') != null)
   }
 
   getLoggedInUser() {

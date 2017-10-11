@@ -38,12 +38,10 @@ export class AdminComponent implements OnInit {
     private http: Http,
   ) {
 
-    auth.isLoggedIn().then(res => {
-      !res ? this.router.navigateByUrl("/login"): afterLogin()
-    }).catch(reason => {console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})
-    let afterLogin = () => {
+    if (!auth.isLoggedIn()) {
+      this.router.navigateByUrl("/login")
+    } else {
       this.getAdminStatus()
-
     }
 
     this.http.get('../../../assets/certs.json')
