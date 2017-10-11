@@ -17,6 +17,7 @@ export class AuthHttp {
 
   createAuthorizationHeader(headers:Headers) {
     headers.append('Authorization', localStorage.getItem('token'));
+    headers.append('id', localStorage.getItem('uid'));
   }
 
   get(url) {

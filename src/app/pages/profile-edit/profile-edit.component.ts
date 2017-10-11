@@ -114,11 +114,9 @@ export class ProfileEditComponent implements OnInit {
     private s3Service: s3Service,
     private agencyService: AgencyService
   ) {
-    auth.isLoggedIn().then(res => {
-      !res ? this.router.navigateByUrl("/login"): afterLogin()
-    }).catch(reason => {console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})
-    // this.currentUser = this.userService.getUserbyID(this.route.snapshot.params['id'])
-    let afterLogin = () => {
+    if (!auth.isLoggedIn()) {
+      this.router.navigateByUrl("/login")
+    } else {
       this.auth.getLoggedInUser() == this.route.snapshot.params['id']? console.log("welcome to your profile edit page"): (() => { console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})()
       this.toolService.getTools().then(val => {
         this.allTools = val
