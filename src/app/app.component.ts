@@ -23,12 +23,10 @@ export class AppComponent implements OnInit {
       localStorage.removeItem('token');
       localStorage.removeItem('uid');
       this.currentUser = null
-    }
-
-    let myCallback = () => {
-      //this.currentUser = this.auth.current_user  //TODO: find out why this doesn't work
+    } else {
       this.currentUser = localStorage.getItem('uid')
     }
+
 
   }
 
