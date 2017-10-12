@@ -110,7 +110,6 @@ export class AuthService {
     //   console.log("logged in return val is: ", returnVal)
     //   return returnVal
     // }
-    console.log(localStorage.getItem('token'))
     return (localStorage.getItem('token') != null)
   }
 

@@ -10,12 +10,20 @@ import { ToolService } from '../../services/tool.service';
 import { CertService } from '../../services/cert.service';
 import { AgencyService } from '../../services/agency.service';
 import { AuthService } from '../../services/auth.service'
+import { CompanyService } from '../../services/company.service';
+import { ProductService } from '../../services/product.service';
+import { ServiceService } from '../../services/service.service';
+import { PastperformanceService } from '../../services/pastperformance.service';
+import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
+import { CompanyPastperformanceProxyService } from '../../services/companypastperformanceproxy.service'
+
+
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
-  providers: [UserService, ToolService, AgencyService, CertService]
+  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, AgencyService, CompanyUserProxyService, CompanyPastperformanceProxyService, CertService, ToolService]
 })
 export class AdminComponent implements OnInit {
 
@@ -26,6 +34,9 @@ export class AdminComponent implements OnInit {
   uploadCounter: number = 0;
   isUserAdmin: boolean = false;
   govtNames: any[] = [];
+  allUsers: any[] = [];
+  allCompanies: any[] = [];
+  allCompanyUserProxies: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -34,25 +45,42 @@ export class AdminComponent implements OnInit {
     private toolService: ToolService,
     private agencyService: AgencyService,
     private certService: CertService,
+    private companyService: CompanyService,
+    private productService: ProductService,
+    private serviceService: ServiceService,
+    private ppService: PastperformanceService,
+    private companyUserProxyService: CompanyUserProxyService,
+    private companyPastPerformanceProxyService: CompanyPastperformanceProxyService,
+
     private auth: AuthService,
     private http: Http,
   ) {
 
-    if (!auth.isLoggedIn()) {
-      this.router.navigateByUrl("/login")
-    } else {
-      this.getAdminStatus()
-    }
+    this.userService.getUsers().then(res => {
+      this.allUsers = res
+      this.companyService.getCompanies().then(res => {
+        this.allCompanies = res
+        this.companyUserProxyService.getCompanyUserProxies().then(res => {
+          this.allCompanyUserProxies = res
+          console.log(this.allCompanyUserProxies[0])
+        if (!auth.isLoggedIn()) {
+          this.router.navigateByUrl("/login")
+        } else {
+          this.getAdminStatus()
+        }
+        })
+      })
+    })
 
-    this.http.get('../../../assets/certs.json')
-      .map((res: any) => res.json())
-      .subscribe(
-        (data: any) => {
-            this.sortedObjects = data;
-        },
-        err => console.log(err), // error
-        () => console.log(this.sortedObjects[0]) // complete
-    );
+    // this.http.get('../../../assets/certs.json')
+    //   .map((res: any) => res.json())
+    //   .subscribe(
+    //     (data: any) => {
+    //         this.sortedObjects = data;
+    //     },
+    //     err => console.log(err), // error
+    //     () => console.log(this.sortedObjects[0]) // complete
+    // );
 
     // this.http.get('../../../assets/govtnames.json')
     //   .map((res: any) => res.json())
@@ -84,8 +112,22 @@ export class AdminComponent implements OnInit {
         this.isUserAdmin = true;
         console.log("you're good")
       } else {
+        console.log('nice try')
         this.router.navigateByUrl("/login")
       }
+    })
+  }
+
+  deleteCompany(company, i){
+    this.companyService.deleteCompany(company._id).toPromise().then((res) => {
+      console.log("its dead")
+      this.allCompanies.splice(i, 1)
+    })
+  }
+  deleteCompanyUserProxy(proxy, i){
+    this.companyUserProxyService.deleteCompanyUserProxy(proxy._id).then((res) => {
+      console.log("its dead")
+      this.allCompanyUserProxies.splice(i, 1)
     })
   }
 
