@@ -26,6 +26,9 @@
                     <div class="search-item-subheader">{{p.username}}</div>
                   </div>
                 </div>
+                <!-- <div class="delete-button" style="" (click)='deleteUser(p, i)'>
+                  DELETE
+                </div> -->
               </div>
             </div>
           </div>
@@ -34,6 +37,14 @@
     </div>
   </div>
   <div class="col-xs-6" style="padding: 2px">
+    <div class="box-overlay" *ngIf='this.companyToDelete.on'>
+      <div class="delete-box">
+        Are you SURE you want to delete {{this.companyToDelete.company.name}}?
+        <div class="delete-button-2" style="" (click)='deleteCompany(this.companyToDelete.company, this.companyToDelete.index)'>
+          DELETE
+        </div>
+      </div>
+    </div>
     <div class="col-xs-12 search-results-box">
       <h3 style="text-align: center; margin-top: 10px; margin-bottom: 2px;">Companies</h3>
       <!-- <input type="text" name="test" value="" class="col-xs-10" [(ngModel)]='searchTerms.name' (keyup.enter)="search()">
@@ -56,7 +67,7 @@
                     <div class="search-item-subheader">{{c.email}}</div>
                   </div>
                 </div>
-                <div class="" style="position: absolute; right: 0px; top: 0px; height: 40px; width: 60px; background: red; color: white; text-align: center" (click)='deleteCompany(c, i)'>
+                <div class="delete-button" style="" (click)='deleteCompanyPrep(c, i)'>
                   DELETE
                 </div>
               </div>
@@ -69,6 +80,14 @@
 </div>
 <div class="col-xs-12" style="margin-top: 500px;">
   <div class="col-xs-6" style="padding: 2px;">
+    <div class="box-overlay" *ngIf='this.companyToDelete.on'>
+      <div class="delete-box">
+        Are you SURE you want to delete {{this.companyUserProxyToDelete.company.name}}-{{this.companyUserProxyToDelete.userProfile.firstName}} {{this.companyUserProxyToDelete.userProfile.lastName}}?
+        <div class="delete-button-2" style="" (click)='deleteCompanyUserProxy(this.companyToDelete.proxy, this.companyToDelete.index)'>
+          DELETE
+        </div>
+      </div>
+    </div>
     <div class="col-xs-12 search-results-box">
       <h3 style="text-align: center; margin-top: 10px; margin-bottom: 2px;">c/u proxies</h3>
       <!-- <input type="text" name="test" value="" class="col-xs-10" [(ngModel)]='searchTerms.name' (keyup.enter)="search()">
@@ -98,7 +117,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="" style="position: absolute; right: 0px; top: 0px; height: 40px; width: 60px; background: red; color: white; text-align: center" (click)='deleteCompanyUserProxy(c, i)'>
+                <div class="delete-button" style="" (click)='deleteCompanyUserProxyPrep(c, i)'>
                   DELETE
                 </div>
               </div>

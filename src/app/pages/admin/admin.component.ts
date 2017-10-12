@@ -37,6 +37,15 @@ export class AdminComponent implements OnInit {
   allUsers: any[] = [];
   allCompanies: any[] = [];
   allCompanyUserProxies: any[] = [];
+  userToDelete: any = {
+    on: false
+  }
+  companyToDelete: any = {
+    on: false
+  }
+  companyUserProxyToDelete: any = {
+    on: false
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -118,12 +127,25 @@ export class AdminComponent implements OnInit {
     })
   }
 
+  deleteCompanyPrep(company, i) {
+    this.companyToDelete.company = company
+    this.companyToDelete.on = true
+    this.companyToDelete.index = i
+  }
   deleteCompany(company, i){
     this.companyService.deleteCompany(company._id).toPromise().then((res) => {
       console.log("its dead")
+      this.companyToDelete.on = false
       this.allCompanies.splice(i, 1)
     })
   }
+
+  deleteCompanyUserProxyPrep(proxy, i) {
+    this.companyUserProxyToDelete.proxy = proxy
+    this.companyUserProxyToDelete.on = true
+    this.companyUserProxyToDelete.index = i
+  }
+
   deleteCompanyUserProxy(proxy, i){
     this.companyUserProxyService.deleteCompanyUserProxy(proxy._id).then((res) => {
       console.log("its dead")
