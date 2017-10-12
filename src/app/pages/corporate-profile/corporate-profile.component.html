@@ -59,8 +59,8 @@
     <div class="col-xs-12 div-title" style="text-align: center; margin-top: 0.5vh; margin-bottom: 0.5vh;">
       <p class="" style="">LEADERSHIP</p>
     </div>
-    <div *ngIf="users[0]" class="main">
-      <div class="halfwidth left" style="padding: 2px" *ngFor='let index of users'>
+    <div *ngIf="users[0]" class="leadership-inner">
+      <div class="col-xs-12 col-md-6" style="padding: 2px" *ngFor='let index of users'>
         <div class="leader-panel col-xs-12">
           <div class="left leader-avatar-small">
             <img src='{{ index.avatar }}' class="leader-avatar-img-small">
@@ -103,13 +103,13 @@
     </div>
     <div class="main clear" *ngIf="!users[0]">No leadership to show</div>
   </div> -->
-  <div class="employees leadership-big box col-xs-12 clear">
-      <div class="col-xs-12 div-title" style="text-align: center; margin-top: 0.5vh; margin-bottom: 0.5vh;">
+  <div class="employees box col-xs-12 clear">
+      <div class="col-xs-12 div-title" style="">
         <p class="">EMPLOYEES</p>
       </div>
-      <div class="main clear">
+      <div class="employees-inner">
         <div class="" *ngIf='this.currentAccount.userProfileProxies'>
-          <div class="halfwidth left" style="padding: 2px" *ngFor='let index of this.currentAccount.userProfileProxies'>
+          <div class="col-xs-12 col-md-6 left" style="padding: 2px" *ngFor='let index of this.currentAccount.userProfileProxies'>
             <div class="employee-panel col-xs-12" *ngIf="index.userProfile">
               <div class="left avatar-small">
                 <img src='{{ index.userProfile.avatar }}' class="avatar-img-small">
@@ -133,7 +133,7 @@
         <div *ngIf="!this.currentAccount.userProfileProxies[0]" class="main clear">No employees to show</div>
       </div>
   </div>
-  <div class="leadership leadership-small col-xs-12 clear">
+  <!-- <div class="leadership col-xs-12 clear">
     <div class="col-xs-12 srow div-title">
       <p class="left">EMPLOYEES</p>
       <div></div>
@@ -160,101 +160,187 @@
     <div class="" *ngIf="this.currentAccount.userProfileProxies">
       <div *ngIf="!this.currentAccount.userProfileProxies[0]" class="main clear">No employees to show</div>
     </div>
-  </div>
+  </div> -->
 </div>
 
 
 <!-- SERVICES TAB -->
-
-
-
-<!-- PRODUCTS TAB -->
-<div class="container" *ngIf='activeTab==3'>
-  <div class="service col-xs-12 clear main" *ngIf="!products[0]">No Products</div>
-  <div class="product col-xs-12 clear" *ngFor='let index of products'>
-      <div class="div-title col-xs-12">
-        <img src="./assets/img/product.png">
-        <p>{{ index.name }}</p>
-        <div></div>
-      </div>
-      <div class="row main">
-        <div style="display: block" class="col-xs-12 col-sm-6">
-          <canvas baseChart
-                  [data]="getProductChartData(index._id)"
-                  [labels]="getProductChartLabel(index._id)"
-                  [chartType]="'pie'"></canvas>
-        </div>
-        <div class="col-xs-12 col-sm-6 text-container">
-          <div class="col-xs-12" [style.overflow] = "'auto'">
-            <p *ngFor='let feature of index.feature'>{{feature.name}}</p>
+<div class="container" *ngIf='activeTab==2'>
+  <div class="service col-xs-12 clear" *ngIf="!services[0]">No Services</div>
+  <div class="product-tab-bar col-xs-10 col-xs-offset-1">
+    <div class="product-tab col-xs-3" *ngIf='serviceTab>0' (click)='switchServiceTab(serviceTab-1) && this.services[this.serviceTab-1]'>
+      {{this.services[this.serviceTab-1].name}}
+    </div>
+    <div class="product-tab product-tab-active col-xs-6 col-xs-offset-3" *ngIf='serviceTab<=0 && this.services[this.serviceTab]'>
+      {{this.services[this.serviceTab].name}}
+    </div>
+    <div class="product-tab product-tab-active col-xs-6" *ngIf='serviceTab>0 && this.services[this.serviceTab]'>
+      {{this.services[this.serviceTab].name}}
+    </div>
+    <div class="product-tab col-xs-3" (click)='switchServiceTab(serviceTab+1)' *ngIf='this.services[serviceTab+1]'>
+      {{this.services[this.serviceTab+1].name}}
+    </div>
+  </div>
+    <div class="service col-xs-12 box clear">
+      <div class="" *ngFor='let index of this.services; let i = index'>
+        <div class="" *ngIf='i==serviceTab'>
+          <div class="div-title col-md-12">
+            <p>{{index.name}}</p>
+            <div></div>
           </div>
-        </div>
-      </div>
-      <div class="row main">
-        <div class="col-xs-12 text-container">
-          <div class="col-xs-12" [style.overflow] = "'auto'">
-            {{index.description}}
+          <div class="capa-main col-md-12">
+            <div class="col-xl-12 col-lg-6">
+              <div class="capa-chart col-xs-12">
+                <app-bent-bars-chart width='300' height='300' divID='bbChart{{index._id}}' [values]='getServiceChartValue(index._id)'></app-bent-bars-chart>
+              </div>
+            </div>
+            <div class="col-xs-12 col-lg-6 text-container">
+              <div class="row">
+                <div class="col-xs-12 col-md-6 left">
+                  <app-color-comment-box *ngFor='let feature of index.feature' color='{{getServiceChartColor(feature.score)}}' text='{{feature.title}}' class="col-xs-12 col-sm-6 col-md-12"></app-color-comment-box>
+                </div>
+                <div class="col-xs-12 col-md-6 right">
+                  <p *ngFor='let skill of index.skills' class="col-xs-12 col-sm-6 col-md-12">{{ skill }} </p>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="row main">
-        <a href="{{index.moreInfoLink}}"><button class="col-xs-12 col-sm-5">More Information</button></a>
-        <a href="{{index.viewDemoLink}}"><button class="col-xs-12 col-sm-5 col-sm-offset-2">View Demo</button></a>
-      </div>
-    <div class="ad-service div-title col-xs-12">
-        <img src="./assets/img/service.png">
-        <p>ADDITIONAL SERVICES</p>
-        <div></div>
-      </div>
-      <div class="ad-service main">
-        <div class="col-xs-12 col-sm-4"><p class="col-xs-11">Provide Training?</p><input type="checkbox" class="col-xs-1" [attr.checked]="index.training ? true : null">
-        </div>
-        <div class="col-xs-12 col-sm-4"><p class="col-xs-11">Product Customization?</p><input type="checkbox" class="col-xs-1" [attr.checked]="index.customization ? true : null">
-        </div>
-        <div class="col-xs-12 col-sm-4"><p class="col-xs-11">Ongoing Maintenance</p><input type="checkbox" class="col-xs-1" [attr.checked]="index.maintenance ? true : null">
-        </div>
-      </div>
-      <div class="customer div-title col-xs-12" *ngIf='(index.customers.defense.length > 0 || index.customers.civilian.length > 0 || index.customers.defense.commercial > 0)'>
-        <img src="./assets/img/customer.png">
-        <p>CUSTOMERS USING THE PRODUCT</p>
-        <div></div>
-      </div>
-      <div class="main" *ngIf='(index.customers.defense.length > 0 || index.customers.civilian.length > 0 || index.customers.defense.commercial > 0)'>
-        <div class="row col-xs-12 text-container text-center" *ngIf='index.customers.defense.length > 0'>
-          <div class="left" [style.width]="'120px'">
-            <p class="col-xs-12">DEFENSE</p>
-            <img src="./assets/img/defense.png" [style.width]="'100px'" [style.margin-left]="'10px'">
-          </div>
-          <div class="left text-center" *ngFor='let jendex of index.customers.defense' [style.width]="'120px'">
-            <img src="{{jendex.avatar}}" [style.width]="'100px'" [style.margin-left]="'10px'">
-            <p class="col-xs-12">{{jendex.name}}</p>
-          </div>
-        </div>
-        <div class="row col-xs-12 text-container" *ngIf='index.customers.civilian.length > 0'>
-          <div class="left" [style.width]="'120px'">
-            <p class="col-xs-12">CIVILIAN</p>
-            <img src="./assets/img/civilian.png" [style.width]="'100px'" [style.margin-left]="'10px'">
-          </div>
-          <div class="left text-center" *ngFor='let jendex of index.customers.civilian' [style.width]="'120px'">
-            <img src="{{jendex.avatar}}" [style.width]="'100px'" [style.margin-left]="'10px'">
-            <p class="col-xs-12">{{jendex.name}}</p>
-          </div>
-        </div>
-        <div class="row col-xs-12 text-container" *ngIf='index.customers.commercial.length > 0'>
-          <div class="left" [style.width]="'120px'">
-              <p class="col-xs-12">COMMERCIAL</p>
-              <img src="./assets/img/commercia.png" [style.width]="'100px'" [style.margin-left]="'10px'">
-          </div>
-          <div class="left text-center" *ngFor='let jendex of index.customers.commercial' [style.width]="'120px'">
-            <img src="{{jendex.avatar}}" [style.width]="'100px'" [style.margin-left]="'10px'">
-            <p class="col-xs-12">{{jendex.name}}</p>
-          </div>
-        </div>
       </div>
     </div>
   </div>
 
+</div>
+
+
+<!-- PRODUCTS TAB -->
+<div class="container" *ngIf='activeTab==3'>
+  <div class="product col-xs-12 clear main" *ngIf="!products[0]">No Products</div>
+  <div class="product-tab-bar col-xs-10 col-xs-offset-1">
+    <div class="product-tab col-xs-3" *ngIf='productTab>0' (click)='switchProductTab(productTab-1) && this.products[this.productTab-1]'>
+      {{this.products[this.productTab-1].name}}
+    </div>
+    <div class="product-tab product-tab-active col-xs-6 col-xs-offset-3" *ngIf='productTab<=0 && this.products[this.productTab]'>
+      {{this.products[this.productTab].name}}
+    </div>
+    <div class="product-tab product-tab-active col-xs-6" *ngIf='productTab>0 && this.products[this.productTab]'>
+      {{this.products[this.productTab].name}}
+    </div>
+    <div class="product-tab col-xs-3" (click)='switchProductTab(productTab+1)' *ngIf='this.products[productTab+1]'>
+      {{this.products[this.productTab+1].name}}
+    </div>
+
+  </div>
+  <div class="product col-xs-12 box clear">
+    <div class="" *ngFor='let p of this.products; let i = index'>
+      <div class="" *ngIf='i==productTab'>
+        <div class="div-title col-xs-12">
+          <p>{{ p.name }}</p>
+        </div>
+        <div style="display: block" class="col-xs-12 col-sm-6">
+          <canvas baseChart
+          [data]="getProductChartData(p._id)"
+          [labels]="getProductChartLabel(p._id)"
+          [chartType]="'pie'"></canvas>
+        </div>
+        <div class="col-xs-12 col-sm-6 text-container">
+          <div class="col-xs-12" [style.overflow] = "'auto'">
+            <p *ngFor='let feature of p.feature'>{{feature.name}}</p>
+          </div>
+        </div>
+        <div class="row main">
+          <div class="col-xs-12 text-container">
+            <div class="col-xs-12" [style.overflow] = "'auto'">
+              {{p.description}}
+            </div>
+          </div>
+        </div>
+        <div class="row main">
+          <a href="{{p.moreInfoLink}}"><button class="col-xs-12 col-sm-5">More Information</button></a>
+          <a href="{{p.viewDemoLink}}"><button class="col-xs-12 col-sm-5 col-sm-offset-2">View Demo</button></a>
+        </div>
+
+        <div class="ad-service div-title col-xs-12">
+          <img src="./assets/img/service.png">
+          <p>ADDITIONAL SERVICES</p>
+          <div></div>
+        </div>
+        <div class="ad-service main">
+          <div class="col-xs-12 col-sm-4"><p class="col-xs-11">Provide Training?</p><input type="checkbox" class="col-xs-1" [attr.checked]="p.training ? true : null">
+          </div>
+          <div class="col-xs-12 col-sm-4"><p class="col-xs-11">Product Customization?</p><input type="checkbox" class="col-xs-1" [attr.checked]="p.customization ? true : null">
+          </div>
+          <div class="col-xs-12 col-sm-4"><p class="col-xs-11">Ongoing Maintenance</p><input type="checkbox" class="col-xs-1" [attr.checked]="p.maintenance ? true : null">
+          </div>
+        </div>
+        <div class="customer div-title col-xs-12" *ngIf='(p.customers.defense.length > 0 || p.customers.civilian.length > 0 || p.customers.defense.commercial > 0)'>
+          <img src="./assets/img/customer.png">
+          <p>CUSTOMERS USING THE PRODUCT</p>
+          <div></div>
+        </div>
+        <div class="main" *ngIf='(p.customers.defense.length > 0 || p.customers.civilian.length > 0 || p.customers.defense.commercial > 0)'>
+          <div class="row col-xs-12 text-container text-center" *ngIf='p.customers.defense.length > 0'>
+            <div class="left" [style.width]="'120px'">
+              <p class="col-xs-12">DEFENSE</p>
+              <img src="./assets/img/defense.png" [style.width]="'100px'" [style.margin-left]="'10px'">
+            </div>
+            <div class="left text-center" *ngFor='let jendex of p.customers.defense' [style.width]="'120px'">
+              <img src="{{jendex.avatar}}" [style.width]="'100px'" [style.margin-left]="'10px'">
+              <p class="col-xs-12">{{jendex.name}}</p>
+            </div>
+          </div>
+          <div class="row col-xs-12 text-container" *ngIf='p.customers.civilian.length > 0'>
+            <div class="left" [style.width]="'120px'">
+              <p class="col-xs-12">CIVILIAN</p>
+              <img src="./assets/img/civilian.png" [style.width]="'100px'" [style.margin-left]="'10px'">
+            </div>
+            <div class="left text-center" *ngFor='let jendex of p.customers.civilian' [style.width]="'120px'">
+              <img src="{{jendex.avatar}}" [style.width]="'100px'" [style.margin-left]="'10px'">
+              <p class="col-xs-12">{{jendex.name}}</p>
+            </div>
+          </div>
+          <div class="row col-xs-12 text-container" *ngIf='p.customers.commercial.length > 0'>
+            <div class="left" [style.width]="'120px'">
+              <p class="col-xs-12">COMMERCIAL</p>
+              <img src="./assets/img/commercia.png" [style.width]="'100px'" [style.margin-left]="'10px'">
+            </div>
+            <div class="left text-center" *ngFor='let jendex of p.customers.commercial' [style.width]="'120px'">
+              <img src="{{jendex.avatar}}" [style.width]="'100px'" [style.margin-left]="'10px'">
+              <p class="col-xs-12">{{jendex.name}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
 <!-- PAST PERFORMANCES TAB -->
+<div class="container" *ngIf='activeTab==4'>
+  <div class="performance performance-big col-xs-12 clear" >
+    <div class="div-title col-xs-12">
+      <img src="./assets/img/performance.png">
+      <p>PAST PERFORMANCE</p>
+      <div></div>
+    </div>
+    <div class="main clear">
+      <div *ngIf="!pastperformances[0]">No past performance to show</div>
+      <div *ngIf="pastperformances[0]">
+        <div class="halfwidth left" style="padding: 2px" *ngFor="let pp of pastperformances">
+          <div class="half-panel col-xs-12">
+            <img src="{{pp.avatar}}" class="left avatar">
+            <p class="col-xs-12">{{pp.title}}</p>
+            <p><strong>Client</strong></p><p class="srow">{{pp.client}}</p>
+            <p><strong>Project</strong></p><p class="srow">{{pp.topic}}</p>
+            <button class="col-xs-8 col-xs-offset-2" (click)='toPastPerformance(pp._id)'>More Information</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <button class="col-xs-4 col-xs-offset-4" *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- OLD PAGE -->
   <div class="container" *ngIf='this.activeTab == 7'>

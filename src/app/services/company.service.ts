@@ -43,6 +43,13 @@ export class CompanyService {
     return response;
   }
 
+  deleteCompany(id: string): Observable<any> {
+    var response = this.authHttp.delete(environment.apiRoot + "company/" + id)
+      .map(response => <Company> JSON.parse(JSON.stringify(response)));
+    return response;
+  }
+
+
 
   getEmptyCompany(): Company {
     var year = new Date().getFullYear()

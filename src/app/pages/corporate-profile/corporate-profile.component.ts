@@ -46,7 +46,10 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   team: User[]  = [];
   renderChart: boolean;
   chart: any;
-  activeTab: number = 1;
+  activeTab: number = 3;
+  productTab: number = 0;
+  serviceTab: number = 0;
+  ppTab: number = 0;
   isUserAdmin: boolean = false;
 
   constructor(
@@ -69,8 +72,10 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then(company => { this.currentAccount = company; myCallback(); });
     // this.companyService.getCompanyByID(this.route.params["id"] ).toPromise().then(company => this.currentAccount = company)
     const myCallback = () => {
-      this.auth.isLoggedIn().then((res) => {if(res) this.getAdminStatus()}).catch((reason)=> console.log("user not logged in"))
-
+      if (auth.isLoggedIn()) {
+        this.getAdminStatus()
+      } else {
+      }
       const myCallback2 = () => {
         console.log("In myCallback2")
         for (const i of this.users) {
@@ -150,6 +155,13 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     console.log(newTab)
   }
 
+  switchProductTab(newTab) {
+    this.productTab = newTab
+  }
+  switchServiceTab(newTab) {
+    this.serviceTab = newTab
+  }
+
   getAdminStatus() {
     var userId = this.auth.getLoggedInUser()
     this.userService.getUserbyID(userId).toPromise().then((user) =>{
@@ -158,7 +170,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
       }).filter((proxy) => {
         return proxy.company._id == this.route.snapshot.params['id']
       })[0]
-      if (user.username == "johnestes4@gmail.com"){
+      if (user.power >= 4){
         this.isUserAdmin = true;
         console.log("I'm SUPER admin")
       }
@@ -223,7 +235,6 @@ changeToTeam(){
 
     for(const i of this.currentAccount.userProfileProxies){
       numPeop++;
-      console.log(numPeop);
       var member = i.userProfile;
       if (member) {
         var occupations = []
