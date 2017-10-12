@@ -46,7 +46,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   team: User[]  = [];
   renderChart: boolean;
   chart: any;
-  activeTab: number = 3;
+  activeTab: number = 4;
   productTab: number = 0;
   productCustomerTab: number = 0;
   serviceTab: number = 0;
@@ -154,13 +154,6 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
       this.activeTab = newTab
     }
     console.log(newTab)
-  }
-
-  switchProductTab(newTab) {
-    this.productTab = newTab
-  }
-  switchServiceTab(newTab) {
-    this.serviceTab = newTab
   }
 
   getAdminStatus() {

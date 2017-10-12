@@ -1,3 +1,4 @@
+
 .avatar {
     width: 150px;
     height: 150px;
@@ -12,8 +13,6 @@
 }
 
 .search-results-box {
-  border: 2px solid rgba(0, 0, 0, 0.2);
-  background: rgba(0, 0, 0, 0.2);
   height: 90vh;
   overflow-x: hidden;
   overflow-y: auto;
@@ -21,11 +20,13 @@
 
 .search-results-interior {
   position: absolute;
-  background: rgb(235, 235, 235);
+  background: rgba(0,0,0,0.1);
   height: 90%;
   width: 90%;
   left: 5%;
-  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  border: 2px solid rgba(0,100,200, 0.9);
+  overflow-x: hidden;
 }
 
 .search-results-interior-2 {
@@ -51,8 +52,6 @@
 }
 
 .search-terms-box {
-  border: 2px solid rgba(0, 0, 0, 0.2);
-  background: rgba(0, 0, 0, 0.2);
   height: 90vh;
 }
 
@@ -150,14 +149,13 @@
 .search-ready {
   position: absolute;
   bottom: 20px;
-  background-color: blue;
   left: 5px;
 }
 
 .search-nope {
+  cursor: auto;
   position: absolute;
   bottom: 20px;
-  background-color: rgb(129, 129, 129);
-  color: rgb(150, 150, 150);
   left: 5px;
+  filter: brightness(50%);
 }

@@ -174,7 +174,7 @@
 <div class="container" *ngIf='activeTab==2'>
   <div class="service col-xs-12 clear" *ngIf="!services[0]">No Services</div>
   <div class="product-tab-bar col-xs-10 col-xs-offset-1">
-    <div class="product-tab col-xs-3" *ngIf='serviceTab>0' (click)='switchServiceTab(serviceTab-1) && this.services[this.serviceTab-1]'>
+    <div class="product-tab col-xs-3" (click)='serviceTab = serviceTab-1' *ngIf='serviceTab>0 && this.services[this.serviceTab-1]'>
       {{this.services[this.serviceTab-1].name}}
     </div>
     <div class="product-tab product-tab-active col-xs-6 col-xs-offset-3" *ngIf='serviceTab<=0 && this.services[this.serviceTab]'>
@@ -183,7 +183,7 @@
     <div class="product-tab product-tab-active col-xs-6" *ngIf='serviceTab>0 && this.services[this.serviceTab]'>
       {{this.services[this.serviceTab].name}}
     </div>
-    <div class="product-tab col-xs-3" (click)='switchServiceTab(serviceTab+1)' *ngIf='this.services[serviceTab+1]'>
+    <div class="product-tab col-xs-3" (click)='serviceTab = serviceTab+1' *ngIf='this.services[serviceTab+1]'>
       {{this.services[this.serviceTab+1].name}}
     </div>
   </div>
@@ -234,7 +234,7 @@
 <div class="container" *ngIf='activeTab==3'>
   <div class="product col-xs-12 clear main" *ngIf="!products[0]">No Products</div>
   <div class="product-tab-bar col-xs-10 col-xs-offset-1">
-    <div class="product-tab col-xs-3" *ngIf='productTab>0' (click)='switchProductTab(productTab-1) && this.products[this.productTab-1]'>
+    <div class="product-tab col-xs-3" (click)='productTab = productTab-1' *ngIf='productTab>0 && this.products[this.productTab-1]'>
       {{this.products[this.productTab-1].name}}
     </div>
     <div class="product-tab product-tab-active col-xs-6 col-xs-offset-3" *ngIf='productTab<=0 && this.products[this.productTab]'>
@@ -243,10 +243,9 @@
     <div class="product-tab product-tab-active col-xs-6" *ngIf='productTab>0 && this.products[this.productTab]'>
       {{this.products[this.productTab].name}}
     </div>
-    <div class="product-tab col-xs-3" (click)='switchProductTab(productTab+1)' *ngIf='this.products[productTab+1]'>
+    <div class="product-tab col-xs-3" (click)='productTab = productTab+1' *ngIf='this.products[productTab+1]'>
       {{this.products[this.productTab+1].name}}
     </div>
-
   </div>
   <div class="product col-xs-12 box clear">
     <div class="" *ngFor='let p of this.products; let i = index'>
@@ -285,9 +284,9 @@
             </div>
             <div class="ad-service col-xs-12 text-container">
               <ul>
-                <li>Provides Training</li>
-                <li>Product Customization</li>
-                <li>Ongoing Maintenance</li>
+                <li *ngIf='p.training'>Provides Training</li>
+                <li *ngIf='p.customization'>Product Customization</li>
+                <li *ngIf='p.maintenance'>Ongoing Maintenance</li>
               </ul>
               <!-- <div class="col-xs-12"><p class="col-xs-11">Provides Training</p><input type="checkbox" class="col-xs-1" [attr.checked]="p.training ? true : null">
               </div>
@@ -347,27 +346,38 @@
 
 <!-- PAST PERFORMANCES TAB -->
 <div class="container" *ngIf='activeTab==4'>
-  <div class="performance performance-big col-xs-12 clear" >
-    <div class="div-title col-xs-12">
-      <img src="./assets/img/performance.png">
-      <p>PAST PERFORMANCE</p>
-      <div></div>
+  <div class="product-tab-bar col-xs-10 col-xs-offset-1">
+    <div class="product-tab col-xs-3" (click)='ppTab = ppTab-1' *ngIf='ppTab>0 && this.pastperformances[this.ppTab-1]'>
+      {{this.pastperformances[this.ppTab-1].title}}
     </div>
-    <div class="main clear">
-      <div *ngIf="!pastperformances[0]">No past performance to show</div>
-      <div *ngIf="pastperformances[0]">
-        <div class="halfwidth left" style="padding: 2px" *ngFor="let pp of pastperformances">
+    <div class="product-tab product-tab-active col-xs-6 col-xs-offset-3" *ngIf='ppTab<=0 && this.pastperformances[this.ppTab]'>
+      {{this.pastperformances[this.ppTab].title}}
+    </div>
+    <div class="product-tab product-tab-active col-xs-6" *ngIf='ppTab>0 && this.pastperformances[this.ppTab]'>
+      {{this.pastperformances[this.ppTab].title}}
+    </div>
+    <div class="product-tab col-xs-3" (click)='ppTab = ppTab+1' *ngIf='this.pastperformances[ppTab+1]'>
+      {{this.pastperformances[this.ppTab+1].title}}
+    </div>
+  </div>
+  <div class="performance box col-xs-12 clear" >
+    <div *ngIf="!pastperformances[0]">No past performance to show</div>
+    <div class="" *ngFor='let pp of this.pastperformances; let i = index'>
+      <div class="" *ngIf='i==ppTab'>
+        <div class="div-title col-xs-12">
+          <p>{{pp.title}}</p>
+        </div>
+        <div class="main clear">
           <div class="half-panel col-xs-12">
             <img src="{{pp.avatar}}" class="left avatar">
-            <p class="col-xs-12">{{pp.title}}</p>
             <p><strong>Client</strong></p><p class="srow">{{pp.client}}</p>
             <p><strong>Project</strong></p><p class="srow">{{pp.topic}}</p>
             <button class="col-xs-8 col-xs-offset-2" (click)='toPastPerformance(pp._id)'>More Information</button>
           </div>
+          <div class="col-xs-12">
+            <button class="col-xs-4 col-xs-offset-4" *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
+          </div>
         </div>
-      </div>
-      <div class="col-xs-12">
-        <button class="col-xs-4 col-xs-offset-4" *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
       </div>
     </div>
   </div>

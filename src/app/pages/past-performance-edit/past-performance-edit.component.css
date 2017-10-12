@@ -76,7 +76,7 @@ input[type="checkbox"]{
     display: inline-block;
 }
 
-button {
+/*button {
     width: 120px;
     height: 40px;
     border: 2px solid #383838;
@@ -86,7 +86,8 @@ button {
     font-size: 20px;
     color: white;
     line-height: 40px;
-}
+}*/
+
 .avatar {
   width: 150px;
   height: 150px;
