@@ -98,9 +98,9 @@ p {
     margin-bottom: 10px;
     padding: 20px;
     border-radius: 10px;
-    border: 2px solid #ccc;
-    color: #ccc;
-    background-color: #585858;
+    border: 2px solid rgba(0,100,200,.9);
+    color: rgba(0,0,0,0.9);
+    background-color: rgba(0,0,0,0.15);
 }
 
 .div-info {

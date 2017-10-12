@@ -259,11 +259,33 @@
   overflow: auto
 }
 
+.product-customers {
+  height: 20vh;
+}
+
+.ad-service {
+  height: 23.2vh;
+}
+.ad-service li {
+  line-height: 6vh;
+  font-size: 20px;
+}
+
+.analytics {
+  height: 62.1vh;
+}
 
 .box .div-title {
   text-align: center;
   margin-top: 0.5vh;
   margin-bottom: 0.5vh;
+}
+
+.capa-chart {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 
@@ -393,14 +415,6 @@ button {
     height: 3px;
     background-color: #757575;
     margin-bottom: 8px;
-}
-
-.text-container {
-    padding: 20px;
-    border-radius: 10px;
-    border: 2px solid #ccc;
-    color: #ccc;
-    background-color: #585858;
 }
 
 input {

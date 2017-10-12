@@ -48,6 +48,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   chart: any;
   activeTab: number = 3;
   productTab: number = 0;
+  productCustomerTab: number = 0;
   serviceTab: number = 0;
   ppTab: number = 0;
   isUserAdmin: boolean = false;
@@ -315,9 +316,8 @@ changeToTeam(){
     this.chart = new Chart({
       chart: {
           type: 'bar',
-          backgroundColor: '#FDF5EB',
+          backgroundColor: 'rgba(0, 100, 200, 0.00)',
           renderTo: "team_chart",
-          height: 400
       },
       title: {
           text: 'Skills'
