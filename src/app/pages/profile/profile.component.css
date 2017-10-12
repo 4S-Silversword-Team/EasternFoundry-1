@@ -122,6 +122,9 @@
 }
 
 .profile-navbar-tab:hover {
+  background: rgba(255,255,255,0.25)
+}
+.profile-navbar-tab:active {
   background: rgba(255,255,255,0.5)
 }
 .profile-navbar-tab-active:hover {
@@ -132,10 +135,6 @@
 }
 .profile-navbar-tab-active-right:hover {
   background: rgba(255,255,255,.95);
-}
-
-.profile-navbar-tab:active {
-  background: rgba(255,255,255,0.6)
 }
 
 .degree-box {

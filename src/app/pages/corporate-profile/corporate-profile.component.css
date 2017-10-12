@@ -85,8 +85,10 @@
   border-bottom-right-radius: 5px;
   color: rgb(0,0,0);
 }
-
 .profile-navbar-tab:hover {
+  background: rgba(255,255,255,0.25)
+}
+.profile-navbar-tab:active {
   background: rgba(255,255,255,0.5)
 }
 .profile-navbar-tab-active:hover {
@@ -97,10 +99,6 @@
 }
 .profile-navbar-tab-active-right:hover {
   background: rgba(255,255,255,.95);
-}
-
-.profile-navbar-tab:active {
-  background: rgba(255,255,255,0.6)
 }
 
 .employee-panel {
@@ -125,7 +123,6 @@
   width: 60px;
   text-align: center;
   line-height: 20px;
-  padding-top: 16px;
 }
 .leader-panel {
   position: relative;
@@ -150,7 +147,6 @@
   width: 60px;
   text-align: center;
   line-height: 30px;
-  padding-top: 16px;
 }
 
 .leadership {
@@ -244,6 +240,14 @@
   height: 20vh;
 }
 
+.past-performance-inner {
+  height: 73.7vh;
+  background: rgba(0,0,0,0.02);
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid rgba(0,100,200, 0.9);
+}
+
 .ad-service {
   height: 23.2vh;
 }
@@ -257,7 +261,7 @@
 }
 
 .performance {
-  height: calc(82vh - 40px);
+  height: 82vh;
   overflow: auto;
 }
 

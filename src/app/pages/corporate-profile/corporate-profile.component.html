@@ -74,41 +74,16 @@
           <p class="">{{ index.firstName + ' ' + index.lastName}}</p>
           <p *ngIf="index.positionHistory[0]" class="">{{ index.positionHistory[0].PositionTitle }}</p>
           <p class="">{{ index.username }}</p>
-          <a href="{{index._id}}">
-            <div class="leader-link">
+          <a href="/#/user-profile/{{index._id}}">
+            <button class="leader-link">
               More<br>Info
-            </div>
+            </button>
           </a>
         </div>
       </div>
     </div>
     <div class="main clear" *ngIf="!users[0]">No leadership to show</div>
   </div>
-  <!-- <div class="leadership leadership-small col-xs-12 clear">
-    <div class="col-xs-12 srow div-title">
-      <p class="left">LEADERSHIP</p>
-      <div></div>
-    </div>
-    <div class="main clear"></div>
-    <div style="display: flex; flex-wrap: wrap" *ngIf="users[0]" class="main main-collapse clear">
-      <div class="halfwidth left" style="padding: 2px" *ngFor='let index of users'>
-        <div class="leader-panel col-xs-12">
-          <div class="left leader-avatar-small">
-            <img src='{{ index.avatar }}' class="leader-avatar-img-small">
-          </div>
-          <p class="">{{ index.firstName + ' ' + index.lastName}}</p>
-          <p *ngIf="index.positionHistory[0]" class="">{{ index.positionHistory[0].PositionTitle }}</p>
-          <p class="">{{ index.username }}</p>
-          <a href="{{index._id}}">
-            <div class="leader-link">
-              More<br>Info
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
-    <div class="main clear" *ngIf="!users[0]">No leadership to show</div>
-  </div> -->
   <div class="employees box col-xs-12 clear">
       <div class="col-xs-12 div-title" style="">
         <p class="">EMPLOYEES</p>
@@ -123,10 +98,10 @@
               <p class="">{{ index.userProfile.firstName + ' ' + index.userProfile.lastName}}</p>
               <p *ngIf="index.userProfile.positionHistory[0]" class="">{{ index.userProfile.positionHistory[0].PositionTitle }}</p>
               <p class="">{{ index.userProfile.username }}</p>
-              <a href="{{index.userProfile._id}}">
-                <div class="employee-link">
+              <a href="/#/user-profile/{{index.userProfile._id}}">
+                <button class="employee-link">
                   More<br>Info
-                </div>
+                </button>
               </a>
             </div>
           </div>
@@ -346,7 +321,7 @@
 
 <!-- PAST PERFORMANCES TAB -->
 <div class="container" *ngIf='activeTab==4'>
-  <div class="product-tab-bar col-xs-10 col-xs-offset-1">
+  <!-- <div class="product-tab-bar col-xs-10 col-xs-offset-1">
     <div class="product-tab col-xs-3" (click)='ppTab = ppTab-1' *ngIf='ppTab>0 && this.pastperformances[this.ppTab-1]'>
       {{this.pastperformances[this.ppTab-1].title}}
     </div>
@@ -359,26 +334,48 @@
     <div class="product-tab col-xs-3" (click)='ppTab = ppTab+1' *ngIf='this.pastperformances[ppTab+1]'>
       {{this.pastperformances[this.ppTab+1].title}}
     </div>
-  </div>
+  </div> -->
   <div class="performance box col-xs-12 clear" >
     <div *ngIf="!pastperformances[0]">No past performance to show</div>
-    <div class="" *ngFor='let pp of this.pastperformances; let i = index'>
-      <div class="" *ngIf='i==ppTab'>
+    <div class="div-title col-xs-12">
+      <p>Past Performances</p>
+    </div>
+    <div class="past-performance-inner">
+      <div class="" *ngFor='let pp of this.pastperformances; let i = index'>
+        <div class="employee-panel col-xs-12 col-md-6">
+          <div class="left avatar-small">
+            <img src='{{ pp.avatar }}' class="avatar-img-small">
+          </div>
+          <div class="col-xs-12" style="text-align: center; position: absolute; top: 0px; width: calc(100%-40px);font-size: 14px; font-weight: bold;">
+            <p class="">{{pp.title}}</p>
+          </div>
+          <div class="" style="margin-top: 5px; line-height: 35px;">
+            <p><strong>Client</strong> - {{pp.client}}</p>
+            <p><strong>Project</strong> - {{pp.topic}}</p>
+          </div>
+          <a href="/#/past-performance/{{pp._id}}">
+            <button class="employee-link">
+              More<br>Info
+            </button>
+          </a>
+        </div>
+        <!-- <div class="" *ngIf='i==ppTab'>
         <div class="div-title col-xs-12">
-          <p>{{pp.title}}</p>
-        </div>
-        <div class="main clear">
-          <div class="half-panel col-xs-12">
-            <img src="{{pp.avatar}}" class="left avatar">
-            <p><strong>Client</strong></p><p class="srow">{{pp.client}}</p>
-            <p><strong>Project</strong></p><p class="srow">{{pp.topic}}</p>
-            <button class="col-xs-8 col-xs-offset-2" (click)='toPastPerformance(pp._id)'>More Information</button>
-          </div>
-          <div class="col-xs-12">
-            <button class="col-xs-4 col-xs-offset-4" *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
-          </div>
-        </div>
+        <p>{{pp.title}}</p>
       </div>
+      <div class="main clear">
+      <div class="half-panel col-xs-12">
+      <img src="{{pp.avatar}}" class="left avatar">
+      <p><strong>Client</strong></p><p class="srow">{{pp.client}}</p>
+      <p><strong>Project</strong></p><p class="srow">{{pp.topic}}</p>
+      <button class="col-xs-8 col-xs-offset-2" (click)='toPastPerformance(pp._id)'>More Information</button>
+    </div>
+    <div class="col-xs-12">
+    <button class="col-xs-4 col-xs-offset-4" *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
+  </div>
+</div>
+</div> -->
+</div>
     </div>
   </div>
 </div>
