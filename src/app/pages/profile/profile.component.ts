@@ -38,7 +38,7 @@ export class ProfileComponent implements OnInit {
   positionHistory: any[] = []
   occupations: any[] = []
   months: any[] = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
   ]
   degreeType: any[] = [
     {
@@ -96,10 +96,15 @@ export class ProfileComponent implements OnInit {
     });
 
     var myCallback = () => {
+
       let index: number = 0
       this.availabilityData.values = []
       this.availabilityData.dates = []
+      function stringToBool(val) {
+        return (val + '').toLowerCase() === 'true';
+      };
 
+      if (this.currentUser.finished) {
       for (let job of this.currentUser.positionHistory) {
         if (job.EndDate) {
           if (job.EndDate == "Current") {
@@ -145,9 +150,13 @@ export class ProfileComponent implements OnInit {
       var year = new Date().getFullYear()
       //if one of your jobs is tagged as "current", it assumes you're unavailable and vice versa
       var avail = true
-      for (let pos of this.currentUser.positionHistory) {
-        if (pos.EndDate.toLowerCase() == "current"){
-          avail = false
+      if (this.currentUser.positionHistory){
+        for (let pos of this.currentUser.positionHistory) {
+          if (pos.EndDate) {
+            if (pos.EndDate.toLowerCase() == "current"){
+              avail = false
+            }
+          }
         }
       }
 
@@ -297,10 +306,6 @@ export class ProfileComponent implements OnInit {
       // for (let o of this.occupations) {
       //   console.log(o.title + ' ' + o.score)
       // }
-
-      function stringToBool(val) {
-        return (val + '').toLowerCase() === 'true';
-      };
 
       //right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
       //i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
@@ -521,6 +526,9 @@ export class ProfileComponent implements OnInit {
 
       this.calculateSkillChart()
       this.promiseFinished = true;
+    } else {
+      this.promiseFinished = true;
+    }
     }
 
   }

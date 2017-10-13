@@ -2,7 +2,10 @@
   <div class="loader"></div>
   <!-- <p class="loading">Loading</p> -->
 </div>
-<div class="container" *ngIf='this.promiseFinished'>
+<div class="" *ngIf='this.promiseFinished && !this.isActiveProfile && !this.currentUser.finished'>
+  <h1>This page isn't finished. Please wait for this person to complete their profile!</h1>
+</div>
+<div class="container" *ngIf='this.promiseFinished && this.currentUser.finished'>
   <div *ngIf="this.isActiveProfile" class="btn-edit" (click) = 'editProfile()'>Edit</div>
   <div class="btn-back" (click) = 'this.location.back()'></div>
     <div class="basic-info col-xs-12" *ngIf = this.promiseFinished>

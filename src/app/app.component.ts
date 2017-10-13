@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service'
 import { UserService } from './services/user.service'
+import { Router, NavigationEnd } from '@angular/router';
 
 
 @Component({
@@ -16,6 +17,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
+    private router: Router,
   ){
     console.log("Navbar checkin login status")
     this.signedIn = auth.isLoggedIn()
@@ -23,17 +25,18 @@ export class AppComponent implements OnInit {
       localStorage.removeItem('token');
       localStorage.removeItem('uid');
       this.currentUser = null
-    }
-
-    let myCallback = () => {
-      //this.currentUser = this.auth.current_user  //TODO: find out why this doesn't work
+    } else {
       this.currentUser = localStorage.getItem('uid')
     }
+
 
   }
 
 
   ngOnInit() {
+    this.router.events.subscribe(() => {
+      window.scrollTo(0, 0);
+    });
   }
 
   navLogOut() {

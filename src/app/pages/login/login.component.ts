@@ -17,6 +17,8 @@ export class LoginComponent implements OnInit {
   password: string
   new: boolean = false
   activeTab: number = 0
+  signedIn: boolean = false
+  currentUser: string
 
 
   constructor(
@@ -26,6 +28,10 @@ export class LoginComponent implements OnInit {
   ) {
       if (this.router.url == '/login/new') {
         this.new = true
+      }
+      if (auth.isLoggedIn()) {
+        this.signedIn = true
+        this.currentUser = localStorage.getItem('uid')
       }
     }
 
@@ -51,5 +57,23 @@ export class LoginComponent implements OnInit {
       }
     }).bind(this))
 
+  }
+
+  navLogOut() {
+    this.auth.doLogout()
+    // if (this.auth.isLoggedIn()) {
+    //   console.log('this thinks youre logged in!')
+    //   this.signedIn = true
+    // } else {
+    //   this.signedIn = false
+    // }
+    // if (!this.signedIn) {
+    //   localStorage.removeItem('token');
+    //   localStorage.removeItem('uid');
+    //   this.currentUser = null
+    // }
+    // let myCallback = () => {
+    //   this.currentUser = localStorage.getItem('uid')
+    // }
   }
 }

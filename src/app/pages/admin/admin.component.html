@@ -2,8 +2,135 @@
   <h1 style="text-align: center">this is the admin super page. the buttons here do crazy stuff.</h1>
   <h1 style="text-align: center">if you somehow got here please don't click anything and send a bug report to let me know my rad security failed</h1>
 
-<div class="col-xs-6" style="padding: 2px">
-  <div class="col-xs-12" style='background: whitesmoke; border: 1px solid black; padding: 2px'>
+<div class='col-xs-12' style="position: ">
+  <div class="col-xs-6" style="padding: 2px">
+    <div class="col-xs-12 search-results-box">
+      <h3 style="text-align: center; margin-top: 10px; margin-bottom: 2px;">Users</h3>
+      <!-- <input type="text" name="test" value="" class="col-xs-10" [(ngModel)]='searchTerms.name' (keyup.enter)="search()">
+      <button type="button" name="button" class="col-xs-2" style="font-size: 14px; text-align: center; padding: 0px" (click)='search()'>Search</button> -->
+      <div class="search-results-interior" style="padding-top: 0px">
+        <div class="search-results-interior-2" style="padding-top: 0px">
+          <div class="" *ngIf='this.searchRunning'>
+            <div class="loader"></div>
+          </div>
+          <div class="" *ngIf='!this.searchRunning'>
+            <div class="" *ngIf='this.noResults'>
+              <h4 style="text-align: center">No Results Found</h4>
+            </div>
+            <div class="" *ngIf='allUsers.length > 0'>
+              <div class="" *ngFor='let p of allUsers; let i = index'>
+                <div class="search-item">
+                  <div class="search-item-not-expand col-xs-12">
+                    <img class="search-item-avatar" src={{p.avatar}} alt="">
+                    <div class="search-item-header"><a href="#/user-profile/{{p._id}}">{{p.firstName}} {{p.lastName}}</a></div>
+                    <div class="search-item-subheader">{{p.username}}</div>
+                  </div>
+                </div>
+                <!-- <div class="delete-button" style="" (click)='deleteUser(p, i)'>
+                  DELETE
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-6" style="padding: 2px">
+    <div class="box-overlay" *ngIf='this.companyToDelete.on'>
+      <div class="delete-box">
+        Are you SURE you want to delete {{this.companyToDelete.company.name}}?
+        <div class="delete-button-2" style="" (click)='deleteCompany(this.companyToDelete.company, this.companyToDelete.index)'>
+          DELETE
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 search-results-box">
+      <h3 style="text-align: center; margin-top: 10px; margin-bottom: 2px;">Companies</h3>
+      <!-- <input type="text" name="test" value="" class="col-xs-10" [(ngModel)]='searchTerms.name' (keyup.enter)="search()">
+      <button type="button" name="button" class="col-xs-2" style="font-size: 14px; text-align: center; padding: 0px" (click)='search()'>Search</button> -->
+      <div class="search-results-interior" style="padding-top: 0px">
+        <div class="search-results-interior-2" style="padding-top: 0px">
+          <div class="" *ngIf='this.searchRunning'>
+            <div class="loader"></div>
+          </div>
+          <div class="" *ngIf='!this.searchRunning'>
+            <div class="" *ngIf='this.noResults'>
+              <h4 style="text-align: center">No Results Found</h4>
+            </div>
+            <div class="" *ngIf='allCompanies.length > 0'>
+              <div class="" *ngFor='let c of allCompanies; let i = index' style="position: relative">
+                <div class="search-item">
+                  <div class="search-item-not-expand col-xs-12">
+                    <img class="search-item-avatar" src={{c.avatar}} alt="">
+                    <div class="search-item-header"><a href="#/corporate-profile/{{c._id}}">{{c.name}}</a></div>
+                    <div class="search-item-subheader">{{c.email}}</div>
+                  </div>
+                </div>
+                <div class="delete-button" style="" (click)='deleteCompanyPrep(c, i)'>
+                  DELETE
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-xs-12" style="margin-top: 500px;">
+  <div class="col-xs-6" style="padding: 2px;">
+    <div class="box-overlay" *ngIf='this.companyToDelete.on'>
+      <div class="delete-box">
+        Are you SURE you want to delete {{this.companyUserProxyToDelete.company.name}}-{{this.companyUserProxyToDelete.userProfile.firstName}} {{this.companyUserProxyToDelete.userProfile.lastName}}?
+        <div class="delete-button-2" style="" (click)='deleteCompanyUserProxy(this.companyToDelete.proxy, this.companyToDelete.index)'>
+          DELETE
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 search-results-box">
+      <h3 style="text-align: center; margin-top: 10px; margin-bottom: 2px;">c/u proxies</h3>
+      <!-- <input type="text" name="test" value="" class="col-xs-10" [(ngModel)]='searchTerms.name' (keyup.enter)="search()">
+      <button type="button" name="button" class="col-xs-2" style="font-size: 14px; text-align: center; padding: 0px" (click)='search()'>Search</button> -->
+      <div class="search-results-interior" style="padding-top: 0px">
+        <div class="search-results-interior-2" style="padding-top: 0px">
+          <div class="" *ngIf='this.searchRunning'>
+            <div class="loader"></div>
+          </div>
+          <div class="" *ngIf='!this.searchRunning'>
+            <div class="" *ngIf='this.noResults'>
+              <h4 style="text-align: center">No Results Found</h4>
+            </div>
+            <div class="" *ngIf='allCompanyUserProxies.length > 0'>
+              <div class="" *ngFor='let c of allCompanyUserProxies; let i = index' style="position: relative">
+                <div class="search-item">
+                  <div class="search-item-not-expand col-xs-12">
+                    <div class="search-item-header" *ngIf='!c.company'>
+                      NO COMPANY
+                    </div>
+                    <div class="search-item-header" *ngIf='!c.userProfile'>
+                      NO COMPANY
+                    </div>
+                    <div class="" *ngIf='c.company && c.userProfile'>
+                      <div class="search-item-header">{{c.company.name}}</div>
+                      <div class="search-item-subheader">{{c.userProfile.firstName}} {{c.userProfile.lastName}}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="delete-button" style="" (click)='deleteCompanyUserProxyPrep(c, i)'>
+                  DELETE
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="col-xs-6" style="padding: 2px"> -->
+  <!-- <div class="col-xs-12" style='background: whitesmoke; border: 1px solid black; padding: 2px'>
     <h4>CERTS SORT/UPLOAD</h4>
     <p>(there really isn't any sorting involved with these though)</p>
     <button type="button" name="button" class="col-xs-6" (click)="sort()">Sort From {{this.sortCounter}}</button>
@@ -17,7 +144,7 @@
     <button type="button" name="button" class="col-xs-6" (click)="sort()">Sort From {{this.sortCounter}}</button>
     <button type="button" name="button" class="col-xs-6" (click)="uploadSortedObjects()">Upload From {{this.uploadCounter}}</button>
   </div>
-</div>
+</div> -->
 
 
   <!-- <div class="col-xs-12 text-container" *ngFor='let user of users' (click) = "goTo(user._id)">

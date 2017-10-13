@@ -114,6 +114,7 @@ export class ProfileEditComponent implements OnInit {
     private s3Service: s3Service,
     private agencyService: AgencyService
   ) {
+    window.scrollTo(0, 0);
     if (!auth.isLoggedIn()) {
       this.router.navigateByUrl("/login")
     } else {
@@ -154,10 +155,11 @@ export class ProfileEditComponent implements OnInit {
         //if one of your jobs is tagged as "current", it assumes you're unavailable and vice versa
         var avail = true
         for (let pos of this.currentUser.positionHistory) {
-          if (pos.EndDate.toLowerCase() == "current"){
-            avail = false
+          if (pos.EndDate) {
+            if (pos.EndDate.toLowerCase() == "current"){
+              avail = false
+            }
           }
-
         }
 
         if (!this.currentUser.certification[0]) {
@@ -324,17 +326,21 @@ export class ProfileEditComponent implements OnInit {
           }
           this.checkFields()
           for (let d of this.currentUser.education){
-            var degreeName = d.DegreeType[0].Name.toLowerCase()
-            if (degreeName.includes('associate') || degreeName == "ass.") {
-              d.DegreeType[0].Name = "Associate"
-            } else if (degreeName.includes('bachelor') || degreeName == 'ba' || degreeName == 'b.a.') {
-              d.DegreeType[0].Name = "Bachelor's"
-            } else if (degreeName.includes('master')) {
-              d.DegreeType[0].Name = "Master's"
-            } else if (degreeName.includes('doctor') || degreeName == "phd" || degreeName == 'ph.d.') {
-              d.DegreeType[0].Name = "Ph.D."
-            } else {
-              d.DegreeType[0].Name = 'Other'
+            if (d.DegreeType[0]){
+              if (d.DegreeType[0].Name) {
+                var degreeName = d.DegreeType[0].Name.toLowerCase()
+                if (degreeName.includes('associate') || degreeName == "ass.") {
+                  d.DegreeType[0].Name = "Associate"
+                } else if (degreeName.includes('bachelor') || degreeName == 'ba' || degreeName == 'b.a.') {
+                  d.DegreeType[0].Name = "Bachelor's"
+                } else if (degreeName.includes('master')) {
+                  d.DegreeType[0].Name = "Master's"
+                } else if (degreeName.includes('doctor') || degreeName == "phd" || degreeName == 'ph.d.') {
+                  d.DegreeType[0].Name = "Ph.D."
+                } else {
+                  d.DegreeType[0].Name = 'Other'
+                }
+              }
             }
           }
 
@@ -345,11 +351,15 @@ export class ProfileEditComponent implements OnInit {
             this.certService.getCerts().then(v => {
               this.allCerts = v
               this.promiseFinished = true;
+              console.log(document.body.scrollTop)
+              setTimeout(() => {document.body.scrollTop = document.documentElement.scrollTop = 0; window.scrollTo(0, 0); console.log('???')}, 280);
+              // window.scrollTo(0, 0);
             })
           });
         });
       }
     }
+    window.scrollTo(0, 0);
   }
 
   ngOnInit() {
@@ -512,9 +522,11 @@ export class ProfileEditComponent implements OnInit {
   agencyValidCheck (agency) {
     var match = false
     for (let a of this.allAgencies) {
-      if (a.agency.toString().toLowerCase() == agency.toString().toLowerCase()){
-        match = true
-        agency = a.agency
+      if (a.agency){
+        if (a.agency.toString().toLowerCase() == agency.toString().toLowerCase()){
+          match = true
+          agency = a.agency
+        }
       }
     }
     return match;

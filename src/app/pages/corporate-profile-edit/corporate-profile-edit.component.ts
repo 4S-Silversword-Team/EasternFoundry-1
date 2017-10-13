@@ -219,7 +219,7 @@ export class CorporateProfileEditComponent implements OnInit {
       }).filter((proxy) => {
         return proxy.company._id == this.route.snapshot.params['id']
       })[0]
-      if (user.username == "johnestes4@gmail.com"){
+      if (user.power >= 4){
         this.isUserAdmin = true;
         console.log("I'm SUPER admin")
       }
