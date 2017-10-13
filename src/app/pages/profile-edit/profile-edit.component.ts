@@ -82,7 +82,7 @@ export class ProfileEditComponent implements OnInit {
   maxToolScores: number[] = []
   currentJobs: boolean[] = []
   lastUsedEndDate: string[] = []
-
+  years: number[] = [];
   customTrackBy(index: number, obj: any): any {
     return  index;
   }
@@ -115,6 +115,9 @@ export class ProfileEditComponent implements OnInit {
     private agencyService: AgencyService
   ) {
     window.scrollTo(0, 0);
+    for (var i = 1900; i<=2099; i++){
+      this.years.push(i)
+    }
     if (!auth.isLoggedIn()) {
       this.router.navigateByUrl("/login")
     } else {
@@ -935,21 +938,7 @@ export class ProfileEditComponent implements OnInit {
         koDescription: '',
         koScore: 0
       },
-      offices: [{
-        title: '',
-        data: [{
-          title: 'Years Agency Experience',
-          score: 0
-        }],
-        score: 0,
-        description: '',
-        isPM: false,
-        pmDescription: '',
-        pmScore: 0,
-        isKO: false,
-        koDescription: '',
-        koScore: 0
-      }]
+      offices: []
     });
   }
 
@@ -978,6 +967,15 @@ export class ProfileEditComponent implements OnInit {
   deleteOffice(agency, i) {
     agency.offices.splice(i, 1);
     this.checkFields()
+  }
+
+  checkYear(index) {
+    if (index>2099 || index.toString().length > 4){
+      index = 2099
+    }
+    // if (index.expiration>2099 || index.expiration.toString().length > 4){
+    //   index.expiration = 2099
+    // }
   }
 
   scoreChange(job, office, which, up){

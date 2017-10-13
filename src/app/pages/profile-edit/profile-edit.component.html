@@ -140,12 +140,19 @@
           <input class="col-xs-12" [(ngModel)] = 'index.clearanceType' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.clearanceType}">
         </div>
         <div class="col-xs-4 text-left">
-          <p class="col-xs-12">Awarded: </p>
-          <input class="col-xs-12" type='date' [(ngModel)] = 'index.awarded' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.awarded}">
+          <p class="col-xs-12">Year Awarded: </p>
+          <select class="col-xs-12" name="" [(ngModel)] = 'index.awarded' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.awarded}" style="height: 33px; margin-top: 9px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.25)">
+            <option [ngValue]='y' *ngFor='let y of years'>{{y}}</option>
+          </select>
+
+          <!-- <input class="col-xs-12" type="number" step="1" placeholder="Year" [(ngModel)] = 'index.awarded' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.awarded}"> -->
         </div>
         <div class="col-xs-4 text-left">
-          <p class="col-xs-12">Expiration: </p>
-          <input class="col-xs-12" [(ngModel)] = 'index.expiration' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.expiration}">
+          <p class="col-xs-12">Year of Expiration: </p>
+          <select class="col-xs-12" name="" [(ngModel)] = 'index.expiration' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.expiration}" style="height: 33px; margin-top: 9px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.25)">
+            <option [ngValue]='y' *ngFor='let y of years'>{{y}}</option>
+          </select>
+          <!-- <input class="col-xs-12" type="number" step="1" placeholder="Year" [(ngModel)] = 'index.expiration' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.expiration}"> -->
         </div>
       </div>
       <div class="col-xs-2" style="padding-top: 4%">
@@ -153,7 +160,7 @@
       </div>
     </div>
     <div class="col-xs-8 col-xs-offset-2">
-      <button class="col-xs-12 col-xs-offset-0 col-md-4 col-md-offset-4" (click)="addClearance()">Add Clearance</button>
+      <button class="col-xs-12 col-xs-offset-0 col-md-4 col-md-offset-4" (click)="addClearance()" style="margin-top: 5px;">Add Clearance</button>
     </div>
   </div>
 
@@ -350,7 +357,7 @@
           </div>
           <div class="col-xs-11 col-xs-offset-1" *ngFor="let agency of job.agencyExperience; let i = index; trackBy:customTrackBy">
             <div class="" *ngIf='i > 0' style="margin-bottom: 25px">
-              <div class="">
+              <div class="col-xs-12" style="position: relative">
                 <p class="col-md-3 col-xs-5 vertically-centered">Agency {{i + 1}}</p>
                 <input class="col-md-9 col-xs-7" [(ngModel)] = 'agency.main.title'>
                 <button class="tiny-button-skills" (click)="deleteAgency(job, i)" style="margin-top: 9px; margin-right: -5px"><div class="tiny-button-text">x</div></button>
@@ -422,11 +429,12 @@
             </div>
             <div class="col-xs-11 col-xs-offset-1 col-md-11 col-md-offset-1" *ngFor="let agency of job.agencyExperience; let i = index; trackBy:customTrackBy">
               <div class="">
-                <div class="">
-                  <p class="col-md-3 col-xs-5 vertically-centered">Agency {{i}}</p>
+                <div class="col-xs-12" style="position: relative">
+                  <p class="col-md-3 col-xs-5 vertically-centered">Agency {{i + 1}}</p>
                   <div class="col-md-9 col-xs-7 autocomplete-form">
                     <input ngui-auto-complete class="col-xs-12" placeholder="Must match an existing agency" [(ngModel)] = 'agency.main.title' [source]='this.allAgencies' [list-formatter]="autocompleListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': agencyValidCheck(agency.main.title) == false}">
                   </div>
+                  <button class="tiny-button-skills" (click)="deleteAgency(job, i)" style="margin-top: 9px; margin-right: 9px"><div class="tiny-button-text">x</div></button>
                   <!-- <input class="col-md-9 col-xs-7" [(ngModel)] = 'agency.main.title'> -->
                   <div class="col-xs-12" style="height: 50px">
                     <p class="col-xs-4 col-md-3 col-xs-offset-1" style="">Were you a PM?</p>
