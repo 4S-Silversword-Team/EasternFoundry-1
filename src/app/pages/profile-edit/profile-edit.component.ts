@@ -154,10 +154,11 @@ export class ProfileEditComponent implements OnInit {
         //if one of your jobs is tagged as "current", it assumes you're unavailable and vice versa
         var avail = true
         for (let pos of this.currentUser.positionHistory) {
-          if (pos.EndDate.toLowerCase() == "current"){
-            avail = false
+          if (pos.EndDate) {
+            if (pos.EndDate.toLowerCase() == "current"){
+              avail = false
+            }
           }
-
         }
 
         if (!this.currentUser.certification[0]) {
