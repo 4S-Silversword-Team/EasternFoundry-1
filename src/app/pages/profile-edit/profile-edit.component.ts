@@ -324,17 +324,21 @@ export class ProfileEditComponent implements OnInit {
           }
           this.checkFields()
           for (let d of this.currentUser.education){
-            var degreeName = d.DegreeType[0].Name.toLowerCase()
-            if (degreeName.includes('associate') || degreeName == "ass.") {
-              d.DegreeType[0].Name = "Associate"
-            } else if (degreeName.includes('bachelor') || degreeName == 'ba' || degreeName == 'b.a.') {
-              d.DegreeType[0].Name = "Bachelor's"
-            } else if (degreeName.includes('master')) {
-              d.DegreeType[0].Name = "Master's"
-            } else if (degreeName.includes('doctor') || degreeName == "phd" || degreeName == 'ph.d.') {
-              d.DegreeType[0].Name = "Ph.D."
-            } else {
-              d.DegreeType[0].Name = 'Other'
+            if (d.DegreeType[0]){
+              if (d.DegreeType[0].Name) {
+                var degreeName = d.DegreeType[0].Name.toLowerCase()
+                if (degreeName.includes('associate') || degreeName == "ass.") {
+                  d.DegreeType[0].Name = "Associate"
+                } else if (degreeName.includes('bachelor') || degreeName == 'ba' || degreeName == 'b.a.') {
+                  d.DegreeType[0].Name = "Bachelor's"
+                } else if (degreeName.includes('master')) {
+                  d.DegreeType[0].Name = "Master's"
+                } else if (degreeName.includes('doctor') || degreeName == "phd" || degreeName == 'ph.d.') {
+                  d.DegreeType[0].Name = "Ph.D."
+                } else {
+                  d.DegreeType[0].Name = 'Other'
+                }
+              }
             }
           }
 
