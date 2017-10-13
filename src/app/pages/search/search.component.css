@@ -1,3 +1,13 @@
+@media screen and (max-width: 1200px) {
+  .search-term-desc {
+    display: none;
+  }
+}
+@media screen and (max-height: 900px) {
+  .search-term-desc {
+    display: none;
+  }
+}
 
 .avatar {
     width: 150px;

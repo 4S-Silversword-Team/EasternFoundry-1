@@ -107,9 +107,11 @@
 .profile-navbar-tab-active {
   background: rgba(255,255,255,.95);
   color: rgb(0,0,0);
+  border-right: 2px solid rgba(0,0,0,0.75);
 }
 .profile-navbar-tab-active-left {
   background: rgba(255,255,255,.95);
+  border-right: 2px solid rgba(0,0,0,0.75);
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   color: rgb(0,0,0);

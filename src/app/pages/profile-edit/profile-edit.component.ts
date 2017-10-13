@@ -48,7 +48,7 @@ export class ProfileEditComponent implements OnInit {
   toolSubmitted: boolean = false
   fieldsFilled = false
   months: any[] = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
   ]
   degreeType: any[] = [
     {
@@ -188,6 +188,7 @@ export class ProfileEditComponent implements OnInit {
             available: avail
           })
         }
+        this.currentUser.availability.splice(0,6)
         while (this.currentUser.availability.length < 7){
           var lastNum = this.currentUser.availability.length
           var nextNum = this.months.indexOf(this.currentUser.availability[this.currentUser.availability.length - 1].date.slice(0,3)) + 1

@@ -149,6 +149,7 @@ export class AdminComponent implements OnInit {
   deleteCompanyUserProxy(proxy, i){
     this.companyUserProxyService.deleteCompanyUserProxy(proxy._id).then((res) => {
       console.log("its dead")
+      this.companyUserProxyToDelete.on = false
       this.allCompanyUserProxies.splice(i, 1)
     })
   }

@@ -80,10 +80,10 @@
 </div>
 <div class="col-xs-12" style="margin-top: 500px;">
   <div class="col-xs-6" style="padding: 2px;">
-    <div class="box-overlay" *ngIf='this.companyToDelete.on'>
+    <div class="box-overlay" *ngIf='this.companyUserProxyToDelete.on'>
       <div class="delete-box">
         Are you SURE you want to delete {{this.companyUserProxyToDelete.company.name}}-{{this.companyUserProxyToDelete.userProfile.firstName}} {{this.companyUserProxyToDelete.userProfile.lastName}}?
-        <div class="delete-button-2" style="" (click)='deleteCompanyUserProxy(this.companyToDelete.proxy, this.companyToDelete.index)'>
+        <div class="delete-button-2" style="" (click)='deleteCompanyUserProxy(this.companyUserProxyToDelete.proxy, this.companyUserProxyToDelete.index)'>
           DELETE
         </div>
       </div>
@@ -109,7 +109,7 @@
                       NO COMPANY
                     </div>
                     <div class="search-item-header" *ngIf='!c.userProfile'>
-                      NO COMPANY
+                      NO PERSON
                     </div>
                     <div class="" *ngIf='c.company && c.userProfile'>
                       <div class="search-item-header">{{c.company.name}}</div>

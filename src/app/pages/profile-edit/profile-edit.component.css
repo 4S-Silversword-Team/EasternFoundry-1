@@ -143,10 +143,8 @@ button {
 }
 
 .text-container {
-  background-color: whitesmoke;
-  border: 2px solid lightgray;
+  background: rgba(0,0,0,0.05);
   padding-top: 38px;
-  color: darkslategray;
 }
 
 .job-tab {
