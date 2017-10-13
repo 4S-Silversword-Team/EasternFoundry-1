@@ -22,7 +22,7 @@
                 <div class="search-item">
                   <div class="search-item-not-expand col-xs-12">
                     <img class="search-item-avatar" src={{p.avatar}} alt="">
-                    <div class="search-item-header">{{p.firstName}} {{p.lastName}}</div>
+                    <div class="search-item-header"><a href="#/user-profile/{{p._id}}">{{p.firstName}} {{p.lastName}}</a></div>
                     <div class="search-item-subheader">{{p.username}}</div>
                   </div>
                 </div>
@@ -63,7 +63,7 @@
                 <div class="search-item">
                   <div class="search-item-not-expand col-xs-12">
                     <img class="search-item-avatar" src={{c.avatar}} alt="">
-                    <div class="search-item-header">{{c.name}}</div>
+                    <div class="search-item-header"><a href="#/corporate-profile/{{c._id}}">{{c.name}}</a></div>
                     <div class="search-item-subheader">{{c.email}}</div>
                   </div>
                 </div>
