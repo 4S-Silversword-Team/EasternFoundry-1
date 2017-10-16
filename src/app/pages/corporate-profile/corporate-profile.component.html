@@ -147,7 +147,6 @@
 
 <!-- SERVICES TAB -->
 <div class="container" *ngIf='activeTab==2'>
-  <div class="service col-xs-12 clear" *ngIf="!services[0]">No Services</div>
   <div class="product-tab-bar col-xs-10 col-xs-offset-1">
     <div class="product-tab col-xs-3" (click)='serviceTab = serviceTab-1' *ngIf='serviceTab>0 && this.services[this.serviceTab-1]'>
       {{this.services[this.serviceTab-1].name}}
@@ -207,7 +206,6 @@
 
 <!-- PRODUCTS TAB -->
 <div class="container" *ngIf='activeTab==3'>
-  <div class="product col-xs-12 clear main" *ngIf="!products[0]">No Products</div>
   <div class="product-tab-bar col-xs-10 col-xs-offset-1">
     <div class="product-tab col-xs-3" (click)='productTab = productTab-1' *ngIf='productTab>0 && this.products[this.productTab-1]'>
       {{this.products[this.productTab-1].name}}

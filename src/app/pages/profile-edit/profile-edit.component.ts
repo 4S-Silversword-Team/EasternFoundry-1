@@ -186,9 +186,6 @@ export class ProfileEditComponent implements OnInit {
         while (this.currentUser.availability.length > 1 && this.currentUser.availability[0].date != currentDate) {
           this.currentUser.availability.splice(0,1)
         }
-        console.log('2')
-        console.log(this.currentUser.availability.length)
-
         if (this.currentUser.availability.length < 1) {
           this.currentUser.availability = [{
             date: currentDate,
@@ -205,7 +202,6 @@ export class ProfileEditComponent implements OnInit {
         // this.currentUser.availability.splice(0,6)
         while (this.currentUser.availability.length > 0 && this.currentUser.availability.length < 7){
           var lastNum = this.currentUser.availability.length
-          console.log(this.currentUser.availability.length)
             var nextNum = this.months.indexOf(this.currentUser.availability[this.currentUser.availability.length - 1].date.slice(0,3)) + 1
             if (nextNum >= this.months.length) {
               nextNum = 0
