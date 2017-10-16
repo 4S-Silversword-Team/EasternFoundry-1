@@ -68,6 +68,12 @@ export class CorporateProfileEditComponent implements OnInit {
 
   allAgencies: any[] = []
 
+  currentDate: string = new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()
+  tomorrow: string = new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + (new Date().getDate()+1)
+
+  lastStartDate: string;
+  lastEndDate: string;
+
   promiseFinished: boolean = false;
 
   constructor(
@@ -234,12 +240,75 @@ export class CorporateProfileEditComponent implements OnInit {
     })
   }
 
-  changeCustomerTab(index, num) {
+  changeCustomerTab(index, product, num) {
+    var customersDefense = []
+    var customersCommercial = []
+    var customersCivilian = []
+    if (product.customers.defense) {
+      for (let i of product.customers.defense) {
+        if (i.name.length > 0) {
+          customersDefense.push(i)
+        }
+      }
+      product.customers.defense = customersDefense
+    }
+    if (product.customers.commercial) {
+      for (let i of product.customers.commercial) {
+        if (i.name.length > 0) {
+          customersCommercial.push(i)
+        }
+      }
+      product.customers.commercial = customersCommercial
+    }
+    if (product.customers.civilian) {
+      for (let i of product.customers.civilian) {
+        if (i.name.length > 0) {
+          customersCivilian.push(i)
+        }
+      }
+      product.customers.civilian = customersCivilian
+    }
     this.productTabs[index] = num
-    console.log(this.productTabs[index])
   }
 
   checkFields(){
+    var productsPass = true
+    for (let p of this.products) {
+      if (!p.name) {
+        console.log('name failure')
+        productsPass = false
+      } else {
+        for (let i of p.customers.defense) {
+          if (i.length < 1) {
+            console.log('defense failure')
+
+            productsPass = false
+          }
+        }
+        for (let i of p.customers.commercial) {
+          if (i.length < 1) {
+            console.log('commercial failure')
+
+            productsPass = false
+          }
+        }
+        for (let i of p.customers.civilian) {
+          if (i.length < 1) {
+            console.log('civilian failure')
+
+            productsPass = false
+          }
+        }
+
+        for (let f of p.feature) {
+          if (!f.name || !f.score) {
+            console.log('feature name/score failure')
+
+            productsPass = false
+          }
+        }
+      }
+    }
     if (
       this.currentAccount.name &&
       this.currentAccount.email &&
@@ -248,9 +317,9 @@ export class CorporateProfileEditComponent implements OnInit {
       this.currentAccount.address &&
       this.currentAccount.city &&
       this.currentAccount.state &&
-      this.currentAccount.zip
-    )
-    {
+      this.currentAccount.zip &&
+      productsPass
+    ){
       this.fieldsFilled = true
     } else {
       this.fieldsFilled = false
@@ -273,8 +342,8 @@ export class CorporateProfileEditComponent implements OnInit {
     let request = {
       "userProfile": employeeId,
       "company": this.route.snapshot.params['id'],
-      "startDate": "01/01/2001",
-      "endDate": "01/02/2001",
+      "startDate": this.currentDate,
+      "endDate": this.currentDate,
       "stillAffiliated": false
     }
     this.companyUserProxyService.addCompanyUserProxy(request).then(() =>
@@ -331,13 +400,24 @@ export class CorporateProfileEditComponent implements OnInit {
     }
   }
 
+  updateEmployeeDate(employee, proxyId, key, value) {
+    if (employee.startDate.length < 10 || employee.endDate.length < 10) {
+      console.log('not lettin this thing break everything!')
+      return;
+    } else if (employee.startDate == this.lastStartDate || employee.endDate == this.lastEndDate) {
+      console.log('you didnt even change it! nah')
+      return;
+    } else {
+      this.updateEmployee(proxyId,key, value)
+    }
+  }
 
   updateEmployee(proxyId,key, value){
     if (!this.isUserAdmin){return;}
     let req = {};
     req[key] = value;
     this.companyUserProxyService.updateCompanyUserProxies(proxyId, req).toPromise().then(() =>
-      this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); })
+      this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); console.log('updated!')})
     );
 
   }
@@ -346,13 +426,25 @@ export class CorporateProfileEditComponent implements OnInit {
     this.userProfiles = []
     for (const i of this.currentAccount.userProfileProxies) {
       if (i.userProfile.firstName) {
+        var newStartDate
+        var newEndDate
+        if (!i.startDate || i.startDate.length < 10) {
+          newStartDate = ''
+        } else {
+          newStartDate = i.startDate.slice(0,10)
+        }
+        if (i.endDate || i.endDate < 10) {
+          newEndDate = i.endDate.slice(0,10)
+        } else {
+          newEndDate = ''
+        }
         this.userProfiles.push({
           "name": i.userProfile.firstName + " " + i.userProfile.lastName,
           "userId": i.userProfile._id,
           "proxyId": i._id,
           "username": i.userProfile.username,
-          "startDate": new Date(i.startDate).toDateString(),
-          "endDate": new Date(i.endDate).toDateString(),
+          "startDate": newStartDate,
+          "endDate": newEndDate,
           "avatar": i.userProfile.avatar,
           "stillAffiliated": i.stillAffiliated,
           "role": i.role,
@@ -408,10 +500,6 @@ export class CorporateProfileEditComponent implements OnInit {
         _id: "NEW",
         name: "",
         feature: [
-          {
-            name: "feature 1",
-            score: 10
-          }
         ],
         description: "",
         moreInfoLink: "",
@@ -421,13 +509,10 @@ export class CorporateProfileEditComponent implements OnInit {
         maintenance: true,
         customers: {
           defense: [
-
           ],
           civilian: [
-
           ],
           commercial: [
-
           ]
         }
       }
@@ -572,8 +657,8 @@ export class CorporateProfileEditComponent implements OnInit {
     let request = {
       "userProfile": user,
       "company": company,
-      "startDate": "01/01/2001",
-      "endDate": "01/02/2001",
+      "startDate": this.currentDate,
+      "endDate": this.tomorrow,
       "stillAffiliated": true,
       "role": role
     }
@@ -609,39 +694,6 @@ export class CorporateProfileEditComponent implements OnInit {
       this.companyService.createCompany(model).toPromise().then(newCompany => {
         var companyId = JSON.parse(newCompany._body)._id
         console.log(companyId)
-
-        //the nesting updates thing doesn't always work if you add a bunch of products/services
-        //and i cannot for the life of me make it do any of it any other way
-        //so as of now i am turning the entire thing off. make your products/services AFTER the company exists. fuck it
-        // if(model.product) {
-        //   for (const i of this.products) {
-        //     const productModel = i
-        //     delete productModel['_id'];
-        //     this.productService.createProduct(productModel).toPromise().then(result => {
-        //       var res: any = result
-        //       var productId = JSON.parse(res._body)._id
-        //       model.product.push(productId)
-        //       this.companyService.updateCompany(companyId, model).toPromise().then((result) => {
-        //         this.companyService.getCompanyByID(companyId).toPromise().then(result => model = result);
-        //        });
-        //     });
-        //   }
-        // }
-        // if (this.currentAccount.service) {
-        //   for (const i of this.services) {
-        //     const serviceModel = i
-        //     delete serviceModel['_id'];
-        //     this.serviceService.createService(serviceModel).toPromise().then(result => {
-        //       var res: any = result
-        //       var serviceId = JSON.parse(res._body)._id
-        //       model.service.push(serviceId)
-        //       this.companyService.updateCompany(companyId, model).toPromise().then((result) => {
-        //         this.companyService.getCompanyByID(companyId).toPromise().then(result => model = result);
-        //        });
-        //     });
-        //
-        //   }
-        // }
 
         //TODO handle if no admin in role collection in Db
         this.roleService.getRoleByTitle("admin").toPromise().then((admin) => {
