@@ -88,10 +88,6 @@ export class PastPerformanceEditComponent implements OnInit {
   }
 
   myCallback() {
-    console.log(this.currentDate)
-    if (this.currentPastPerformance.fte == undefined) {
-      this.currentPastPerformance.fte = ''
-    }
     this.userProfiles = [];
     for (const i of this.currentPastPerformance.userProfileProxies){
       this.userProfiles.push({
@@ -115,6 +111,7 @@ export class PastPerformanceEditComponent implements OnInit {
         "activeContract": i.activeContract
       })
     }
+    this.checkFields()
     this.promiseFinished = true
   }
 
