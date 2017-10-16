@@ -46,7 +46,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   team: User[]  = [];
   renderChart: boolean;
   chart: any;
-  activeTab: number = 4;
+  activeTab: number = 0;
   productTab: number = 0;
   productCustomerTab: number = 0;
   serviceTab: number = 0;
@@ -280,7 +280,7 @@ changeToTeam(){
           return parseFloat(b.score) - parseFloat(a.score);
         })
 
-        for (var j = 0; j < 8; j++) {
+        for (var j = 0; j < 10; j++) {
           if (data_prof.has(occupations[j].title)) {
             // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
             // we'll see if it clears up when all the profiles in the database have full data on them
@@ -295,12 +295,10 @@ changeToTeam(){
         }
       }
     }
-    for(var k = 0; k < skill.length; k++){
-      if (k < 8) {
-        data_prof.set( skill[k], ( data_prof.get( skill[k] )/data_peop.get( skill[k] ) ) );
-        prof[k] = data_prof.get( skill[k] );
-        peop[k] = data_peop.get( skill[k] );
-      }
+    for(var k = 0; k < 10; k++){
+      data_prof.set( skill[k], ( data_prof.get( skill[k] )/data_peop.get( skill[k] ) ) );
+      prof[k] = data_prof.get( skill[k] );
+      peop[k] = data_peop.get( skill[k] );
     }
 
     this.chart = new Chart({
