@@ -140,19 +140,29 @@
           <input class="col-xs-12" [(ngModel)] = 'index.clearanceType' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.clearanceType}">
         </div>
         <div class="col-xs-4 text-left">
-          <p class="col-xs-12">Awarded: </p>
-          <input class="col-xs-12" type='date' [(ngModel)] = 'index.awarded' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.awarded}">
+          <p class="col-xs-12">Year Awarded: </p>
+          <!-- <input class="col-xs-11" type="date" [(ngModel)] = 'index.awarded' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.awarded}"> -->
+          <input class="col-xs-12" type="number" step="1" placeholder="Year" [(ngModel)] = 'index.awarded' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.awarded || index.awarded.toString().length != 4}">
+
+          <!-- <select class="col-xs-12" name="" [(ngModel)] = 'index.awarded' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.awarded}" style="height: 33px; margin-top: 9px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.25)">
+            <option [ngValue]='y' *ngFor='let y of years'>{{y}}</option>
+          </select> -->
+
+          <!-- <input class="col-xs-12" type="number" step="1" placeholder="Year" [(ngModel)] = 'index.awarded' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.awarded}"> -->
         </div>
         <div class="col-xs-4 text-left">
-          <p class="col-xs-12">Expiration: </p>
-          <input class="col-xs-12" [(ngModel)] = 'index.expiration' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.expiration}">
+          <p class="col-xs-12">Year of Expiration: </p>
+          <!-- <select class="col-xs-12" name="" [(ngModel)] = 'index.expiration' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.expiration}" style="height: 33px; margin-top: 9px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.25)">
+            <option [ngValue]='y' *ngFor='let y of years'>{{y}}</option>
+          </select> -->
+          <input class="col-xs-12" type="number" step="1" placeholder="Year" [(ngModel)] = 'index.expiration' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !index.expiration || index.expiration.toString().length != 4}">
         </div>
       </div>
       <div class="col-xs-2" style="padding-top: 4%">
         <button class="col-xs-12" style="height: 12%; margin: 1%;" (click)="deleteClearance(i)">DELETE</button>
       </div>
     </div>
-    <div class="col-xs-8 col-xs-offset-2">
+    <div class="col-xs-8 col-xs-offset-2" style="margin-top: 5px;">
       <button class="col-xs-12 col-xs-offset-0 col-md-4 col-md-offset-4" (click)="addClearance()">Add Clearance</button>
     </div>
   </div>

@@ -82,6 +82,7 @@ export class ProfileEditComponent implements OnInit {
   maxToolScores: number[] = []
   currentJobs: boolean[] = []
   lastUsedEndDate: string[] = []
+  years: number[] = [];
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -117,6 +118,10 @@ export class ProfileEditComponent implements OnInit {
     if (!auth.isLoggedIn()) {
       this.router.navigateByUrl("/login")
     } else {
+      var year = this.currentYear()
+      for (var i = year; i>=1900; i--){
+        this.years.push(i)
+      }
       this.auth.getLoggedInUser() == this.route.snapshot.params['id']? console.log("welcome to your profile edit page"): (() => { console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})()
       this.toolService.getTools().then(val => {
         this.allTools = val
@@ -181,6 +186,15 @@ export class ProfileEditComponent implements OnInit {
         while (this.currentUser.availability.length > 1 && this.currentUser.availability[0].date != currentDate) {
           this.currentUser.availability.splice(0,1)
         }
+        console.log('2')
+        console.log(this.currentUser.availability.length)
+
+        if (this.currentUser.availability.length < 1) {
+          this.currentUser.availability = [{
+            date: currentDate,
+            available: avail
+          }]
+        }
         if (this.currentUser.availability[0].date != currentDate) {
           this.currentUser.availability.splice(0,1)
           this.currentUser.availability.push({
@@ -188,20 +202,21 @@ export class ProfileEditComponent implements OnInit {
             available: avail
           })
         }
-        this.currentUser.availability.splice(0,6)
-        while (this.currentUser.availability.length < 7){
+        // this.currentUser.availability.splice(0,6)
+        while (this.currentUser.availability.length > 0 && this.currentUser.availability.length < 7){
           var lastNum = this.currentUser.availability.length
-          var nextNum = this.months.indexOf(this.currentUser.availability[this.currentUser.availability.length - 1].date.slice(0,3)) + 1
-          if (nextNum >= this.months.length) {
-            nextNum = 0
-            year = year + 1
-          }
-          this.currentUser.availability.push({
-            date: this.months[nextNum] + ', ' + year.toString().slice(2,4),
-            available: avail
-          })
-        }
+          console.log(this.currentUser.availability.length)
+            var nextNum = this.months.indexOf(this.currentUser.availability[this.currentUser.availability.length - 1].date.slice(0,3)) + 1
+            if (nextNum >= this.months.length) {
+              nextNum = 0
+              year = year + 1
+            }
+            this.currentUser.availability.push({
+              date: this.months[nextNum] + ', ' + year.toString().slice(2,4),
+              available: avail
+            })
 
+        }
         for (let index of this.currentUser.availability) {
           this.availabilityData.dates.push(index.date)
           this.availabilityData.values.push(index.available)
@@ -591,6 +606,8 @@ export class ProfileEditComponent implements OnInit {
     var clearCheck = true
     for (let clear of this.currentUser.clearance) {
       if (!clear.clearanceType || !clear.awarded || !clear.expiration) {
+        clearCheck = false
+      } else if (clear.awarded.toString().length != 4 || clear.expiration.toString().length != 4) {
         clearCheck = false
       }
     }
