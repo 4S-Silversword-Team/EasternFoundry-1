@@ -4,6 +4,7 @@ export class PastPerformance {
     title: string
     client: string
     topic: string
+    area: string
     startDate: string
     endDate: string
     cleared: boolean

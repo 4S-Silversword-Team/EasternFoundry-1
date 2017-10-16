@@ -31,6 +31,8 @@ export class PastPerformanceComponent implements OnInit {
   public employeeWidth: number = 600
   public writeWidth: number = 800
   public clientName: string = 'Air Force: 1st Fighter Wing'
+  startDate: string
+  endDate: string
 
   constructor(
     private pastPerformanceService: PastperformanceService,
@@ -45,6 +47,9 @@ export class PastPerformanceComponent implements OnInit {
     //this.currentPastPerformance = this.pastPerformanceService.getPastPerformancebyID(this.currentPastPerformance.id)
     this.pastPerformanceService.getPastPerformancebyID(this.currentPastPerformance.id).toPromise().then(res => {
       this.currentPastPerformance = res ;
+      this.startDate = new Date(this.currentPastPerformance.startDate).toDateString()
+      this.endDate = new Date(this.currentPastPerformance.endDate).toDateString()
+
       if (auth.isLoggedIn()) {
         this.getAdminStatus()
       }

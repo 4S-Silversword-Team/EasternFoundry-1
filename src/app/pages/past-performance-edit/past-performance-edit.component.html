@@ -40,11 +40,11 @@
           <img *ngIf="this.currentPastPerformance.avatar" src="{{this.currentPastPerformance.avatar}}" class="avatar right">
           <div *ngIf="!createMode && (!this.currentPastPerformance.avatar || this.currentPastPerformance.avatar.startsWith('..'))" style="clear: both">
             <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
-            <button style="color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;" class="btn btn-primary" (click)="uploadPhoto()">Upload Photo</button>
+            <button style="width: 100%; color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;" class="btn btn-primary" (click)="uploadPhoto()">Upload Photo</button>
           </div>
           <div *ngIf="this.currentPastPerformance.avatar && !this.currentPastPerformance.avatar.startsWith('..')" style="clear: both">
             <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
-            <button style="color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;" class="btn btn-primary" (click)="editPhoto()">Edit Photo</button>
+            <button style="width: 100%; color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;" class="btn btn-primary" (click)="editPhoto()">Edit Photo</button>
           </div>
           <!--<div class="right text-container div-uploadImage" [style.width]="''+ppInputWidth+'px'">-->
           <!--<p class="left lh-50" [style.cursor] = "'pointer'" (click) = 'uploadImage()' >Upload Image</p>-->
@@ -54,7 +54,7 @@
       <div class="form-horizontal col-xs-6 right">
         <div class="form-group col-xs-12 col-sm-12 srow">
           <p class="col-xs-3 col-sm-3 left lh-25">Functional<br>area in PP</p>
-          <div class="col-xs-9 col-sm-9"><input type="text" placeholder="Functional area in PP" class="right" style="width: 100%" (ngModelChange)="checkFields()"></div>
+          <div class="col-xs-9 col-sm-9"><input [(ngModel)]="this.currentPastPerformance.area" type="text" placeholder="Functional area in PP" class="right" style="width: 100%" (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentPastPerformance.area}"></div>
         </div>
         <div class="form-group col-xs-12 col-sm-12 srow">
           <p class="col-xs-3 col-sm-3 left lh-50">Start Date</p>
@@ -200,9 +200,9 @@
       <div class="col-xs-6 srow"><input type="text" placeholder="Capability 4" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
     </div>
   </div>
-  <div *ngIf="this.isUserAdmin" class="col-xs-12" style="margin-bottom: 10px">
+  <div *ngIf="this.isUserAdmin" class="col-xs-4 col-xs-offset-4" style="margin-bottom: 10px">
     <h2 style="text-align: center">SAVE CHANGES</h2>
-    <button class="btn btn-primary btn-block col-xs-4 col-xs-offset-5" style="color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;left: 50px" (click)="updatePP(this.currentPastPerformance)" *ngIf='this.fieldsFilled'>Save</button>
-    <button class="btn btn-primary btn-block col-xs-4 col-xs-offset-5" style="color: #fff; background-color: red; border-color: rgba(0, 0, 0, 0.5); font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;left: 50px" *ngIf='!this.fieldsFilled'>Page Unfinished</button>
+    <button class="btn btn-primary btn-block" style="color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;left: 50px" (click)="updatePP(this.currentPastPerformance)" *ngIf='this.fieldsFilled'>Save</button>
+    <button class="btn btn-primary btn-block" style="color: #fff; background-color: red; border-color: rgba(0, 0, 0, 0.5); font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;left: 50px" *ngIf='!this.fieldsFilled'>Page Unfinished</button>
   </div>
 </div>
