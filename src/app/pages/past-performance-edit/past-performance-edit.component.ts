@@ -45,6 +45,9 @@ export class PastPerformanceEditComponent implements OnInit {
   isUserAdmin: boolean = false;
   fieldsFilled: boolean = false;
   promiseFinished: boolean = false
+  currentDate: string = new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()
+  tomorrow: string = new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + (new Date().getDate()+1)
+
 
   constructor(
     private pastPerformanceService: PastperformanceService,
@@ -85,14 +88,18 @@ export class PastPerformanceEditComponent implements OnInit {
   }
 
   myCallback() {
+    console.log(this.currentDate)
+    if (this.currentPastPerformance.fte == undefined) {
+      this.currentPastPerformance.fte = ''
+    }
     this.userProfiles = [];
     for (const i of this.currentPastPerformance.userProfileProxies){
       this.userProfiles.push({
         "name": i.user.firstName + " " + i.user.lastName,
         "userId": i.user._id,
         "proxyId": i._id,
-        "startDate": new Date(i.startDate).toDateString(),
-        "endDate": new Date(i.endDate).toDateString(),
+        "startDate": i.startDate.slice(0,10),
+        "endDate": i.endDate.slice(0,10),
         "stillAffiliated": i.stillAffiliated,
         "role": i.role
       })
@@ -103,8 +110,8 @@ export class PastPerformanceEditComponent implements OnInit {
         "name": i.company.name,
         "companyId": i.company._id,
         "proxyId": i._id,
-        "startDate": new Date(i.startDate).toDateString(),
-        "endDate": new Date(i.endDate).toDateString(),
+        "startDate": i.startDate.slice(0,10),
+        "endDate": i.endDate.slice(0,10),
         "activeContract": i.activeContract
       })
     }
@@ -203,7 +210,7 @@ export class PastPerformanceEditComponent implements OnInit {
       this.currentPastPerformance.endDate &&
       this.currentPastPerformance.location &&
       this.currentPastPerformance.value &&
-      this.currentPastPerformance.FTE
+      this.currentPastPerformance.fte
     )
     {
       this.fieldsFilled = true
@@ -255,6 +262,7 @@ export class PastPerformanceEditComponent implements OnInit {
 
 
   updatePP(model, noNav?: boolean) {
+    console.log(this.currentPastPerformance.fte)
     // require auth of a signed in user with admin priveleges to the company that this past performance will be associated with.
     if (!this.isUserAdmin){return;}
 
@@ -283,8 +291,8 @@ export class PastPerformanceEditComponent implements OnInit {
         var request = {
           company: this.route.snapshot.queryParams["company"],
           pastPerformance: result['_id'],
-          startDate: "01/01/2001",
-          endDate: "01/02/2001",
+          startDate: this.currentDate,
+          endDate: "",
           activeContract: true
         }
         this.companyPastPerformanceProxyService.addCompanyPPProxy(request).then((proxy) => {
@@ -304,8 +312,8 @@ export class PastPerformanceEditComponent implements OnInit {
     let request = {
         "user": employeeId,
         "pastPerformance": this.route.snapshot.params['id'],
-        "startDate": "01/01/2001",
-        "endDate": "01/02/2001",
+        "startDate": this.currentDate,
+        "endDate": this.tomorrow,
         "stillAffiliated": false,
         "role": "programmer"
     }
@@ -319,8 +327,8 @@ export class PastPerformanceEditComponent implements OnInit {
     let request = {
       "user": employeeId,
       "pastPerformance": pastPerformanceId,
-      "startDate": "01/01/2001",
-      "endDate": "01/02/2001",
+      "startDate": this.currentDate,
+      "endDate": this.tomorrow,
       "stillAffiliated": true,
       "role": "programmer"
     }
@@ -348,8 +356,8 @@ export class PastPerformanceEditComponent implements OnInit {
     let request = {
         "company": companyId,
         "pastPerformance": this.route.snapshot.params['id'],
-        "startDate": "01/01/2001",
-        "endDate": "01/02/2001",
+        "startDate": this.currentDate,
+        "endDate": this.tomorrow,
         "stillAffiliated": false
     }
     console.log(request)

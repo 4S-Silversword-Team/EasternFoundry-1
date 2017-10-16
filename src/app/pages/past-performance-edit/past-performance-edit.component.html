@@ -58,11 +58,11 @@
         </div>
         <div class="form-group col-xs-12 col-sm-12 srow">
           <p class="col-xs-3 col-sm-3 left lh-50">Start Date</p>
-          <div class="col-xs-9 col-sm-9"><input [(ngModel)]="this.currentPastPerformance.startDate" placeholder="Start Date" style="width: 100%" class="right" (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentPastPerformance.startDate}"></div>
+          <div class="col-xs-9 col-sm-9"><input [(ngModel)]="this.currentPastPerformance.startDate" type='date' placeholder="Start Date" style="width: 100%" class="right" (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentPastPerformance.startDate}"></div>
         </div>
         <div class="form-group col-xs-12 col-sm-12 srow">
           <p class="col-xs-3 col-sm-3 left lh-50">End Date</p>
-          <div class="col-xs-9 col-sm-9"><input [(ngModel)]="this.currentPastPerformance.endDate" placeholder="End Date" style="width: 100%" class="right" (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentPastPerformance.endDate}"></div>
+          <div class="col-xs-9 col-sm-9"><input [(ngModel)]="this.currentPastPerformance.endDate" type='date' placeholder="End Date" style="width: 100%" class="right" (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentPastPerformance.endDate}"></div>
         </div>
         <div class="form-group col-xs-12 col-sm-12 srow">
           <p class="col-xs-3 col-sm-3 left lh-50">Rating</p>
@@ -78,7 +78,7 @@
         </div>
         <div class="form-group col-xs-12 col-sm-12 srow mt15">
           <p class="col-xs-3 col-sm-3 left lh-50"># of FTE</p>
-          <div class="col-xs-9 col-sm-9"><input type="text" [(ngModel)] = "this.currentPastPerformance.FTE" placeholder="FTE" class="right" style="width: 100%" (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentPastPerformance.FTE}"></div>
+          <div class="col-xs-9 col-sm-9"><input type="text" [(ngModel)] = "this.currentPastPerformance.fte" placeholder="FTE" class="right" style="width: 100%" (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentPastPerformance.fte}"></div>
         </div>
       </div>
     </div>

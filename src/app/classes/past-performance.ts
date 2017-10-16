@@ -8,7 +8,7 @@ export class PastPerformance {
     endDate: string
     cleared: boolean
     location: string
-    FTE: string
+    fte: string
     value: string
     rating: string
     description: string
