@@ -127,11 +127,17 @@ export class ProfileEditComponent implements OnInit {
         this.allTools = val
         for (let tool of this.allTools) {
           for (let t of this.currentUser.foundTools) {
-            if (t.title.toLowerCase() == tool.title.toLowerCase() && t.position.length < 1) {
-              console.log('Adding missing tool data to ' + tool.title + '...')
-              t.category = tool.category
-              t.classification = tool.classification
-              t.position = tool.position
+            if (t.title.toLowerCase() == tool.title.toLowerCase()) {
+              if (t.position.length < 1) {
+                console.log('Adding missing tool data to ' + tool.title + '...')
+                t.category = tool.category
+                t.classification = tool.classification
+                t.position = tool.position
+              }
+              t.code = tool.code
+              if (!t.code) {
+                console.log('Adding missing code to ' + tool.title + '...')
+              }
             }
           }
         }
@@ -224,6 +230,7 @@ export class ProfileEditComponent implements OnInit {
             if (tool.title.length > 1) {
               if (this.currentUser.resumeText.toLowerCase().indexOf(tool.title.toLowerCase()) >= 0) {
                 var toolToAdd = {
+                  code: [],
                   title: '',
                   category: '',
                   classification: '',
@@ -236,6 +243,7 @@ export class ProfileEditComponent implements OnInit {
                 if (this.currentUser.foundTools == null) {
                   this.currentUser.foundTools = [
                     {
+                      code: [],
                       title: '',
                       category: '',
                       classification: '',

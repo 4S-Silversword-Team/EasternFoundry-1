@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import {Http} from '@angular/http';
 
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
@@ -37,6 +38,7 @@ export class ProfileComponent implements OnInit {
   currentJob: any = null
   positionHistory: any[] = []
   occupations: any[] = []
+  categories: any[] = []
   months: any[] = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'
   ]
@@ -64,6 +66,7 @@ export class ProfileComponent implements OnInit {
   ]
 
   chart: any;
+  serviceChart: any;
 
   yearsOfSchool: number = 0;
   yearsOfWork: number = 0;
@@ -71,18 +74,31 @@ export class ProfileComponent implements OnInit {
   activeTab: number = 0;
   skillTab: number = 0;
 
+  allCategories: any[]
+
+
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
     public location: Location,
-    private auth: AuthService
+    private auth: AuthService,
+    private http: Http,
+
   ) {
 
     // this.currentUser = this.userService.getTempUser();
 
+    this.http.get('../../../assets/occupations.json')
+    .map((res: any) => res.json())
+    .subscribe(
+      (data: any) => {
+        this.allCategories = data;
+      },
+      err => console.log(err), // error
+      () => console.log(this.allCategories[0]) // complete
+    );
     this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
-
       this.currentUser = result;
       if (this.auth.isLoggedIn()) {
         if (this.auth.getLoggedInUser() == this.route.snapshot.params['id']) {
@@ -261,11 +277,9 @@ export class ProfileComponent implements OnInit {
           }
           if (!matchFound) {
             var newPosition = {
-              title: '',
-              score: 0
+              title: position,
+              score: 7
             }
-            newPosition.title = position
-            newPosition.score = 7
             toolsToPush.push(newPosition)
           }
         }
@@ -273,12 +287,9 @@ export class ProfileComponent implements OnInit {
       if (toolsToPush.length < 2) {
         for (let o of this.currentUser.occupations) {
           var newOccupation = {
-            title: '',
-            score: 0
+            title: o.title,
+            score: o.score
           }
-          newOccupation.title = o.title
-          newOccupation.score = o.score
-          // console.log(newOccupation.title)
           this.occupations.push(newOccupation)
         }
       } else {
@@ -296,11 +307,84 @@ export class ProfileComponent implements OnInit {
           this.occupations.push(toolsToPush[i])
           // console.log(toolsToPush[i].score)
         }
-
+      }
+      for (let t of toolsToPush) {
+        // console.log(code.substring(0,2) + " - " + t.title)
+        var newName
+        var newCode
+        for (let i of this.allCategories) {
+          if (t.title == i.title){
+            newName = i.category
+            newCode = i.code.substring(0,2)
+          }
+        }
+        var newCategory = {
+          code: newCode,
+          name: newName,
+          score: 5
+        }
+        var match = false
+        for (let c of this.categories) {
+          if (newCategory.name == c.name) {
+            match = true
+            c.score = Math.round(c.score + (t.score / 5))
+          }
+        }
+        if (!match){
+          console.log('makin one')
+          this.categories.push(newCategory)
+        }
       }
       // for (let o of this.occupations) {
       //   console.log(o.title + ' ' + o.score)
       // }
+      var serviceData = []
+      var catPointsTotal = 0
+      for (let c of this.categories) {
+        catPointsTotal += c.score
+      }
+      for (let c of this.categories) {
+        console.log(c.score/catPointsTotal)
+        var percent = 360*(c.score/catPointsTotal)
+        serviceData.push({
+          name: c.name,
+          y: percent
+        })
+      }
+
+
+      this.serviceChart = new Chart({
+        chart: {
+            type: 'pie',
+            backgroundColor: 'rgba(0, 100, 200, 0.00)',
+            renderTo: "service_chart"
+        },
+        title: {
+            text: 'Capabilities'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+
+        plotOptions: {
+          pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+              enabled: true,
+              format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+              style: {
+                  color: 'black'
+              }
+            }
+          }
+        },
+        series: [{
+          name: 'Focus',
+          colorByPoint: true,
+          data: serviceData,
+        }]
+      });
 
       function stringToBool(val) {
         return (val + '').toLowerCase() === 'true';
@@ -522,7 +606,6 @@ export class ProfileComponent implements OnInit {
           }]
         });
 
-
       this.calculateSkillChart()
       this.calculateCapaChart()
       this.promiseFinished = true;
@@ -620,6 +703,21 @@ export class ProfileComponent implements OnInit {
     return temp
   }
 
+  getServiceChartData(): number[] {
+    const temp: number[] = [];
+    for (const i of this.categories) {
+      temp.push(i.score);
+    }
+    return temp;
+  }
+
+  getServiceChartLabel(): string[] {
+    const temp: string[] = [];
+    for (const i of this.categories) {
+      temp.push(i.name);
+    }
+    return temp;
+  }
 
   currentYear() {
     let year = new Date().getFullYear()

@@ -82,7 +82,14 @@
       </div>
     </div>
     <div class="col-xs-12" style="background: rgba(220,220,220,1); height: 39.2vh">
+      <div id="service_chart"  style="height: 37vh; margin: 0 auto" [chart]="serviceChart"></div>
 
+      <!-- <div class="" style="height: 30vh;">
+        <canvas baseChart
+        [data]="getServiceChartData()"
+        [labels]="getServiceChartLabel()"
+        [chartType]="'doughnut'"></canvas>
+      </div> -->
     </div>
     <!-- <div class="col-xs-6 box-left">
       <div class="certification box col-xs-12">

@@ -281,16 +281,19 @@ changeToTeam(){
         })
 
         for (var j = 0; j < 10; j++) {
-          if (data_prof.has(occupations[j].title)) {
-            // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
-            // we'll see if it clears up when all the profiles in the database have full data on them
-            data_prof.set(occupations[j].title, data_prof.get(occupations[j].title) + occupations[j].score);
-            data_peop.set(occupations[j].title, data_peop.get(occupations[j].title) + 1);
-          }
-          if (!data_prof.has(occupations[j].title)) {
-            data_prof.set(occupations[j].title, occupations[j].score);
-            data_peop.set(occupations[j].title, 1);
-            skill.push(occupations[j].title);
+          // console.log(j + ' - ' + occupations[j].title)
+          if (j < occupations.length){
+            if (data_prof.has(occupations[j].title)) {
+              // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
+              // we'll see if it clears up when all the profiles in the database have full data on them
+              data_prof.set(occupations[j].title, data_prof.get(occupations[j].title) + occupations[j].score);
+              data_peop.set(occupations[j].title, data_peop.get(occupations[j].title) + 1);
+            }
+            if (!data_prof.has(occupations[j].title)) {
+              data_prof.set(occupations[j].title, occupations[j].score);
+              data_peop.set(occupations[j].title, 1);
+              skill.push(occupations[j].title);
+            }
           }
         }
       }

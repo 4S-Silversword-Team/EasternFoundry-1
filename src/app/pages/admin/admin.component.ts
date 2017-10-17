@@ -71,12 +71,11 @@ export class AdminComponent implements OnInit {
         this.allCompanies = res
         this.companyUserProxyService.getCompanyUserProxies().then(res => {
           this.allCompanyUserProxies = res
-          console.log(this.allCompanyUserProxies[0])
-        if (!auth.isLoggedIn()) {
-          this.router.navigateByUrl("/login")
-        } else {
-          this.getAdminStatus()
-        }
+          if (!auth.isLoggedIn()) {
+            this.router.navigateByUrl("/login")
+          } else {
+            this.getAdminStatus()
+          }
         })
       })
     })
@@ -101,11 +100,20 @@ export class AdminComponent implements OnInit {
     //     () => console.log(this.govtNames[0]) // complete
     // );
 
-    // this.certService.getCerts().then(val => this.sortedObjects = val );
-    console.log()
+    this.http.get('../../../assets/onet-tools.json')
+      .map((res: any) => res.json())
+      .subscribe(
+        (data: any) => {
+            this.toSort = data;
+        },
+        err => console.log(err), // error
+        () => console.log(this.toSort[0]) // complete
+    );
 
-    // this.toolService.getTools().then(val => this.sortedObjects = val );
-    //
+    // this.certService.getCerts().then(val => this.sortedObjects = val );
+
+    this.toolService.getTools().then(val => this.sortedObjects = val );
+
     // this.userService.getUsers().then(val => this.users = val );
   }
 
@@ -169,63 +177,80 @@ export class AdminComponent implements OnInit {
 
   sort() {
     console.log('god help us.')
-    // no code here right now
+      while (this.sortCounter < this.toSort.length) {
+        var matchFound = false
+        for (let i of this.sortedObjects) {
+          if (this.toSort[this.sortCounter].title == i.title) {
+            i.position.push(this.toSort[this.sortCounter].position[0])
+            var codeMatch = false
+            for (let c of i.code) {
+              if (c.substring(0,2) == this.toSort[this.sortCounter].code[0].substring(0,2)) {
+                codeMatch = true
+              }
+            }
+            if (!codeMatch) {
+              i.code.push(this.toSort[this.sortCounter].code[0])
+            }
+            matchFound = true
+          }
+        }
+        if (!matchFound) {
+          this.sortedObjects.push(this.toSort[this.sortCounter])
+        }
+        this.sortCounter++
+      }
+
+      // console.log('DONE. We have sorted ' + this.sortedTools.length + ' so far.')
+      // for (let g of this.govtNames) {
+      //   var matchFound = false
+      //   for (let s of this.sortedObjects){
+      //     if (g.name.toLowerCase() == s.agency.toLowerCase()) {
+      //       matchFound = true
+      //     }
+      //   }
+      //   if (!matchFound) {
+      //     console.log('addin a new one!')
+      //     this.sortedObjects.push({
+      //       agency: g.name,
+      //       subagencies: [],
+      //       alternatives: g.alternatives
+      //     })
+      //   }
+      // }
     console.log('DONE. We have sorted ' + this.sortedObjects.length + ' so far.')
   }
 
-  //     while (this.sortCounter < this.toSort.length) {
-  //       var matchFound = false
-  //       for (let i of this.sortedObjects) {
-  //         if (this.toSort[this.sortCounter].agency == i.agency) {
-  //           i.subagencies.push(this.toSort[this.sortCounter].subagencies[0])
-  //           matchFound = true
-  //         }
-  //       }
-  //       if (!matchFound) {
-  //         this.toSort[this.sortCounter].alternatives = []
-  //         for (let x of this.govtNames) {
-  //
-  //           if (this.toSort[this.sortCounter].agency.toLowerCase() == x.name.toLowerCase()) {
-  //             // console.log(this.toSort[this.sortCounter].agency + ' MATCHES ' + x.name)
-  //             this.toSort[this.sortCounter].alternatives = x.alternatives
-  //           }
-  //         }
-  //         this.sortedObjects.push(this.toSort[this.sortCounter])
-  //       }
-  //       this.sortCounter++
-  //     }
-  //     for (let g of this.govtNames) {
-  //       var matchFound = false
-  //       for (let s of this.sortedObjects){
-  //         if (g.name.toLowerCase() == s.agency.toLowerCase()) {
-  //           matchFound = true
-  //         }
-  //       }
-  //       if (!matchFound) {
-  //         console.log('addin a new one!')
-  //         this.sortedObjects.push({
-  //           agency: g.name,
-  //           subagencies: [],
-  //           alternatives: g.alternatives
-  //         })
-  //       }
-  //     }
-  //   console.log('DONE. We have sorted ' + this.sortedObjects.length + ' so far.')
-  // }
-
   uploadSortedObjects() {
-    if ((this.sortedObjects.length - this.uploadCounter) >= 2000 ){
-      for (var i = 0; i < 2000; i++) {
-        this.certService.createCert(this.sortedObjects[this.uploadCounter]).toPromise();
+    if ((this.sortedObjects.length - this.uploadCounter) >= 4000 ){
+      for (var i = 0; i < 4000; i++) {
+        this.toolService.createTool(this.sortedObjects[this.uploadCounter]).toPromise();
         this.uploadCounter++
       }
     } else {
       while (this.uploadCounter < this.sortedObjects.length) {
-        this.certService.createCert(this.sortedObjects[this.uploadCounter]).toPromise();
+        this.toolService.createTool(this.sortedObjects[this.uploadCounter]).toPromise();
         this.uploadCounter++
       }
     }
     console.log('DONE. We have finished ' + this.uploadCounter + ' so far.')
   }
+
+  // addToolCode() {
+  //   if ((this.sortedObjects.length - this.uploadCounter) >= 2000 ){
+  //     for (var i = 0; i < 2000; i++) {
+  //       if (!this.sortedObjects[this.uploadCounter].code){
+  //
+  //       }
+  //       this.certService.createCert(this.sortedObjects[this.uploadCounter]).toPromise();
+  //       this.uploadCounter++
+  //     }
+  //   } else {
+  //     while (this.uploadCounter < this.sortedObjects.length) {
+  //       this.certService.createCert(this.sortedObjects[this.uploadCounter]).toPromise();
+  //       this.uploadCounter++
+  //     }
+  //   }
+  //   console.log('DONE. We have finished ' + this.uploadCounter + ' so far.')
+  // }
 
 }
