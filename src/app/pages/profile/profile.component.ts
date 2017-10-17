@@ -89,15 +89,7 @@ export class ProfileComponent implements OnInit {
 
     // this.currentUser = this.userService.getTempUser();
 
-    this.http.get('../../../assets/occupations.json')
-    .map((res: any) => res.json())
-    .subscribe(
-      (data: any) => {
-        this.allCategories = data;
-      },
-      err => console.log(err), // error
-      () => console.log(this.allCategories[0]) // complete
-    );
+
     this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
       this.currentUser = result;
       if (this.auth.isLoggedIn()) {
@@ -110,7 +102,15 @@ export class ProfileComponent implements OnInit {
           this.isActiveProfile = false
         }
       }
-      myCallback();
+      this.http.get('../../../assets/occupations.json')
+      .map((res: any) => res.json())
+      .subscribe(
+        (data: any) => {
+          this.allCategories = data;
+        },
+        err => console.log(err), // error
+        () => myCallback() // complete
+      );
     });
 
     var myCallback = () => {
@@ -331,7 +331,6 @@ export class ProfileComponent implements OnInit {
           }
         }
         if (!match){
-          console.log('makin one')
           this.categories.push(newCategory)
         }
       }
@@ -344,7 +343,6 @@ export class ProfileComponent implements OnInit {
         catPointsTotal += c.score
       }
       for (let c of this.categories) {
-        console.log(c.score/catPointsTotal)
         var percent = 360*(c.score/catPointsTotal)
         serviceData.push({
           name: c.name,

@@ -1,4 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import {Http} from '@angular/http';
+
 import { User } from '../../classes/user';
 import { Product } from '../../classes/product';
 import { PastPerformance } from '../../classes/past-performance';
@@ -45,13 +47,14 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   promiseFinished: boolean = false;
   team: User[]  = [];
   renderChart: boolean;
-  chart: any;
+  charts: any[] = []
   activeTab: number = 0;
   productTab: number = 0;
   productCustomerTab: number = 0;
   serviceTab: number = 0;
   ppTab: number = 0;
   isUserAdmin: boolean = false;
+  allCategories: any[]
 
   constructor(
     private route: ActivatedRoute,
@@ -63,14 +66,23 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     private serviceService: ServiceService,
     private ppService: PastperformanceService,
     private auth: AuthService,
-    private  roleService: RoleService
+    private  roleService: RoleService,
+    private http: Http,
   ) {
     // console.log("testing1");
     // console.log(this);
     this.renderChart = false;
     // this.currentAccount = this.companyService.getTestCompany()
     // Need to use companyservice.getCompanyByID
-    this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then(company => { this.currentAccount = company; myCallback(); });
+    this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then(company => { this.currentAccount = company; this.http.get('../../../assets/occupations.json')
+    .map((res: any) => res.json())
+    .subscribe(
+      (data: any) => {
+        this.allCategories = data;
+      },
+      err => console.log(err), // error
+      () => myCallback() // complete
+    ); });
     // this.companyService.getCompanyByID(this.route.params["id"] ).toPromise().then(company => this.currentAccount = company)
     const myCallback = () => {
       if (auth.isLoggedIn()) {
@@ -220,18 +232,12 @@ changeToTeam(){
 
 
   showTeam() {
-    var data_prof = new Map();
-    var data_peop = new Map();
-    var skill = [];
-    var prof = [];
-    var peop = [];
-    var numPeop = 0;
-
+    var numPeop = 0
+    var occupations = []
     for(const i of this.currentAccount.userProfileProxies){
       numPeop++;
       var member = i.userProfile;
       if (member) {
-        var occupations = []
         var toolsToPush = []
         for (let tool of member.foundTools) {
           var matchFound = false
@@ -279,42 +285,79 @@ changeToTeam(){
         occupations.sort(function(a,b){
           return parseFloat(b.score) - parseFloat(a.score);
         })
-
-        for (var j = 0; j < 10; j++) {
-          // console.log(j + ' - ' + occupations[j].title)
-          if (j < occupations.length){
-            if (data_prof.has(occupations[j].title)) {
-              // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
-              // we'll see if it clears up when all the profiles in the database have full data on them
-              data_prof.set(occupations[j].title, data_prof.get(occupations[j].title) + occupations[j].score);
-              data_peop.set(occupations[j].title, data_peop.get(occupations[j].title) + 1);
-            }
-            if (!data_prof.has(occupations[j].title)) {
-              data_prof.set(occupations[j].title, occupations[j].score);
-              data_peop.set(occupations[j].title, 1);
-              skill.push(occupations[j].title);
+        var sortedOccupations: any[] = []
+        for (let o of occupations){
+          for (let c of this.allCategories) {
+            if (o.title == c.title) {
+              if (o.score > 10) {
+                var match = false
+                for (let s of sortedOccupations) {
+                  if (s.title == c.category) {
+                    match = true;
+                    var occupationMatch = false
+                    if (!s.occupations.includes(o)){
+                      s.occupations.push(o)
+                    }
+                  }
+                }
+                if (!match) {
+                  sortedOccupations.push({
+                    title: c.category,
+                    occupations: [o]
+                  })
+                }
+              }
             }
           }
         }
       }
     }
+    for (let s of sortedOccupations){
+      console.log(s)
+      var data_prof = new Map();
+      var data_peop = new Map();
+      var skill = [];
+      var prof = [];
+      var peop = [];
+      for (var j = 0; j < 10; j++) {
+        // console.log(j + ' - ' + occupations[j].title)
+        if (j < s.occupations.length){
+          if (data_prof.has(s.occupations[j].title)) {
+            // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
+            // we'll see if it clears up when all the profiles in the database have full data on them
+            data_prof.set(s.occupations[j].title, data_prof.get(s.occupations[j].title) + s.occupations[j].score);
+            data_peop.set(s.occupations[j].title, data_peop.get(s.occupations[j].title) + 1);
+          }
+          if (!data_prof.has(occupations[j].title)) {
+            data_prof.set(s.occupations[j].title, s.occupations[j].score);
+            data_peop.set(s.occupations[j].title, 1);
+            skill.push(s.occupations[j].title);
+          }
+        }
+      }
     for(var k = 0; k < 10; k++){
       data_prof.set( skill[k], ( data_prof.get( skill[k] )/data_peop.get( skill[k] ) ) );
       prof[k] = data_prof.get( skill[k] );
       peop[k] = data_peop.get( skill[k] );
     }
+    // this.charts.push('asfgdgasgasdgasgasdf')
+    this.charts.push(this.generateChart(s.title, skill, numPeop, peop, prof))
+    }
 
-    this.chart = new Chart({
+  }
+
+  generateChart(title, xCategories, yMax, series1, series2){
+    var chart = new Chart({
       chart: {
           type: 'bar',
           backgroundColor: 'rgba(0, 100, 200, 0.00)',
           renderTo: "team_chart",
       },
       title: {
-          text: 'Skills'
+          text: title
       },
       xAxis: [{
-          categories: skill,
+          categories: xCategories,
           options : {
               endOnTick: false
           },
@@ -343,7 +386,7 @@ changeToTeam(){
               }
           },
       }, { // Secondary yAxis
-          max: numPeop,
+          max: yMax,
           tickInterval: 1,
 //            tickAmount: numPeop,
 //              endOnTick:false ,
@@ -373,21 +416,21 @@ changeToTeam(){
           name: 'People',
           type: 'column',
           yAxis: 1,
-          data: peop,
+          data: series1,
           tooltip: {
               valueSuffix: ' '
           }
       }, {
           name: 'Proficiency',
           type: 'column',
-          data: prof,
+          data: series2,
           tooltip: {
               valueSuffix: '%'
           }
       }]
-    });
+    })
+    return chart
   }
-
 
 
 
