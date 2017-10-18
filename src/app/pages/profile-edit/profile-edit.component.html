@@ -5,6 +5,55 @@
 <div class="not-finished-alert" *ngIf='!this.currentUser.finished && this.promiseFinished'>Fill in the empty fields to complete your user profile!</div>
 <div class="container" *ngIf='this.promiseFinished'>
   <div class="btn-back" (click) = 'this.location.back()'></div>
+  <div class="basic-info col-xs-12" style="background: none">
+    <div class="" style="position: relative; height: 360px; width: 180px;">
+      <div class="" style="height: 180px; width: 180px; position: relative; float: left;">
+        <div class="left avatar">
+          <img src='{{ this.currentUser.avatar }}' class="avatar-img">
+        </div>
+        <div class="" style="position: absolute; top: 180px">
+          <div *ngIf="!this.currentUser.avatar || this.currentUser.avatar.startsWith('..')" class="left">
+            <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
+            <button class="btn btn-primary" (click)="uploadPhoto()">Upload Avatar</button>
+          </div>
+          <div *ngIf="this.currentUser.avatar && !this.currentUser.avatar.startsWith('..')" class="left">
+            <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
+            <button class="btn btn-primary col-xs-12" (click)="editPhoto()">Edit Avatar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="" style="position: absolute; height: 42vh; width: calc(100% - 180px); bottom: 0px; right: 0px; float: left; background: none;">
+      <div class="" style="position: absolute; float: left; bottom: 0px; left: 0px; width: 45%; height: 42vh; padding: 1vh; border-right: 2px solid rgba(0,0,0,0.5)">
+        <div class="left" style="width: 100px; line-height: 42px; float: left; padding-top: 4px;">
+          <p class="">First Name</p>
+          <p class="">Last Name</p>
+          <p class="">Title</p>
+          <p class="">Employer</p>
+        </div>
+        <div class="" style="width: calc(100% - 100px); float: left; background-color: blue;">
+          <input class="" style="width: 100%;" type="text" placeholder="Your first name" [(ngModel)] = 'this.currentUser.firstName' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.firstName}">
+          <input class="" style="width: 100%;" type="text" placeholder="Your last name" [(ngModel)] = 'this.currentUser.lastName' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.lastName}">
+          <input class="" style="width: 100%;" type="text" placeholder="Your current job title" [(ngModel)] = 'this.currentUser.positionHistory[0].PositionTitle' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.positionHistory[0].PositionTitle}">
+          <input class="" style="width: 100%;" type="text" placeholder="Your current employer" [(ngModel)] = 'this.currentUser.positionHistory[0].Employer' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.positionHistory[0].Employer}">
+        </div>
+      </div>
+      <div class="" style="position: absolute; float: left; bottom: 0px; right: 0px; width: 55%; height: 42vh; padding: 1vh;">
+        <p class="col-xs-3 left vertically-centered">Email</p>
+        <input class="col-xs-9 left" type="email" [(ngModel)] = 'this.currentUser.username' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.username}" disabled>
+        <p class="col-xs-3 left vertically-centered">Contact</p>
+        <input class="col-xs-9 left" type="tel" maxlength="14" [(ngModel)] = 'this.currentUser.cell' (ngModelChange)="onPhoneChange(this.currentUser.cell); checkFields()" (keydown.backspace)='onPhoneChange(this.currentUser.cell, true)' [ngClass]="{'empty-field': !this.currentUser.cell || this.currentUser.cell.length < 14}">
+        <p class="col-xs-3 left vertically-centered">City</p>
+        <input class="col-xs-9 left" type="text"  [(ngModel)] = 'this.currentUser.address.city' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': this.currentUser.address.city.length < 1}">
+        <p class="col-xs-3 left vertically-centered">State</p>
+        <input class="col-xs-9 left" type="text"  [(ngModel)] = 'this.currentUser.address.state' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.address.state}">
+        <p class="col-xs-3 left vertically-centered">Zip</p>
+        <input class="col-xs-9 left" type="number" max="99999" maxlength="5" [(ngModel)] = 'this.currentUser.address.zip' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentUser.address.zip}">
+      </div>
+    </div>
+  </div>
+
+
   <div class="basic-info col-xs-10 col-xs-offset-1 clear">
     <div class="row">
       <div class="col-xs-8 col-lg-2 col-lg-offset-0" [style.height] = "'150px'">

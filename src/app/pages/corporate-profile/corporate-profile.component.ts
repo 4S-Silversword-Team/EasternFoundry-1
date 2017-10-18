@@ -28,6 +28,7 @@ declare var Swiper: any;
 @Component({
   selector: 'app-corporate-profile',
   providers: [UserService, ProductService, ServiceService, PastperformanceService, CompanyService, AuthService, RoleService],
+  host: {'(window:keydown)': 'hotkeys($event)'},
   templateUrl: './corporate-profile.component.html',
   styleUrls: ['./corporate-profile.component.css']
 })
@@ -48,13 +49,22 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   team: User[]  = [];
   renderChart: boolean;
   charts: any[] = []
-  activeTab: number = 0;
+  activeTab: any = {
+    main: 0,
+    product: 0,
+    productCustomer: 0,
+    service: 0,
+    pp: 0,
+  }
+
   productTab: number = 0;
   productCustomerTab: number = 0;
   serviceTab: number = 0;
   ppTab: number = 0;
   isUserAdmin: boolean = false;
   allCategories: any[]
+
+  serviceChartNames: any[] = []
 
   constructor(
     private route: ActivatedRoute,
@@ -159,11 +169,22 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   ngOnInit() {
   }
 
+  hotkeys(event){
+    // console.log(event.keyCode.toString());
+    if (this.activeTab.main == 0) {
+      if (event.keyCode == 37 && this.activeTab.service > 0){
+        this.activeTab.service--
+      } else if (event.keyCode == 39 && this.serviceChartNames[this.activeTab.service+1]){
+        this.activeTab.service++
+      }
+    }
+  }
+
   switchTab(newTab) {
-    if (this.activeTab == newTab) {
-      this.activeTab = 7
+    if (this.activeTab.main == newTab) {
+      this.activeTab.main = 7
     } else {
-      this.activeTab = newTab
+      this.activeTab.main = newTab
     }
     console.log(newTab)
   }
@@ -220,16 +241,10 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   }
 
 
-changeToTeam(){
-
-  this.currentTab = 1;
-  this.showTeam();
-}
-
-
-
-
-
+  changeToTeam(){
+    this.currentTab = 1;
+    this.showTeam();
+  }
 
   showTeam() {
     var numPeop = 0
@@ -313,7 +328,8 @@ changeToTeam(){
       }
     }
     for (let s of sortedOccupations){
-      console.log(s)
+      this.serviceChartNames.push(s.title)
+      // console.log(s.title + " - " + s.occupations.length)
       var data_prof = new Map();
       var data_peop = new Map();
       var skill = [];
@@ -321,7 +337,7 @@ changeToTeam(){
       var peop = [];
       for (var j = 0; j < 10; j++) {
         // console.log(j + ' - ' + occupations[j].title)
-        if (j < s.occupations.length){
+        if (j < s.occupations.length && s.occupations[j].title){
           if (data_prof.has(s.occupations[j].title)) {
             // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
             // we'll see if it clears up when all the profiles in the database have full data on them
@@ -336,9 +352,11 @@ changeToTeam(){
         }
       }
     for(var k = 0; k < 10; k++){
-      data_prof.set( skill[k], ( data_prof.get( skill[k] )/data_peop.get( skill[k] ) ) );
-      prof[k] = data_prof.get( skill[k] );
-      peop[k] = data_peop.get( skill[k] );
+      if (k < s.occupations.length && skill[k]) {
+        data_prof.set( skill[k], ( data_prof.get( skill[k] )/data_peop.get( skill[k] ) ) );
+        prof[k] = data_prof.get( skill[k] );
+        peop[k] = data_peop.get( skill[k] );
+      }
     }
     // this.charts.push('asfgdgasgasdgasgasdf')
     this.charts.push(this.generateChart(s.title, skill, numPeop, peop, prof))
@@ -359,7 +377,7 @@ changeToTeam(){
       xAxis: [{
           categories: xCategories,
           options : {
-              endOnTick: false
+              endOnTick: true
           },
       }],
       yAxis: [{ // Primary yAxis
@@ -369,6 +387,7 @@ changeToTeam(){
           // endOnTick:false ,
           max:100,
           min:0,
+          tickInterval: 5,
           endOnTick: false,
           alignTicks: false,
 
@@ -418,7 +437,7 @@ changeToTeam(){
           yAxis: 1,
           data: series1,
           tooltip: {
-              valueSuffix: ' '
+              valueSuffix: ''
           }
       }, {
           name: 'Proficiency',

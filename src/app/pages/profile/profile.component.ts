@@ -17,6 +17,7 @@ declare var $: any;
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   providers: [UserService, AuthService],
+  host: {'(window:keydown)': 'hotkeys($event)'},
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
@@ -64,15 +65,19 @@ export class ProfileComponent implements OnInit {
       years: 2
     },
   ]
-
-  chart: any;
+  charts: any[] = [];
+  agencyChart: any;
+  skillChart: any;
   serviceChart: any;
-
+  serviceChartNames = [];
   yearsOfSchool: number = 0;
   yearsOfWork: number = 0;
   professionalPoints: number = 0;
-  activeTab: number = 0;
-  skillTab: number = 0;
+  activeTab: any = {
+    main: 0,
+    skill: 0,
+    service: 0,
+  }
 
   allCategories: any[]
 
@@ -520,7 +525,7 @@ export class ProfileComponent implements OnInit {
           prof[k] = data_prof.get( agencyNames[k] );
           peop[k] = data_peop.get( agencyNames[k] );
         }
-        this.chart = new Chart({
+        this.agencyChart = new Chart({
           chart: {
               type: 'bar',
               backgroundColor: 'rgba(0, 100, 200, 0.00)',
@@ -604,41 +609,243 @@ export class ProfileComponent implements OnInit {
           }]
         });
 
+
+      this.showTeam()
       this.calculateSkillChart()
       this.calculateCapaChart()
       this.promiseFinished = true;
     }
-
   }
 
   ngOnInit() {
   }
 
+  hotkeys(event){
+    // console.log(event.keyCode);
+    if (this.activeTab.main == 3) {
+      if (event.keyCode == 37 && this.activeTab.skill == 1 && this.activeTab.service > 0){
+        this.activeTab.service--
+      } else if (event.keyCode == 39 && this.activeTab.skill == 1 && this.serviceChartNames[this.activeTab.service+1]){
+        this.activeTab.service++
+      }
+    }
+  }
+
   switchTab(newTab) {
-    if (this.activeTab == newTab) {
-      this.activeTab = 7
+    if (this.activeTab.main == newTab) {
+      this.activeTab.main = 7
     } else {
-      this.activeTab = newTab
+      this.activeTab.main = newTab
     }
     console.log(newTab)
   }
 
+    showTeam() {
+      var occupations = []
+      var toolsToPush = []
+      for (let tool of this.currentUser.foundTools) {
+        var matchFound = false
+        for (let position of tool.position) {
+          for (let toolDone of toolsToPush) {
+            if (position == toolDone.title) {
+              toolDone.score += 5
+              matchFound = true
+            }
+          }
+          if (!matchFound) {
+            var newPosition = {
+              title: '',
+              score: 0
+            }
+            newPosition.title = position
+            newPosition.score = 5
+            toolsToPush.push(newPosition)
+          }
+        }
+      }
+      if (toolsToPush.length < 2) {
+        for (let o of this.currentUser.occupations) {
+          var newOccupation = {
+            title: '',
+            score: 0
+          }
+          newOccupation.title = o.title
+          newOccupation.score = o.score
+          occupations.push(newOccupation)
+
+        }
+      } else {
+        for (let tool of toolsToPush) {
+          for (let o of this.currentUser.occupations) {
+            if (tool.title == o.title) {
+              tool.score += (o.score / 5)
+            }
+          }
+          occupations.push(tool)
+        }
+      }
+      occupations.sort(function(a,b){
+        return parseFloat(b.score) - parseFloat(a.score);
+      })
+      var sortedOccupations: any[] = []
+      for (let o of occupations){
+        for (let c of this.allCategories) {
+          if (o.title == c.title) {
+            if (o.score > 10) {
+              var match = false
+              for (let s of sortedOccupations) {
+                if (s.title == c.category) {
+                  match = true;
+                  var occupationMatch = false
+                  if (!s.occupations.includes(o)){
+                    s.occupations.push(o)
+                  }
+                }
+              }
+              if (!match) {
+                sortedOccupations.push({
+                  title: c.category,
+                  occupations: [o]
+                })
+              }
+            }
+          }
+        }
+      }
+      for (let s of sortedOccupations){
+        this.serviceChartNames.push(s.title)
+        // console.log(s.title + " - " + s.occupations.length)
+        var data_prof = new Map();
+        var data_peop = new Map();
+        var skill = [];
+        var prof = [];
+        var peop = [];
+        for (var j = 0; j < 10; j++) {
+          // console.log(j + ' - ' + occupations[j].title)
+          if (j < s.occupations.length && s.occupations[j].title){
+            if (data_prof.has(s.occupations[j].title)) {
+              // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
+              // we'll see if it clears up when all the profiles in the database have full data on them
+              data_prof.set(s.occupations[j].title, data_prof.get(s.occupations[j].title) + s.occupations[j].score);
+              data_peop.set(s.occupations[j].title, data_peop.get(s.occupations[j].title) + 1);
+            }
+            if (!data_prof.has(occupations[j].title)) {
+              data_prof.set(s.occupations[j].title, s.occupations[j].score);
+              data_peop.set(s.occupations[j].title, 1);
+              skill.push(s.occupations[j].title);
+            }
+          }
+        }
+      for(var k = 0; k < 10; k++){
+        if (k < s.occupations.length && skill[k]) {
+          data_prof.set( skill[k], ( data_prof.get( skill[k] )/data_peop.get( skill[k] ) ) );
+          prof[k] = data_prof.get( skill[k] );
+          peop[k] = data_peop.get( skill[k] );
+        }
+      }
+      this.charts.push(this.generateChart(s.title, skill, peop, prof))
+      }
+    }
+
+    generateChart(title, xCategories, series1, series2){
+      var chart = new Chart({
+        chart: {
+          type: 'column',
+          backgroundColor: 'rgba(0, 100, 200, 0.00)',
+        },
+        title: {
+          text: title
+        },
+        xAxis: {
+          categories: xCategories,
+          options : {
+            endOnTick: true
+          },
+        },
+        yAxis: {
+          max:100,
+          min:0,
+          tickInterval: 1,
+          endOnTick: false,
+          alignTicks: false,
+          title: {
+            text: 'Score'
+          }
+        },
+        series: [{
+          name: 'Score',
+          data: series2,
+          tooltip: {
+            valueSuffix: ' points'
+          }
+        }]
+      })
+      return chart
+    }
 
 
   calculateSkillChart(){
-    var temp: number[] = []
-    this.toolChartLabels = []
-    this.toolChartDatas = []
-    if(this.currentUser.foundTools) {
-      for (let index of this.currentUser.foundTools) {
-        if (!index.score) {
-          index.score = 0
+      var data_prof = new Map();
+      var data_peop = new Map();
+      var skill = [];
+      var prof = [];
+      var peop = [];
+      var tools = this.currentUser.foundTools
+      // var tools = this.currentUser.foundTools.sort(function(a,b){
+      //   return b.score - a.score;
+      // })
+
+      for (var j = 0; j < tools.length; j++) {
+        // console.log(j + ' - ' + occupations[j].title)
+        if (tools[j].title){
+          if (data_prof.has(tools[j].title)) {
+            // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
+            // we'll see if it clears up when all the profiles in the database have full data on them
+            data_prof.set(tools[j].title, data_prof.get(tools[j].title) + tools[j].score);
+          }
+          if (!data_prof.has(tools[j].title)) {
+            data_prof.set(tools[j].title, tools[j].score);
+            skill.push(tools[j].title);
+          }
         }
-        this.toolChartLabels.push(index.title)
-        temp.push(+index.score)
+      }
+    for(var k = 0; k < tools.length; k++){
+      if (skill[k]) {
+        data_prof.set( skill[k], ( data_prof.get( skill[k] )) );
+        prof[k] = data_prof.get( skill[k] );
       }
     }
-    this.toolChartDatas.push({data: temp, label: 'Score'})
+    this.skillChart = new Chart({
+      chart: {
+        type: 'column',
+        backgroundColor: 'rgba(0, 100, 200, 0.00)',
+      },
+      title: {
+        text: "Tools"
+      },
+      xAxis: {
+        categories: skill,
+        options : {
+          endOnTick: true
+        },
+      },
+      yAxis: {
+        min:0,
+        tickInterval: 1,
+        endOnTick: false,
+        alignTicks: false,
+        title: {
+          text: 'Score'
+        }
+      },
+      series: [{
+        name: 'Score',
+        data: prof,
+        tooltip: {
+          valueSuffix: ' points'
+        }
+      }]
+    })
   }
 
   calculateCapaChart() {

@@ -69,11 +69,13 @@ export class PastPerformanceEditComponent implements OnInit {
         console.log('in past performance edit')
         this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {
           this.currentPastPerformance = res;
+          if (!this.currentPastPerformance.area) {
+            this.currentPastPerformance.area = ""
+          }
           this.myCallback();
           this.myCallback2()
           this.getEditorAdminStatus()
         });
-
       } else {
         console.log("in past performance create")
         this.createMode = true;
@@ -207,6 +209,7 @@ export class PastPerformanceEditComponent implements OnInit {
       this.currentPastPerformance.endDate &&
       this.currentPastPerformance.location &&
       this.currentPastPerformance.value &&
+      this.currentPastPerformance.area &&
       this.currentPastPerformance.fte
     )
     {
@@ -259,7 +262,6 @@ export class PastPerformanceEditComponent implements OnInit {
 
 
   updatePP(model, noNav?: boolean) {
-    console.log(this.currentPastPerformance.fte)
     // require auth of a signed in user with admin priveleges to the company that this past performance will be associated with.
     if (!this.isUserAdmin){return;}
 
@@ -377,8 +379,6 @@ export class PastPerformanceEditComponent implements OnInit {
     this.companyPastPerformanceProxyService.updateCompanyPPProxies(proxyId, req).toPromise().then(() =>
     {});
   }
-
-
 
   // addEmployee(modelEmployees: Array<Object>){
   //   modelEmployees.push({title: "", stillwith: false})
