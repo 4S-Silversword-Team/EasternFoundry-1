@@ -83,6 +83,11 @@ export class ProfileEditComponent implements OnInit {
   currentJobs: boolean[] = []
   lastUsedEndDate: string[] = []
   years: number[] = [];
+  activeTab: any = {
+    main: 0,
+    job: 0,
+    skills: 0,
+  }
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -342,7 +347,7 @@ export class ProfileEditComponent implements OnInit {
           if (this.currentUser.education[0].DegreeType[0] == null) {
             this.currentUser.education[0].DegreeType.push({Name: ''})
           }
-          this.checkFields()
+          this.checkFields(9)
           for (let d of this.currentUser.education){
             var degreeName = d.DegreeType[0].Name.toLowerCase()
             if (degreeName.includes('associate') || degreeName == "ass.") {
@@ -365,6 +370,7 @@ export class ProfileEditComponent implements OnInit {
             this.certService.getCerts().then(v => {
               this.allCerts = v
               this.promiseFinished = true;
+              window.scrollTo(0, 0)
             })
           });
         });
@@ -373,6 +379,16 @@ export class ProfileEditComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  switchTab(newTab) {
+    this.activeTab.main = newTab
+    // if (this.activeTab.main == newTab) {
+    //   this.activeTab.main = 7
+    // } else {
+    //   this.activeTab.main = newTab
+    // }
+    // console.log(newTab)
   }
 
   calculateProfessionalPoints(){
@@ -574,7 +590,7 @@ export class ProfileEditComponent implements OnInit {
     return match;
   }
 
-  checkFields(){
+  checkFields(num){
     var profileCheck = true
     if (!this.currentUser.firstName ||
        !this.currentUser.lastName ||
@@ -582,7 +598,8 @@ export class ProfileEditComponent implements OnInit {
        !this.currentUser.cell ||
        this.currentUser.cell.length < 14 ||
        !this.currentUser.address.city ||
-       !this.currentUser.address.state){
+       !this.currentUser.address.state ||
+        !this.currentUser.address.zip){
       profileCheck = false
     }
 
@@ -594,10 +611,23 @@ export class ProfileEditComponent implements OnInit {
     }
 
     var positionCheck = true
+    var i = 0
     for (let job of this.currentUser.positionHistory) {
-      if (!job.PositionTitle || !job.EndDate || !job.StartDate || !job.Employer) {
+      if (!job.PositionTitle || (!this.currentJobs[i] && !job.EndDate) || !job.StartDate || !job.Employer) {
         positionCheck = false
+      } else {
+        for (let a of job.agencyExperience) {
+          if (!this.agencyValidCheck(a.main.title) || (a.main.isPM && a.main.pmScore > 3 && a.main.pmDescription.length < 300) || (a.main.isKO && a.main.koScore > 3 && a.main.koDescription.length < 300)) {
+            positionCheck = false
+          } else {
+            for (let o of a.offices)
+            if (!this.subagencyValidCheck(a.main.title, o.title) || (o.isPM && o.pmScore > 3 && o.pmDescription.length < 300) || (o.isKO && o.koScore > 3 && o.koDescription.length < 300)) {
+              positionCheck = false
+            }
+          }
+        }
       }
+      i++
     }
 
     var certCheck = true
@@ -623,19 +653,62 @@ export class ProfileEditComponent implements OnInit {
       }
     }
 
-    if (
-      profileCheck &&
-      degreesCheck &&
-      positionCheck &&
-      certCheck &&
-      clearCheck &&
-      awardCheck
-    ) {
-      this.fieldsFilled = true
+    var done = true
+    if (num == 0 || num == 9){
+      if (!profileCheck){
+        done = false
+      }
     }
-    else {
-      this.fieldsFilled = false
+    if (num == 1 || num == 9){
+      if (!degreesCheck){
+        done = false
+      }
     }
+    if (num == 2 || num == 9){
+      if (!certCheck){
+        done = false
+      }
+    }
+    if (num == 3 || num == 9){
+      if (!awardCheck){
+        done = false
+      }
+    }
+    if (num == 4 || num == 9){
+      if (!clearCheck){
+        done = false
+      }
+    }
+    if (num == 5 || num == 9){
+      if (!positionCheck){
+        done = false
+      }
+    }
+
+    if (num == 9){
+      this.fieldsFilled = done
+    }
+    return done
+  }
+
+  checkJob(job, num){
+    var positionCheck = true
+    var i = this.activeTab.job + num
+    if (!job.PositionTitle || (!this.currentJobs[i] && !job.EndDate) || !job.StartDate || !job.Employer) {
+      positionCheck = false
+    } else {
+      for (let a of job.agencyExperience) {
+        if (!this.agencyValidCheck(a.main.title) || (a.main.isPM && a.main.pmScore > 3 && a.main.pmDescription.length < 300) || (a.main.isKO && a.main.koScore > 3 && a.main.koDescription.length < 300)) {
+          positionCheck = false
+        } else {
+          for (let o of a.offices)
+          if (!this.subagencyValidCheck(a.main.title, o.title) || (o.isPM && o.pmScore > 3 && o.pmDescription.length < 300) || (o.isKO && o.koScore > 3 && o.koDescription.length < 300)) {
+            positionCheck = false
+          }
+        }
+      }
+    }
+    return positionCheck;
   }
 
   editPhoto() {
@@ -778,7 +851,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteTool(i) {
     this.currentUser.foundTools.splice(i, 1);
-    this.checkFields()
+    this.checkFields(9)
     this.calculateSkillChart()
     this.refreshSkillChartBars()
   }
@@ -848,7 +921,10 @@ export class ProfileEditComponent implements OnInit {
 
   deleteJob(i) {
     this.currentUser.positionHistory.splice(i, 1);
-    this.checkFields()
+    while (!this.currentUser.positionHistory[this.activeTab.job]){
+      this.activeTab.job = this.activeTab.job-1
+    }
+    this.checkFields(9)
   }
 
 
@@ -884,7 +960,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteDegree(i) {
     this.currentUser.education.splice(i, 1);
-    this.checkFields()
+    this.checkFields(9)
   }
 
   addClearance() {
@@ -899,7 +975,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteClearance(i) {
     this.currentUser.clearance.splice(i, 1);
-    this.checkFields()
+    this.checkFields(9)
   }
 
 
@@ -911,7 +987,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteAward(i) {
     this.currentUser.award.splice(i, 1);
-    this.checkFields()
+    this.checkFields(9)
   }
 
   addCertificate() {
@@ -925,7 +1001,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteCertificate(i) {
     this.currentUser.certification.splice(i, 1);
-    this.checkFields()
+    this.checkFields(9)
   }
 
   addAgency(job) {
@@ -965,7 +1041,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteAgency(job, i) {
     job.agencyExperience.splice(i, 1);
-    this.checkFields()
+    this.checkFields(9)
   }
   addOffice(agency) {
     agency.offices.push({
@@ -987,7 +1063,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteOffice(agency, i) {
     agency.offices.splice(i, 1);
-    this.checkFields()
+    this.checkFields(9)
   }
 
   scoreChange(job, office, which, up){
@@ -1141,7 +1217,7 @@ export class ProfileEditComponent implements OnInit {
     }
     for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
       if (this.currentUser.positionHistory[i].employmentType == 0) {
-        this.currentUser.positionHistory[i].agencyExperience[0].main.title = this.currentUser.positionHistory[i].Employer
+        this.currentUser.positionHistory[i].Employer = this.currentUser.positionHistory[i].agencyExperience[0].main.title
       }
       for (var x = 0; x < this.currentUser.positionHistory[i].agencyExperience.length; x++) {
         var endDate = 0

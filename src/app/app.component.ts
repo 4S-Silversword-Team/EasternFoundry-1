@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service'
 import { UserService } from './services/user.service'
+import { Router, NavigationEnd } from '@angular/router';
 
 
 @Component({
@@ -16,6 +17,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
+    private router: Router,
   ){
     console.log("Navbar checkin login status")
     this.signedIn = auth.isLoggedIn()
@@ -32,6 +34,12 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit() {
+    this.router.events.subscribe((evt) => {
+       if (!(evt instanceof NavigationEnd)) {
+         return;
+       }
+       window.scrollTo(0, 0)
+     });
   }
 
   navLogOut() {

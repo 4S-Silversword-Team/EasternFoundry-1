@@ -1,9 +1,197 @@
 /*styles for profile edit content only*/
 
+.edit-box {
+  margin-top: 10vh;
+  height: 60vh;
+  padding: 0px;
+  background: rgba(253,253,255,1);
+  border-right: 1px solid rgba(0,0,0,0.1);
+  border-top: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.edit-button {
+  background: rgba(173,173,175,1);
+  border-radius: 0px;
+  border: 1px solid rgba(0,0,0,0.05);
+  font-size: 18px;
+  font-weight: bold;
+  color: rgba(0,0,0,0.75);
+}
+
+.edit-button-add {
+  position: absolute;
+  width: 150px;
+  bottom: -10vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.edit-button-office {
+  position: absolute;
+  width: 150px;
+  bottom: 1vh;
+  right: 1vw;
+}
+
+.edit-button:hover {
+  background: rgba(183,183,185,1);
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.edit-button-nope {
+  background: rgba(203,0,0,1);
+  border-radius: 0px;
+  border: 1px solid rgba(0,0,0,0.5);
+  font-size: 18px;
+  font-weight: bold;
+  color: rgba(0,0,0,0.75);
+}
+
+.edit-button-next {
+  position: absolute;
+  width: 150px;
+  bottom: 3vh;
+  right: 1.6vw;
+}
+.edit-button-prev {
+  position: absolute;
+  width: 150px;
+  bottom: 3vh;
+  left: 1.6vw;
+}
+.edit-button-save {
+  background: rgba(0,203,0,1);
+  border: 1px solid rgba(0,0,0,0.5);
+  position: absolute;
+  width: 150px;
+  bottom: -5vh;
+  right: 1.6vw;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.edit-button-nope-2 {
+  position: absolute;
+  width: 150px;
+  bottom: -5vh;
+  right: 1.6vw;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .basic-info {
   padding: 0px;
-  height: calc(53.3vh - 60px);
 }
+
+.education {
+  padding-top: 2vh;
+  padding-left: 1.6vw;
+  padding-right: 1.6vw;
+  padding-bottom: 2vh;
+}
+.certification {
+  padding-top: 2vh;
+  padding-left: 1.6vw;
+  padding-right: 1.6vw;
+  padding-bottom: 2vh;
+}
+.career {
+  padding-top: 2vh;
+  padding-left: 1.6vw;
+  padding-right: 1.6vw;
+  padding-bottom: 2vh;
+}
+.skills {
+  padding-top: 2vh;
+  padding-left: 1.6vw;
+  padding-right: 1.6vw;
+  padding-bottom: 2vh;
+}
+.job {
+  width: 95%;
+  float: left;
+  height: 39vh;
+  margin-top: 3vh;
+}
+.job-interior {
+  height: 47.2vh;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  padding-bottom: 4px;
+}
+.job-side-tab-bar {
+  width: 5%;
+  background: rgba(253,253,255,1);
+  height: 47.2vh;
+  margin-top: 3vh;
+  float: left;
+}
+.job-side-tab {
+  color: rgba(0,0,2,0.5);
+  background: rgba(203,203,205,1);
+  cursor: pointer;
+  position: relative;
+  height: calc(47.2vh / 5);
+  width: 90%;
+  margin-left: 10%;
+  border-top: 1px solid rgba(0,0,0,0.25);
+  border-left: 1px solid rgba(0,0,0,0.25);
+  border-bottom: 1px solid rgba(0,0,0,0.25);
+}
+.job-side-tab:hover {
+  background: rgba(223,223,225,1);
+  border-top: 1px solid rgba(0,0,0,0.37);
+  border-left: 1px solid rgba(0,0,0,0.37);
+  border-bottom: 1px solid rgba(0,0,0,0.37);
+}
+.job-side-tab:active {
+  background: rgba(238,238,240,1);
+  border-top: 1px solid rgba(0,0,0,0.43);
+  border-left: 1px solid rgba(0,0,0,0.43);
+  border-bottom: 1px solid rgba(0,0,0,0.43);
+}
+.job-side-tab-active {
+  position: relative;
+  cursor: pointer;
+  height: calc(47.2vh / 5);
+  width: 100%;
+  margin-left: 0%;
+  color: rgba(0,0,2,1);
+  background: rgba(253,253,255,1);
+  border-top: 1px solid rgba(0,0,0,0.5);
+  border-left: 1px solid rgba(0,0,0,0.5);
+  border-bottom: 1px solid rgba(0,0,0,0.5);
+}
+
+.job-side-tab-add {
+  background: rgba(143,203,145,1);
+}
+.job-side-tab-add:hover {
+  background: rgba(133,213,135,1);
+}
+.job-side-tab-add:active {
+  background: rgba(123,223,125,1);
+}
+.job-side-tab-incomplete {
+  background: rgba(203,143,145,1);
+}
+.job-side-tab-incomplete:hover {
+  background: rgba(213,133,135,1);
+}
+.job-side-tab-incomplete:active {
+  background: rgba(223,123,125,1);
+}
+
+.job-side-tab-text {
+  font-weight: bold;
+  position: absolute;
+  transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  width: calc(47.2vh / 5);
+}
+
 input {
   border-radius: 0px;
 }
@@ -33,6 +221,94 @@ input {
   height: auto;
 }
 
+.edit-tab-bar {
+  margin-top: 10vh;
+  height: 60vh;
+  width: 100%;
+  background: rgba(223,223,225,1);
+}
+
+.edit-tab {
+  cursor: pointer;
+  height: calc(60vh / 7);
+  line-height: calc(60vh / 7);
+  border-bottom: 2px solid rgba(173,173,175,1);
+  width: 100%;
+  float: left;
+  position: relative;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: rgba(0,0,0,0.5);
+  margin: 0px;
+}
+.edit-tab-bottom {
+  cursor: pointer;
+  height: calc(60vh / 7);
+  line-height: calc(60vh / 7);
+  width: 100%;
+  float: left;
+  position: relative;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: rgba(0,0,0,0.5);
+  margin: 0px;
+}
+
+.edit-tab-active {
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 2px solid rgba(173,173,175,1);
+}
+.edit-tab-top-active {
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+.edit-tab-bottom-active {
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.edit-tab:hover {
+  /*border: 1px solid rgba(0,0,0,0.01);*/
+  color: rgba(0,0,0,0.6);
+  background: rgba(253,253,255,0.35)
+}
+.edit-tab:active {
+  /*border: 1px solid rgba(0,0,0,0.05);*/
+  color: rgba(0,0,0,0.7);
+  background: rgba(253,253,255,0.7)
+}
+.edit-tab-active:hover {
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 2px solid rgba(173,173,175,1);
+}
+.edit-tab-top-active:hover {
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+.edit-tab-bottom-active:hover {
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.edit-tab-incomplete {
+  background: rgba(223,103,105,1);
+}
+
+
 .cert-container {
   overflow: auto;
 }
@@ -59,12 +335,14 @@ input {
 }
 
 .score-panel-outer {
+  height: 50.2vh;
   background: rgba(255,255,255,0.55);
   border: 1px solid rgba(0,0,0,0.25);
   padding: 2px;
 }
 
 .score-panel {
+  height: calc(100% - 90px);
   background: rgba(0,0,0,0.02);
   border: 1px solid rgba(0,0,0,0.2);
   overflow-y: auto;
@@ -185,14 +463,6 @@ button {
   background: rgba(255, 255, 255, 0.6);
   color: rgba(50, 50, 50, 1);
   border: 1px solid rgba(0, 0, 0, 0.4);
-}
-
-.job-interior {
-  margin-top: 10px;
-  margin-top: 8px;
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(0, 0, 0, 0.4);
-  padding-bottom: 4px;
 }
 
 .tiny-button-skills {
@@ -332,13 +602,8 @@ button {
   line-height: 65px;
 }
 
-.certification {
-  width: 100%;
-  margin-bottom: 50px;
-  text-align: center;
-}
-
 .div-title {
+  margin: 0px;
   width: 100%;
   display: inline-block;
 }
@@ -431,8 +696,14 @@ button {
   transform: translateY(15px);
 }
 
+.skill-box {
+  background: rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.25);
+  height: 46vh;
+}
+
 .tool-search-box {
-  height: 400px;
+  height: 35.8vh;
   width: 100%;
   border:1px solid #ccc;
   background: rgba(0, 0, 0, 0.03);
@@ -453,7 +724,8 @@ button {
 
 .tool-list-box {
   position: relative;
-  height: 442px;
+  margin-top: 8px;
+  height: 39.5vh;
   width: 100%;
   border:1px solid #ccc;
   background: rgba(0, 0, 0, 0.03);
