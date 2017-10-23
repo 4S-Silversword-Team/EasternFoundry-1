@@ -1,8 +1,4 @@
 <div class="main" style="margin-top: 25px;">
-  <div class="new-profile-alert" *ngIf='this.new'>
-    <h3>Registration complete.</h3>
-    <p>Please log in to complete your profile creation.</p>
-  </div>
   <div style="text-align: center">
     <h2>Federal Foundry</h2>
     <h1>Forge</h1>
@@ -28,6 +24,10 @@
       <!-- <button class="btn btn-primary col-sm-12" style="background: rgb(213, 36, 36); border: 1px solid rgba(0,0,0,0.25)" (click)='navLogOut()'>Log Out</button> -->
     </div>
     <div class="col-xs-12 col-md-8">
+      <div class="new-profile-alert col-xs-12" *ngIf='this.new'>
+        <h3>Registration complete.</h3>
+        <p>Please log in to complete your profile creation.</p>
+      </div>
       <div class="col-xs-12" style="margin-left: -15px">
         <div class="col-md-4 col-sm-5 col-xs-6 tab" (click)='switchTab(0)' [ngClass]="{'tab-active': activeTab == 0}">
           Welcome

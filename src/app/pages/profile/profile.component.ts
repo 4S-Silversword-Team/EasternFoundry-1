@@ -5,9 +5,11 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { Chart } from 'angular-highcharts';
-
+import { PastPerformance } from '../../classes/past-performance';
 import { User } from '../../classes/user'
+
 import { UserService } from '../../services/user.service'
+import { CompanyService } from '../../services/company.service';
 import { AuthService } from '../../services/auth.service'
 
 
@@ -16,7 +18,7 @@ declare var $: any;
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  providers: [UserService, AuthService],
+  providers: [UserService, CompanyService, AuthService],
   host: {'(window:keydown)': 'hotkeys($event)'},
   styleUrls: ['./profile.component.css']
 })
@@ -74,16 +76,17 @@ export class ProfileComponent implements OnInit {
   yearsOfWork: number = 0;
   professionalPoints: number = 0;
   activeTab: any = {
-    main: 0,
+    main: 4,
     skill: 0,
     service: 0,
   }
-
+  pastPerformances: any[] = [];
   allCategories: any[]
 
 
   constructor(
     private userService: UserService,
+    private companyService: CompanyService,
     private route: ActivatedRoute,
     private router: Router,
     public location: Location,
@@ -613,6 +616,8 @@ export class ProfileComponent implements OnInit {
       this.showTeam()
       this.calculateSkillChart()
       this.calculateCapaChart()
+      this.pastPerformances = this.currentUser.pastPerformanceProxies.map(proxy => proxy.pastPerformance)
+      console.log(this.pastPerformances[0])
       this.promiseFinished = true;
     }
   }

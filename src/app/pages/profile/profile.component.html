@@ -17,7 +17,10 @@
       <div class="profile-navbar-tab" (click)='switchTab(3)' [ngClass]="{'profile-navbar-tab-active': this.activeTab.main == 3}">
         Skills
       </div>
-      <div class="profile-navbar-tab" (click)='switchTab(4)' style="border-right:0px solid black" [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 4}">
+      <div class="profile-navbar-tab" (click)='switchTab(4)' [ngClass]="{'profile-navbar-tab-active': this.activeTab.main == 4}">
+        Past Performances
+      </div>
+      <div class="profile-navbar-tab" (click)='switchTab(5)' style="border-right:0px solid black" [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 5}">
         Experience
       </div>
     </div>
@@ -292,17 +295,64 @@
       <div class="" *ngFor='let c of this.charts; let i = index'>
         <div id="team_chart"  style="max-width: 85%; margin: 0 auto; height:50vh" [chart]='c' *ngIf='i==activeTab.service'></div>
       </div>
-
-      <!-- <canvas baseChart
-      [datasets]="capaChartDatas"
-      [labels]="capaChartLabels"
-      [options]="{ scaleShowVerticalLines: true, responsive: true, scales: { yAxes: [{ticks: {beginAtZero: true }}]} }"
-      [legend]="false"
-      [chartType]="'bar'"></canvas> -->
     </div>
   </div>
-  <!-- EXPERIENCE/AGENCY TAB -->
+
+  <!-- PAST PERFORMANCES TAB -->
   <div class="container" *ngIf='this.activeTab.main == 4'>
+    <div class="skills col-xs-12 box" *ngIf="this.activeTab.skill == 0">
+      <div class="col-xs-12 text-container" *ngFor='let pp of pastPerformances'>
+        <div class="" *ngIf="pp.public">
+          <div class="" style="height: 180px; width: 180px; position: relative; float: left;">
+            <div class="left avatar">
+              <img src='{{ pp.avatar }}' class="avatar-img">
+            </div>
+          </div>
+          <div class="" style="position: absolute; height: 20vh; width: calc(100% - 180px); bottom: 0px; right: 0px; float: left; background: none;">
+            <div id="user-contact" class="col-xs-5" style="height: 100%; padding-top: 4vh; padding-bottom: .1vh; border-right: 2px solid rgba(0,0,0,0.25);">
+              <div class="" style="width: 100%;">
+                <p class="basic-info-text-2">{{ pp.title }}</p>
+                <p class="basic-info-text-2">{{ pp.client }}</p>
+                <p class="basic-info-text-2">{{ pp.topic }}</p>
+                <p class="basic-info-text-2">{{ pp.startDate }} - {{ pp.endDate }}</p>
+              </div>
+
+              <!-- <div class="" style="width: 100%;">
+              <p class="basic-info-text-2">{{ this.currentUser.address.city }}</p>
+              <p class=" basic-info-text-2">{{ this.currentUser.cell }}</p>
+              <p class="basic-info-text-2">{{ this.currentUser.username }}</p>
+            </div>
+            <div style="width: 100%; margin-top: 20px;">
+            <p class="basic-info-text-2">{{ this.currentUser.education[0].DegreeType[0].Name }}</p>
+            <p class="basic-info-text-2">{{ this.currentUser.education[0].MajorProgramName[0] }}, {{ this.currentUser.education[0].School }}</p>
+            <p class="basic-info-text-2">{{ this.currentUser.education[0].AttendanceEndDate.slice(0,4) }}</p>
+          </div> -->
+        </div>
+        <div id="user-contact" class="col-xs-7 scrollbar" style="overflow-y: auto; padding-top: .1vh; height: 100%;">
+          <a href="#/past-performance/{{pp._id}}">
+            <button style="white-space: nowrap" style="height: 4em;">More Information</button>
+          </a>
+          <!-- <div class="basic-info-career-panel" style="width: 100%; height: auto;" *ngFor='let p of this.currentUser.positionHistory'>
+          <div class="basic-info-text-2">
+          <div class="left">
+          {{ p.Employer }}
+        </div>
+        <div class="right">
+        {{p.StartDate.slice(0,4)}} - {{p.EndDate.slice(0,4)}}
+      </div>
+    </div><br>
+    <p class="basic-info-text-2 left">{{ p.PositionTitle }}</p>
+    <p class="basic-info-text-2 left" style="margin-bottom: 20px;">{{ p.Description.slice(0,50) }}...</p>
+  </div> -->
+</div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE/AGENCY TAB -->
+  <div class="container" *ngIf='this.activeTab.main == 5'>
     <div class="" *ngIf='this.agencyExperience'>
       <div class="" *ngIf='this.agencyExperience[0]'>
         <div class="experience col-xs-12 box" *ngIf='this.agencyExperience[0].main.title'>
