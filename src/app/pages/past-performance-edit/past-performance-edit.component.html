@@ -20,7 +20,13 @@
         </div>
         <div class="form-group col-xs-12 col-sm-12 srow">
           <p class="col-xs-3 col-sm-3 left lh-50">Client</p>
-          <div class="col-xs-9 col-sm-9"><input type="text" placeholder="Client" style="width: 100%" class="right" [(ngModel)] = "this.currentPastPerformance.client" (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentPastPerformance.client}"></div>
+          <input class="col-xs-1 col-sm-1" type="checkbox" [(ngModel)]="this.currentPastPerformance.client.gov" />
+          <div class="col-xs-8 col-sm-8" *ngIf='this.currentPastPerformance.client.gov'>
+            <div class="autocomplete-form" style="width: 100%">
+              <input ngui-auto-complete class="" style="width: 100%" placeholder="Must match an existing agency" [(ngModel)] = 'this.currentPastPerformance.client.name' [source]='this.allAgencies' [list-formatter]="agencyListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': !agencyValidCheck(this.currentPastPerformance.client.name)}">
+            </div>
+          </div>
+          <div class="col-xs-7 col-sm-8" *ngIf='!this.currentPastPerformance.client.gov'><input type="text" placeholder="Client" style="width: 100%" class="right" [(ngModel)] = "this.currentPastPerformance.client.name" (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentPastPerformance.client.name}"></div>
         </div>
         <div class="form-group col-xs-12 col-sm-12 srow">
           <p class="col-xs-3 col-sm-3 left lh-50">Topic</p>
@@ -96,7 +102,6 @@
           <th><span>Name</span></th>
           <th><span>Start Date</span></th>
           <th><span>End Date</span></th>
-          <th><span>Still Affiliated?</span></th>
           <th><span>Role</span></th>
         </tr>
         <tr *ngFor=" let employee of this.userProfiles">
@@ -112,11 +117,6 @@
           </td>
           <td>
             <span><input (change)="updateEmployee(employee.proxyId, 'endDate', employee.endDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="employee.endDate"></span>
-          </td>
-
-          <td>
-            <span><input (change)="updateEmployee(employee.proxyId, 'stillAffiliated', employee.stillAffiliated)" type="checkbox" [(ngModel)]="employee.stillAffiliated" /></span>
-            <!-- <input style="margin-top:.75em; margin-left:1em" type="checkbox" [(ngModel)] = "this.currentPastPerformance.employees[i].stillWith" name="stillWith"> -->
           </td>
           <td>
             <span><input (blur)="updateEmployee(employee.proxyId, 'role', employee.role)" type="text" [(ngModel)]="employee.role" /></span>

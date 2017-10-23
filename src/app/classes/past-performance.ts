@@ -2,7 +2,10 @@ export class PastPerformance {
     id: string
     _id: string
     title: string
-    client: string
+    client: {
+      gov: boolean
+      name: string
+    }
     topic: string
     area: string
     startDate: string

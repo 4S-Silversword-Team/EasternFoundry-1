@@ -8,13 +8,15 @@ import { PastperformanceService } from '../../services/pastperformance.service'
 import { AuthService} from "../../services/auth.service"
 import { UserService} from "../../services/user.service"
 import { RoleService} from "../../services/role.service"
+import { CompanyService } from '../../services/company.service';
+import { CompanyUserProxyService } from '../../services/companyuserproxy.service';
 
 declare var $: any
 
 @Component({
   selector: 'app-past-performance',
   templateUrl: './past-performance.component.html',
-  providers: [PastperformanceService, AuthService, UserService, RoleService],
+  providers: [PastperformanceService, AuthService, UserService, RoleService, CompanyService, CompanyUserProxyService],
   styleUrls: ['./past-performance.component.css']
 })
 export class PastPerformanceComponent implements OnInit {
@@ -33,9 +35,16 @@ export class PastPerformanceComponent implements OnInit {
   public clientName: string = 'Air Force: 1st Fighter Wing'
   startDate: string
   endDate: string
+  activeTab: any = {
+    main: 1,
+  }
+  promiseFinished: boolean = false
+
 
   constructor(
     private pastPerformanceService: PastperformanceService,
+    private companyService: CompanyService,
+    private companyUserProxyService: CompanyUserProxyService,
     private route: ActivatedRoute,
     private router: Router,
     public location: Location,
@@ -53,6 +62,28 @@ export class PastPerformanceComponent implements OnInit {
       if (auth.isLoggedIn()) {
         this.getAdminStatus()
       }
+      var companyPromises = []
+      for (let u of this.currentPastPerformance.userProfileProxies) {
+        for (let c of u.user.companyUserProxies) {
+          companyPromises.push(this.companyUserProxyService.getCompanyUserProxiesByID(c).toPromise().then(res => {
+            var proxy: any = res
+            if (proxy){
+              if (proxy.company._id == this.currentPastPerformance.companyProxies[0].company._id){
+                console.log(u.user.firstName + ' went from ' + u.stillAffiliated + ' to ' + proxy.stillAffiliated)
+                u.stillAffiliated = proxy.stillAffiliated
+              }
+            }
+          }))
+        }
+      }
+      Promise.all(companyPromises).then(res => {
+        this.promiseFinished = true
+      })
+
+      // console.log(this.currentPastPerformance.userProfileProxies[0].user.companyUserProxies)
+      // for (let i of this.currentPastPerformance.userProfileProxies){
+      //
+      // }
     })
 
   }
@@ -63,6 +94,15 @@ export class PastPerformanceComponent implements OnInit {
 
   editPastPerformance() {
     this.router.navigate(['past-performance-edit', this.currentPastPerformance['_id']]);
+  }
+
+  switchTab(newTab) {
+    if (this.activeTab.main == newTab) {
+      this.activeTab.main = 7
+    } else {
+      this.activeTab.main = newTab
+    }
+    console.log(newTab)
   }
 
   getAdminStatus() {

@@ -9,6 +9,7 @@ import { CompanyService } from '../../services/company.service'
 import { UserPastPerformanceProxyService } from '../../services/userpastperformanceproxy.service'
 import { AuthService } from "../../services/auth.service"
 import { RoleService } from "../../services/role.service"
+import { AgencyService } from '../../services/agency.service'
 import { CompanyPastperformanceProxyService } from "../../services/companypastperformanceproxy.service"
 import { s3Service } from "../../services/s3.service"
 
@@ -18,7 +19,7 @@ import { environment } from "../../../environments/environment"
 
 @Component({
   selector: 'app-past-performance-edit',
-  providers: [PastperformanceService, UserService, CompanyService, UserPastPerformanceProxyService, AuthService, RoleService, CompanyPastperformanceProxyService, s3Service],
+  providers: [PastperformanceService, UserService, CompanyService, UserPastPerformanceProxyService, AuthService, AgencyService, RoleService, CompanyPastperformanceProxyService, s3Service],
   templateUrl: './past-performance-edit.component.html',
   styleUrls: ['./past-performance-edit.component.css']
 })
@@ -42,6 +43,7 @@ export class PastPerformanceEditComponent implements OnInit {
   employeeWidth: number = 600;
   writeWidth: number = 800;
   rate: number = 0;
+  allAgencies: any[] = []
   isUserAdmin: boolean = false;
   fieldsFilled: boolean = false;
   promiseFinished: boolean = false
@@ -61,6 +63,7 @@ export class PastPerformanceEditComponent implements OnInit {
     private roleService: RoleService,
     private companyPastPerformanceProxyService: CompanyPastperformanceProxyService,
     private s3Service: s3Service,
+    private agencyService: AgencyService,
   ) {
     if (!auth.isLoggedIn()) {
       this.router.navigateByUrl("/login")
@@ -69,6 +72,17 @@ export class PastPerformanceEditComponent implements OnInit {
         console.log('in past performance edit')
         this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {
           this.currentPastPerformance = res;
+          if (!this.currentPastPerformance.client){
+            this.currentPastPerformance.client = {
+              gov: false,
+              name: '',
+            }
+          } else if (!this.currentPastPerformance.client.name){
+            this.currentPastPerformance.client = {
+              gov: false,
+              name: '',
+            }
+          }
           if (!this.currentPastPerformance.area) {
             this.currentPastPerformance.area = ""
           }
@@ -78,6 +92,18 @@ export class PastPerformanceEditComponent implements OnInit {
         });
       } else {
         console.log("in past performance create")
+        console.log(this.currentPastPerformance.client)
+        if (!this.currentPastPerformance.client){
+          this.currentPastPerformance.client = {
+            gov: false,
+            name: '',
+          }
+        } else if (!this.currentPastPerformance.client.name){
+          this.currentPastPerformance.client = {
+            gov: false,
+            name: '',
+          }
+        }
         this.createMode = true;
         if (this.route.snapshot.queryParams["company"]) {
           this.getCreatorAdminStatus();
@@ -114,7 +140,11 @@ export class PastPerformanceEditComponent implements OnInit {
       })
     }
     this.checkFields()
-    this.promiseFinished = true
+    this.agencyService.getAgencies().then(val => {
+      this.allAgencies = val
+      this.promiseFinished = true;
+      window.scrollTo(0, 0)
+    });
   }
 
   myCallback2() {
@@ -200,10 +230,25 @@ export class PastPerformanceEditComponent implements OnInit {
     })
   }
 
+  agencyListFormatter (data: any) {
+    return data.agency;
+  }
+
+  agencyValidCheck (agency) {
+    var match = false
+    for (let a of this.allAgencies) {
+      if (a.agency.toString().toLowerCase() == agency.toString().toLowerCase()){
+        match = true
+        agency = a.agency
+      }
+    }
+    return match;
+  }
+
   checkFields(){
     if (
       this.currentPastPerformance.title &&
-      this.currentPastPerformance.client &&
+      this.currentPastPerformance.client.name &&
       this.currentPastPerformance.topic &&
       this.currentPastPerformance.startDate &&
       this.currentPastPerformance.endDate &&
@@ -279,7 +324,6 @@ export class PastPerformanceEditComponent implements OnInit {
         this.router.navigate(['past-performance', this.route.snapshot.params['id']]);
       }
     });
-
   } else {
     //creating a new PP
     console.log(model)

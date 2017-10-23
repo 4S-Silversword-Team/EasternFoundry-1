@@ -365,23 +365,25 @@
             </button>
           </a>
         </div>
-        <!-- <div class="" *ngIf='i==activeTab.pp'>
-        <div class="div-title col-xs-12">
-        <p>{{pp.title}}</p>
+              <!-- <div class="" *ngIf='i==activeTab.pp'>
+              <div class="div-title col-xs-12">
+              <p>{{pp.title}}</p>
+            </div>
+            <div class="main clear">
+            <div class="half-panel col-xs-12">
+            <img src="{{pp.avatar}}" class="left avatar">
+            <p><strong>Client</strong></p><p class="srow">{{pp.client}}</p>
+            <p><strong>Project</strong></p><p class="srow">{{pp.topic}}</p>
+            <button class="col-xs-8 col-xs-offset-2" (click)='toPastPerformance(pp._id)'>More Information</button>
+          </div>
+          <div class="col-xs-12">
+          <button class="col-xs-4 col-xs-offset-4" *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
+        </div>
       </div>
-      <div class="main clear">
-      <div class="half-panel col-xs-12">
-      <img src="{{pp.avatar}}" class="left avatar">
-      <p><strong>Client</strong></p><p class="srow">{{pp.client}}</p>
-      <p><strong>Project</strong></p><p class="srow">{{pp.topic}}</p>
-      <button class="col-xs-8 col-xs-offset-2" (click)='toPastPerformance(pp._id)'>More Information</button>
-    </div>
-    <div class="col-xs-12">
-    <button class="col-xs-4 col-xs-offset-4" *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
-  </div>
-</div>
-</div> -->
-</div>
+      </div> -->
+      </div>
+      <button class="col-xs-4 col-xs-offset-4" *ngIf="this.isUserAdmin" (click)='toPastPerformanceCreate(this.currentAccount._id)'>Add Past Performance</button>
+
     </div>
   </div>
 </div>
