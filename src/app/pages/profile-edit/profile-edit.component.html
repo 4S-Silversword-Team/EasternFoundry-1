@@ -4,41 +4,42 @@
 </div>
 <div class="not-finished-alert" *ngIf='!this.currentUser.finished && this.promiseFinished'>Fill in the empty fields to complete your user profile!</div>
 <div class="container" *ngIf='this.promiseFinished'>
-  <div class="btn-back" (click) = 'this.location.back()'></div>
   <div class="col-xs-2" style="margin: 0px; padding: 0px;">
     <div class="edit-tab-bar">
-      <div class="edit-tab" [ngClass]="{'edit-tab-incomplete': !this.checkFields(0)}">
+      <div class="edit-tab" [ngClass]="{'edit-tab-incomplete': !this.checkFields(0) || (!this.currentUser.finished && !finished.basic)}">
         <div class="edit-tab" (click)='switchTab(0)' [ngClass]="{'edit-tab-top-active': this.activeTab.main == 0}">
           Basic Info
         </div>
       </div>
-      <div class="edit-tab" [ngClass]="{'edit-tab-incomplete': !this.checkFields(1)}">
+      <div class="edit-tab" [ngClass]="{'edit-tab-incomplete': !this.checkFields(1) || (!this.currentUser.finished && !finished.education)}">
         <div class="edit-tab" (click)='switchTab(1)' [ngClass]="{'edit-tab-active': this.activeTab.main == 1}">
           Education
         </div>
       </div>
-      <div class="edit-tab" [ngClass]="{'edit-tab-incomplete': !this.checkFields(2)}">
+      <div class="edit-tab" [ngClass]="{'edit-tab-incomplete': !this.checkFields(2) || (!this.currentUser.finished && !finished.cert)}">
         <div class="edit-tab" (click)='switchTab(2)' [ngClass]="{'edit-tab-active': this.activeTab.main == 2}">
           Certificates
         </div>
       </div>
-      <div class="edit-tab" [ngClass]="{'edit-tab-incomplete': !this.checkFields(3)}">
+      <div class="edit-tab" [ngClass]="{'edit-tab-incomplete': !this.checkFields(3) || (!this.currentUser.finished && !finished.awards)}">
         <div class="edit-tab" (click)='switchTab(3)' [ngClass]="{'edit-tab-active': this.activeTab.main == 3}">
           Awards
         </div>
       </div>
-      <div class="edit-tab" [ngClass]="{'edit-tab-incomplete': !this.checkFields(4)}">
+      <div class="edit-tab" [ngClass]="{'edit-tab-incomplete': !this.checkFields(4) || (!this.currentUser.finished && !finished.clear)}">
         <div class="edit-tab" (click)='switchTab(4)' [ngClass]="{'edit-tab-active': this.activeTab.main == 4}">
           Clearances
         </div>
       </div>
-      <div class="edit-tab" [ngClass]="{'edit-tab-incomplete': !this.checkFields(5)}">
+      <div class="edit-tab" [ngClass]="{'edit-tab-incomplete': !this.checkFields(5) || (!this.currentUser.finished && !finished.career)}">
         <div class="edit-tab" (click)='switchTab(5)' [ngClass]="{'edit-tab-active': this.activeTab.main == 5}">
           Career
         </div>
       </div>
-      <div class="edit-tab-bottom" (click)='switchTab(6)' [ngClass]="{'edit-tab-bottom-active': this.activeTab.main == 6}">
-        Skills
+      <div class="edit-tab" [ngClass]="{'edit-tab-incomplete': (!this.currentUser.finished && !finished.skills)}">
+        <div class="edit-tab-bottom" (click)='switchTab(6)' [ngClass]="{'edit-tab-bottom-active': this.activeTab.main == 6}">
+          Skills
+        </div>
       </div>
     </div>
   </div>
@@ -175,7 +176,7 @@
       </div>
       <div class="col-xs-8 col-xs-offset-2">
       </div> -->
-      <button class="edit-button edit-button-add" (click)="addCertificate(); calculateProfessionalPoints()">Add Cert</button>
+      <button class="edit-button edit-button-add" (click)="addCertificate(); calculateProfessionalPoints()" style="bottom: 3vh">Add Cert</button>
     </div>
     <div class="certification" style="" *ngIf='activeTab.main == 3'>
       <div class="div-title" style="margin-top: 2vh; margin-bottom: 2vh;">
@@ -196,7 +197,7 @@
           </div>
         </div>
       </div>
-      <button class="edit-button edit-button-add" (click)="addAward(); calculateProfessionalPoints()">Add Award</button>
+      <button class="edit-button edit-button-add" (click)="addAward(); calculateProfessionalPoints()" style="bottom: 3vh">Add Award</button>
     </div>
     <div class="certification" style="" *ngIf='activeTab.main == 4'>
       <div class="div-title" style="margin-top: 2vh; margin-bottom: 2vh;">
@@ -221,7 +222,7 @@
           </div>
         </div>
       </div>
-      <button class="edit-button edit-button-add" (click)="addClearance(); calculateProfessionalPoints()">Add Clearance</button>
+      <button class="edit-button edit-button-add" (click)="addClearance(); calculateProfessionalPoints()" style="bottom: 3vh;">Add Clearance</button>
     </div>
     <div class="career" style="" *ngIf='activeTab.main == 5'>
       <div class="job-side-tab-bar" style="">
@@ -486,42 +487,43 @@
       <p style="text-align: center">Your skills are how we rate your capabilities, so the more you add, the more complete our image of you will be.</p>
       <div class="col-xs-6 text-center skill-box" style="padding-top: 15px">
         <p>Skill Search</p>
-        <input type="text" style="width: 100%" [(ngModel)] = 'this.toolSearch' (ngModelChange)="updateToolList($event)" >
+        <input type="text" style="width: calc(100% - 65px)" [(ngModel)] = 'this.toolSearch' (keydown.enter)="updateToolList($event)">
+        <button type="button" name="button" style="width: 60px;" (click)='updateToolList($event)'>Search</button>
         <div class="tool-search-box">
           <div class="" *ngIf='this.allTools.length < 1'>
             <p>We're still retrieving the tools. Wait a moment...</p>
           </div>
           <div class="" *ngIf='this.allTools.length > 0'>
-            <div class="no-tool-found" *ngIf='this.toolSearch.length >= 1 && this.filteredTools.length == 0 && this.filteredToolsFromProfile.length == 0 && !this.toolSubmitted' >
-              <p>No matches found. Submit {{this.toolSearch}} as a new tool?</p>
+            <div class="no-tool-found" *ngIf='this.toolSearchLast.length >= 1 && this.filteredTools.length == 0 && this.filteredToolsFromProfile.length == 0 && !this.toolSubmitted' >
+              <p>No matches found. Submit {{this.toolSearchLast}} as a new tool?</p>
               <button class="btn btn-primary btn-block" type="button" name="button" (click)='submitNewTool(this.toolSearch)'>Submit</button>
             </div>
-            <div class="no-tool-found" *ngIf='this.toolSearch.length >= 1 && this.filteredTools.length == 0 && this.toolSubmitted' >
-              <p>{{this.toolSearch}} has been submitted. If it's approved we'll add it to the list!</p>
+            <div class="no-tool-found" *ngIf='this.toolSearchLast.length >= 1 && this.filteredTools.length == 0 && this.toolSubmitted' >
+              <p>{{this.toolSearchLast}} has been submitted. If it's approved we'll add it to the list!</p>
             </div>
-            <div class="" *ngIf='this.toolSearch.length >= 1'>
+            <div class="" *ngIf='this.toolSearchLast.length >= 1'>
               <div class="" *ngFor='let tool of this.filteredToolsFromProfile; let i = index; trackBy:customTrackBy'>
                 <div class="tool-search-item" *ngIf='toolIsNotListedAlready(tool)' (click)='findAndAddTool(tool)'>
                   <p>{{tool.title}}</p>
                 </div>
               </div>
             </div>
-            <div class="" *ngIf='this.toolSearch.length >= 1'>
+            <div class="" *ngIf='this.toolSearchLast.length >= 1'>
               <div class="" *ngFor='let tool of this.filteredTools; let i = index; trackBy:customTrackBy'>
                 <div class="tool-search-item" *ngIf='toolIsValid(tool)' (click)='addTool(this.filteredTools[i])'>
                   <p>{{tool.title}}</p>
                 </div>
               </div>
             </div>
-            <div class="" *ngIf='this.toolSearch.length >= 1 && !this.toolSubmitted' >
+            <div class="" *ngIf='this.toolSearchLast.length >= 1 && !this.toolSubmitted' >
               <div class="no-tool-found" *ngIf='this.filteredTools.length > 0 || this.filteredToolsFromProfile.length > 0'>
-                <p>Can't find what you're looking for? Submit {{this.toolSearch}} as a new tool.</p>
-                <button class="btn btn-primary btn-block" type="button" name="button" (click)='submitNewTool(this.toolSearch)'>Submit</button>
+                <p>Can't find what you're looking for? Submit {{this.toolSearchLast}} as a new tool.</p>
+                <button class="btn btn-primary btn-block" type="button" name="button" (click)='submitNewTool(this.toolSearchLast)'>Submit</button>
               </div>
             </div>
-            <div class="" *ngIf='this.toolSearch.length >= 1 && this.toolSubmitted' >
+            <div class="" *ngIf='this.toolSearchLast.length >= 1 && this.toolSubmitted' >
               <div class="no-tool-found" *ngIf='this.filteredTools.length > 0 || this.filteredToolsFromProfile.length > 0'>
-                <p>{{this.toolSearch}} has been submitted. If it's approved we'll add it to the list!</p>
+                <p>{{this.toolSearchLast}} has been submitted. If it's approved we'll add it to the list!</p>
               </div>
             </div>
           </div>
@@ -1087,12 +1089,14 @@
   </div>
   <button class="edit-button edit-button-prev" type="button" name="button" (click)='activeTab.main = activeTab.main-1' *ngIf="activeTab.main>0 && (activeTab.main<6 || (activeTab.main==6 && activeTab.skills == 0))">Back</button>
   <button class="edit-button edit-button-prev" type="button" name="button" (click)='activeTab.skills = 0' *ngIf="checkFields(activeTab.main) && activeTab.main==6 && activeTab.skills == 1">Back</button>
-  <button class="edit-button edit-button-next" type="button" name="button" (click)='activeTab.main = activeTab.main+1' *ngIf="checkFields(activeTab.main) && activeTab.main<6">Next</button>
+  <button class="edit-button edit-button-next" type="button" name="button" (click)='nextTab()' *ngIf="checkFields(activeTab.main) && activeTab.main<6">Next</button>
   <button class="edit-button edit-button-next" type="button" name="button" (click)='activeTab.skills = 1' *ngIf="checkFields(activeTab.main) && activeTab.main==6 && activeTab.skills == 0">Next</button>
   <button class="edit-button-nope edit-button-next" type="button" name="button" style="" *ngIf=!checkFields(activeTab.main)>Incomplete</button>
-  <button class="edit-button edit-button-save" type="button" name="button" (click)='updateProfile(this.currentUser)' *ngIf="checkFields(9) && this.allTools.length > 0">Save</button>
-  <button class="edit-button-nope edit-button-nope-2" type="button" name="button" style="" *ngIf='!checkFields(9) && this.allTools.length > 0'>Incomplete</button>
-  <button class="edit-button-nope edit-button-nope-2" type="button" name="button" style="" *ngIf='this.allTools.length < 1'>Please Wait...</button>
+  <div class="" *ngIf='this.currentUser.finished || (activeTab.main==6 && activeTab.skills==1)'>
+    <button class="edit-button edit-button-save" type="button" name="button" (click)='updateProfile(this.currentUser)' *ngIf="checkFields(9) && this.allTools.length > 0">Save</button>
+    <button class="edit-button-nope edit-button-nope-2" type="button" name="button" style="" *ngIf='!checkFields(9) && this.allTools.length > 0'>Incomplete</button>
+    <button class="edit-button-nope edit-button-nope-2" type="button" name="button" style="" *ngIf='this.allTools.length < 1'>Please Wait...</button>
+  </div>
 
   </div>
 

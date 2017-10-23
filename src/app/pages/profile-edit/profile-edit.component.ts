@@ -41,6 +41,7 @@ export class ProfileEditComponent implements OnInit {
   }
   promiseFinished: boolean = false
   toolSearch: string = ''
+  toolSearchLast: string = ''
   allTools: any[] = []
   filteredTools: any[] = []
   filteredToolsFromProfile: any[] = []
@@ -73,7 +74,6 @@ export class ProfileEditComponent implements OnInit {
     },
   ]
   employmentCheck: any[] = []
-  dont: boolean = true
   allAgencies: any[] = []
   allCerts: any[] = []
   professionalPoints = 0
@@ -87,6 +87,15 @@ export class ProfileEditComponent implements OnInit {
     main: 0,
     job: 0,
     skills: 0,
+  }
+  finished: any = {
+    basic: false,
+    education: false,
+    cert: false,
+    awards: false,
+    clear: false,
+    career: false,
+    skills: false,
   }
 
   customTrackBy(index: number, obj: any): any {
@@ -382,13 +391,46 @@ export class ProfileEditComponent implements OnInit {
   }
 
   switchTab(newTab) {
-    this.activeTab.main = newTab
-    // if (this.activeTab.main == newTab) {
-    //   this.activeTab.main = 7
-    // } else {
-    //   this.activeTab.main = newTab
-    // }
-    // console.log(newTab)
+    if (!this.currentUser.finished) {
+        if (newTab==0 && this.finished.basic){
+          this.activeTab.main = newTab
+        } else if (newTab==1 && this.finished.basic){
+          this.activeTab.main = newTab
+        } else if (newTab==2 && this.finished.education){
+          this.activeTab.main = newTab
+        } else if (newTab==3 && this.finished.cert){
+          this.activeTab.main = newTab
+        } else if (newTab==4 && this.finished.awards){
+          this.activeTab.main = newTab
+        } else if (newTab==5 && this.finished.clear){
+          this.activeTab.main = newTab
+        } else if (newTab==6 && this.finished.career){
+          this.activeTab.main = newTab
+        }
+    } else {
+      this.activeTab.main = newTab
+    }
+  }
+
+  nextTab(){
+    if (!this.currentUser.finished) {
+        if (this.activeTab.main==0){
+          this.finished.basic = true
+        } else if (this.activeTab.main==1){
+          this.finished.education = true
+        } else if (this.activeTab.main==2){
+          this.finished.cert = true
+        } else if (this.activeTab.main==3){
+          this.finished.awards = true
+        } else if (this.activeTab.main==4){
+          this.finished.clear = true
+        } else if (this.activeTab.main==5){
+          this.finished.career = true
+        } else if (this.activeTab.main==6){
+          this.finished.skill = true
+        }
+    }
+    this.activeTab.main = this.activeTab.main+1
   }
 
   calculateProfessionalPoints(){
@@ -777,7 +819,7 @@ export class ProfileEditComponent implements OnInit {
     for (let tool of this.currentUser.foundTools) {
       toolNames.push(tool.title.toLowerCase())
     }
-    if (tool.title.toLowerCase().includes(this.toolSearch.toLowerCase())) {
+    if (tool.title.toLowerCase().includes(this.toolSearchLast.toLowerCase())) {
       if (!toolNames.includes(tool.title.toLowerCase())) {
         this.validNames.push(tool.title.toLowerCase())
         return true
@@ -787,6 +829,7 @@ export class ProfileEditComponent implements OnInit {
   }
 
   updateToolList(search){
+    this.toolSearchLast = this.toolSearch
     this.validNames = []
     var toolSearch = this.toolSearch
     var foundTools = this.currentUser.foundTools
