@@ -37,9 +37,12 @@ export class PastPerformanceComponent implements OnInit {
   endDate: string
   activeTab: any = {
     main: 1,
+    employees: 0,
   }
   promiseFinished: boolean = false
-
+  privateCount: number = 0
+  affiliatedCount: number = 0
+  percentAffiliated: number = 0
 
   constructor(
     private pastPerformanceService: PastperformanceService,
@@ -62,6 +65,8 @@ export class PastPerformanceComponent implements OnInit {
       if (auth.isLoggedIn()) {
         this.getAdminStatus()
       }
+
+
       var companyPromises = []
       for (let u of this.currentPastPerformance.userProfileProxies) {
         for (let c of u.user.companyUserProxies) {
@@ -77,6 +82,15 @@ export class PastPerformanceComponent implements OnInit {
         }
       }
       Promise.all(companyPromises).then(res => {
+        for (let i of this.currentPastPerformance.userProfileProxies){
+          if (i.stillAffiliated){
+            this.affiliatedCount++
+            if (!i.user.public) {
+              this.privateCount++
+            }
+          }
+        }
+        this.percentAffiliated = (this.affiliatedCount / this.currentPastPerformance.userProfileProxies.length) * 100
         this.promiseFinished = true
       })
 
