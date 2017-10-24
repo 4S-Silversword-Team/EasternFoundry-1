@@ -283,7 +283,6 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
             newOccupation.title = o.title
             newOccupation.score = o.score
             occupations.push(newOccupation)
-
           }
         } else {
           for (let tool of toolsToPush) {

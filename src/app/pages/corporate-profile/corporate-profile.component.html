@@ -33,19 +33,19 @@
         <img src='{{ this.currentAccount.avatar }}' class="avatar-img">
       </div>
     </div>
-    <div class="" style="position: absolute; height: 31.2vh; width: calc(100% - 180px); bottom: 0px; right: 0px; float: left;">
-      <div class="" style="width: 95%; height: 6vh">
-        <div class="col-xs-12 basic-info-header" style="padding-top: 6px">
+    <div class="basic-info-inner">
+      <div class="" style="width: 95%; height: 110px;">
+        <div class="col-xs-12 basic-info-header">
           <p>{{ this.currentAccount.name }}</p>
         </div>
-        <div class="col-xs-12 basic-info-sub" style="padding-top: 6px">
+        <div class="col-xs-12 basic-info-sub">
           <p>{{ this.currentAccount.address }} | {{ this.currentAccount.city }}, {{ this.currentAccount.state }}</p>
         </div>
-        <div class="col-xs-12 basic-info-sub-2" style="padding-top: 6px">
+        <div class="col-xs-12 basic-info-sub-2">
           <p>{{this.currentAccount.email}}, {{this.currentAccount.contactNumber}}</p>
         </div>
       </div>
-      <div class="" style="width: 100%; height: 15vh; padding-top: .9vh; float: left; padding-bottom: 2vh; padding-top: 2vh;">
+      <div class="" style="width: 100%; height: calc(43.5vh - 220px); padding-top: .9vh; float: left; padding-bottom: 2vh; padding-top: 2vh;">
         <div id="user-contact" class="col-xs-5" style="height: 100%; padding-top: .1v; padding-bottom: .1v; border-right: 2px solid rgba(0,0,0,0.25);">
           <div class="" style="width: 100%;">
             <p class="basic-info-text-2">{{ this.currentAccount.lastUpdated }} </p>

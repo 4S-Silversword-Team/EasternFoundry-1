@@ -1,4 +1,7 @@
-<div *ngIf="this.isUserAdmin" class="btn-edit" (click) = 'editPastPerformance()'>Edit</div>
+<div class="container" *ngIf='!this.promiseFinished'>
+  <div class="loader"></div>
+  <!-- <p class="loading">Loading</p> -->
+</div>
 <div class="page" *ngIf='this.promiseFinished'>
   <div class="container top-bar">
     <div class="profile-navbar">
@@ -13,32 +16,31 @@
       </div>
     </div>
     <div class="edit-box">
-      <div *ngIf="this.isActiveProfile" class="btn-edit" (click) = 'editProfile()'>Edit</div>
+      <div *ngIf="this.isUserAdmin" class="btn-edit" (click) = 'editPastPerformance()'>Edit</div>
     </div>
   </div>
   <!-- PROFILE TAB -->
   <div class="container" *ngIf='this.activeTab.main == 0'>
-
     <div class="basic-info col-xs-12" style="background: none">
       <div class="" style="height: 180px; width: 180px; position: relative; float: left;">
         <div class="left avatar">
           <img src='{{ this.currentPastPerformance.avatar }}' class="avatar-img">
         </div>
       </div>
-      <div class="" style="position: absolute; height: 42vh; width: calc(100% - 180px); bottom: 0px; right: 0px; float: left; background: none;">
-        <div class="" style="width: 95%; height: 12vh;">
-          <div class="col-xs-12 basic-info-header" style="padding-top: 6px">
+      <div class="basic-info-inner">
+        <div class="" style="width: 95%; height: 110px;">
+          <div class="col-xs-12 basic-info-header">
             <p>{{ this.currentPastPerformance.title }}</p>
           </div>
-          <div class="col-xs-12 basic-info-sub" style="padding-top: 6px">
+          <div class="col-xs-12 basic-info-sub">
             <p>{{this.currentPastPerformance.client.name}}</p>
           </div>
-          <div class="col-xs-12 basic-info-sub-2" style="padding-top: 6px">
+          <div class="col-xs-12 basic-info-sub-2">
             <p>{{this.currentPastPerformance.topic}}</p>
           </div>
         </div>
-        <div class="" style="width: 100%; height: 30vh; padding-top: .9vh; float: left; padding-bottom: 2vh; padding-top: 2vh;">
-          <div id="user-contact" class="col-xs-5" style="height: 100%; padding-top: .1v; padding-bottom: .1v; border-right: 2px solid rgba(0,0,0,0.25);">
+        <div class="" style="width: 100%; height: calc(53vh - 220px); float: left; padding-bottom: 2vh; padding-top: 2vh;">
+          <div id="user-contact" class="col-xs-5 scrollbar" style="height: 100%; padding-top: .1v; padding-bottom: .1v; border-right: 2px solid rgba(0,0,0,0.25); overflow-y: auto">
             <div class="" style="width: 100%;">
               <p class="basic-info-text-2">{{this.currentPastPerformance.startDate}} - {{this.currentPastPerformance.endDate}}</p>
               <p class="basic-info-text-2" *ngIf='this.currentPastPerformance.cleared'>Cleared</p>
@@ -69,12 +71,12 @@
         </div>
       </div>
     </div>
-    <div class="col-xs-12" style="background: rgba(223,223,225,1); height: 45vh">
-      <div id="service_chart"  style="height: 42vh; margin: 0 auto" [chart]="serviceChart"></div>
+    <div class="col-xs-12" style="background: rgba(223,223,225,1); height: 39.5vh; width: 100%;">
+      <div id="service_chart"  style="height: 36vh; margin: 0 auto" [chart]="serviceChart"></div>
     </div>
   </div>
   <div class="container" *ngIf='this.activeTab.main == 1'>
-    <div class="company col-xs-12 clear" style="height: calc(45vh - 129px);">
+    <div class="team col-xs-12 clear">
       <div class="div-title col-xs-12" style="margin-top: 0px;">
         <p>Produced By</p>
       </div>

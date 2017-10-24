@@ -1,16 +1,6 @@
 /*styles for profile content only*/
 
-.page {
-  height: 100%;
-}
-
 .top-bar {
-}
-
-.edit-box {
-  position: absolute;
-  right: 0px;
-  top: 30px;
 }
 
 .interest {
@@ -61,14 +51,36 @@
 }
 
 .basic-info {
-    padding: 0px;
-    height: calc(53.3vh - 60px);
+  padding: 0px;
+  height: calc(53vh - 60px);
+}
+
+.basic-info-inner {
+  position: absolute;
+  height: calc(53vh - 110px);
+  width: calc(100% - 180px);
+  bottom: 0px;
+  right: 0px;
+  float: left;
+  background: none;
 }
 
 
 .basic-info-header {
   color: rgb(75, 175, 225);
-  font-size: 35px;
+  font-size: 40px;
+  font-family: 'Audiowide', cursive;
+  margin-bottom: -7px;
+}
+
+.basic-info-sub {
+  font-size: 18px;
+  padding-top: 0px;
+}
+.basic-info-sub-2 {
+  font-size: 18px;
+  font-style: italic;
+  padding-top: 1px;
 }
 
 .basic-info-text {

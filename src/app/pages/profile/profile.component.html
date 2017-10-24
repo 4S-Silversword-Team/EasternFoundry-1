@@ -2,7 +2,7 @@
   <div class="loader"></div>
   <!-- <p class="loading">Loading</p> -->
 </div>
-<div class="page" *ngIf='this.promiseFinished' style="overflow-y: hidden">
+<div class="page" *ngIf='this.promiseFinished'>
   <div class="container top-bar">
     <div class="profile-navbar">
       <div class="profile-navbar-tab" (click)='switchTab(0)' [ngClass]="{'profile-navbar-tab-active-left': this.activeTab.main == 0}">
@@ -36,19 +36,19 @@
           <img src='{{ this.currentUser.avatar }}' class="avatar-img">
         </div>
       </div>
-      <div class="" style="position: absolute; height: 42vh; width: calc(100% - 180px); bottom: 0px; right: 0px; float: left; background: none;">
-        <div class="" style="width: 95%; height: 12vh;">
-          <div class="col-xs-12 basic-info-header" style="padding-top: 6px">
+      <div class="basic-info-inner">
+        <div class="" style="width: 95%; height: 110px;">
+          <div class="col-xs-12 basic-info-header">
             <p>{{ this.currentUser.firstName }} {{this.currentUser.lastName}}</p>
           </div>
-          <div class="col-xs-12 basic-info-sub" style="padding-top: 6px" *ngIf = this.currentJob>
+          <div class="col-xs-12 basic-info-sub" *ngIf='this.currentJob'>
             <p>{{this.currentJob.PositionTitle}}, {{this.currentJob.Employer}}</p>
           </div>
-          <div class="col-xs-12 basic-info-sub-2" style="padding-top: 6px" *ngIf = this.currentJob>
+          <div class="col-xs-12 basic-info-sub-2" *ngIf='this.currentJob'>
             <p>{{this.currentJob.Employer}}</p>
           </div>
         </div>
-        <div class="" style="width: 100%; height: 30vh; padding-top: .9vh; float: left; padding-bottom: 2vh; padding-top: 2vh;">
+        <div class="" style="width: 100%; height: calc(53vh - 220px); padding-top: .9vh; float: left; padding-bottom: 2vh; padding-top: 2vh;">
           <div id="user-contact" class="col-xs-5" style="height: 100%; padding-top: .1v; padding-bottom: .1v; border-right: 2px solid rgba(0,0,0,0.25);">
             <div class="" style="width: 100%;">
               <p class="basic-info-text-2">{{ this.currentUser.address.city }}</p>
@@ -83,91 +83,9 @@
         </div>
       </div>
     </div>
-    <div class="col-xs-12" style="background: rgba(223,223,225,1); height: 39.2vh">
+    <div class="col-xs-12" style="background: rgba(223,223,225,1); height: 39.5vh; border-bottom: 0px solid black">
       <div id="service_chart"  style="height: 36vh; margin: 0 auto" [chart]="serviceChart"></div>
-
-      <!-- <div class="" style="height: 30vh;">
-        <canvas baseChart
-        [data]="getServiceChartData()"
-        [labels]="getServiceChartLabel()"
-        [chartType]="'doughnut'"></canvas>
-      </div> -->
     </div>
-    <!-- <div class="col-xs-6 box-left">
-      <div class="certification box col-xs-12">
-        <div class="cert-container">
-          <div *ngIf = 'this.currentUser.education'>
-            <div class="" *ngFor="let deg of this.currentUser.education" class="degree-box">
-              <div *ngIf="deg.DegreeType[0] && deg.DegreeType[0].Name.length > 0">
-                <div *ngIf="deg.MajorProgramName && deg.MajorProgramName.length > 0">
-                  <div *ngIf="deg.School && deg.School.length > 0">
-                    <div *ngIf="deg.AttendanceEndDate && deg.AttendanceEndDate.length > 0">
-                      <p class="degree-text">
-                        {{deg.School}}, {{deg.DegreeType[0].Name}} in {{deg.MajorProgramName[0]}}
-                      </p>
-                      <p class="degree-subtext">Graduated {{deg.AttendanceEndDate}}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="" *ngIf='this.currentUser.award'>
-            <div class="" *ngIf='this.currentUser.award[0]'>
-              <div class="" *ngFor="let award of this.currentUser.award" class="degree-box">
-                <p class="degree-text" *ngIf="award.length > 0">{{award}} Award</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xs-6 box-right">
-      <div class="col-xs-12 certification box">
-        <div class="cert-container">
-          <div class="" *ngIf = 'this.currentUser.certification'>
-            <div class="" *ngIf = 'this.currentUser.certification[0]'>
-              <div class="" *ngIf = 'this.currentUser.certification[0].CertificationName.length > 0'>
-                <div class="" *ngFor="let cert of this.currentUser.certification">
-                  <div class="" *ngIf="cert.CertificationName && cert.CertificationName.length > 0">
-                    <div class="degree-box" *ngIf="cert.DateEarned && cert.DateEarned.length > 0">
-                      <p class="degree-text">
-                        {{cert.CertificationName}} Certification
-                      </p>
-                      <p class="degree-subtext">Earned {{cert.DateEarned}}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="" *ngIf='this.currentUser.clearance'>
-            <div class="" *ngIf='this.currentUser.clearance[0]'>
-              <div class="" *ngIf='this.currentUser.clearance[0].clearanceType.length > 0'>
-                <div class="" *ngFor="let clearance of this.currentUser.clearance">
-                  <div class="" *ngIf="clearance.clearanceType.length > 0">
-                    <div class="" *ngIf="clearance.awarded.length > 0">
-                      <div class="degree-box" *ngIf="clearance.expiration.length > 0">
-                        <p class="degree-text">
-                          {{clearance.clearanceType}} Clearance
-                        </p>
-                        <p class="degree-subtext">Awarded {{clearance.awarded}}, expires {{clearance.expiration}}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xs-12 interest box text-center">
-      <p class="fs-28 fc-title">INTERESTS</p>
-      <div class="text-left">
-        <p >{{ this.currentUser.interest }}</p>
-      </div>
-    </div> -->
   </div>
   <!-- EDUCATION TAB -->
   <div class="container" *ngIf='this.activeTab.main == 1'>
