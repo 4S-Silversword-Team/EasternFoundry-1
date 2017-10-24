@@ -70,7 +70,7 @@
       </div>
     </div>
     <div class="col-xs-12" style="background: rgba(223,223,225,1); height: 45vh">
-      <!-- <div id="service_chart"  style="height: 36vh; margin: 0 auto" [chart]="serviceChart"></div> -->
+      <div id="service_chart"  style="height: 42vh; margin: 0 auto" [chart]="serviceChart"></div>
     </div>
   </div>
   <div class="container" *ngIf='this.activeTab.main == 1'>
@@ -87,9 +87,11 @@
           </div>
           <div class="" style="position: absolute; height: 32vh; width: calc(100% - 180px); bottom: 0px; right: 0px; float: left; background: none;">
             <div class="" style="width: 100%; height: 32vh; padding-top: .9vh; float: left; padding-bottom: 2vh; padding-top: 2vh;">
-              <div class="col-xs-12 basic-info-header" style="padding-top: 6px">
-                <p style="white-space: nowrap">{{ this.currentPastPerformance.companyProxies[0].company.name }}</p>
-              </div>
+              <a href="#/corporate-profile/{{this.currentPastPerformance.companyProxies[0].company._id}}">
+                <div class="col-xs-12 basic-info-header" style="padding-top: 6px">
+                  <p style="white-space: nowrap">{{ this.currentPastPerformance.companyProxies[0].company.name }}</p>
+                </div>
+              </a>
               <div class="col-xs-12 basic-info-sub" style="padding-top: 6px">
                 <p>{{this.currentPastPerformance.client.name}}</p>
               </div>
@@ -99,10 +101,6 @@
               <div class="col-xs-12 basic-info-sub" style="padding-top: 6px">
                 <p>{{this.percentAffiliated}}% still affiliated</p>
               </div>
-
-              <a href="#/corporate-profile/{{this.currentPastPerformance.companyProxies[0].company._id}}">
-                <button style="font-size: 14px;" class="col-xs-8 col-xs-offset-2">More Information</button>
-              </a>
             </div>
           </div>
         </div>

@@ -1,6 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core'
 import { Router, ActivatedRoute, Params } from '@angular/router'
 import { Location } from '@angular/common'
+import {Http} from '@angular/http';
+import { Chart } from 'angular-highcharts';
 
 import { PastPerformance } from '../../classes/past-performance'
 
@@ -36,13 +38,19 @@ export class PastPerformanceComponent implements OnInit {
   startDate: string
   endDate: string
   activeTab: any = {
-    main: 1,
+    main: 0,
     employees: 0,
   }
   promiseFinished: boolean = false
   privateCount: number = 0
   affiliatedCount: number = 0
   percentAffiliated: number = 0
+  occupations: any[] = []
+  categories: any[] = []
+  allCategories: any[]
+  serviceChart: any;
+  serviceChartNames = [];
+
 
   constructor(
     private pastPerformanceService: PastperformanceService,
@@ -53,7 +61,8 @@ export class PastPerformanceComponent implements OnInit {
     public location: Location,
     private auth: AuthService,
     private userService: UserService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private http: Http,
   ) {
     this.currentPastPerformance.id = this.route.snapshot.params['id']
     //this.currentPastPerformance = this.pastPerformanceService.getPastPerformancebyID(this.currentPastPerformance.id)
@@ -82,6 +91,15 @@ export class PastPerformanceComponent implements OnInit {
         }
       }
       Promise.all(companyPromises).then(res => {
+        this.http.get('../../../assets/occupations.json')
+        .map((res: any) => res.json())
+        .subscribe(
+          (data: any) => {
+            this.allCategories = data;
+          },
+          err => console.log(err), // error
+          () => myCallback() // complete
+        );
         for (let i of this.currentPastPerformance.userProfileProxies){
           if (i.stillAffiliated){
             this.affiliatedCount++
@@ -93,6 +111,125 @@ export class PastPerformanceComponent implements OnInit {
         this.percentAffiliated = (this.affiliatedCount / this.currentPastPerformance.userProfileProxies.length) * 100
         this.promiseFinished = true
       })
+      var myCallback = () => {
+        var toolsToPush = []
+        for (let u of this.currentPastPerformance.userProfileProxies){
+          for (let tool of u.user.foundTools) {
+            for (let position of tool.position) {
+              for (let toolDone of toolsToPush) {
+                if (position == toolDone.title) {
+                  toolDone.score += 7
+                }
+              }
+              var newPosition = {
+                title: position,
+                score: 7
+              }
+              // console.log(u.user.firstName + ' - ' + newPosition.title)
+              toolsToPush.push(newPosition)
+            }
+          }
+        }
+        for (let tool of toolsToPush) {
+          for (let u of this.currentPastPerformance.userProfileProxies){
+            for (let o of u.user.occupations) {
+              if (tool.title == o.title) {
+                tool.score += (o.score / 5)
+              }
+            }
+          }
+        }
+        toolsToPush.sort(function(a,b){
+          return parseFloat(b.score) - parseFloat(a.score);
+        })
+        for (var i = 0; i < toolsToPush.length; i++) {
+          this.occupations.push(toolsToPush[i])
+          // console.log(toolsToPush[i].score)
+        }
+      for (let t of toolsToPush) {
+        // console.log(code.substring(0,2) + " - " + t.title)
+        var newName
+        var newCode
+        for (let i of this.allCategories) {
+          if (t.title == i.title){
+            newName = i.category
+            newCode = i.code.substring(0,2)
+          }
+        }
+          var newCategory = {
+            code: newCode,
+            name: newName,
+            score: 5
+          }
+          var match = false
+          for (let c of this.categories) {
+            if (newCategory.name == c.name) {
+              match = true
+              c.score = Math.round(c.score + (t.score / 5))
+            }
+          }
+          if (!match){
+            this.categories.push(newCategory)
+          }
+        }
+        // for (let o of this.occupations) {
+        //   console.log(o.title + ' ' + o.score)
+        // }
+        var serviceData = []
+        var catPointsTotal = 0
+        for (let c of this.categories) {
+          catPointsTotal += c.score
+        }
+        var other = {
+          name: 'Other',
+          y: 0,
+        }
+        for (let c of this.categories) {
+          var percent = 360*(c.score/catPointsTotal)
+          if (((c.score/catPointsTotal)*100) >= 1){
+            serviceData.push({
+              name: c.name,
+              y: percent
+            })
+          } else {
+            other.y = other.y + percent
+          }
+        }
+        serviceData.push(other)
+
+        this.serviceChart = new Chart({
+          chart: {
+              type: 'pie',
+              backgroundColor: 'rgba(0, 100, 200, 0.00)',
+              renderTo: "service_chart"
+          },
+          title: {
+              text: 'Capabilities'
+          },
+          tooltip: {
+              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+          },
+
+          plotOptions: {
+            pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
+                    color: 'black'
+                }
+              }
+            }
+          },
+          series: [{
+            name: 'Focus',
+            colorByPoint: true,
+            data: serviceData,
+          }]
+        });
+      }
 
       // console.log(this.currentPastPerformance.userProfileProxies[0].user.companyUserProxies)
       // for (let i of this.currentPastPerformance.userProfileProxies){
