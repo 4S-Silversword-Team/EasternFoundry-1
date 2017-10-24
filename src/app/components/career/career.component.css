@@ -1,6 +1,5 @@
 container {
-  width: 90%;
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   text-align: center;
 }
@@ -15,18 +14,6 @@ h1 {
     transition: all .05s ease-in-out;
 }
 
-.box {
-  border-radius: 15px;
-  border: 10px solid rgba(0,100,200, 0.9);
-  background: rgb(255,255,255);
-  box-shadow: 0px 3px 10px #888888;
-}
-
-.career-box {
-  height: calc(100vh - 170px);
-  overflow-y: auto;
-}
-
 .box-left {
   padding-left: 0px;
   padding-right: 5px;
@@ -38,39 +25,45 @@ h1 {
   height: 400px;
 }
 
+.career {
+  height: calc(97vh - 250px);
+}
+
+.timeline-box {
+  height: 140px;
+  background: rgba(223,223,225,1);
+  padding-top: 25px;
+}
+
 /* TIMELINE
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.timeline {
+  height: 115px;
+  white-space: nowrap;
+  overflow-x: auto;
+}
 
 .timeline ul {
   /*padding: 50px 0;*/
 }
 
-.timeline ul li {
-  list-style-type: none;
+.timeline .career-item {
+  display: inline-block;
   position: relative;
-  width: 6px;
-  margin: 0 auto;
-  padding-top: 30px;
-  padding-bottom: 30px;
-  background: #827e7c;
+  margin-right: 20px;
+  width: 220px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
-.timeline ul li:first-child {
+.timeline .career-item:first-child {
     padding: 0px;
-    width: 0px;
+    margin-left: 0px;
 }
 
-.timeline ul li:last-child {
-    padding: 0px;
-    width: 0px;
-}
-
-.pre {
-    margin-left: -200px;
-}
-
-.after {
-    margin-left: 50px;
+.timeline .career-item:last-child {
+    margin-right: 0px;
 }
 
 .hidden {
@@ -83,8 +76,8 @@ h1 {
 
 .career-year {
   cursor: pointer;
-  margin-left: -12.5vh;
-  width: 25vh;
+  height: 70px;
+  width: 230px;
   padding: 2px;
   color: #555;
   text-align: center;
