@@ -8,13 +8,6 @@
   height: 27vh;
 }
 
-.certification {
-  min-height: 200px;
-  overflow-y: auto;
-  height: 33vh;
-  margin-bottom: 2vh;
-}
-
 .skill-tab {
   cursor: pointer;
   background: rgb(230,230,230);
@@ -164,27 +157,54 @@
   color: rgba(0,0,0,1);
   background: rgba(253,253,255,1);
 }
+.education-1 {
+  height: calc(50vh - 110px);
+  padding: 2vh 2vw 2vh 2vw;
+  overflow-y: auto;
+}
+.education-2 {
+  height: 48vh;
+  /*border-bottom: 1px solid red;*/
+  padding: 2vh 2vw 2vh 2vw;
+  overflow-y: auto;
+  background: rgba(223,223,225,1);
+}
+
+.education-left {
+  /*background: blue;*/
+  border-right: 2px solid rgba(0,0,0,0.5);
+  height: 100%;
+  padding: 2vh 2vw 2vh 0vw;
+  overflow-y: auto;
+}
+.education-right {
+  overflow-y: auto;
+  height: 100%;
+  padding: 2vh 0vw 2vh 2vw;
+}
+.education-header {
+  color: rgb(75, 175, 225);
+  font-size: 32px;
+  font-family: 'Audiowide', cursive;
+  margin-bottom: 1vh;
+}
 
 .degree-box {
   margin-bottom: 8px;
 }
 
 .degree-text {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   text-align: left;
 }
 
 .degree-subtext {
-  font-size: 12px;
+  font-size: 14px;
   text-align: left;
 }
 
-.cert-container {
-  padding-top: 15px;
-  padding-bottom: 15px;
-  overflow: auto;
-}
+
 
 
 .avatar {
