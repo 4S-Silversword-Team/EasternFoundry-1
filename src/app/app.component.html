@@ -27,15 +27,12 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#/mailbox">
           <div class="" *ngIf='this.bugCount>0'>
-            {{this.bugCount}} unread bug reports
+            Bug Reports [{{this.bugCount}}]
           </div>
         </a></li>
         <li><a href="#/mailbox">
-          <div class="" *ngIf='this.unreadCount>0'>
-            {{this.unreadCount}} unread messages
-          </div>
-          <div class="" *ngIf='this.unreadCount==0'>
-            Messages
+          <div class="">
+            Messages [{{this.unreadCount}}]
           </div>
         </a></li>
         <li><a href="#/bugreport">Report a Bug</a></li>

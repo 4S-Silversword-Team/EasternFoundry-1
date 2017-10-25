@@ -22,7 +22,7 @@ p {
 }
 
 .page {
-  height: calc(100vh - 69px);
+  height: calc(100vh - 70px);
   overflow-y: hidden;
 }
 

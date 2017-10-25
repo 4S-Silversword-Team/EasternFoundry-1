@@ -56,27 +56,42 @@
   <div class="container" *ngIf='activeTab.main == 0'>
     <div class="inbox col-xs-12">
       INBOX
-      <div class="message" *ngFor='let i of this.inbox' (click)='openMessage(i)' [ngClass]="{'message-read': i.read}">
-        <p>FROM: {{i.sender.name}}</p>
-        <p>SUBJECT: {{i.subject}}</p>
+      <div class="message" *ngFor='let i of this.inbox; let index = index' [ngClass]="{'message-read': i.read}">
+        <div (click)='deleteMessage(i, 0, index)'>
+          <img src="./assets/img/btn-close.png" alt="" class="message-close">
+        </div>
+        <div class="" style="width: calc(100% - 15px); height: 100%;"  (click)='openMessage(i)'>
+          <p>FROM: {{i.sender.name}}</p>
+          <p>SUBJECT: {{i.subject}}</p>
+        </div>
       </div>
     </div>
   </div>
   <div class="container" *ngIf='activeTab.main == 1'>
     <div class="outbox col-xs-12">
       OUTBOX
-      <div class="message" *ngFor='let i of this.outbox' (click)='openMessage(i)' [ngClass]="{'message-read': i.read}">
-        <p>TO: {{i.recipient[0].name}}</p>
-        <p>SUBJECT: {{i.subject}}</p>
+      <div class="message" *ngFor='let i of this.outbox; let index = index' [ngClass]="{'message-read': i.read}">
+        <div (click)='deleteMessage(i, 1, index)'>
+          <img src="./assets/img/btn-close.png" alt="" class="message-close">
+        </div>
+        <div class="" style="width: calc(100% - 15px); height: 100%;"  (click)='openMessage(i)'>
+          <p>TO: {{i.recipient[0].name}}</p>
+          <p>SUBJECT: {{i.subject}}</p>
+        </div>
       </div>
     </div>
   </div>
   <div class="container" *ngIf='activeTab.main == 3'>
     <div class="outbox col-xs-12">
       BUG REPORTS FOR YOU
-      <div class="message" *ngFor='let i of this.bugbox' (click)='openMessage(i)' [ngClass]="{'message-read': i.read}">
-        <p>TO: {{i.recipient[0].name}}</p>
-        <p>SUBJECT: {{i.subject}}</p>
+      <div class="message" *ngFor='let i of this.bugbox; let index = index' [ngClass]="{'message-read': i.read}">
+        <div (click)='deleteMessage(i, 2, index)'>
+          <img src="./assets/img/btn-close.png" alt="" class="message-close">
+        </div>
+        <div class="" style="width: calc(100% - 15px); height: 100%;"  (click)='openMessage(i)'>
+          <p>TO: {{i.recipient[0].name}}</p>
+          <p>SUBJECT: {{i.subject}}</p>
+        </div>
       </div>
     </div>
   </div>

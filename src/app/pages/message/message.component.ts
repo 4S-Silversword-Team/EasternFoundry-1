@@ -34,10 +34,12 @@ export class MessageComponent implements OnInit {
     sender: {
       id: '',
       name: '',
+      delete: false,
     },
     recipient: [{
       id: '',
       name: '',
+      delete: false,
     }],
     subject: '',
     content: '',
@@ -74,12 +76,12 @@ export class MessageComponent implements OnInit {
               if (!i.timestamp){
                 i.timestamp = 0
               }
-              if (i.sender.id == this.currentUser._id){
+              if (i.sender.id == this.currentUser._id && !i.sender.delete){
                 console.log(i.timestamp)
                 this.outbox.push(i)
               }
               for (let r of i.recipient) {
-                if (r.id == this.currentUser._id){
+                if (r.id == this.currentUser._id && !r.delete){
                   if (i.bugReport){
                     this.bugbox.push(i)
                   } else{
@@ -97,7 +99,6 @@ export class MessageComponent implements OnInit {
             this.bugbox.sort(function(a,b){
               return b.timestamp - a.timestamp;
             })
-
             this.bugReport = false
           } else {
             for (let u of this.allUsers) {
@@ -145,7 +146,38 @@ export class MessageComponent implements OnInit {
   closeMessage(){
     this.activeMessage = new Message()
     this.messageOpen = false
+  }
 
+  deleteMessage(message, box, i){
+    this.activeMessage = new Message()
+    this.messageOpen = false
+    if (box == 0){
+      for (let r of message.recipient) {
+        if (r.id == this.currentUser._id){
+          r.delete = true
+        }
+      }
+      this.messageService.updateMessage(message._id, message).toPromise().then((res) => {
+        console.log('gone!')
+        this.inbox.splice(i,1)
+      });
+    } else if (box == 1){
+      message.sender.delete = true
+      this.messageService.updateMessage(message._id, message).toPromise().then((res) => {
+        console.log('gone!')
+        this.outbox.splice(i,1)
+      });
+    } else if (box == 2){
+      for (let r of message.recipient) {
+        if (r.id == this.currentUser._id){
+          r.delete = true
+        }
+      }
+      this.messageService.updateMessage(message._id, message).toPromise().then((res) => {
+        console.log('gone!')
+        this.bugbox.splice(i,1)
+      });
+    }
   }
 
   switchTab(newTab) {
