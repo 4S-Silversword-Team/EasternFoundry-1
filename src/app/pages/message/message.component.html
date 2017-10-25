@@ -1,0 +1,36 @@
+<div class="container" *ngIf='!this.promiseFinished'>
+  <div class="loader"></div>
+  <!-- <p class="loading">Loading</p> -->
+</div>
+<div class="container" *ngIf='this.promiseFinished'>
+  <p>
+    message works!
+  </p>
+  <div class="send-field">
+    <input class="" style="width: 100%;" type="text" placeholder="send to:" [(ngModel)] = 'this.newMessage.recipient[0].name' (ngModelChange)='filterUsers(this.newMessage.recipient[0].name)' [ngClass]="{'empty-field': !this.newMessage.recipient[0].name}" (focus)='recipientSearchOn=true'>
+    <div class="recipient-search" *ngIf='this.recipientSearchOn && this.newMessage.recipient[0].name.length > 0'>
+      <div class="" *ngFor='let u of this.filteredUsers' (click)='setRecipientUser(u)'>
+        {{u.firstName}} {{u.lastName}}
+      </div>
+    </div>
+    <input class="" style="width: 100%;" type="text" placeholder="subject" [(ngModel)] = 'this.newMessage.subject' (focus)='recipientSearchOn=false' [ngClass]="{'empty-field': !this.newMessage.subject}">
+    <textarea class="" style="width: 100%; height: 18vh;" placeholder="content" [(ngModel)] = 'this.newMessage.content' (focus)='recipientSearchOn=false'></textarea>
+    <button class="col-xs-4 col-xs-offset-4" type="button" name="button" (click)='sendMessage()'>send it my dude</button>
+  </div>
+  <div class="inbox col-xs-12">
+    INBOX
+    <div class="col-xs-12" *ngFor='let i of this.inbox'>
+      <p>FROM: {{i.sender.name}}</p>
+      <p>SUBJECT: {{i.subject}}</p>
+      <p>CONTENT: {{i.content}}</p>
+    </div>
+  </div>
+  <div class="outbox col-xs-12">
+    OUTBOX
+    <div class="col-xs-12" *ngFor='let i of this.outbox'>
+      <p>TO: {{i.recipient[0].name}}</p>
+      <p>SUBJECT: {{i.subject}}</p>
+      <p>CONTENT: {{i.content}}</p>
+    </div>
+  </div>
+</div>

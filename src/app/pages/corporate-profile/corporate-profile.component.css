@@ -218,6 +218,7 @@
 }
 
 .product-tab {
+  overflow: hidden;
   cursor: pointer;
   height: 30px;
   line-height: 30px;

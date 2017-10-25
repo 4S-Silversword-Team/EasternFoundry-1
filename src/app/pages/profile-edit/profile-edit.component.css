@@ -1,6 +1,6 @@
 /*styles for profile edit content only*/
 
-.edit-box {
+.edit-panel {
   margin-top: 10vh;
   height: 60vh;
   padding: 0px;
@@ -78,7 +78,7 @@
   transform: translateX(-50%);
 }
 
-.basic-info {
+.profile {
   padding: 0px;
 }
 
