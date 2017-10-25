@@ -28,8 +28,26 @@ export class MessageService {
     return response;
   }
 
+  getUnread(id: string): Observable<number> {
+    var response =  this.authHttp.get(environment.apiRoot + "messages/user/" + id + "/unread")
+    .map(response => <number> response.json());
+    return response;
+  }
+
+  getUnreadBugReports(id: string): Observable<number> {
+    var response =  this.authHttp.get(environment.apiRoot + "messages/user/" + id + "/bugs")
+    .map(response => <number> response.json());
+    return response;
+  }
+
   updateMessage(id: string, request: any): Observable<Message> {
     var response = this.authHttp.put(environment.apiRoot + "messages/" + id, request)
+      .map(response => <Message> response.json());
+    return response;
+  }
+
+  markAsRead(id: string): Observable<Message> {
+    var response = this.authHttp.get(environment.apiRoot + "messages/" + id + '/read')
       .map(response => <Message> response.json());
     return response;
   }

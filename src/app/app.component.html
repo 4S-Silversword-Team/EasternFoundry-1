@@ -25,7 +25,20 @@
         <li><a href="#/corporate-profile-create">Create Company</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="">Report a Bug</a></li>
+        <li><a href="#/mailbox">
+          <div class="" *ngIf='this.bugCount>0'>
+            {{this.bugCount}} unread bug reports
+          </div>
+        </a></li>
+        <li><a href="#/mailbox">
+          <div class="" *ngIf='this.unreadCount>0'>
+            {{this.unreadCount}} unread messages
+          </div>
+          <div class="" *ngIf='this.unreadCount==0'>
+            Messages
+          </div>
+        </a></li>
+        <li><a href="#/bugreport">Report a Bug</a></li>
         <li><a href="#/login" (click) = "this.navLogOut()"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
       </ul>
     </div>

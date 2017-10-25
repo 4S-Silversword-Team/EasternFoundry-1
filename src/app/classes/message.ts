@@ -19,5 +19,6 @@ export class Message {
     read: boolean
     replyToId: string
     date: string
-    timestamp: string
+    timestamp: number
+    bugReport: boolean
 }

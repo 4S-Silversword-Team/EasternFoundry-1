@@ -2,35 +2,95 @@
   <div class="loader"></div>
   <!-- <p class="loading">Loading</p> -->
 </div>
-<div class="container" *ngIf='this.promiseFinished'>
-  <p>
-    message works!
-  </p>
-  <div class="send-field">
-    <input class="" style="width: 100%;" type="text" placeholder="send to:" [(ngModel)] = 'this.newMessage.recipient[0].name' (ngModelChange)='filterUsers(this.newMessage.recipient[0].name)' [ngClass]="{'empty-field': !this.newMessage.recipient[0].name}" (focus)='recipientSearchOn=true'>
-    <div class="recipient-search" *ngIf='this.recipientSearchOn && this.newMessage.recipient[0].name.length > 0'>
-      <div class="" *ngFor='let u of this.filteredUsers' (click)='setRecipientUser(u)'>
-        {{u.firstName}} {{u.lastName}}
+<div class="page" *ngIf='this.promiseFinished && this.bugReport'>
+  <div class="container">
+    <div class="send-field">
+      <p>BUG REPORT</p>
+      <p>Describe your bug below and send it to our team!</p>
+      <textarea class="" style="width: 100%; height: 18vh;" placeholder="content" [(ngModel)] = 'this.newMessage.content' (focus)='recipientSearchOn=false'></textarea>
+      <button class="col-xs-4 col-xs-offset-4" type="button" name="button" (click)='sendMessage()'>Send Bug</button>
+    </div>
+  </div>
+</div>
+<div class="page" *ngIf='this.promiseFinished && !this.bugReport'>
+  <div class="container top-bar">
+    <div class="profile-navbar" *ngIf='this.currentUser.power <= 3'>
+      <div class="profile-navbar-tab" (click)='switchTab(0)' [ngClass]="{'profile-navbar-tab-active-left': this.activeTab.main == 0}">
+        Inbox
+      </div>
+      <div class="profile-navbar-tab" (click)='switchTab(1)' [ngClass]="{'profile-navbar-tab-active': this.activeTab.main == 1}">
+        Outbox
+      </div>
+      <div class="profile-navbar-tab-right" (click)='switchTab(2)' [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 2}">
+        Compose
       </div>
     </div>
-    <input class="" style="width: 100%;" type="text" placeholder="subject" [(ngModel)] = 'this.newMessage.subject' (focus)='recipientSearchOn=false' [ngClass]="{'empty-field': !this.newMessage.subject}">
-    <textarea class="" style="width: 100%; height: 18vh;" placeholder="content" [(ngModel)] = 'this.newMessage.content' (focus)='recipientSearchOn=false'></textarea>
-    <button class="col-xs-4 col-xs-offset-4" type="button" name="button" (click)='sendMessage()'>send it my dude</button>
-  </div>
-  <div class="inbox col-xs-12">
-    INBOX
-    <div class="col-xs-12" *ngFor='let i of this.inbox'>
-      <p>FROM: {{i.sender.name}}</p>
-      <p>SUBJECT: {{i.subject}}</p>
-      <p>CONTENT: {{i.content}}</p>
+    <div class="profile-navbar" *ngIf='this.currentUser.power > 3'>
+      <div class="profile-navbar-tab" (click)='switchTab(0)' style="width: calc(100% / 4)" [ngClass]="{'profile-navbar-tab-active-left': this.activeTab.main == 0}">
+        Inbox
+      </div>
+      <div class="profile-navbar-tab" (click)='switchTab(1)' style="width: calc(100% / 4)" [ngClass]="{'profile-navbar-tab-active': this.activeTab.main == 1}">
+        Outbox
+      </div>
+      <div class="profile-navbar-tab" (click)='switchTab(3)' style="width: calc(100% / 4)" [ngClass]="{'profile-navbar-tab-active': this.activeTab.main == 3}">
+        Bug Reports
+      </div>
+      <div class="profile-navbar-tab-right" (click)='switchTab(2)' style="width: calc(100% / 4)" [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 2}">
+        Compose
+      </div>
+    </div>
+    <div class="edit-box">
+      <div *ngIf="this.isActiveProfile" class="btn-edit" (click) = 'editProfile()'>Edit</div>
     </div>
   </div>
-  <div class="outbox col-xs-12">
-    OUTBOX
-    <div class="col-xs-12" *ngFor='let i of this.outbox'>
-      <p>TO: {{i.recipient[0].name}}</p>
-      <p>SUBJECT: {{i.subject}}</p>
-      <p>CONTENT: {{i.content}}</p>
+  <div class="" *ngIf='this.messageOpen'>
+    <div class="open-message">
+      <p>FROM: {{this.activeMessage.sender.name}}</p>
+      <p>TO: {{this.activeMessage.recipient[0].name}}</p>
+      <p>SUBJECT: {{this.activeMessage.subject}}</p>
+      <p>CONTENT: {{this.activeMessage.content}}</p>
+    </div>
+    <div class="open-message-background" (click)='closeMessage()'>
+    </div>
+  </div>
+  <div class="container" *ngIf='activeTab.main == 0'>
+    <div class="inbox col-xs-12">
+      INBOX
+      <div class="message" *ngFor='let i of this.inbox' (click)='openMessage(i)' [ngClass]="{'message-read': i.read}">
+        <p>FROM: {{i.sender.name}}</p>
+        <p>SUBJECT: {{i.subject}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="container" *ngIf='activeTab.main == 1'>
+    <div class="outbox col-xs-12">
+      OUTBOX
+      <div class="message" *ngFor='let i of this.outbox' (click)='openMessage(i)' [ngClass]="{'message-read': i.read}">
+        <p>TO: {{i.recipient[0].name}}</p>
+        <p>SUBJECT: {{i.subject}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="container" *ngIf='activeTab.main == 3'>
+    <div class="outbox col-xs-12">
+      BUG REPORTS FOR YOU
+      <div class="message" *ngFor='let i of this.bugbox' (click)='openMessage(i)' [ngClass]="{'message-read': i.read}">
+        <p>TO: {{i.recipient[0].name}}</p>
+        <p>SUBJECT: {{i.subject}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="container" *ngIf='activeTab.main == 2'>
+    <div class="send-field">
+      <input class="" style="width: 100%;" type="text" placeholder="send to:" [(ngModel)] = 'this.newMessage.recipient[0].name' (ngModelChange)='filterUsers(this.newMessage.recipient[0].name)' [ngClass]="{'empty-field': !this.newMessage.recipient[0].name}" (focus)='recipientSearchOn=true'>
+      <div class="recipient-search" *ngIf='this.recipientSearchOn && this.newMessage.recipient[0].name.length > 0'>
+        <div class="" *ngFor='let u of this.filteredUsers' (click)='setRecipientUser(u)'>
+          {{u.firstName}} {{u.lastName}}
+        </div>
+      </div>
+      <input class="" style="width: 100%;" type="text" placeholder="subject" [(ngModel)] = 'this.newMessage.subject' (focus)='recipientSearchOn=false' [ngClass]="{'empty-field': !this.newMessage.subject}">
+      <textarea class="" style="width: 100%; height: 18vh;" placeholder="content" [(ngModel)] = 'this.newMessage.content' (focus)='recipientSearchOn=false'></textarea>
+      <button class="col-xs-4 col-xs-offset-4" type="button" name="button" (click)='sendMessage()'>send it my dude</button>
     </div>
   </div>
 </div>

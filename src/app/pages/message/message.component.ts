@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { User } from '../../classes/user'
 import { Message } from '../../classes/message'
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { UserService } from '../../services/user.service'
 import { MessageService } from '../../services/message.service'
@@ -15,12 +16,20 @@ import { MessageService } from '../../services/message.service'
 export class MessageComponent implements OnInit {
 
   promiseFinished: Boolean = false
+  bugReport: Boolean = false
   currentUser: User = new User()
   inbox: Message[] = []
   outbox: Message[] = []
+  bugbox: Message[] = []
   recipientSearchOn = false
   allUsers: User[] = []
   filteredUsers: User[] = []
+  adminUsers: User[] = []
+  activeTab: any = {
+    main:  0,
+  }
+  activeMessage: Message = new Message()
+  messageOpen: Boolean = false
   newMessage: any = {
     sender: {
       id: '',
@@ -40,11 +49,16 @@ export class MessageComponent implements OnInit {
     },
     read: false,
     replyToId: '',
+    date: '',
+    timestamp: '',
+    bugReport: false,
   }
 
   constructor(
     private userService: UserService,
     private messageService: MessageService,
+    private route: ActivatedRoute,
+    private router: Router,
   ) {
 
     this.userService.getUserbyID(localStorage.getItem('uid')).toPromise().then((result) => {
@@ -55,15 +69,56 @@ export class MessageComponent implements OnInit {
         this.allUsers = result
         this.messageService.getMailbox(this.currentUser._id).toPromise().then((result) => {
           var mail: any = result
-          for (let i of mail) {
-            if (i.sender.id == this.currentUser._id){
-              this.outbox.push(i)
-            }
-            for (let r of i.recipient) {
-              if (r.id == this.currentUser._id){
-                this.inbox.push(i)
+          if ( this.router.url !== '/bugreport' ) {
+            for (let i of mail) {
+              if (!i.timestamp){
+                i.timestamp = 0
+              }
+              if (i.sender.id == this.currentUser._id){
+                console.log(i.timestamp)
+                this.outbox.push(i)
+              }
+              for (let r of i.recipient) {
+                if (r.id == this.currentUser._id){
+                  if (i.bugReport){
+                    this.bugbox.push(i)
+                  } else{
+                    this.inbox.push(i)
+                  }
+                }
               }
             }
+            this.inbox.sort(function(a,b){
+              return b.timestamp - a.timestamp;
+            })
+            this.outbox.sort(function(a,b){
+              return b.timestamp - a.timestamp;
+            })
+            this.bugbox.sort(function(a,b){
+              return b.timestamp - a.timestamp;
+            })
+
+            this.bugReport = false
+          } else {
+            for (let u of this.allUsers) {
+              if (u.power > 3){
+                if (this.newMessage.recipient.length < 2) {
+                  this.newMessage.recipient[0] = {
+                    id: u._id,
+                    name: u.firstName + ' ' + u.lastName
+                  }
+                } else {
+                  this.newMessage.recipient.push({
+                    id: u._id,
+                    name: u.firstName + ' ' + u.lastName
+                  })
+                }
+              }
+            }
+            console.log(this.newMessage.recipient)
+            this.newMessage.bugReport = true;
+            this.newMessage.subject = 'BUG REPORT'
+            this.bugReport = true
           }
           this.promiseFinished = true;
         });
@@ -74,6 +129,32 @@ export class MessageComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  openMessage(message){
+    this.activeMessage = message
+    this.messageOpen = true
+    if (!message.read){
+      this.messageService.markAsRead(message._id).toPromise().then((res) => {
+        message.read = true
+        console.log('marked as read')
+      });
+    }
+  }
+
+  closeMessage(){
+    this.activeMessage = new Message()
+    this.messageOpen = false
+
+  }
+
+  switchTab(newTab) {
+    if (this.activeTab.main == newTab) {
+      this.activeTab.main = 7
+    } else {
+      this.activeTab.main = newTab
+    }
+    console.log(newTab)
   }
 
   setRecipientUser(u){
@@ -103,6 +184,36 @@ export class MessageComponent implements OnInit {
     console.log(this.newMessage)
     this.messageService.createMessage(this.newMessage).toPromise().then((result) => {
       console.log('did it')
+      if (this.bugReport) {
+        window.scrollTo(0, 0);
+        this.router.navigate(['']);
+        console.log('BUG SENT')
+      } else {
+        this.newMessage = {
+          sender: {
+            id: '',
+            name: '',
+          },
+          recipient: [{
+            id: '',
+            name: '',
+          }],
+          subject: '',
+          content: '',
+          isInvitation: false,
+          invitation: {
+            fromUser: false,
+            companyId: '',
+            pastPerformanceId: '',
+          },
+          read: false,
+          replyToId: '',
+          date: '',
+          timestamp: '',
+          bugReport: false,
+        }
+        this.activeTab.main = 0
+      }
     });
   }
 }

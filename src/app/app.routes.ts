@@ -37,6 +37,7 @@ export const ROUTES: Routes = [
   { path: 'past-performance-create', component: PastPerformanceEditComponent},
   { path: 'search', component: SearchComponent},
   { path: 'mailbox', component: MessageComponent},
+  { path: 'bugreport', component: MessageComponent},
   { path: 'admin', component: AdminComponent},
   { path: '**',    component: NoContentComponent },
 ];
