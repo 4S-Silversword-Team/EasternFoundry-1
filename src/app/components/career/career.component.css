@@ -26,20 +26,27 @@ h1 {
 }
 
 .career {
-  height: calc(97vh - 250px);
+  height: calc(100vh - 235px);
+}
+.description {
+  height: calc(100vh - 325px);
+  width: 100%;
+  overflow-y: auto;
+  padding-top: 5px;
+  padding-bottom: 10px;
 }
 
 .timeline-box {
-  height: 140px;
+  height: 100px;
   background: rgba(223,223,225,1);
-  padding-top: 25px;
+  padding-top: 10px;
 }
 
 /* TIMELINE
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 .timeline {
-  height: 115px;
+  height: 90px;
   white-space: nowrap;
   overflow-x: auto;
 }

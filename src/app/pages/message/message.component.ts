@@ -77,7 +77,6 @@ export class MessageComponent implements OnInit {
                 i.timestamp = 0
               }
               if (i.sender.id == this.currentUser._id && !i.sender.delete){
-                console.log(i.timestamp)
                 this.outbox.push(i)
               }
               for (let r of i.recipient) {
@@ -186,7 +185,6 @@ export class MessageComponent implements OnInit {
     } else {
       this.activeTab.main = newTab
     }
-    console.log(newTab)
   }
 
   setRecipientUser(u){

@@ -3,11 +3,13 @@ export class Message {
     sender: {
       id: string
       name: string
+      avatar: string
       delete: boolean
     }
     recipient: [{
       id: string
       name: string
+      avatar: string
       delete: boolean
     }]
     subject: string

@@ -76,8 +76,8 @@ export class ProfileComponent implements OnInit {
   yearsOfWork: number = 0;
   professionalPoints: number = 0;
   activeTab: any = {
-    main: 2,
-    skill: 0,
+    main: 3,
+    skill: 2,
     service: 0,
   }
   pastPerformances: any[] = [];
@@ -532,8 +532,7 @@ export class ProfileComponent implements OnInit {
           chart: {
               type: 'bar',
               backgroundColor: 'rgba(0, 100, 200, 0.00)',
-              renderTo: "team_chart",
-              height: 400
+              renderTo: "team_chart"
           },
           title: {
               text: 'Agency Experience'
@@ -545,15 +544,10 @@ export class ProfileComponent implements OnInit {
               },
           }],
           yAxis: [{ // Primary yAxis
-    //            tickInterval: Math.round(100/numPeop),
-    //            tickAmount: numPeop,
-    //            max: 100,
-              // endOnTick:false ,
               min:0,
               tickInterval: 1,
               endOnTick: false,
               alignTicks: false,
-              ceiling: 20,
               labels: {
                   format: '{value}',
                   style: {
@@ -570,12 +564,9 @@ export class ProfileComponent implements OnInit {
           {
              // Secondary yAxis
               tickInterval: 1,
-    //            tickAmount: numPeop,
-    //              endOnTick:false ,
               min:0,
               endOnTick: false,
               alignTicks: false,
-
               title: {
                   text: '',
                   style: {
@@ -617,7 +608,6 @@ export class ProfileComponent implements OnInit {
       this.calculateSkillChart()
       this.calculateCapaChart()
       this.pastPerformances = this.currentUser.pastPerformanceProxies.map(proxy => proxy.pastPerformance)
-      console.log(this.pastPerformances[0])
       this.promiseFinished = true;
     }
   }
@@ -637,11 +627,11 @@ export class ProfileComponent implements OnInit {
   }
 
   switchTab(newTab) {
-    if (this.activeTab.main == newTab) {
-      this.activeTab.main = 7
-    } else {
-      this.activeTab.main = newTab
-    }
+    // if (this.activeTab.main == newTab) {
+    //   this.activeTab.main = 7
+    // } else {
+    // }
+    this.activeTab.main = newTab
     console.log(newTab)
   }
 
