@@ -50,7 +50,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   renderChart: boolean;
   charts: any[] = []
   activeTab: any = {
-    main: 0,
+    main: 1,
     product: 0,
     productCustomer: 0,
     service: 0,

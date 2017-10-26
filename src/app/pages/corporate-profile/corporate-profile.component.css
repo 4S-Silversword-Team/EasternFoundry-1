@@ -165,27 +165,28 @@
 }
 
 .leadership {
+  /*background: blue;*/
   padding-top: 0px;
-  height: 35vh;
+  height: calc(45vh - 130px);
   overflow: hidden;
 }
 
 .leadership-inner {
-  height: 26.58vh;
+  height: calc(44vh - 179px);
   background: rgba(0,0,0,0.02);
   overflow-y: auto;
   border: 1px solid rgba(0,100,200, 0.9);
 }
 
 .employees {
-  margin-top: 2vh;
+  background: rgba(223,223,225,1);
   padding-top: 0px;
-  height: 45vh;
+  height: 55vh;
   overflow: hidden;
 }
 
 .employees-inner {
-  height: 36.48vh;
+  height: calc(54vh - 49px);
   background: rgba(0,0,0,0.02);
   overflow-y: auto;
   border: 1px solid rgba(0,100,200, 0.9);

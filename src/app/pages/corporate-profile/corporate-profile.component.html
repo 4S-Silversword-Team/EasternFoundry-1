@@ -100,9 +100,9 @@
 </div>
 <!-- EMPLOYEES TAB -->
 <div class="container" *ngIf='activeTab.main==1'>
-  <div class="leadership col-xs-12 box" style="">
+  <div class="leadership col-xs-12" style="">
     <div class="col-xs-12 div-title" style="text-align: center; margin-top: 0.5vh; margin-bottom: 0.5vh;">
-      <p class="" style="">LEADERSHIP</p>
+      <p class="">LEADERSHIP</p>
     </div>
     <div *ngIf="users[0]" class="leadership-inner">
       <div class="col-xs-12 col-md-6" style="padding: 2px" *ngFor='let index of users'>
@@ -121,37 +121,37 @@
         </div>
       </div>
     </div>
-    <div class="main clear" *ngIf="!users[0]">No leadership to show</div>
+    <div class="leadership-inner" *ngIf="!users[0]">No leadership to show</div>
   </div>
-  <div class="employees box col-xs-12 clear">
-      <div class="col-xs-12 div-title" style="">
-        <p class="">EMPLOYEES</p>
-      </div>
-      <div class="employees-inner">
-        <div class="" *ngIf='this.currentAccount.userProfileProxies'>
-          <div class="col-xs-12 col-md-6 left" style="padding: 2px" *ngFor='let index of this.currentAccount.userProfileProxies'>
-            <div class="employee-panel col-xs-12" *ngIf="index.userProfile">
-              <div class="left avatar-small">
-                <img src='{{ index.userProfile.avatar }}' class="avatar-img-small">
-              </div>
-              <p class="">{{ index.userProfile.firstName + ' ' + index.userProfile.lastName}}</p>
-              <p *ngIf="index.userProfile.positionHistory[0]" class="">{{ index.userProfile.positionHistory[0].PositionTitle }}</p>
-              <p class="">{{ index.userProfile.username }}</p>
-              <a href="/#/user-profile/{{index.userProfile._id}}">
-                <button class="employee-link">
-                  More<br>Info
-                </button>
-              </a>
+  <div class="employees col-xs-12 clear">
+    <div class="col-xs-12 div-title" style="text-align: center; margin-top: 0.5vh; margin-bottom: 0.5vh;">
+      <p class="">EMPLOYEES</p>
+    </div>
+    <div class="employees-inner scrollbar">
+      <div class="" *ngIf='this.currentAccount.userProfileProxies'>
+        <div class="col-xs-12 col-md-6 left" style="padding: 2px" *ngFor='let index of this.currentAccount.userProfileProxies'>
+          <div class="employee-panel col-xs-12" *ngIf="index.userProfile">
+            <div class="left avatar-small">
+              <img src='{{ index.userProfile.avatar }}' class="avatar-img-small">
             </div>
+            <p class="">{{ index.userProfile.firstName + ' ' + index.userProfile.lastName}}</p>
+            <p *ngIf="index.userProfile.positionHistory[0]" class="">{{ index.userProfile.positionHistory[0].PositionTitle }}</p>
+            <p class="">{{ index.userProfile.username }}</p>
+            <a href="/#/user-profile/{{index.userProfile._id}}">
+              <button class="employee-link">
+                More<br>Info
+              </button>
+            </a>
           </div>
         </div>
       </div>
-      <div class="" *ngIf="!this.currentAccount.userProfileProxies" class="main clear">
-         No employees to show
-      </div>
-      <div class="" *ngIf="this.currentAccount.userProfileProxies">
-        <div *ngIf="!this.currentAccount.userProfileProxies[0]" class="main clear">No employees to show</div>
-      </div>
+    </div>
+    <div class="" *ngIf="!this.currentAccount.userProfileProxies" class="main clear">
+       No employees to show
+    </div>
+    <div class="" *ngIf="this.currentAccount.userProfileProxies">
+      <div *ngIf="!this.currentAccount.userProfileProxies[0]" class="main clear">No employees to show</div>
+    </div>
   </div>
   <!-- <div class="leadership col-xs-12 clear">
     <div class="col-xs-12 srow div-title">
