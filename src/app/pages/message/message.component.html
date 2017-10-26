@@ -43,6 +43,8 @@
       <div *ngIf="this.isActiveProfile" class="btn-edit" (click) = 'editProfile()'>Edit</div>
     </div>
   </div>
+  <p style="font-size: 16px; text-align: center">The mailbox is still early and under construction - use with care!</p>
+  <br>
   <div class="" *ngIf='this.messageOpen'>
     <div class="open-message">
       <p>FROM: {{this.activeMessage.sender.name}}</p>
