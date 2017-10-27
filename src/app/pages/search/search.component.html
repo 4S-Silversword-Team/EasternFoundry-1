@@ -3,7 +3,7 @@
   <!-- <p class="loading">Loading</p> -->
 </div>
 <div class="container" *ngIf='this.promiseFinished'>
-  <div class="col-xs-8 col-lg-7 search-results-box box">
+  <div class="col-xs-8 col-lg-7 search-results-box">
     <h3 style="text-align: center">Results</h3>
     <div class="search-results-interior">
       <div class="search-results-interior-2">
@@ -21,7 +21,7 @@
             <div class="" *ngFor='let c of searchResults.companies'>
               <div class="search-item" *ngIf='!c.expand'>
                 <div class="search-item-not-expand">
-                  <div class="" style="position: relative">
+                  <div class="avatar">
                     <img src="{{c.avatar}}" alt="" class="search-item-avatar">
                   </div>
                   <div class="search-item-header">{{c.name}}</div>
@@ -40,7 +40,9 @@
               <div class="search-item" *ngIf='c.expand'>
                 <div class="search-item-not-expand col-xs-12">
                   <div class="col-xs-12" style="height: 70px; margin-bottom: 1px;">
-                    <img src="{{c.avatar}}" alt="" class="search-item-avatar avatar-expand">
+                    <div class="avatar avatar-expand">
+                      <img src="{{c.avatar}}" alt="" class="search-item-avatar search-item-avatar-expand">
+                    </div>
                     <div class="search-item-header-expand">{{c.name}}</div>
                     <div class="search-item-subheader-expand">A company with {{c.userProfileProxies.length}} employees</div>
                   </div>
@@ -89,7 +91,10 @@
             <div class="" *ngFor='let p of searchResults.people'>
               <div class="search-item" *ngIf='p.public && !p.expand'>
                 <div class="search-item-not-expand col-xs-12">
-                  <img src="{{p.avatar}}" alt="" class="search-item-avatar">
+                  <div class="avatar">
+                    <img src="{{p.avatar}}" alt="" class="search-item-avatar">
+                  </div>
+
                   <div class="search-item-header">{{p.firstName}} {{p.lastName}}</div>
                   <div class="search-item-subheader" *ngIf='p.currentCompany'>Works at {{p.currentCompany}}</div>
                   <div class="search-item-subheader" *ngIf='!p.currentCompany'>Freelancer</div>
@@ -107,7 +112,9 @@
               <div class="search-item" *ngIf='p.public && p.expand'>
                 <div class="search-item-not-expand col-xs-12">
                   <div class="col-xs-12" style="height: 70px; margin-bottom: 1px;">
-                    <img src="{{p.avatar}}" alt="" class="search-item-avatar avatar-expand">
+                    <div class="avatar avatar-expand">
+                      <img src="{{p.avatar}}" alt="" class="search-item-avatar search-item-avatar-expand">
+                    </div>
                     <div class="search-item-header-expand">{{p.firstName}} {{p.lastName}}</div>
                     <div class="search-item-subheader-expand" *ngIf='p.currentCompany'>Works at {{p.currentCompany}}</div>
                     <div class="search-item-subheader-expand" *ngIf='!p.currentCompany'>Freelancer</div>
@@ -155,7 +162,9 @@
             </div>
             <div class="search-item" *ngFor='let pp of searchResults.pastPerformances'>
               <div class="search-item-not-expand col-xs-12">
-                <img src="{{pp.avatar}}" alt="" class="search-item-avatar">
+                <div class="avatar">
+                  <img src="{{pp.avatar}}" alt="" class="search-item-avatar">
+                </div>
                 <div class="search-item-header">{{pp.title}}</div>
                 <div class="search-item-subheader" *ngIf='pp.topic'>{{pp.topic}}</div>
               </div>
@@ -173,7 +182,7 @@
       </div>
     </div>
   </div>
-  <div class="col-xs-4 col-xs-offset-0 col-lg-4 col-lg-offset-1 search-terms-box box">
+  <div class="col-xs-4 col-xs-offset-0 col-lg-4 col-lg-offset-1 search-terms-box">
     <h3 style="text-align: center">Search Terms</h3>
     <div class="col-xs-12" style="width: 100%; text-align: right">
       <div class="col-xs-12">

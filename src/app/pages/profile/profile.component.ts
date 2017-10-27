@@ -76,7 +76,7 @@ export class ProfileComponent implements OnInit {
   yearsOfWork: number = 0;
   professionalPoints: number = 0;
   activeTab: any = {
-    main: 4,
+    main: 0,
     skill: 0,
     service: 0,
   }
@@ -358,7 +358,6 @@ export class ProfileComponent implements OnInit {
         })
       }
 
-
       this.serviceChart = new Chart({
         chart: {
             type: 'pie',
@@ -602,7 +601,6 @@ export class ProfileComponent implements OnInit {
               }
           }]
         });
-
 
       this.showTeam()
       this.calculateSkillChart()
