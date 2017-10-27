@@ -28,6 +28,7 @@ h1 {
 .career {
   height: calc(100vh - 235px);
 }
+
 .description {
   height: calc(100vh - 325px);
   width: 100%;
@@ -47,6 +48,8 @@ h1 {
 
 .timeline {
   height: 90px;
+  padding-left: 5px;
+  padding-right: 5px;
   white-space: nowrap;
   overflow-x: auto;
 }
@@ -86,24 +89,27 @@ h1 {
   height: 70px;
   width: 230px;
   padding: 2px;
-  color: #555;
+  color: rgba(0,0,0,0.75);
   text-align: center;
-  background-color: #adc9f9;
-  border-radius: 10px;
-  border: 2px solid rgba(0,100,200, 0.9);
+  background-color: rgba(253,253,255,1);
+  box-shadow: 0px 2px 5px #888888;
+  border-radius: 2px;
+  border: 2px solid rgba(0,0,2,0.05);
 }
 
 .career-year:hover {
-  background-color: #cedcf5;
+  background-color: rgba(243,243,245,1);
 }
 
 .career-active {
-  background: #2772f5;
-  color: white;
+  background-color: rgba(143,143,145,1);
+  color: rgba(253,253,255,1);
+  border: 2px solid rgba(0,0,2,0.1);
+  box-shadow: 0px 4px 7px #888888;
 }
 .career-active:hover {
-  background: #2772f5;
-  color: white;
+  background-color: rgba(143,143,145,1);
+  color: rgba(253,253,255,1);
 }
 
 .career-year-head {

@@ -50,9 +50,27 @@
   overflow-y: auto;
 }
 .past-performances {
-  height: 100%;
+  margin-top: 2vh;
+  height: calc(98vh - 130px);
   padding-top: 2vh;
   overflow-y: auto;
+  background: rgb(223,223,225);
+}
+
+.past-performance-panel {
+  background: rgba(253,253,255,1);
+  border-radius: 2px;
+  border: 2px solid rgba(0,0,0,0.05);
+  height: 25vh;
+}
+.past-performance-panel-inner {
+  position: absolute;
+  height: calc(24vh - 50px);
+  padding-bottom: 1vh;
+  width: calc(100% - 180px);
+  bottom: 0px;
+  right: 0px;
+  float: left;
 }
 
 .services {
@@ -131,6 +149,10 @@
   border-right: 2px solid rgba(173,173,175,1);
 }
 
+.tab-right {
+  border-right: 0px solid black;
+}
+
 .profile-navbar-tab-active {
   color: rgba(0,0,0,1);
   background: rgba(253,253,255,1);
@@ -147,8 +169,8 @@
 }
 .profile-navbar-tab-active-right {
   color: rgba(0,0,0,1);
-  background: rgba(253,253,255,1);
   border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(253,253,255,1);
 }
 
 .profile-navbar-tab:hover {

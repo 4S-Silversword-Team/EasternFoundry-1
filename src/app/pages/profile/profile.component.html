@@ -17,7 +17,7 @@
       <div class="profile-navbar-tab" (click)='switchTab(3)' [ngClass]="{'profile-navbar-tab-active': this.activeTab.main == 3}">
         Analytics
       </div>
-      <div class="profile-navbar-tab" (click)='switchTab(4)' style="border-right:0px solid black" [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 4}">
+      <div class="profile-navbar-tab tab-right" (click)='switchTab(4)' [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 4}">
         Past Performances
       </div>
     </div>
@@ -46,7 +46,7 @@
           </div>
         </div>
         <div class="" style="width: 100%; height: calc(53vh - 220px); padding-top: .9vh; float: left; padding-bottom: 2vh; padding-top: 2vh;">
-          <div id="user-contact" class="col-xs-5" style="height: 100%; padding-top: .1v; padding-bottom: .1v; border-right: 2px solid rgba(0,0,0,0.25);">
+          <div id="user-contact" class="col-xs-5 scrollbar" style="overflow-y: auto; height: 100%; padding-top: .1v; padding-bottom: .1v; border-right: 2px solid rgba(0,0,0,0.25);">
             <div class="" style="width: 100%;">
               <p class="basic-info-text-2">{{ this.currentUser.address.city }}</p>
               <p class=" basic-info-text-2">{{ this.currentUser.cell }}</p>
@@ -225,26 +225,25 @@
   <!-- PAST PERFORMANCES TAB -->
   <div class="container" *ngIf='this.activeTab.main == 4'>
     <div class="past-performances col-xs-12">
-      <div class="col-xs-12 text-container" *ngFor='let pp of pastPerformances'>
+      <div class="col-xs-12 past-performance-panel" *ngFor='let pp of pastPerformances'>
         <div class="" *ngIf="pp.public">
           <div class="" style="height: 180px; width: 180px; position: relative; float: left;">
             <div class="left avatar">
               <img src='{{ pp.avatar }}' class="avatar-img">
             </div>
           </div>
-          <div class="" style="position: absolute; height: 20vh; width: calc(100% - 180px); bottom: 0px; right: 0px; float: left; background: none;">
-            <div id="user-contact" class="col-xs-5" style="height: 100%; padding-top: 4vh; padding-bottom: .1vh; border-right: 2px solid rgba(0,0,0,0.25);">
+          <div class="past-performance-panel-inner">
+            <div id="user-contact" class="col-xs-5" style="height: 100%; padding-bottom: .1vh; border-right: 2px solid rgba(0,0,0,0.25);">
               <div class="" style="width: 100%;">
-                <p class="basic-info-text-2">{{ pp.title }}</p>
-                <p class="basic-info-text-2">{{ pp.client.name }}</p>
-                <p class="basic-info-text-2">{{ pp.topic }}</p>
-                <p class="basic-info-text-2">{{ pp.startDate }} - {{ pp.endDate }}</p>
+                <a href="#/past-performance/{{pp._id}}">
+                  <p class="basic-info-header">{{ pp.title }}</p>
+                </a>
+                <p class="basic-info-sub">{{ pp.client.name }}</p>
+                <p class="basic-info-sub-2">{{ pp.topic }}</p>
               </div>
             </div>
-            <div id="user-contact" class="col-xs-7 scrollbar" style="overflow-y: auto; padding-top: .1vh; height: 100%;">
-              <a href="#/past-performance/{{pp._id}}">
-                <button style="white-space: nowrap" style="height: 4em;">More Information</button>
-              </a>
+            <div id="user-contact" class="col-xs-7" style="overflow-y: auto; padding-top: .1vh; height: 100%;">
+              <p class="basic-info-text-2">{{ pp.startDate }} - {{ pp.endDate }}</p>
             </div>
           </div>
         </div>
