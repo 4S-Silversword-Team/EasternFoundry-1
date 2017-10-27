@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
 import { Company } from '../../classes/company';
 import { Product } from '../../classes/product';
 import { Service } from '../../classes/service';
@@ -27,6 +27,9 @@ declare var $: any;
 
 @Component({
   selector: 'app-corporate-profile-edit',
+  host: {
+      '(document:click)': 'handleClick($event)',
+  },
   templateUrl: './corporate-profile-edit.component.html',
   styleUrls: ['./corporate-profile-edit.component.css'],
   providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, AgencyService, CompanyUserProxyService, CompanyPastperformanceProxyService, RoleService, s3Service]
@@ -63,8 +66,17 @@ export class CorporateProfileEditComponent implements OnInit {
   searchResults = {
     people: []
   };
+  searchOpen: boolean = false
   noResults = false
   productTabs = [0]
+  activeTab = {
+    main: 1,
+  }
+  finished: any = {
+    basic: false,
+    employees: false,
+    products: false,
+  }
 
   allAgencies: any[] = []
 
@@ -75,6 +87,7 @@ export class CorporateProfileEditComponent implements OnInit {
   lastEndDate: string;
 
   promiseFinished: boolean = false;
+  public elementRef
 
   constructor(
     private route: ActivatedRoute,
@@ -90,8 +103,10 @@ export class CorporateProfileEditComponent implements OnInit {
     private companyPastPerformanceProxyService: CompanyPastperformanceProxyService,
     private auth: AuthService,
     private roleService: RoleService,
+    private myElement: ElementRef,
     private s3Service: s3Service
   ) {
+    this.elementRef = myElement
     // if(!auth.isLoggedIn()){
     //   this.router.navigateByUrl("/login")
     // }
@@ -130,7 +145,6 @@ export class CorporateProfileEditComponent implements OnInit {
           // this.router.navigateByUrl("/corporate-profile/"+this.route.snapshot.params['id'])
       }
       console.log('???????')
-      this.checkFields()
       for (let p of this.currentAccount.product) {
         if (this.productTabs.length > 0) {
           this.productTabs.push(0)
@@ -160,6 +174,21 @@ export class CorporateProfileEditComponent implements OnInit {
   trackByFn(index: any, item: any) {
     return index;
   }
+
+  handleClick(event){
+    var clickedComponent = event.target;
+    var inside = false;
+    do {
+      if (clickedComponent === document.getElementById('employee-dropdown') || clickedComponent === document.getElementById('employee-search')) {
+        inside = true;
+      }
+      clickedComponent = clickedComponent.parentNode;
+    } while (clickedComponent);
+    if(!inside){
+      this.searchOpen = false
+    }
+  }
+
 
   uploadPhoto() {
     let fileBrowser = this.fileInput.nativeElement;
@@ -271,7 +300,21 @@ export class CorporateProfileEditComponent implements OnInit {
     this.productTabs[index] = num
   }
 
-  checkFields(){
+  checkFields(num){
+    var profilePass = false
+    if (
+      this.currentAccount.name &&
+      this.currentAccount.email &&
+      this.currentAccount.contactNumber &&
+      this.currentAccount.contactNumber.length == 14 &&
+      this.currentAccount.address &&
+      this.currentAccount.city &&
+      this.currentAccount.state &&
+      this.currentAccount.zip
+    ){
+      profilePass = true
+    }
+
     var productsPass = true
     for (let p of this.products) {
       if (!p.name) {
@@ -281,50 +324,44 @@ export class CorporateProfileEditComponent implements OnInit {
         for (let i of p.customers.defense) {
           if (i.length < 1) {
             console.log('defense failure')
-
             productsPass = false
           }
         }
         for (let i of p.customers.commercial) {
           if (i.length < 1) {
             console.log('commercial failure')
-
             productsPass = false
           }
         }
         for (let i of p.customers.civilian) {
           if (i.length < 1) {
             console.log('civilian failure')
-
             productsPass = false
           }
         }
-
         for (let f of p.feature) {
           if (!f.name || !f.score) {
             console.log('feature name/score failure')
-
             productsPass = false
           }
         }
       }
     }
-    if (
-      this.currentAccount.name &&
-      this.currentAccount.email &&
-      this.currentAccount.contactNumber &&
-      this.currentAccount.contactNumber.length == 14 &&
-      this.currentAccount.address &&
-      this.currentAccount.city &&
-      this.currentAccount.state &&
-      this.currentAccount.zip &&
-      productsPass
-    ){
-      this.fieldsFilled = true
-    } else {
-      this.fieldsFilled = false
+    if (num == 0){
+      return profilePass
+    } else if (num == 1){
+      return true
+    } else if (num == 2){
+      return productsPass
+    } else if (num == 9){
+      return (productsPass && profilePass)
     }
   }
+
+  switchTab(newTab) {
+    this.activeTab.main = newTab
+  }
+
 
   checkCompanyAdminCount() {
     let employeeRoleIds = this.currentAccount.userProfileProxies.map((proxy) => proxy.role);
@@ -351,6 +388,7 @@ export class CorporateProfileEditComponent implements OnInit {
       this.currentAccount.userProfileProxies = result.userProfileProxies;
       this.refreshEmployees();
       this.searchResults.people.splice(searchResultIndex, 1)
+      this.searchOpen = false
     }));
   }
 
@@ -492,6 +530,13 @@ export class CorporateProfileEditComponent implements OnInit {
     if (this.searchResults.people.length < 1) {
       this.noResults = true
     }
+    this.searchOpen = true;
+  }
+  asdf(){
+    console.log('asdf')
+  }
+  no(){
+    console.log('no')
   }
 
   addProduct() {

@@ -2,143 +2,104 @@
   <div class="loader"></div>
   <!-- <p class="loading">Loading</p> -->
 </div>
-<div class="basic-info col-xs-12 clear" *ngIf='this.promiseFinished'>
-  <div class="container">
-    <div class="col-xs-12 col-md-6">
-      <div class="col-xs-12 srow info-input">
-        <p class="left">Name</p>
-        <input class="right" type="text" placeholder="Company name." [(ngModel)] = 'this.currentAccount.name' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentAccount.name}">
-      </div>
-      <div class="col-xs-12 mt10">
-        <p class="left lh-50 mt10" [style.width]="'80px'">Logo</p>
-        <div class="left avatar" *ngIf="this.currentAccount.avatar">
-          <img src='{{ this.currentAccount.avatar }}' class="avatar-img">
-        </div>
-        <div *ngIf="!creatingNew && (!this.currentAccount.avatar || this.currentAccount.avatar.startsWith('..'))" class="right">
-          <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
-          <button class="btn btn-primary" (click)="uploadPhoto()">Upload Logo</button>
-        </div>
-        <div *ngIf="this.currentAccount.avatar && !this.currentAccount.avatar.startsWith('..')" class="right">
-          <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
-          <button class="btn btn-primary" (click)="editPhoto()">Edit Logo</button>
-        </div>
-        <div class="col-xs-12">
-          <p class="col-xs-7 text-right vertically-centered">Make your account publically viewable?</p>
-          <input type="checkbox" class="col-xs-2" [(ngModel)] = 'this.currentAccount.public'>
+<div class="container" *ngIf='this.promiseFinished'>
+  <div class="page">
+    <!-- NEW PAGE -->
+  <div class="col-xs-2" style="margin: 0px; padding: 0px;">
+    <div class="edit-tab-bar">
+      <div class="edit-tab" [ngClass]="{'edit-tab-incomplete': !this.checkFields(0) || (this.creatingNew && !finished.basic)}">
+        <div class="edit-tab" (click)='switchTab(0)' [ngClass]="{'edit-tab-top-active': this.activeTab.main == 0}">
+          Basic Info
         </div>
       </div>
-      <!--<div class="col-xs-12" [style.height]="'130px'">
-          <p clvehicleType"left">Set-Aside</p>
-          <div class="text-container right" [style.height]="'130pxvehicleTypestyle.width] = "infoInputWidth+'px'">
-              <div class="col-xs-12" [style.overfvehicleType = "'auto'" [style.height]="'90px'">
-                  <div class="ssrow"><input type="checkbox" class="left"><p >XXX</p></div>
-                  <div class="ssrow"><input type="checkbox" class="left"><p >XXX</p></div>
-                  <div class="ssrow"><input type="checkbox" class="left"><p >XXX</p></div>
-              </div>
+      <div class="" [ngClass]="{'edit-tab-inactive': this.creatingNew}">
+        <div class="edit-tab" [ngClass]="{'edit-tab-incomplete': this.creatingNew && !finished.employees}">
+          <div class="edit-tab" (click)='switchTab(1)' [ngClass]="{'edit-tab-active': this.activeTab.main == 1}">
+            Employees
           </div>
-      </div>-->
-      <!--<div class="col-xs-12 srow">
-          <p class="left">DCAA</p>
-          <invehicleTypetype="checkbox">
-      </div>-->
-      <!--<div class="col-xs-12" [style.height]="'130px'">
-          <p clvehicleType"left">FCL</p>
-          <div class="text-container right" [style.height]="'130px'" [stvehicleTypewidth] = "infoInputWidth+'px'">
-              <div class="col-xs-12" [style.overflow] =vehicleTypeuto'" [style.height]="'90px'">
-                  <div class="ssrow"><input type="checkbox" class="left"><p >XXX</p></div>
-                  <div class="ssrow"><input type="checkbox" class="left"><p >XXX</p></div>
-                  <div class="ssrow"><input type="checkbox" class="left"><p >XXX</p></div>
-              </div>
+        </div>
+        <div class="edit-tab" [ngClass]="{'edit-tab-incomplete': !this.creatingNew && !this.checkFields(2)}">
+          <div class="edit-tab-bottom" (click)='switchTab(2)' [ngClass]="{'edit-tab-bottom-active': this.activeTab.main == 2}">
+            Products
           </div>
-      </div>-->
-      <!--<div class="col-xs-12" [style.height]="'130px'">
-          <p class="left">Schedules</p>
-          <div class="text-container right" [style.height]="'130px'" [style.width] = "infoInputWidth+'px'">
-          </div>
+        </div>
       </div>
-      <div class="col-xs-12" [style.height]="'130px'">
-          <p class="left">Major<br>Vehicles</p>
-          <div class="text-container right" [style.height]="'130px'" [style.width] = "infoInputWidth+'px'">
-          </div>
-      </div>-->
-    </div>
-    <div class="col-xs-12 col-md-6">
-      <div class="col-xs-12 srow info-img-input"><img src="../assets/img/glyphicon/email-1.png" class="left"><p class="left">Email</p><input type="text" [(ngModel)] = 'this.currentAccount.email' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentAccount.email}"></div>
-      <div class="col-xs-12 srow info-img-input mt10"><img src="../assets/img/glyphicon/phone-2.png" class="left"><p class="left" style="line-height: 25px;">Contact<br> Number</p>
-        <input type="text" maxlength="14" [(ngModel)] = 'this.currentAccount.contactNumber' (ngModelChange)="onPhoneChange(this.currentAccount.contactNumber); checkFields()" (keydown.backspace)='onPhoneChange(this.currentAccount.contactNumber, true)' [ngClass]="{'empty-field': !this.currentAccount.contactNumber || this.currentAccount.contactNumber.length < 14}">
-      </div>
-      <div class="col-xs-12 srow info-img-input mt10"><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">Address</p><input type="text"  [(ngModel)] = 'this.currentAccount.address' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentAccount.address}"></div>
-      <div class="col-xs-12 srow info-img-input mt10"><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">City</p><input type="text"  [(ngModel)] = 'this.currentAccount.city' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentAccount.city}"></div>
-      <div class="col-xs-12 srow info-img-input mt10"><img src="../assets/img/profile/state.png" class="left"><p class="left">State</p><input type="text"  [(ngModel)] = 'this.currentAccount.state' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentAccount.state}"></div>
-      <div class="col-xs-12 srow info-img-input mt10"><img src="../assets/img/profile/zip.png" class="left"><p class="left">Zip</p><input type="text"  [(ngModel)] = 'this.currentAccount.zip' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentAccount.zip}"></div>
-    </div>
-
-    <div *ngIf="this.creatingNew || this.isUserAdmin" class="text-center" style="display: inline-block">
-      <button class="btn btn-primary btn-block" (click)="updateCompany(this.currentAccount)" *ngIf='this.fieldsFilled'>Update Company</button>
-      <button class="btn btn-primary btn-block" style="background-color: red" *ngIf='!this.fieldsFilled'>Page Unfinished</button>
     </div>
   </div>
-
-<!-- TODO: This employee section is not responsive for phones. Need to deal with overlapping text. -->
-<div class="employees col-xs-12 clear">
-  <div class="div-title col-xs-12">
-    <img src="./assets/img/employee.png">
-    <p>EMPLOYEES</p>
-    <div></div>
-  </div>
-  <div *ngIf="!creatingNew" class="container">
-    <div class="col-xs-12" style="width: 100%; position: relative">
-      <div class="col-xs-8" style="height: 500px; overflow-y: auto; position: absolute; left: 0px; padding-right: 5px">
-        <div class="" style="background: rgba(0, 0, 0, 0.1); border: 2px solid rgba(0, 0, 0, 0.1); height: 100%; padding-left: 5px; padding-right: 5px">
-          <h3 style="text-align: center; margin-top: 10px; margin-bottom: 2px;">Employees</h3>
-          <div class="" style="width: 94%, left: 3%; overflow-y: hidden; height: 440px; background: rgb(235, 235, 235); border: 2px solid rgba(0, 0, 0, 0.2);">
-            <div class="" style="position: relative; width: 100%; height: 100%; overflow: auto">
-              <div class="col-xs-12 employee-item" *ngFor='let employee of this.userProfiles' style="padding-right: 0px">
-                <div (click)='deleteEmployee(employee.proxyId, employee.role)'>
-                  <img src="./assets/img/btn-close.png" alt="" class="search-item-x">
-                </div>
-                <div class="col-xs-8" style="width: 60%; margin-right: -5px">
-                  <div class="col-xs-6" style="margin-top: 15px">
-                    <div class="col-xs-12">{{employee.name}}</div>
-                    <div class="col-xs-12" style="margin-top: 20px">{{employee.username}}</div>
-                  </div>
-                  <div class="col-xs-5">
-                    <input style="width: 110%; min-width: 150px" type="date" [(ngModel)]="employee.startDate" (blur)="(this.type='text'); updateEmployeeDate(employee, employee.proxyId,'startDate',employee.startDate)" (focus)="this.lastStartDate = employee.startDate" [ngClass]="{'empty-field': !employee.startDate}">
-                    <input style="width: 110%; min-width: 150px" type="date" [(ngModel)]="employee.endDate" (blur)="updateEmployeeDate(employee, employee.proxyId,'endDate',employee.endDate)" (focus)="this.lastEndDate = employee.endDate" *ngIf='!employee.stillAffiliated' [ngClass]="{'empty-field': (!employee.stillAffiliated && !employee.endDate)}">
-                  </div>
-                </div>
-                <div class="col-xs-4" style="margin-top: 15px; width: 40%; margin-left: -15px">
-                  <div style="width: 70%">
-                    <div class="col-xs-12">
-                      <div class="col-xs-9">
-                        Leader?
-                      </div>
-                      <input class="col-xs-3" type="checkbox" (change)="updateEmployee(employee.proxyId,'leader',employee.leader)" [(ngModel)]="employee.leader" />
-                    </div>
-                    <div class="col-xs-12">
-                      <div class="col-xs-9">
-                        Still Affiliated?
-                      </div>
-                      <input class="col-xs-3" type="checkbox" (change)="updateEmployee(employee.proxyId,'stillAffiliated',employee.stillAffiliated)" [(ngModel)]="employee.stillAffiliated" />
-                    </div>
-                  </div>
-                  <button style="width: 30%; height: 55px"*ngIf="this.isUserAdmin && employee.role != this.adminRoleId" class="btn btn-primary" (click)="updateEmployee(employee.proxyId, 'role', this.adminRoleId)" type="button" value="Make Admin" name="button">Make<br>Admin</button>
-                  <button style="width: 30%; height: 55px; background: rgb(201, 50, 50); border: 1px solid rgba(0, 0, 0, 0.1)"*ngIf="this.isUserAdmin && employee.role == this.adminRoleId && employee.userId != this.currentUser._id" class="btn btn-primary" (click)="updateEmployee(employee.proxyId, 'role', this.currentAccount._id)" type="button" value="Remove Admin" name="button">Remove<br>Admin</button>
-                </div>
-              </div>
+  <div class="col-xs-10 edit-panel">
+    <div class="profile" style="" *ngIf='activeTab.main == 0'>
+      <div class="" style="position: relative; height: 360px; width: 180px;">
+        <div class="" style="height: 180px; width: 180px; position: relative; float: left;">
+          <div class="left avatar">
+            <img src='{{ this.currentAccount.avatar }}' class="avatar-img">
+          </div>
+          <div class="" style="position: absolute; top: 180px">
+            <div *ngIf="!this.currentAccount.avatar || this.currentAccount.avatar.startsWith('..')" class="left">
+              <input type="file" #fileInput accept=".jpg,.png" style="width:90%; margin-left: 5%"/>
+              <button class="btn btn-primary" style="width: 90%; margin-left: 5%;" (click)="uploadPhoto()">Upload Avatar</button>
+            </div>
+            <div *ngIf="this.currentAccount.avatar && !this.currentAccount.avatar.startsWith('..')" class="left">
+              <input type="file" #fileInput accept=".jpg,.png" style="width:90%; margin-left: 5%"/>
+              <button class="btn btn-primary" style="width: 90%; margin-left: 5%;" (click)="editPhoto()">Edit Avatar</button>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- <select *ngIf="this.isUserAdmin" class="form-control" [(ngModel)]="this.newUserSelected">
-        <option *ngFor="let user of this.userProfilesAll" value={{user._id}}>{{user.firstName + " " + user.lastName + ": " + user.username }}</option>
-      </select> -->
-      <div class="col-xs-4 search-results-box">
-        <h3 style="text-align: center; margin-top: 10px; margin-bottom: 2px;">User Search</h3>
-        <input type="text" name="test" value="" class="col-xs-10" [(ngModel)]='searchTerms.name' (keyup.enter)="search()">
-        <button type="button" name="button" class="col-xs-2" style="font-size: 14px; text-align: center; padding: 0px" (click)='search()'>Search</button>
-        <div class="search-results-interior" style="padding-top: 0px">
+      <div class="" style="position: absolute; height: 35vh; width: calc(100% - 180px); top: 2vh; right: 0px; float: left; background: none;">
+        <div class="" style="position: absolute; float: left; top: 0px; left: 0px; width: 100%; height: 42px; padding: 2vh 2vw 2vh 2vw;">
+          <div class="left" style="width: 105px; line-height: 42px; float: left; padding-top: 4px;">
+            <p class="">Company Name</p>
+          </div>
+          <div class="" style="width: calc(100% - 105px); float: left;">
+            <input class="" style="width: 100%;" type="text" placeholder="The company's name" [(ngModel)] = 'this.currentAccount.name' [ngClass]="{'empty-field': !this.currentAccount.name}">
+          </div>
+        </div>
+        <div class="" style="position: absolute; float: left; top: calc(2vh + 42px); left: 0px; width: 55%; height: 202px; margin-top: 8px; padding: 0vh 2vw 2vh 2vw; border-right: 2px solid rgba(0,0,0,0.5);">
+          <div class="" style="margin-top: -8px">
+            <div class="left" style="width: 105px; line-height: 42px; float: left; padding-top: 4px;">
+              <p class="">Email</p>
+              <p class="">Contact</p>
+            </div>
+            <div class="" style="width: calc(100% - 105px); float: left;">
+              <input class="" style="width: 100%;" type="text" placeholder="The company's email address" [(ngModel)] = 'this.currentAccount.email' [ngClass]="{'empty-field': !this.currentAccount.email}">
+              <input class="" style="width: 100%;" type="tel" maxlength="14" placeholder="The company's phone number" [(ngModel)] = 'this.currentAccount.contactNumber' (ngModelChange)="onPhoneChange(this.currentAccount.contactNumber)" (keydown.backspace)='onPhoneChange(this.currentAccount.contactNumber, true)' [ngClass]="{'empty-field': !this.currentAccount.contactNumber || this.currentAccount.contactNumber.length < 14}">
+            </div>
+            <div class="" style="position: absolute; float: left; bottom: 5px; right: calc(2vw - 6px); height: 42px; width: 100%;">
+              <p class="left" style="width: calc(100% - 60px); line-height: 42px; float: left; padding-top: 6px; text-align: right;">Make your company public?</p>
+              <input type="checkbox" style="width: 42px; height: 42px; float: left" class="" [(ngModel)] = 'this.currentAccount.public'>
+            </div>
+          </div>
+        </div>
+        <div class="" style="position: absolute; float: left; top: 42px; right: 0px; width: 45%; height: 30vh; padding: 2vh 2vw 2vh 2vw;">
+          <div class="left" style="width: 60px; line-height: 42px; float: left; padding-top: 4px;">
+            <p class="">Address</p>
+            <p class="">City</p>
+            <p class="">State</p>
+            <p class="">Zip</p>
+          </div>
+          <div class="" style="width: calc(100% - 60px); float: left;">
+            <input class="" style="width: 100%;" type="text" [(ngModel)] = 'this.currentAccount.address' [ngClass]="{'empty-field': !this.currentAccount.address}">
+            <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentAccount.city' [ngClass]="{'empty-field': this.currentAccount.city.length < 1}">
+            <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentAccount.state' [ngClass]="{'empty-field': !this.currentAccount.state}">
+            <input class="" style="width: 100%;" type="number" max="99999" maxlength="5" [(ngModel)] = 'this.currentAccount.zip' [ngClass]="{'empty-field': !this.currentAccount.zip}">
+          </div>
+        </div>
+      </div>
+      <div class="" style="position: absolute; width: 45vw; height: 20vh; bottom: 4.5vh; left: 1vw;">
+        <div class="" *ngIf='this.creatingNew'>
+          <p>Your new company will be initialized with you as an admin.</p>
+          <p>After its creation, you can go back in to editing to add more employees or products.</p>
+        </div>
+      </div>
+    </div>
+    <div class="sub-box" *ngIf='activeTab.main == 1' style="position: relative;">
+      <div class="div-title" style="margin-top: 2vh; margin-bottom: 1vh;">
+        <p>Employees</p>
+      </div>
+      <div id='employee-search' class="employee-search-bar" style="position: relative; width: 100%; height: 42px; margin-bottom: 8px;">
+        <input type="text" name="test" value="" style="width: calc(100% - 93px)" [(ngModel)]='searchTerms.name' (keyup.enter)="search()">
+        <button type="button" name="button" style="width: 90px; height: 42px; margin: 0px; font-size: 14px; text-align: center; padding: 0px" (click)='search()'>Search</button>
+        <div id='employee-dropdown' class="search-results-interior" style="padding-top: 0px;" *ngIf='this.searchOpen'>
           <div class="search-results-interior-2" style="padding-top: 0px">
             <div class="" *ngIf='this.searchRunning'>
               <div class="loader"></div>
@@ -161,213 +122,869 @@
           </div>
         </div>
       </div>
+      <div class="scrollbar" style="width: 100%; height: calc(43vh - 50px); background: rgba(255,255,255,0.99); border: 1px solid rgba(0,0,0,0.5); overflow-y: auto;">
+        <div class="col-xs-12 employee-item" *ngFor='let employee of this.userProfiles' style="padding-right: 0px">
+          <div (click)='deleteEmployee(employee.proxyId, employee.role)'>
+            <img src="./assets/img/btn-close.png" alt="" class="search-item-x">
+          </div>
+          <div class="col-xs-8" style="width: 60%; margin-right: -5px">
+            <div class="col-xs-6" style="margin-top: 15px">
+              <div class="col-xs-12">{{employee.name}}</div>
+              <div class="col-xs-12" style="margin-top: 20px">{{employee.username}}</div>
+            </div>
+            <div class="col-xs-5">
+              <input style="width: 110%; min-width: 150px" type="date" [(ngModel)]="employee.startDate" (blur)="(this.type='text'); updateEmployeeDate(employee, employee.proxyId,'startDate',employee.startDate)" (focus)="this.lastStartDate = employee.startDate" [ngClass]="{'empty-field': !employee.startDate}">
+              <input style="width: 110%; min-width: 150px" type="date" [(ngModel)]="employee.endDate" (blur)="updateEmployeeDate(employee, employee.proxyId,'endDate',employee.endDate)" (focus)="this.lastEndDate = employee.endDate" *ngIf='!employee.stillAffiliated' [ngClass]="{'empty-field': (!employee.stillAffiliated && !employee.endDate)}">
+            </div>
+          </div>
+          <div class="col-xs-4" style="margin-top: 15px; width: 40%; margin-left: -15px">
+            <div style="width: 70%">
+              <div class="col-xs-12">
+                <div class="col-xs-9">
+                  Leader?
+                </div>
+                <input class="col-xs-3" type="checkbox" (change)="updateEmployee(employee.proxyId,'leader',employee.leader)" [(ngModel)]="employee.leader" />
+              </div>
+              <div class="col-xs-12">
+                <div class="col-xs-9">
+                  Still Affiliated?
+                </div>
+                <input class="col-xs-3" type="checkbox" (change)="updateEmployee(employee.proxyId,'stillAffiliated',employee.stillAffiliated)" [(ngModel)]="employee.stillAffiliated" />
+              </div>
+            </div>
+            <button style="width: 30%; height: 55px"*ngIf="this.isUserAdmin && employee.role != this.adminRoleId" class="btn btn-primary" (click)="updateEmployee(employee.proxyId, 'role', this.adminRoleId)" type="button" value="Make Admin" name="button">Make<br>Admin</button>
+            <button style="width: 30%; height: 55px; background: rgb(201, 50, 50); border: 1px solid rgba(0, 0, 0, 0.1)"*ngIf="this.isUserAdmin && employee.role == this.adminRoleId && employee.userId != this.currentAccount._id" class="btn btn-primary" (click)="updateEmployee(employee.proxyId, 'role', this.currentAccount._id)" type="button" value="Remove Admin" name="button">Remove<br>Admin</button>
+          </div>
+        </div>
+      </div>
+      <button class="edit-button edit-button-add" (click)="addDegree()" style="bottom: -2.5vh">Add Degree</button>
+    </div>
+    <div class="sub-box" style="" *ngIf='activeTab.main == 2'>
+      <div class="div-title" style="margin-top: 2vh; margin-bottom: 2vh;">
+        <p>Certifications</p>
+      </div>
+      <button class="edit-button edit-button-add" (click)="addCertificate(); calculateProfessionalPoints()" style="bottom: 3vh">Add Cert</button>
+
+      <div class="col-xs-12" style="width: 100%; position: relative">
+        <div class="col-xs-8" style="height: 500px; overflow-y: auto; position: absolute; left: 0px; padding-right: 5px">
+          <div class="" style="background: rgba(0, 0, 0, 0.1); border: 2px solid rgba(0, 0, 0, 0.1); height: 100%; padding-left: 5px; padding-right: 5px">
+            <h3 style="text-align: center; margin-top: 10px; margin-bottom: 2px;">Employees</h3>
+            <div class="" style="width: 94%, left: 3%; overflow-y: hidden; height: 440px; background: rgb(235, 235, 235); border: 2px solid rgba(0, 0, 0, 0.2);">
+              <div class="" style="position: relative; width: 100%; height: 100%; overflow: auto">
+                <div class="col-xs-12 employee-item" *ngFor='let employee of this.userProfiles' style="padding-right: 0px">
+                  <div (click)='deleteEmployee(employee.proxyId, employee.role)'>
+                    <img src="./assets/img/btn-close.png" alt="" class="search-item-x">
+                  </div>
+                  <div class="col-xs-8" style="width: 60%; margin-right: -5px">
+                    <div class="col-xs-6" style="margin-top: 15px">
+                      <div class="col-xs-12">{{employee.name}}</div>
+                      <div class="col-xs-12" style="margin-top: 20px">{{employee.username}}</div>
+                    </div>
+                    <div class="col-xs-5">
+                      <input style="width: 110%; min-width: 150px" type="date" [(ngModel)]="employee.startDate" (blur)="(this.type='text'); updateEmployeeDate(employee, employee.proxyId,'startDate',employee.startDate)" (focus)="this.lastStartDate = employee.startDate" [ngClass]="{'empty-field': !employee.startDate}">
+                      <input style="width: 110%; min-width: 150px" type="date" [(ngModel)]="employee.endDate" (blur)="updateEmployeeDate(employee, employee.proxyId,'endDate',employee.endDate)" (focus)="this.lastEndDate = employee.endDate" *ngIf='!employee.stillAffiliated' [ngClass]="{'empty-field': (!employee.stillAffiliated && !employee.endDate)}">
+                    </div>
+                  </div>
+                  <div class="col-xs-4" style="margin-top: 15px; width: 40%; margin-left: -15px">
+                    <div style="width: 70%">
+                      <div class="col-xs-12">
+                        <div class="col-xs-9">
+                          Leader?
+                        </div>
+                        <input class="col-xs-3" type="checkbox" (change)="updateEmployee(employee.proxyId,'leader',employee.leader)" [(ngModel)]="employee.leader" />
+                      </div>
+                      <div class="col-xs-12">
+                        <div class="col-xs-9">
+                          Still Affiliated?
+                        </div>
+                        <input class="col-xs-3" type="checkbox" (change)="updateEmployee(employee.proxyId,'stillAffiliated',employee.stillAffiliated)" [(ngModel)]="employee.stillAffiliated" />
+                      </div>
+                    </div>
+                    <button style="width: 30%; height: 55px"*ngIf="this.isUserAdmin && employee.role != this.adminRoleId" class="btn btn-primary" (click)="updateEmployee(employee.proxyId, 'role', this.adminRoleId)" type="button" value="Make Admin" name="button">Make<br>Admin</button>
+                    <button style="width: 30%; height: 55px; background: rgb(201, 50, 50); border: 1px solid rgba(0, 0, 0, 0.1)"*ngIf="this.isUserAdmin && employee.role == this.adminRoleId && employee.userId != this.currentAccount._id" class="btn btn-primary" (click)="updateEmployee(employee.proxyId, 'role', this.currentAccount._id)" type="button" value="Remove Admin" name="button">Remove<br>Admin</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <select *ngIf="this.isUserAdmin" class="form-control" [(ngModel)]="this.newUserSelected">
+          <option *ngFor="let user of this.userProfilesAll" value={{user._id}}>{{user.firstName + " " + user.lastName + ": " + user.username }}</option>
+        </select> -->
+
+      </div>
+
+    </div>
+    <div class="certification" style="" *ngIf='activeTab.main == 3'>
+      <div class="div-title" style="margin-top: 2vh; margin-bottom: 2vh;">
+        <p>Awards</p>
+      </div>
+      <div class="scrollbar" style="width: 100%; height: 42vh; background: rgba(255,255,255,0.99); border: 1px solid rgba(0,0,0,0.5); overflow-y: auto;">
+        <div class="" style="position: relative; height: 60px; width: 100%; float: left; background: rgba(0,0,0,0.05); padding-top: 4px; padding-left: 8px; margin-bottom: 1vh; border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05)" *ngFor='let award of this.currentAccount.award; let i = index; trackBy:customTrackBy'>
+          <div class="left" style="width: 60px; line-height: 42px; float: left; padding-top: 4px;">
+            <p class="">Award</p>
+          </div>
+          <div class="" style="width: calc(100% - 100px); float: left;">
+            <input class="" style="width: 100%" [(ngModel)] = 'this.currentAccount.award[i]'[ngClass]="{'empty-field': !this.currentAccount.award[i]}">
+          </div>
+          <div (click)='deleteAward(i)' style="position: absolute; z-index: 4; right: 4px; top: 1px">
+            <div class="">
+              <img src="./assets/img/btn-close.png" alt="" class="close-x">
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="edit-button edit-button-add" (click)="addAward(); calculateProfessionalPoints()" style="bottom: 3vh">Add Award</button>
+    </div>
+    <div class="certification" style="" *ngIf='activeTab.main == 4'>
+      <div class="div-title" style="margin-top: 2vh; margin-bottom: 2vh;">
+        <p>Clearances</p>
+      </div>
+      <div class="scrollbar" style="width: 100%; height: 42vh; background: rgba(255,255,255,0.99); border: 1px solid rgba(0,0,0,0.5); overflow-y: auto;">
+        <div class="" style="position: relative; height: 144px; width: 100%; float: left; background: rgba(0,0,0,0.05); padding-top: 4px; padding-left: 8px; margin-bottom: 1vh; border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05)" *ngFor='let clearance of this.currentAccount.clearance; let i = index'>
+          <div class="left" style="width: 120px; line-height: 42px; float: left; padding-top: 4px;">
+            <p class="">Clearance Type</p>
+            <p class="">Awarded</p>
+            <p class="">Expiration</p>
+          </div>
+          <div class="" style="width: calc(100% - 160px); float: left;">
+            <input class="" style="width: 100%;" type="text" [(ngModel)] = 'clearance.clearanceType' [ngClass]="{'empty-field': !clearance.clearanceType}">
+            <input class="" style="width: 100%;" type="number" step="1" placeholder="Year" [(ngModel)] = 'clearance.awarded' [ngClass]="{'empty-field': !clearance.awarded || clearance.awarded.toString().length != 4}">
+            <input class="" style="width: 100%;" type="number" step="1" placeholder="Year" [(ngModel)] = 'clearance.expiration' [ngClass]="{'empty-field': !clearance.expiration || clearance.expiration.toString().length != 4}">
+          </div>
+          <div (click)='deleteClearance(i)' style="position: absolute; z-index: 4; right: 4px; top: 1px">
+            <div class="">
+              <img src="./assets/img/btn-close.png" alt="" class="close-x">
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="edit-button edit-button-add" (click)="addClearance(); calculateProfessionalPoints()" style="bottom: 3vh;">Add Clearance</button>
+    </div>
+    <div class="career" style="" *ngIf='activeTab.main == 5'>
+      <div class="job-side-tab-bar" style="">
+        <div class="job-side-tab" style="" *ngIf='this.currentAccount.positionHistory[activeTab.job-2]' (click)='activeTab.job = activeTab.job-2' [ngClass]="{'job-side-tab-incomplete': !checkJob(this.currentAccount.positionHistory[activeTab.job-2], -2)}">
+          <p class="job-side-tab-text" *ngIf='this.currentAccount.positionHistory[0].Employer.length > 10' style="">{{this.currentAccount.positionHistory[activeTab.job-2].Employer.substring(0,10)}}...</p>
+          <p class="job-side-tab-text" *ngIf='this.currentAccount.positionHistory[0].Employer.length < 10' style="">{{this.currentAccount.positionHistory[activeTab.job-2].Employer}}</p>
+        </div>
+        <div class="job-side-tab" *ngIf='!this.currentAccount.positionHistory[activeTab.job-2]' style="background: none; border: 0px solid rgba(0,0,0,0)">
+        </div>
+        <div class="job-side-tab" style="" *ngIf='this.currentAccount.positionHistory[activeTab.job-1]' (click)='activeTab.job = activeTab.job-1' [ngClass]="{'job-side-tab-incomplete': !checkJob(this.currentAccount.positionHistory[activeTab.job-1], -1)}">
+          <p class="job-side-tab-text" *ngIf='this.currentAccount.positionHistory[0].Employer.length > 10' style="">{{this.currentAccount.positionHistory[activeTab.job-1].Employer.substring(0,10)}}...</p>
+          <p class="job-side-tab-text" *ngIf='this.currentAccount.positionHistory[0].Employer.length < 10' style="">{{this.currentAccount.positionHistory[activeTab.job-1].Employer}}</p>
+        </div>
+        <div class="job-side-tab" *ngIf='!this.currentAccount.positionHistory[activeTab.job-1]' style="background: none; border: 0px solid rgba(0,0,0,0)">
+        </div>
+        <div class="job-side-tab-active" style="" [ngClass]="{'job-side-tab-incomplete': !checkJob(this.currentAccount.positionHistory[activeTab.job], 0)}">
+          <p class="job-side-tab-text" *ngIf='this.currentAccount.positionHistory[activeTab.job].Employer.length > 10' style="">{{this.currentAccount.positionHistory[activeTab.job].Employer.substring(0,10)}}...</p>
+          <p class="job-side-tab-text" *ngIf='this.currentAccount.positionHistory[activeTab.job].Employer.length < 10' style="">{{this.currentAccount.positionHistory[activeTab.job].Employer}}</p>
+        </div>
+        <div class="job-side-tab" style="" *ngIf='this.currentAccount.positionHistory[activeTab.job+1]' (click)='activeTab.job = activeTab.job+1' [ngClass]="{'job-side-tab-incomplete': !checkJob(this.currentAccount.positionHistory[activeTab.job+1], 1)}">
+          <p class="job-side-tab-text" *ngIf='this.currentAccount.positionHistory[activeTab.job+1].Employer.length > 10' style="">{{this.currentAccount.positionHistory[activeTab.job+1].Employer.substring(0,10)}}...</p>
+          <p class="job-side-tab-text" *ngIf='this.currentAccount.positionHistory[activeTab.job+1].Employer.length < 10' style="">{{this.currentAccount.positionHistory[activeTab.job+1].Employer}}</p>
+        </div>
+        <div class="job-side-tab job-side-tab-add" (click)='addJob()' *ngIf='!this.currentAccount.positionHistory[activeTab.job+1]'>
+          <p class="job-side-tab-text" style="">Add Job</p>
+        </div>
+        <div class="job-side-tab" style="" *ngIf='this.currentAccount.positionHistory[activeTab.job+2]' (click)='activeTab.job = activeTab.job+2' [ngClass]="{'job-side-tab-incomplete': !checkJob(this.currentAccount.positionHistory[activeTab.job+2], 2)}">
+          <p class="job-side-tab-text" *ngIf='this.currentAccount.positionHistory[activeTab.job+2].Employer.length > 10' style="">{{this.currentAccount.positionHistory[activeTab.job+2].Employer.substring(0,10)}}...</p>
+          <p class="job-side-tab-text" *ngIf='this.currentAccount.positionHistory[activeTab.job+2].Employer.length < 10' style="">{{this.currentAccount.positionHistory[activeTab.job+2].Employer}}</p>
+        </div>
+        <div class="job-side-tab job-side-tab-add" (click)='addJob()' *ngIf='this.currentAccount.positionHistory[activeTab.job+1] && !this.currentAccount.positionHistory[activeTab.job+2]'>
+          <p class="job-side-tab-text" style="">Add Job</p>
+        </div>
+        <div class="job-side-tab" *ngIf='!this.currentAccount.positionHistory[activeTab.job+2]' style="background: none; border: 0px solid rgba(0,0,0,0)">
+        </div>
+      </div>
+      <div *ngFor="let job of this.currentAccount.positionHistory; let i = index" class="">
+        <div class="job" *ngIf='i == activeTab.job' style="position: relative;">
+          <div (click)='deleteJob(i)' style="position: absolute; z-index: 4; right: 4px; top: 1px">
+            <div class="">
+              <img src="./assets/img/btn-close.png" alt="" class="close-x">
+            </div>
+          </div>
+          <div class="col-xs-12" style="margin-top: -3.8vh;">
+            <div class="col-xs-4 job-tab" (click) = 'setEmployment(job, 0)'  [ngClass]="{'job-tab-active': job.employmentType == 0}">
+              Government
+            </div>
+            <div class="col-xs-4 job-tab" (click) = 'setEmployment(job, 1)'  [ngClass]="{'job-tab-active': job.employmentType == 1}">
+              Contractor
+            </div>
+            <div class="col-xs-4 job-tab" (click) = 'setEmployment(job, 2)'  [ngClass]="{'job-tab-active': job.employmentType == 2}">
+              Commercial
+            </div>
+          </div>
+          <div class="job-interior" style="padding-top: 1vh; padding-right: 1px;">
+            <div class="" style="height: 19vh; width: 100%">
+              <div class="col-xs-5" style="height: 19vh; border-right: 2px solid rgba(0,0,0,0.5)">
+                <div class="left" style="width: 100px; line-height: 42px; float: left; padding-top: 4px;">
+                  <p class="">Title</p>
+                  <p class="">Start Date</p>
+                  <p class="">Current?</p>
+                  <p class="" *ngIf='!this.currentJobs[i]'>End Date</p>
+                </div>
+                <div class="" style="width: calc(100% - 100px); float: left;">
+                  <input class="" style="width: 100%" placeholder="The title you held" [(ngModel)] = 'job.PositionTitle' [ngClass]="{'empty-field': !job.PositionTitle}">
+                  <input class="" style="width: 100%" type='date' placeholder="" [(ngModel)] = 'job.StartDate' (ngModelChange)='calculateProfessionalPoints()' [ngClass]="{'empty-field': !job.StartDate}">
+                  <input class="" style="width: 100%; height: 36px; margin-bottom: 0px; margin-top: 0px;" type='checkbox' placeholder="" [(ngModel)] = 'this.currentJobs[i]' (ngModelChange)='makeCurrent(i); calculateProfessionalPoints()'>
+                  <input class="" style="width: 100%" type='date' placeholder="" [(ngModel)] = 'job.EndDate' (ngModelChange)='calculateProfessionalPoints()' *ngIf='!this.currentJobs[i]' [ngClass]="{'empty-field': !job.EndDate}">
+                </div>
+              </div>
+              <div class="col-xs-7" style="padding-top: 3vh">
+                <p>Description:</p>
+                <textarea class="left" style="width: 100%" rows="5" [(ngModel)] = 'job.Description'></textarea>
+              </div>
+            </div>
+            <div class="col-xs-12" style="width: 100%; height: 5vh;">
+              <div class="left" style="width: 100px; line-height: 42px; float: left; padding-top: 4px;">
+                <p class="" *ngIf = 'job.employmentType > 0'>Employer</p>
+                <p class="" *ngIf = 'job.employmentType == 0'>Agency</p>
+              </div>
+              <div class="" style="width: calc(100% - 100px); float: left;">
+                <input class="" style="width: 100%" [(ngModel)] = 'job.Employer' *ngIf='job.employmentType > 0'>
+                <div class="autocomplete-form" style="width: 100%" *ngIf = 'job.employmentType == 0' [ngClass]="{'empty-field': !job.Employer}">
+                  <input ngui-auto-complete class="" style="width: 100%" placeholder="Must match an existing agency" [(ngModel)] = 'job.agencyExperience[0].main.title' [source]='this.allAgencies' [list-formatter]="autocompleListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': agencyValidCheck(job.agencyExperience[0].main.title) == false}">
+                </div>
+              </div>
+            </div>
+            <div class="scrollbar" style="width: 100%; height: 22vh; background: rgba(0,0,0,0.05); overflow-y: auto">
+              <div class="" *ngIf='job.employmentType == 1' style="">
+                <div class="" *ngFor='let agency of job.agencyExperience; let i = index' style="float: left; width: 100%; border-bottom: 1px solid rgba(0,0,0,0.25); margin-bottom: 10px;">
+                  <div class="col-xs-5" style="">
+                    <div (click)='deleteAgency(job, i)' style="position: absolute; z-index: 4; left: 4px; top: 1px">
+                      <div class="">
+                        <img src="./assets/img/btn-close.png" alt="" class="close-x">
+                      </div>
+                    </div>
+                    <div class="left" style="width: 80px; line-height: 42px; float: left; padding-top: 4px; margin-left: 20px;">
+                      <p class="">Agency</p>
+                    </div>
+                    <div class="" style="width: calc(100% - 100px); float: left;">
+                      <div class="autocomplete-form" style="width: 100%">
+                        <input ngui-auto-complete class="" style="width: 100%" placeholder="Must match an existing agency" [(ngModel)] = 'agency.main.title' [source]='this.allAgencies' [list-formatter]="autocompleListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': agencyValidCheck(agency.main.title) == false}">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-7" style="">
+                    <div class="left" style="width: 120px; line-height: 42px; float: left; padding-top: 4px;">
+                      <p class="">Were you a PM?</p>
+                    </div>
+                    <input type="checkbox" [(ngModel)] = 'agency.main.isPM' style="width: 38px; height: 38px; float: left;">
+                    <div class="" *ngIf='agency.main.isPM' style="float: left;">
+                      <div class="" style="position: relative; width: 33px; float: left; margin-top: -8px;">
+                        <div class="arrow-left" (click)='scoreChange(agency, false, "pm", false)'></div>
+                        <div class="" style="position: absolute; top: 15px; left: 13px; font-size: 24px; font-weight: bold">
+                          {{agency.main.pmScore}}
+                        </div>
+                        <div class="arrow-right" (click)='scoreChange(agency, false, "pm", true)'></div>
+                      </div>
+                    </div>
+                    <div class="" style="float: left; width: calc(100% - 198px); margin-left: 40px;">
+                      <textarea class="left" rows="2" style="width: 100%; max-width: 100%; min-width: 100%;" placeholder="Description:" [(ngModel)] = 'agency.main.pmDescription' *ngIf='agency.main.isPM' [ngClass]="{'empty-field': agency.main.pmScore >= 4 && agency.main.pmDescription.length < 300}"></textarea>
+                    </div>
+                  </div>
+                  <div class="col-xs-7 col-xs-offset-5" style="">
+                    <div class="left" style="width: 120px; line-height: 42px; float: left; padding-top: 4px;">
+                      <p class="">Were you a KO?</p>
+                    </div>
+                    <input type="checkbox" [(ngModel)] = 'agency.main.isKO' style="width: 38px; height: 38px; float: left;">
+                    <div class="" *ngIf='agency.main.isKO' style="float: left;">
+                      <div class="" style="position: relative; width: 33px; float: left; margin-top: -8px;">
+                        <div class="arrow-left" (click)='scoreChange(agency, false, "ko", false)'></div>
+                        <div class="" style="position: absolute; top: 15px; left: 13px; font-size: 24px; font-weight: bold">
+                          {{agency.main.koScore}}
+                        </div>
+                        <div class="arrow-right" (click)='scoreChange(agency, false, "ko", true)'></div>
+                      </div>
+                    </div>
+                    <div class="" style="float: left; width: calc(100% - 198px); margin-left: 40px;">
+                      <textarea class="left" rows="2" style="width: 100%; max-width: 100%; min-width: 100%;" placeholder="Description:" [(ngModel)] = 'agency.main.koDescription' *ngIf='agency.main.isKO' [ngClass]="{'empty-field': agency.main.koScore >= 4 && agency.main.koDescription.length < 300}"></textarea>
+                    </div>
+                  </div>
+                  <div class="" *ngFor='let office of agency.offices; let y = index' style="">
+                    <div class="col-xs-5" style="">
+                      <div (click)='deleteOffice(agency, y)' style="position: absolute; z-index: 4; left: 4px; top: 1px">
+                        <div class="">
+                          <img src="./assets/img/btn-close.png" alt="" class="close-x">
+                        </div>
+                      </div>
+                      <div class="left" style="width: 80px; line-height: 42px; float: left; padding-top: 4px; margin-left: 20px;">
+                        <p class="">Office</p>
+                      </div>
+                      <div class="autocomplete-form" style="width: calc(100% - 100px); float: left;">
+                        <input ngui-auto-complete class="col-xs-12" placeholder="Must match an existing subagency" [(ngModel)] = 'office.title' [source]='findSubAgencies(agency.main.title)'  auto-select-first-item='true' [ngClass]="{'empty-field': subagencyValidCheck(agency.main.title, office.title) == false}">
+                      </div>
+                    </div>
+                    <div class="col-xs-7" style="">
+                      <div class="left" style="width: 120px; line-height: 42px; float: left; padding-top: 4px;">
+                        <p class="">Were you a PM?</p>
+                      </div>
+                      <input type="checkbox" [(ngModel)] = 'office.isPM' style="width: 38px; height: 38px; float: left;">
+                      <div class="" *ngIf='office.isPM' style="float: left;">
+                        <div class="" style="position: relative; width: 33px; float: left; margin-top: -8px;">
+                          <div class="arrow-left" (click)='scoreChange(office, true, "pm", false)'></div>
+                          <div class="" style="position: absolute; top: 15px; left: 13px; font-size: 24px; font-weight: bold">
+                            {{office.pmScore}}
+                          </div>
+                          <div class="arrow-right" (click)='scoreChange(office, true, "pm", true)'></div>
+                        </div>
+                      </div>
+                      <div class="" style="float: left; width: calc(100% - 198px); margin-left: 40px;">
+                        <textarea class="left" rows="2" style="width: 100%; max-width: 100%; min-width: 100%;" placeholder="Description:" [(ngModel)] = 'office.pmDescription' *ngIf='office.isPM' [ngClass]="{'empty-field': office.pmScore >= 4 && office.pmDescription.length < 300}"></textarea>
+                      </div>
+                    </div>
+                    <div class="col-xs-7 col-xs-offset-5" style="">
+                      <div class="left" style="width: 120px; line-height: 42px; float: left; padding-top: 4px;">
+                        <p class="">Were you a KO?</p>
+                      </div>
+                      <input type="checkbox" [(ngModel)] = 'office.isKO' style="width: 38px; height: 38px; float: left;">
+                      <div class="" *ngIf='office.isKO' style="float: left;">
+                        <div class="" style="position: relative; width: 33px; float: left; margin-top: -8px;">
+                          <div class="arrow-left" (click)='scoreChange(office, true, "ko", false)'></div>
+                          <div class="" style="position: absolute; top: 15px; left: 13px; font-size: 24px; font-weight: bold">
+                            {{office.koScore}}
+                          </div>
+                          <div class="arrow-right" (click)='scoreChange(office, true, "ko", true)'></div>
+                        </div>
+                      </div>
+                      <div class="" style="float: left; width: calc(100% - 198px); margin-left: 40px;">
+                        <textarea class="left" rows="2" style="width: 100%; max-width: 100%; min-width: 100%;" placeholder="Description:" [(ngModel)] = 'office.koDescription' *ngIf='office.isKO' [ngClass]="{'empty-field': office.koScore >= 4 && office.koDescription.length < 300}"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="" style="position: relative; width: 100%; height: 50px; float: left;">
+                    <button class="edit-button edit-button-office" (click)="addOffice(agency)">Add Office</button>
+                  </div>
+                </div>
+                <button class="edit-button edit-button-add" (click)="addAgency(job)" style="">Add Agency</button>
+              </div>
+              <div class="" *ngIf='job.employmentType == 0'>
+                <div class="" *ngFor='let office of job.agencyExperience[0].offices; let y = index'>
+                  <div class="col-xs-5" style="">
+                    <div (click)='deleteOffice(job.agencyExperience[0], y)' style="position: absolute; z-index: 4; left: 4px; top: 1px">
+                      <div class="">
+                        <img src="./assets/img/btn-close.png" alt="" class="close-x">
+                      </div>
+                    </div>
+                    <div class="left" style="width: 80px; line-height: 42px; float: left; padding-top: 4px; margin-left: 20px;">
+                      <p class="">Office</p>
+                    </div>
+                    <div class="autocomplete-form" style="width: calc(100% - 100px); float: left;">
+                      <input ngui-auto-complete class="col-xs-12" placeholder="Must match an existing subagency" [(ngModel)] = 'office.title' [source]='findSubAgencies(job.agencyExperience[0].main.title)'  auto-select-first-item='true' [ngClass]="{'empty-field': subagencyValidCheck(job.agencyExperience[0].main.title, office.title) == false}">
+                    </div>
+                  </div>
+                  <div class="col-xs-7" style="">
+                    <div class="left" style="width: 120px; line-height: 42px; float: left; padding-top: 4px;">
+                      <p class="">Were you a PM?</p>
+                    </div>
+                    <input type="checkbox" [(ngModel)] = 'office.isPM' style="width: 38px; height: 38px; float: left;">
+                    <div class="" *ngIf='office.isPM' style="float: left;">
+                      <div class="" style="position: relative; width: 33px; float: left; margin-top: -8px;">
+                        <div class="arrow-left" (click)='scoreChange(office, true, "pm", false)'></div>
+                        <div class="" style="position: absolute; top: 15px; left: 13px; font-size: 24px; font-weight: bold">
+                          {{office.pmScore}}
+                        </div>
+                        <div class="arrow-right" (click)='scoreChange(office, true, "pm", true)'></div>
+                      </div>
+                    </div>
+                    <div class="" style="float: left; width: calc(100% - 198px); margin-left: 40px;">
+                      <textarea class="left" rows="2" style="width: 100%; max-width: 100%; min-width: 100%;" placeholder="Description:" [(ngModel)] = 'office.pmDescription' *ngIf='office.isPM' [ngClass]="{'empty-field': office.pmScore >= 4 && office.pmDescription.length < 300}"></textarea>
+                    </div>
+                  </div>
+                  <div class="col-xs-7 col-xs-offset-5" style="">
+                    <div class="left" style="width: 120px; line-height: 42px; float: left; padding-top: 4px;">
+                      <p class="">Were you a KO?</p>
+                    </div>
+                    <input type="checkbox" [(ngModel)] = 'office.isKO' style="width: 38px; height: 38px; float: left;">
+                    <div class="" *ngIf='office.isKO' style="float: left;">
+                      <div class="" style="position: relative; width: 33px; float: left; margin-top: -8px;">
+                        <div class="arrow-left" (click)='scoreChange(office, true, "ko", false)'></div>
+                        <div class="" style="position: absolute; top: 15px; left: 13px; font-size: 24px; font-weight: bold">
+                          {{office.koScore}}
+                        </div>
+                        <div class="arrow-right" (click)='scoreChange(office, true, "ko", true)'></div>
+                      </div>
+                    </div>
+                    <div class="" style="float: left; width: calc(100% - 198px); margin-left: 40px;">
+                      <textarea class="left" rows="2" style="width: 100%; max-width: 100%; min-width: 100%;" placeholder="Description:" [(ngModel)] = 'office.koDescription' *ngIf='office.isKO' [ngClass]="{'empty-field': office.koScore >= 4 && office.koDescription.length < 300}"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <button class="edit-button edit-button-add" (click)="addOffice(job.agencyExperience[0])">Add Office</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="skills" *ngIf='activeTab.main == 6'>
+      <div class="" *ngIf='activeTab.skills == 0'>
+        <p style="text-align: center">Use the left panel to search the skills database, and click one to add it to your list!</p>
+        <p style="text-align: center">Your skills are how we rate your capabilities, so the more you add, the more complete our image of you will be.</p>
+        <div class="col-xs-6 text-center skill-box" style="padding-top: 15px">
+          <p>Skill Search</p>
+          <input type="text" style="width: calc(100% - 65px)" [(ngModel)] = 'this.toolSearch' (keydown.enter)="updateToolList($event)">
+          <button type="button" name="button" style="width: 60px;" (click)='updateToolList($event)'>Search</button>
+          <div class="tool-search-box">
+            <div class="" *ngIf='this.allTools.length < 1'>
+              <p>We're still retrieving the tools. Wait a moment...</p>
+            </div>
+            <div class="" *ngIf='this.allTools.length > 0'>
+              <div class="no-tool-found" *ngIf='this.toolSearchLast.length >= 1 && this.filteredTools.length == 0 && this.filteredToolsFromProfile.length == 0 && !this.toolSubmitted' >
+                <p>No matches found. Submit {{this.toolSearchLast}} as a new tool?</p>
+                <button class="btn btn-primary btn-block" type="button" name="button" (click)='submitNewTool(this.toolSearch)'>Submit</button>
+              </div>
+              <div class="no-tool-found" *ngIf='this.toolSearchLast.length >= 1 && this.filteredTools.length == 0 && this.toolSubmitted' >
+                <p>{{this.toolSearchLast}} has been submitted. If it's approved we'll add it to the list!</p>
+              </div>
+              <div class="" *ngIf='this.toolSearchLast.length >= 1'>
+                <div class="" *ngFor='let tool of this.filteredToolsFromProfile; let i = index; trackBy:customTrackBy'>
+                  <div class="tool-search-item" *ngIf='toolIsNotListedAlready(tool)' (click)='findAndAddTool(tool)'>
+                    <p>{{tool.title}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="" *ngIf='this.toolSearchLast.length >= 1'>
+                <div class="" *ngFor='let tool of this.filteredTools; let i = index; trackBy:customTrackBy'>
+                  <div class="tool-search-item" *ngIf='toolIsValid(tool)' (click)='addTool(this.filteredTools[i])'>
+                    <p>{{tool.title}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="" *ngIf='this.toolSearchLast.length >= 1 && !this.toolSubmitted' >
+                <div class="no-tool-found" *ngIf='this.filteredTools.length > 0 || this.filteredToolsFromProfile.length > 0'>
+                  <p>Can't find what you're looking for? Submit {{this.toolSearchLast}} as a new tool.</p>
+                  <button class="btn btn-primary btn-block" type="button" name="button" (click)='submitNewTool(this.toolSearchLast)'>Submit</button>
+                </div>
+              </div>
+              <div class="" *ngIf='this.toolSearchLast.length >= 1 && this.toolSubmitted' >
+                <div class="no-tool-found" *ngIf='this.filteredTools.length > 0 || this.filteredToolsFromProfile.length > 0'>
+                  <p>{{this.toolSearchLast}} has been submitted. If it's approved we'll add it to the list!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-6 text-center skill-box" style="padding-top: 15px">
+          <p>Your Skills</p>
+          <div class="tool-list-box">
+            <div class="">
+              <div class="tool-list-item" *ngFor='let tool of this.currentAccount.foundTools; let i = index; trackBy:customTrackBy'>
+                {{tool.title}}
+                <button class="tiny-button-tools" (click)="deleteTool(i)"><div class="tiny-button-text">x</div></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="" *ngIf='activeTab.skills == 1'>
+        <div class="col-xs-6" style="padding-top: 15vh;">
+          <canvas baseChart
+          [datasets]="toolChartDatas"
+          [labels]="toolChartLabels"
+          [options]="{ scaleShowVerticalLines: true, responsive: true, scales: { yAxes: [{ticks: {beginAtZero: true }}]} }"
+          [legend]="false"
+          [chartType]="'bar'"></canvas>
+        </div>
+        <div class="col-xs-6 score-panel-outer">
+          <p style="text-align: center">You can assign points to your skills based on your Professional Points, calculated from your experience and certifications.</p>
+          <p style="text-align: center">Rate your proficiency in each skill to complete your profile!<p>
+          <p style="text-align: center">You have {{this.availablePoints}} points left out of a total {{this.professionalPoints}}</p>
+          <div class="score-panel scrollbar">
+            <div class="" *ngFor='let t of this.currentAccount.foundTools; let i = index'>
+              <div class="col-xs-8 vertically-centered">
+                {{t.title}}
+              </div>
+              <div class="col-xs-4">
+                <input class="col-xs-12" type="number" name="" value="" min=0 max={{maxToolScores[i]}} [(ngModel)]='t.score' (ngModelChange)='calculateAvailablePoints(t, i); calculateSkillChart()'>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="" *ngIf='!this.creatingNew'>
+      <button class="edit-button edit-button-prev" type="button" name="button" (click)='activeTab.main = activeTab.main-1' *ngIf="activeTab.main>0">Back</button>
+      <button class="edit-button edit-button-next" type="button" name="button" (click)='activeTab.main = activeTab.main+1' *ngIf="checkFields(activeTab.main)">Next</button>
+      <button class="edit-button-nope edit-button-next" type="button" name="button" style="" *ngIf=!checkFields(activeTab.main)>Incomplete</button>
+    </div>
+    <div class="" *ngIf='this.creatingNew'>
+      <button class="edit-button edit-button-save" type="button" name="button" (click)='updateCompany(this.currentAccount)' *ngIf="checkFields(9)">Save</button>
+      <button class="edit-button-nope edit-button-nope-2" type="button" name="button" style="" *ngIf='!checkFields(9)'>Incomplete</button>
     </div>
   </div>
-  <div *ngIf="creatingNew" class="container">
-    You will be the first employee and admin for this company when you create it. Once the company is created you can add new employees.
-  </div>
-</div>
 
-<div class="products col-xs-12 clear" *ngIf='!this.creatingNew'>
-  <div class="div-title col-xs-12">
-    <img src="./assets/img/product.png">
-    <p>PRODUCTS</p>
-    <div></div>
-  </div>
-  <div class="col-xs-12">
-    <div *ngFor='let product of this.products; let prodIndex = index' class="container mt50 product-container" style="padding: 5px; position: relative">
-      <div (click)='deleteProduct(prodIndex)' style="position: absolute; z-index: 4">
-        <div class="">
-          <img src="./assets/img/btn-close.png" alt="" class="search-item-x">
+    <!-- OLD PAGE -->
+    <div class="" *ngIf='this.activeTab.main == 7'>
+      <div class="col-xs-12 col-md-6">
+        <div class="col-xs-12 srow info-input">
+          <p class="left">Name</p>
+          <input class="right" type="text" placeholder="Company name." [(ngModel)] = 'this.currentAccount.name' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentAccount.name}">
         </div>
+        <div class="col-xs-12 mt10">
+          <p class="left lh-50 mt10" [style.width]="'80px'">Logo</p>
+          <div class="left avatar" *ngIf="this.currentAccount.avatar">
+            <img src='{{ this.currentAccount.avatar }}' class="avatar-img">
+          </div>
+          <div *ngIf="!creatingNew && (!this.currentAccount.avatar || this.currentAccount.avatar.startsWith('..'))" class="right">
+            <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
+            <button class="btn btn-primary" (click)="uploadPhoto()">Upload Logo</button>
+          </div>
+          <div *ngIf="this.currentAccount.avatar && !this.currentAccount.avatar.startsWith('..')" class="right">
+            <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
+            <button class="btn btn-primary" (click)="editPhoto()">Edit Logo</button>
+          </div>
+          <div class="col-xs-12">
+            <p class="col-xs-7 text-right vertically-centered">Make your account publically viewable?</p>
+            <input type="checkbox" class="col-xs-2" [(ngModel)] = 'this.currentAccount.public'>
+          </div>
+        </div>
+        <!--<div class="col-xs-12" [style.height]="'130px'">
+            <p clvehicleType"left">Set-Aside</p>
+            <div class="text-container right" [style.height]="'130pxvehicleTypestyle.width] = "infoInputWidth+'px'">
+                <div class="col-xs-12" [style.overfvehicleType = "'auto'" [style.height]="'90px'">
+                    <div class="ssrow"><input type="checkbox" class="left"><p >XXX</p></div>
+                    <div class="ssrow"><input type="checkbox" class="left"><p >XXX</p></div>
+                    <div class="ssrow"><input type="checkbox" class="left"><p >XXX</p></div>
+                </div>
+            </div>
+        </div>-->
+        <!--<div class="col-xs-12 srow">
+            <p class="left">DCAA</p>
+            <invehicleTypetype="checkbox">
+        </div>-->
+        <!--<div class="col-xs-12" [style.height]="'130px'">
+            <p clvehicleType"left">FCL</p>
+            <div class="text-container right" [style.height]="'130px'" [stvehicleTypewidth] = "infoInputWidth+'px'">
+                <div class="col-xs-12" [style.overflow] =vehicleTypeuto'" [style.height]="'90px'">
+                    <div class="ssrow"><input type="checkbox" class="left"><p >XXX</p></div>
+                    <div class="ssrow"><input type="checkbox" class="left"><p >XXX</p></div>
+                    <div class="ssrow"><input type="checkbox" class="left"><p >XXX</p></div>
+                </div>
+            </div>
+        </div>-->
+        <!--<div class="col-xs-12" [style.height]="'130px'">
+            <p class="left">Schedules</p>
+            <div class="text-container right" [style.height]="'130px'" [style.width] = "infoInputWidth+'px'">
+            </div>
+        </div>
+        <div class="col-xs-12" [style.height]="'130px'">
+            <p class="left">Major<br>Vehicles</p>
+            <div class="text-container right" [style.height]="'130px'" [style.width] = "infoInputWidth+'px'">
+            </div>
+        </div>-->
       </div>
-      <div class="col-xs-12 srow">
-        <div class="col-xs-12 col-md-6 right">
-          <div class="col-xs-12 srow info-input">
-            <p class="left">More info</p>
-            <input class="right" type="text" placeholder="URL to show more info." [(ngModel)]="product.moreInfoLink">
-          </div>
+      <div class="col-xs-12 col-md-6">
+        <div class="col-xs-12 srow info-img-input"><img src="../assets/img/glyphicon/email-1.png" class="left"><p class="left">Email</p><input type="text" [(ngModel)] = 'this.currentAccount.email' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentAccount.email}"></div>
+        <div class="col-xs-12 srow info-img-input mt10"><img src="../assets/img/glyphicon/phone-2.png" class="left"><p class="left" style="line-height: 25px;">Contact<br> Number</p>
+          <input type="text" maxlength="14" [(ngModel)] = 'this.currentAccount.contactNumber' (ngModelChange)="onPhoneChange(this.currentAccount.contactNumber); checkFields()" (keydown.backspace)='onPhoneChange(this.currentAccount.contactNumber, true)' [ngClass]="{'empty-field': !this.currentAccount.contactNumber || this.currentAccount.contactNumber.length < 14}">
         </div>
+        <div class="col-xs-12 srow info-img-input mt10"><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">Address</p><input type="text"  [(ngModel)] = 'this.currentAccount.address' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentAccount.address}"></div>
+        <div class="col-xs-12 srow info-img-input mt10"><img src="../assets/img/glyphicon/post-1.png" class="left"><p class="left">City</p><input type="text"  [(ngModel)] = 'this.currentAccount.city' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentAccount.city}"></div>
+        <div class="col-xs-12 srow info-img-input mt10"><img src="../assets/img/profile/state.png" class="left"><p class="left">State</p><input type="text"  [(ngModel)] = 'this.currentAccount.state' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentAccount.state}"></div>
+        <div class="col-xs-12 srow info-img-input mt10"><img src="../assets/img/profile/zip.png" class="left"><p class="left">Zip</p><input type="text"  [(ngModel)] = 'this.currentAccount.zip' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentAccount.zip}"></div>
       </div>
-      <div class="col-xs-12">
-        <div class="col-xs-12 col-md-6 left">
-          <div class="col-xs-12 srow info-input">
-            <p class="left">Name</p>
-            <input class="right" type="text" placeholder="Product name." [(ngModel)]='product.name' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !product.name}">
-          </div>
-        </div>
-        <div class="col-xs-12 col-md-6 right">
-          <div class="col-xs-12 srow info-input">
-            <p class="left">Video demo</p>
-            <input class="right" type="text" placeholder="URL to Video demo." [(ngModel)]="product.viewDemoLink">
-          </div>
-        </div>
+
+      <div *ngIf="this.creatingNew || this.isUserAdmin" class="text-center" style="display: inline-block">
+        <button class="btn btn-primary btn-block" (click)="updateCompany(this.currentAccount)" *ngIf='this.fieldsFilled'>Update Company</button>
+        <button class="btn btn-primary btn-block" style="background-color: red" *ngIf='!this.fieldsFilled'>Page Unfinished</button>
       </div>
-      <div class="col-xs-12">
-        <div class="col-xs-12 col-sm-6">
-          <p class="col-xs-12 lh-50">Product Description</p>
-          <div class="col-xs-12 text-container" [style.height]="'326px'" style="margin-top: -1px"><textarea [(ngModel)]='product.description'></textarea></div>
-        </div>
-        <div class="col-xs-12 col-sm-6">
-          <p class="col-xs-12 lh-50">Agencies using it today</p>
-          <div class="col-xs-4 customer-tab" (click)='changeCustomerTab(prodIndex, product, 0)' [ngClass]="{'customer-tab-active': productTabs[prodIndex] == 0}">
-            Defense
-          </div>
-          <div class="col-xs-4 customer-tab"  (click)='changeCustomerTab(prodIndex, product, 1)' [ngClass]="{'customer-tab-active': productTabs[prodIndex] == 1}">
-            Commercial
-          </div>
-          <div class="col-xs-4 customer-tab"  (click)='changeCustomerTab(prodIndex, product, 2)' [ngClass]="{'customer-tab-active': productTabs[prodIndex] == 2}">
-            Civilian
-          </div>
-          <div class="col-xs-12 text-container" [style.overflow] = "'auto'" [style.height]="'300px'">
-            <div class="" *ngIf='this.productTabs[prodIndex] == 0'>
-              <div class="col-xs-12" *ngFor='let customer of product.customers.defense; let i = index' style="color: black">
-                <input ngui-auto-complete class="col-xs-12" placeholder="Defense Customer" [(ngModel)] = 'customer.name' (ngModelChange)="checkFields()" [source]='this.allAgencies' [list-formatter]="agencyListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': agencyValidCheck(customer.name) == false}">
-                <button class="tiny-button-skills" (click)="deleteCustomerDefense(product, i)"><div class="tiny-button-text">x</div></button>
+
+  <!-- TODO: This employee section is not responsive for phones. Need to deal with overlapping text. -->
+  <div class="employees col-xs-12 clear">
+    <div class="div-title col-xs-12">
+      <img src="./assets/img/employee.png">
+      <p>EMPLOYEES</p>
+      <div></div>
+    </div>
+    <div *ngIf="!creatingNew" class="container">
+      <div class="col-xs-12" style="width: 100%; position: relative">
+        <div class="col-xs-8" style="height: 500px; overflow-y: auto; position: absolute; left: 0px; padding-right: 5px">
+          <div class="" style="background: rgba(0, 0, 0, 0.1); border: 2px solid rgba(0, 0, 0, 0.1); height: 100%; padding-left: 5px; padding-right: 5px">
+            <h3 style="text-align: center; margin-top: 10px; margin-bottom: 2px;">Employees</h3>
+            <div class="" style="width: 94%, left: 3%; overflow-y: hidden; height: 440px; background: rgb(235, 235, 235); border: 2px solid rgba(0, 0, 0, 0.2);">
+              <div class="" style="position: relative; width: 100%; height: 100%; overflow: auto">
+                <div class="col-xs-12 employee-item" *ngFor='let employee of this.userProfiles' style="padding-right: 0px">
+                  <div (click)='deleteEmployee(employee.proxyId, employee.role)'>
+                    <img src="./assets/img/btn-close.png" alt="" class="search-item-x">
+                  </div>
+                  <div class="col-xs-8" style="width: 60%; margin-right: -5px">
+                    <div class="col-xs-6" style="margin-top: 15px">
+                      <div class="col-xs-12">{{employee.name}}</div>
+                      <div class="col-xs-12" style="margin-top: 20px">{{employee.username}}</div>
+                    </div>
+                    <div class="col-xs-5">
+                      <input style="width: 110%; min-width: 150px" type="date" [(ngModel)]="employee.startDate" (blur)="(this.type='text'); updateEmployeeDate(employee, employee.proxyId,'startDate',employee.startDate)" (focus)="this.lastStartDate = employee.startDate" [ngClass]="{'empty-field': !employee.startDate}">
+                      <input style="width: 110%; min-width: 150px" type="date" [(ngModel)]="employee.endDate" (blur)="updateEmployeeDate(employee, employee.proxyId,'endDate',employee.endDate)" (focus)="this.lastEndDate = employee.endDate" *ngIf='!employee.stillAffiliated' [ngClass]="{'empty-field': (!employee.stillAffiliated && !employee.endDate)}">
+                    </div>
+                  </div>
+                  <div class="col-xs-4" style="margin-top: 15px; width: 40%; margin-left: -15px">
+                    <div style="width: 70%">
+                      <div class="col-xs-12">
+                        <div class="col-xs-9">
+                          Leader?
+                        </div>
+                        <input class="col-xs-3" type="checkbox" (change)="updateEmployee(employee.proxyId,'leader',employee.leader)" [(ngModel)]="employee.leader" />
+                      </div>
+                      <div class="col-xs-12">
+                        <div class="col-xs-9">
+                          Still Affiliated?
+                        </div>
+                        <input class="col-xs-3" type="checkbox" (change)="updateEmployee(employee.proxyId,'stillAffiliated',employee.stillAffiliated)" [(ngModel)]="employee.stillAffiliated" />
+                      </div>
+                    </div>
+                    <button style="width: 30%; height: 55px"*ngIf="this.isUserAdmin && employee.role != this.adminRoleId" class="btn btn-primary" (click)="updateEmployee(employee.proxyId, 'role', this.adminRoleId)" type="button" value="Make Admin" name="button">Make<br>Admin</button>
+                    <button style="width: 30%; height: 55px; background: rgb(201, 50, 50); border: 1px solid rgba(0, 0, 0, 0.1)"*ngIf="this.isUserAdmin && employee.role == this.adminRoleId && employee.userId != this.currentAccount._id" class="btn btn-primary" (click)="updateEmployee(employee.proxyId, 'role', this.currentAccount._id)" type="button" value="Remove Admin" name="button">Remove<br>Admin</button>
+                  </div>
+                </div>
               </div>
-              <button type="button"class="col-xs-4 col-xs-offset-4" name="button" (click)='addCustomerDefense(product)' style="margin-top: 5px">Add Another</button>
             </div>
-            <div class="" *ngIf='this.productTabs[prodIndex] == 1'>
-              <div class="col-xs-12" *ngFor='let customer of product.customers.commercial' style="color: black">
-                <input class="col-xs-12" placeholder="Commercial Customer" [(ngModel)]='customer.name' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !customer.name}">
-                <button class="tiny-button-skills" (click)="deleteCustomerCommercial(product, i)"><div class="tiny-button-text">x</div></button>
-              </div>
-              <button type="button"class="col-xs-4 col-xs-offset-4" name="button" (click)='addCustomerCommercial(product)' style="margin-top: 5px">Add Another</button>
-            </div>
-            <div class="" *ngIf='this.productTabs[prodIndex] == 2'>
-              <div class="col-xs-12" *ngFor='let customer of product.customers.civilian' style="color: black">
-                <input class="col-xs-12" placeholder="Civilian Customer" [(ngModel)]='customer.name' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !customer.name}">
-                <button class="tiny-button-skills" (click)="deleteCustomerCivilian(product, i)"><div class="tiny-button-text">x</div></button>
-              </div>
-              <button type="button"class="col-xs-4 col-xs-offset-4" name="button" (click)='addCustomerCivilian(product)' style="margin-top: 5px">Add Another</button>
-            </div>
-            <!-- <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
-            <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
-            <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
-            <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
-            <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
-            <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
-            <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
-            <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div> -->
           </div>
         </div>
-      </div>
-      <div class="col-xs-12 mt30">
-        <div class="col-xs-12 col-md-4">
-          <p class="left">Will you customize the product?</p>
-          <input class="right" type="checkbox" [(ngModel)]="product.customization" />
-        </div>
-        <div class="col-xs-12 col-md-4">
-          <p class="left">Do you provide training?</p>
-          <input class="right" type="checkbox" [(ngModel)]="product.training" />
-        </div>
-        <div class="col-xs-12 col-md-4">
-          <p class="left">Do you provide maintenance?</p>
-          <input class="right" type="checkbox" [(ngModel)]="product.maintenance" />
-        </div>
-      </div>
-      <div class="col-xs-12">
-        <p>Features:</p>
-        <p *ngIf='product.feature.length > 0'>Describe your feature and assign it a score</p>
-        <p *ngIf='product.feature.length > 0'>(more in-depth feature scoring will come in a future update)</p>
-        <div class="col-xs-12" *ngFor='let feature of product.feature; let i = index' style="background: rgba(255,255,255,0.2); border: 1px solid rgba(0,0,0,0.1); margin-top: 1px; margin-bottom: 1px">
-          <div class="col-xs-12" style="margin-bottom: -5px; margin-top: -5px;">
-            <div class="col-xs-12 col-sm-7 srow info-input">
-              <p class="left col-xs-2">Title</p>
-              <input class="right col-xs-10" [(ngModel)]='feature.name' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !feature.name}">
+
+        <!-- <select *ngIf="this.isUserAdmin" class="form-control" [(ngModel)]="this.newUserSelected">
+          <option *ngFor="let user of this.userProfilesAll" value={{user._id}}>{{user.firstName + " " + user.lastName + ": " + user.username }}</option>
+        </select> -->
+        <div class="col-xs-4 search-results-box">
+          <h3 style="text-align: center; margin-top: 10px; margin-bottom: 2px;">User Search</h3>
+          <input type="text" name="test" value="" class="col-xs-10" [(ngModel)]='searchTerms.name' (keyup.enter)="search()">
+          <button type="button" name="button" class="col-xs-2" style="font-size: 14px; text-align: center; padding: 0px" (click)='search()'>Search</button>
+          <div class="search-results-interior" style="padding-top: 0px">
+            <div class="search-results-interior-2" style="padding-top: 0px">
+              <div class="" *ngIf='this.searchRunning'>
+                <div class="loader"></div>
+              </div>
+              <div class="" *ngIf='!this.searchRunning'>
+                <div class="" *ngIf='this.noResults'>
+                  <h4 style="text-align: center">No Results Found</h4>
+                </div>
+                <div class="" *ngIf='searchResults.people.length > 0'>
+                  <div class="" *ngFor='let p of searchResults.people; let i = index'>
+                    <div class="search-item" (click)='addEmployee(p._id, i)'>
+                      <div class="search-item-not-expand col-xs-12">
+                        <div class="search-item-header">{{p.firstName}} {{p.lastName}}</div>
+                        <div class="search-item-subheader">{{p.username}}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="col-xs-12 col-sm-5 srow info-input">
-              <p class="left col-xs-2">Score</p>
-              <input class="right col-xs-10" [(ngModel)]='feature.score' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !feature.score}">
-            </div>
-            <button class="tiny-button-skills" (click)="deleteFeature(product, i)"><div class="tiny-button-text">x</div></button>
           </div>
-        </div>
-        <div class="col-xs-6 col-xs-offset-3 text-center">
-          <button class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4" (click)="addFeature(product)">Add Feature</button>
         </div>
       </div>
     </div>
+    <div *ngIf="creatingNew" class="container">
+      You will be the first employee and admin for this company when you create it. Once the company is created you can add new employees.
+    </div>
   </div>
-  <div class='col-sm-6 col-sm-offset-3 col-xs-12'>
-    <button class='col-sm-6 col-sm-offset-3 col-xs-12' type="button" name="button" (click)='addProduct()' style="margin-top: 5px">Add Product</button>
-  </div>
-</div>
 
-<!-- <div class="services col-xs-12 clear" *ngIf='!this.creatingNew'>
-  <div class="div-title col-xs-12">
-    <img src="./assets/img/profile/capabilities-1.png">
-    <p>SERVICES</p>
-    <div></div>
-  </div>
-  <div class="col-xs-12">
-    <div *ngFor='let service of this.services; let servIndex = index' class="container mt50 product-container" style="padding: 5px; position: relative">
-      <div (click)='deleteService(servIndex)' style="position: absolute; z-index: 4">
-        <div class="">
-          <img src="./assets/img/btn-close.png" alt="" class="search-item-x">
-        </div>
-      </div>
-      <input class="col-xs-6 col-xs-offset-3 fs-25 mt20 mb20" [(ngModel)]='service.name' placeholder="Service Name" [ngClass]="{'empty-field': !service.name}">
-      <div class="col-xs-12 col-sm-6">
-        <p>Features:</p>
-        <p *ngIf='service.feature.length > 0'>Describe your feature and assign it a score</p>
-        <p *ngIf='service.feature.length > 0'>(more in-depth feature scoring will come in a future update)</p>
-        <div class="col-xs-12" *ngFor='let feature of service.feature; let i = index' style="background: rgba(255,255,255,0.2); border: 1px solid rgba(0,0,0,0.1); margin-top: 1px; margin-bottom: 1px">
-          <div class="col-xs-12" style="margin-bottom: -5px; margin-top: -5px;">
-            <div class="col-xs-12 col-sm-7 srow info-input">
-              <p class="left col-xs-2">Title</p>
-              <input class="right col-xs-10" [(ngModel)]='feature.title' [ngClass]="{'empty-field': !feature.title}">
-            </div>
-            <div class="col-xs-12 col-sm-5 srow info-input">
-              <p class="left col-xs-2">Score</p>
-              <input class="right col-xs-10" [(ngModel)]='feature.score' [ngClass]="{'empty-field': !feature.score}">
-            </div>
-            <button class="tiny-button-skills" (click)="deleteFeature(service, i)"><div class="tiny-button-text">x</div></button>
+  <div class="products col-xs-12 clear" *ngIf='!this.creatingNew'>
+    <div class="div-title col-xs-12">
+      <img src="./assets/img/product.png">
+      <p>PRODUCTS</p>
+      <div></div>
+    </div>
+    <div class="col-xs-12">
+      <div *ngFor='let product of this.products; let prodIndex = index' class="container mt50 product-container" style="padding: 5px; position: relative">
+        <div (click)='deleteProduct(prodIndex)' style="position: absolute; z-index: 4">
+          <div class="">
+            <img src="./assets/img/btn-close.png" alt="" class="search-item-x">
           </div>
         </div>
-        <div class="col-xs-12 text-center   mt20   mb20">
-          <button class="mr10" (click)="addFeature(service)" style="margin-top: 5px">ADD</button>
+        <div class="col-xs-12 srow">
+          <div class="col-xs-12 col-md-6 right">
+            <div class="col-xs-12 srow info-input">
+              <p class="left">More info</p>
+              <input class="right" type="text" placeholder="URL to show more info." [(ngModel)]="product.moreInfoLink">
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="col-xs-12 col-sm-6">
-        <p>Skills:</p>
-        <p *ngIf='service.skills.length > 0'>Describe any skills used in this service</p>
-        <p *ngIf='service.skills.length > 0'>(this will be integrated with tools in a future update)</p>
-        <div class="col-xs-12" *ngFor='let skill of service.skills; let i = index; trackBy:trackByFn'>
-          <input class="col-xs-12" [(ngModel)]='service.skills[i]'>
-          <button class="tiny-button-skills" (click)="deleteSkill(service, i)"><div class="tiny-button-text">x</div></button>
+        <div class="col-xs-12">
+          <div class="col-xs-12 col-md-6 left">
+            <div class="col-xs-12 srow info-input">
+              <p class="left">Name</p>
+              <input class="right" type="text" placeholder="Product name." [(ngModel)]='product.name' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !product.name}">
+            </div>
+          </div>
+          <div class="col-xs-12 col-md-6 right">
+            <div class="col-xs-12 srow info-input">
+              <p class="left">Video demo</p>
+              <input class="right" type="text" placeholder="URL to Video demo." [(ngModel)]="product.viewDemoLink">
+            </div>
+          </div>
         </div>
-        <div class="col-xs-12 text-center   mt20   mb20">
-          <button class="mr10" (click)="addSkill(service)">ADD</button>
+        <div class="col-xs-12">
+          <div class="col-xs-12 col-sm-6">
+            <p class="col-xs-12 lh-50">Product Description</p>
+            <div class="col-xs-12 text-container" [style.height]="'326px'" style="margin-top: -1px"><textarea [(ngModel)]='product.description'></textarea></div>
+          </div>
+          <div class="col-xs-12 col-sm-6">
+            <p class="col-xs-12 lh-50">Agencies using it today</p>
+            <div class="col-xs-4 customer-tab" (click)='changeCustomerTab(prodIndex, product, 0)' [ngClass]="{'customer-tab-active': productTabs[prodIndex] == 0}">
+              Defense
+            </div>
+            <div class="col-xs-4 customer-tab"  (click)='changeCustomerTab(prodIndex, product, 1)' [ngClass]="{'customer-tab-active': productTabs[prodIndex] == 1}">
+              Commercial
+            </div>
+            <div class="col-xs-4 customer-tab"  (click)='changeCustomerTab(prodIndex, product, 2)' [ngClass]="{'customer-tab-active': productTabs[prodIndex] == 2}">
+              Civilian
+            </div>
+            <div class="col-xs-12 text-container" [style.overflow] = "'auto'" [style.height]="'300px'">
+              <div class="" *ngIf='this.productTabs[prodIndex] == 0'>
+                <div class="col-xs-12" *ngFor='let customer of product.customers.defense; let i = index' style="color: black">
+                  <input ngui-auto-complete class="col-xs-12" placeholder="Defense Customer" [(ngModel)] = 'customer.name' (ngModelChange)="checkFields()" [source]='this.allAgencies' [list-formatter]="agencyListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': agencyValidCheck(customer.name) == false}">
+                  <button class="tiny-button-skills" (click)="deleteCustomerDefense(product, i)"><div class="tiny-button-text">x</div></button>
+                </div>
+                <button type="button"class="col-xs-4 col-xs-offset-4" name="button" (click)='addCustomerDefense(product)' style="margin-top: 5px">Add Another</button>
+              </div>
+              <div class="" *ngIf='this.productTabs[prodIndex] == 1'>
+                <div class="col-xs-12" *ngFor='let customer of product.customers.commercial' style="color: black">
+                  <input class="col-xs-12" placeholder="Commercial Customer" [(ngModel)]='customer.name' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !customer.name}">
+                  <button class="tiny-button-skills" (click)="deleteCustomerCommercial(product, i)"><div class="tiny-button-text">x</div></button>
+                </div>
+                <button type="button"class="col-xs-4 col-xs-offset-4" name="button" (click)='addCustomerCommercial(product)' style="margin-top: 5px">Add Another</button>
+              </div>
+              <div class="" *ngIf='this.productTabs[prodIndex] == 2'>
+                <div class="col-xs-12" *ngFor='let customer of product.customers.civilian' style="color: black">
+                  <input class="col-xs-12" placeholder="Civilian Customer" [(ngModel)]='customer.name' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !customer.name}">
+                  <button class="tiny-button-skills" (click)="deleteCustomerCivilian(product, i)"><div class="tiny-button-text">x</div></button>
+                </div>
+                <button type="button"class="col-xs-4 col-xs-offset-4" name="button" (click)='addCustomerCivilian(product)' style="margin-top: 5px">Add Another</button>
+              </div>
+              <!-- <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
+              <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
+              <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
+              <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
+              <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
+              <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
+              <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div>
+              <div class="col-xs-12"><input type="checkbox" class="left"><p >XXX</p></div> -->
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12 mt30">
+          <div class="col-xs-12 col-md-4">
+            <p class="left">Will you customize the product?</p>
+            <input class="right" type="checkbox" [(ngModel)]="product.customization" />
+          </div>
+          <div class="col-xs-12 col-md-4">
+            <p class="left">Do you provide training?</p>
+            <input class="right" type="checkbox" [(ngModel)]="product.training" />
+          </div>
+          <div class="col-xs-12 col-md-4">
+            <p class="left">Do you provide maintenance?</p>
+            <input class="right" type="checkbox" [(ngModel)]="product.maintenance" />
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <p>Features:</p>
+          <p *ngIf='product.feature.length > 0'>Describe your feature and assign it a score</p>
+          <p *ngIf='product.feature.length > 0'>(more in-depth feature scoring will come in a future update)</p>
+          <div class="col-xs-12" *ngFor='let feature of product.feature; let i = index' style="background: rgba(255,255,255,0.2); border: 1px solid rgba(0,0,0,0.1); margin-top: 1px; margin-bottom: 1px">
+            <div class="col-xs-12" style="margin-bottom: -5px; margin-top: -5px;">
+              <div class="col-xs-12 col-sm-7 srow info-input">
+                <p class="left col-xs-2">Title</p>
+                <input class="right col-xs-10" [(ngModel)]='feature.name' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !feature.name}">
+              </div>
+              <div class="col-xs-12 col-sm-5 srow info-input">
+                <p class="left col-xs-2">Score</p>
+                <input class="right col-xs-10" [(ngModel)]='feature.score' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !feature.score}">
+              </div>
+              <button class="tiny-button-skills" (click)="deleteFeature(product, i)"><div class="tiny-button-text">x</div></button>
+            </div>
+          </div>
+          <div class="col-xs-6 col-xs-offset-3 text-center">
+            <button class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4" (click)="addFeature(product)">Add Feature</button>
+          </div>
         </div>
       </div>
     </div>
     <div class='col-sm-6 col-sm-offset-3 col-xs-12'>
-      <button class='col-sm-6 col-sm-offset-3 col-xs-12' type="button" name="button" (click)='addService()' style="margin-top: 5px">Add Service</button>
+      <button class='col-sm-6 col-sm-offset-3 col-xs-12' type="button" name="button" (click)='addProduct()' style="margin-top: 5px">Add Product</button>
     </div>
   </div>
-</div> -->
 
-  <div class="vehicle col-xs-12 clear">
+  <!-- <div class="services col-xs-12 clear" *ngIf='!this.creatingNew'>
     <div class="div-title col-xs-12">
-        <img src="./assets/img/vehicle.png">
-        <p>VEHICLES</p>
-        <div></div>
+      <img src="./assets/img/profile/capabilities-1.png">
+      <p>SERVICES</p>
+      <div></div>
     </div>
-    <div class="container">
-      <div class="col-xs-13" *ngFor='let vehicle of this.currentAccount.vehicles; let i = index'>
-        <div class="col-xs-11">
-          <div class="col-xs-12 col-sm-6 srow info-input">
-            <p class="left">Vehicle</p>
-            <input class="right" [(ngModel)]='vehicle.vehicleType'>
-          </div>
-          <div class="col-xs-12 col-sm-6 srow info-input">
-            <p class="left">Quantity</p>
-            <input class="right" [(ngModel)]='vehicle.quantity'>
+    <div class="col-xs-12">
+      <div *ngFor='let service of this.services; let servIndex = index' class="container mt50 product-container" style="padding: 5px; position: relative">
+        <div (click)='deleteService(servIndex)' style="position: absolute; z-index: 4">
+          <div class="">
+            <img src="./assets/img/btn-close.png" alt="" class="search-item-x">
           </div>
         </div>
-        <button class="col-xs-offset-5 col-sm-1 col-sm-offset-0" (click)="deleteVehicle(vehicle, i)">DEL</button>
+        <input class="col-xs-6 col-xs-offset-3 fs-25 mt20 mb20" [(ngModel)]='service.name' placeholder="Service Name" [ngClass]="{'empty-field': !service.name}">
+        <div class="col-xs-12 col-sm-6">
+          <p>Features:</p>
+          <p *ngIf='service.feature.length > 0'>Describe your feature and assign it a score</p>
+          <p *ngIf='service.feature.length > 0'>(more in-depth feature scoring will come in a future update)</p>
+          <div class="col-xs-12" *ngFor='let feature of service.feature; let i = index' style="background: rgba(255,255,255,0.2); border: 1px solid rgba(0,0,0,0.1); margin-top: 1px; margin-bottom: 1px">
+            <div class="col-xs-12" style="margin-bottom: -5px; margin-top: -5px;">
+              <div class="col-xs-12 col-sm-7 srow info-input">
+                <p class="left col-xs-2">Title</p>
+                <input class="right col-xs-10" [(ngModel)]='feature.title' [ngClass]="{'empty-field': !feature.title}">
+              </div>
+              <div class="col-xs-12 col-sm-5 srow info-input">
+                <p class="left col-xs-2">Score</p>
+                <input class="right col-xs-10" [(ngModel)]='feature.score' [ngClass]="{'empty-field': !feature.score}">
+              </div>
+              <button class="tiny-button-skills" (click)="deleteFeature(service, i)"><div class="tiny-button-text">x</div></button>
+            </div>
+          </div>
+          <div class="col-xs-12 text-center   mt20   mb20">
+            <button class="mr10" (click)="addFeature(service)" style="margin-top: 5px">ADD</button>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          <p>Skills:</p>
+          <p *ngIf='service.skills.length > 0'>Describe any skills used in this service</p>
+          <p *ngIf='service.skills.length > 0'>(this will be integrated with tools in a future update)</p>
+          <div class="col-xs-12" *ngFor='let skill of service.skills; let i = index; trackBy:trackByFn'>
+            <input class="col-xs-12" [(ngModel)]='service.skills[i]'>
+            <button class="tiny-button-skills" (click)="deleteSkill(service, i)"><div class="tiny-button-text">x</div></button>
+          </div>
+          <div class="col-xs-12 text-center   mt20   mb20">
+            <button class="mr10" (click)="addSkill(service)">ADD</button>
+          </div>
+        </div>
       </div>
-      <button class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4" (click)="addVehicle()" style="margin-top: 5px">Add Vehicle</button>
+      <div class='col-sm-6 col-sm-offset-3 col-xs-12'>
+        <button class='col-sm-6 col-sm-offset-3 col-xs-12' type="button" name="button" (click)='addService()' style="margin-top: 5px">Add Service</button>
+      </div>
+    </div>
+  </div> -->
+
+      <div class="vehicle col-xs-12 clear">
+        <div class="div-title col-xs-12">
+            <img src="./assets/img/vehicle.png">
+            <p>VEHICLES</p>
+            <div></div>
+        </div>
+        <div class="container">
+          <div class="col-xs-13" *ngFor='let vehicle of this.currentAccount.vehicles; let i = index'>
+            <div class="col-xs-11">
+              <div class="col-xs-12 col-sm-6 srow info-input">
+                <p class="left">Vehicle</p>
+                <input class="right" [(ngModel)]='vehicle.vehicleType'>
+              </div>
+              <div class="col-xs-12 col-sm-6 srow info-input">
+                <p class="left">Quantity</p>
+                <input class="right" [(ngModel)]='vehicle.quantity'>
+              </div>
+            </div>
+            <button class="col-xs-offset-5 col-sm-1 col-sm-offset-0" (click)="deleteVehicle(vehicle, i)">DEL</button>
+          </div>
+          <button class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4" (click)="addVehicle()" style="margin-top: 5px">Add Vehicle</button>
+        </div>
+      </div>
     </div>
   </div>
+</div>
