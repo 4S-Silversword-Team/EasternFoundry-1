@@ -16,6 +16,7 @@
   color: rgba(0,0,0,0.75);
 }
 
+
 .edit-button-add {
   position: absolute;
   width: 150px;
@@ -250,33 +251,70 @@ input {
   background: rgba(0, 0, 0, 0.10);
   border: 2px solid rgba(0, 0, 0, 0.10)
 }
+.product-customers {
+  overflow: auto;
+  height: 180px;
+  width: 100%;
+  border-left: 1px solid rgba(0,0,0,0.25);
+  border-right: 1px solid rgba(0,0,0,0.25);
+  border-bottom: 1px solid rgba(0,0,0,0.25);
+}
 
 .customer-tab {
-  background: rgba(155, 155, 155, 0.6);
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  background: rgba(223,223,225,1);
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.25);
   text-align: center;
+  height: 20px;
+  line-height: 20px;
   font-size: 16px;
   font-weight: bold;
   color: rgba(50, 50, 50, 0.5);
-  margin-bottom: -18px;
-  padding-bottom: 7px;
-  padding-top: 1px;
 }
 
 .customer-tab:hover {
-  background: rgba(200, 200, 200, 0.6);
+  background: rgba(233,233,235,1);
   color: rgba(50, 50, 50, 0.75);
-  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-left: 1px solid rgba(0, 0, 0, 0.17);
+  border-right: 1px solid rgba(0, 0, 0, 0.17);
+  border-top: 1px solid rgba(0, 0, 0, 0.17);
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+.customer-tab:active {
+  background: rgba(243,243,245,1);
+  color: rgba(50, 50, 50, 0.75);
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 .customer-tab-active {
-  background: rgba(255, 255, 255, 0.6);
+  cursor: auto;
+  background: rgba(253,253,255,1);
   color: rgba(50, 50, 50, 1);
-  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-left: 1px solid rgba(0,0,0,0.25);
+  border-right: 1px solid rgba(0,0,0,0.25);
+  border-top: 1px solid rgba(0,0,0,0.25);
+  border-bottom: 1px solid rgba(0,0,0,0)
 }
 .customer-tab-active:hover {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(253,253,255,1);
   color: rgba(50, 50, 50, 1);
-  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-left: 1px solid rgba(0,0,0,0.25);
+  border-right: 1px solid rgba(0,0,0,0.25);
+  border-top: 1px solid rgba(0,0,0,0.25);
+  border-bottom: 1px solid rgba(0,0,0,0)
+}
+.customer-tab-active:active {
+  background: rgba(253,253,255,1);
+  color: rgba(50, 50, 50, 1);
+  border-left: 1px solid rgba(0,0,0,0.25);
+  border-right: 1px solid rgba(0,0,0,0.25);
+  border-top: 1px solid rgba(0,0,0,0.25);
+  border-bottom: 1px solid rgba(0,0,0,0)
 }
 
 
@@ -370,7 +408,7 @@ selector {
   top: 42px;
   z-index: 4;
   height: calc(40vh - 50px);
-  width: calc(100% - 93px);
+  width: calc(100% - 153px);
   overflow-y: hidden;
   border-left: 1px solid rgba(0, 0, 0, 0.2);
   border-right: 1px solid rgba(0, 0, 0, 0.2);
@@ -480,4 +518,48 @@ selector {
   background-color: rgb(129, 129, 129);
   color: rgb(150, 150, 150);
   left: 5px;
+}
+
+.product-tab-bar {
+  height: 40px;
+}
+
+.product-tab {
+  cursor: pointer;
+  height: 30px;
+  line-height: 30px;
+  margin-top: 10px;
+  font-size: 16px;
+  text-align: center;
+  border: 1px solid rgba(0,0,0,0.05);
+  background: rgba(223,223,225,1);
+}
+.product-tab:hover{
+  background: rgba(238,238,240,1);
+  border: 1px solid rgba(0,0,0,0.25);
+}
+
+.product-tab-active {
+  cursor: auto;
+  margin-top: 0px;
+  height: 40px;
+  font-size: 20px;
+  line-height: 40px;
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border-left: 1px solid rgba(0,0,0,0.5);
+  border-right: 1px solid rgba(0,0,0,0.5);
+  border-top: 1px solid rgba(0,0,0,0.5);
+}
+.product-tab-active-small {
+  cursor: auto;
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border-left: 1px solid rgba(0,0,0,0.5);
+  border-right: 1px solid rgba(0,0,0,0.5);
+  border-top: 1px solid rgba(0,0,0,0.5);
+}
+
+.product-tab-active:hover {
+  background: rgba(253,253,255,1);
 }

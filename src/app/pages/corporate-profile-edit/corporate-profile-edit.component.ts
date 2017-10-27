@@ -70,14 +70,10 @@ export class CorporateProfileEditComponent implements OnInit {
   noResults = false
   productTabs = [0]
   activeTab = {
-    main: 1,
+    main: 0,
+    product: 0,
   }
-  finished: any = {
-    basic: false,
-    employees: false,
-    products: false,
-  }
-
+  
   allAgencies: any[] = []
 
   currentDate: string = new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()
