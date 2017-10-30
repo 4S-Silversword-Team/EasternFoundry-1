@@ -83,10 +83,16 @@
       <div class="half-block">
         <h3>Agency Experience</h3>
         <ul>
-          <li *ngFor='let clearance of this.currentUser.clearance'>
-            <p>{{clearance.clearanceType}}</p>
-            <p>Awarded {{clearance.awarded}}</p>
-            <p>Expires {{clearance.expiration}}</p>
+          <li *ngFor='let agency of this.agencyExperience'>
+            <p>{{agency.title}}</p>
+            <p>{{agency.years}} years</p>
+            <p *ngIf='agency.offices.length > 0'>OFFICES:</p>
+            <ul *ngIf='agency.offices.length > 0'>
+              <li *ngFor='let office of agency.offices'>
+                <p>{{office.title}}</p>
+                <p>{{office.years}} years</p>
+              </li>
+            </ul>
           </li>
         </ul>
       </div>

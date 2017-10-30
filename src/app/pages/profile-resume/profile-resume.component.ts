@@ -29,6 +29,14 @@ export class ProfileResumeComponent implements OnInit {
   currentUser: User = new User()
   promiseFinished: Boolean = false
   jobTitle: String = ''
+  agencyExperience: {
+    title: string,
+    years: number,
+    offices: {
+      title: string,
+      years: number,
+    }[]
+  }[] = []
 
   constructor(
     private userService: UserService,
@@ -77,6 +85,89 @@ export class ProfileResumeComponent implements OnInit {
       if (this.jobTitle.slice(-1) == 's'){
         this.jobTitle = this.jobTitle.substring(0, this.jobTitle.length-1)
       }
+
+      for (let p of this.currentUser.positionHistory) {
+        for (let a of p.agencyExperience) {
+          console.log(p.Employer + ' - ' + a.main.title)
+          if (a.main.title){
+            console.log(p.EndDate.slice(0, 4) + ' - ' + p.StartDate.slice(0, 4))
+            var agencyFound = false
+            for (let existing of this.agencyExperience) {
+              if (a.main.title == existing.title){
+                agencyFound = true
+                if (p.EndDate == 'Current'){
+                  var endYear = new Date().getFullYear()
+                } else {
+                  var endYear = +p.EndDate.slice(0, 4)
+                }
+                var startYear = +p.StartDate.slice(0, 4)
+                var years = (endYear - startYear)
+                if (years == 0){
+                  years = 1
+                }
+                existing.years += years
+                break
+              }
+            }
+            if (!agencyFound){
+              if (p.EndDate == 'Current'){
+                var endYear = new Date().getFullYear()
+              } else {
+                var endYear = +p.EndDate.slice(0, 4)
+              }
+              var startYear = +p.StartDate.slice(0, 4)
+              var yearsWorked = endYear - startYear
+              var offices = []
+              for (let o of a.offices) {
+                var officeFound = false
+                for (let e of this.agencyExperience) {
+                  for (let existing of e.offices) {
+                    if (o.title == existing.title) {
+                      console.log('office!!!!!!')
+                      officeFound = true
+                      if (p.EndDate == 'Current') {
+                        var endYear = new Date().getFullYear()
+                      } else {
+                        var endYear = +p.EndDate.slice(0, 4)
+                      }
+                      var startYear = +p.StartDate.slice(0, 4)
+                      var years = (endYear - startYear)
+                      console.log(years)
+                      if (years == 0){
+                        years = 1
+                      }
+                      existing.years += years
+                      break
+                    }
+                  }
+                }
+                if (!officeFound){
+                  if (p.EndDate == 'Current'){
+                    var endYear = new Date().getFullYear()
+                  } else {
+                    var endYear = +p.EndDate.slice(0, 4)
+                  }
+                  var startYear = +p.StartDate.slice(0, 4)
+                  var yearsWorked = endYear - startYear
+                  if (yearsWorked == 0){
+                    yearsWorked = 1
+                  }
+                  offices.push({
+                    title: o.title,
+                    years: yearsWorked,
+                  })
+                }
+              }
+              this.agencyExperience.push({
+                title: a.main.title,
+                years: yearsWorked,
+                offices: offices
+              })
+            }
+          }
+        }
+      }
+      console.log(this.agencyExperience)
       this.promiseFinished = true;
     });
   }
