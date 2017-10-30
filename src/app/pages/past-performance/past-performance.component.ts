@@ -83,7 +83,7 @@ export class PastPerformanceComponent implements OnInit {
             var proxy: any = res
             if (proxy){
               if (proxy.company._id == this.currentPastPerformance.companyProxies[0].company._id){
-                console.log(u.user.firstName + ' went from ' + u.stillAffiliated + ' to ' + proxy.stillAffiliated)
+                // console.log(u.user.firstName + ' went from ' + u.stillAffiliated + ' to ' + proxy.stillAffiliated)
                 u.stillAffiliated = proxy.stillAffiliated
               }
             }
@@ -277,7 +277,7 @@ export class PastPerformanceComponent implements OnInit {
           })
           return returnVal
         }).map((proxy) => proxy.company["_id"])
-        console.log("Relevent companies", relevantCompanyIds)
+        console.log("Relevant companies", relevantCompanyIds)
         //then get the company ids associated with the past performance
         var ppCompanyIds = this.currentPastPerformance.companyProxies.map((cproxy) => cproxy.company["_id"])
         console.log("pp companies", ppCompanyIds)

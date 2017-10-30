@@ -49,24 +49,169 @@ p {
   display: none;
 }
 
-.box {
-  border-radius: 15px;
-  border: 10px solid rgba(0,100,200, 0.9);
-  background: rgb(255,255,255);
-  box-shadow: 0px 3px 10px #888888;
+.edit-tab-bar {
+  margin-top: 10vh;
+  height: 60vh;
+  width: 100%;
+  background: rgba(223,223,225,1);
 }
 
-.box-left {
-  padding-left: 0px;
-  padding-right: 5px;
-  margin-bottom: 0px;
+.edit-tab {
+  cursor: pointer;
+  height: calc(60vh / 7);
+  line-height: calc(60vh / 7);
+  border-bottom: 2px solid rgba(173,173,175,1);
+  width: 100%;
+  float: left;
+  position: relative;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: rgba(0,0,0,0.5);
+  margin: 0px;
+}
+.edit-tab-bottom {
+  cursor: pointer;
+  height: calc(60vh / 7);
+  line-height: calc(60vh / 7);
+  width: 100%;
+  float: left;
+  position: relative;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: rgba(0,0,0,0.5);
+  margin: 0px;
 }
 
-.box-right {
-  padding-left: 5px;
-  padding-right: 0px;
-  margin-bottom: 0px;
+.edit-tab-active {
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 2px solid rgba(173,173,175,1);
 }
+.edit-tab-top-active {
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+.edit-tab-bottom-active {
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.edit-tab:hover {
+  /*border: 1px solid rgba(0,0,0,0.01);*/
+  color: rgba(0,0,0,0.6);
+  background: rgba(253,253,255,0.35)
+}
+.edit-tab:active {
+  /*border: 1px solid rgba(0,0,0,0.05);*/
+  color: rgba(0,0,0,0.7);
+  background: rgba(253,253,255,0.7)
+}
+.edit-tab-active:hover {
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 2px solid rgba(173,173,175,1);
+}
+.edit-tab-top-active:hover {
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+.edit-tab-bottom-active:hover {
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.edit-tab-incomplete {
+  background: rgba(223,103,105,1);
+}
+
+.edit-panel {
+  margin-top: 10vh;
+  height: 60vh;
+  padding: 0px;
+  background: rgba(253,253,255,1);
+  border-right: 1px solid rgba(0,0,0,0.1);
+  border-top: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.sub-box {
+  padding-top: 2vh;
+  padding-left: 1.6vw;
+  padding-right: 1.6vw;
+  padding-bottom: 2vh;
+}
+
+.sub-box-inner {
+  position: relative;
+  width: 100%;
+  height: calc(45.5vh - 40px);
+  background: rgba(255,255,255,0.99);
+  border: 1px solid rgba(0,0,0,0.5);
+  overflow-y: auto;
+}
+
+.edit-button {
+  background: rgba(173,173,175,1);
+  border-radius: 0px;
+  border: 1px solid rgba(0,0,0,0.05);
+  font-size: 18px;
+  font-weight: bold;
+  color: rgba(0,0,0,0.75);
+}
+
+.edit-button-nope {
+  background: rgba(203,0,0,1);
+  border-radius: 0px;
+  border: 1px solid rgba(0,0,0,0.5);
+  font-size: 18px;
+  font-weight: bold;
+  color: rgba(0,0,0,0.75);
+}
+.edit-button-save {
+  background: rgba(0,203,0,1);
+  border: 1px solid rgba(0,0,0,0.5);
+  position: absolute;
+  width: 150px;
+  bottom: -5vh;
+  right: 1.6vw;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.edit-button-nope-2 {
+  position: absolute;
+  width: 150px;
+  bottom: -5vh;
+  right: 1.6vw;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.edit-button-next {
+  position: absolute;
+  width: 150px;
+  bottom: 3vh;
+  right: 1.6vw;
+}
+
+.edit-button-prev {
+  position: absolute;
+  width: 150px;
+  bottom: 3vh;
+  left: 1.6vw;
+}
+
 
 .link {
     cursor: pointer;
@@ -253,12 +398,11 @@ button:active {
   transition: 0.05s;
 }
 
-
 input {
     height: 34px;
     margin-top: 8px;
     padding: 5px;
-    border-radius: 5px;
+    border-radius: 0px;
     border: 1px solid #ccc;
 }
 

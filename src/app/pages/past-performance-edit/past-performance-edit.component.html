@@ -5,203 +5,380 @@
 <div class="past-performance col-xs-12 clear" *ngIf='this.promiseFinished && !this.isUserAdmin'>
   <h3>You don't have permission to edit this Past Performance.</h3>
 </div>
-<div class="" *ngIf='this.isUserAdmin'>
-  <div class="past-performance col-xs-12 clear">
-    <div class="div-title col-xs-12">
-      <img src="./assets/img/performance.png">
-      <p>PAST PERFORMANCE</p>
-      <div></div>
-    </div>
-    <div class="container">
-      <div class="form-horizontal col-xs-6 left" [style.border-right] = "'3px solid #757575'">
-        <div class="form-group col-xs-12 col-sm-12 srow">
-          <p class="col-xs-3 col-sm-3 left lh-50">Title of PP</p>
-          <div class="col-xs-9 col-sm-9"><input type="text" placeholder="Past Performance" style="width: 100%" class="right" [(ngModel)] = 'this.currentPastPerformance.title' (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentPastPerformance.title}"></div>
+<div class="container" *ngIf='this.isUserAdmin'>
+  <div class="page">
+    <div class="col-xs-2" style="margin: 0px; padding: 0px;">
+      <div class="edit-tab-bar">
+        <div class="edit-tab" [ngClass]="{'edit-tab-incomplete': !this.checkFields(0)}">
+          <div class="edit-tab" (click)='switchTab(0)' [ngClass]="{'edit-tab-top-active': this.activeTab.main == 0}">
+            Basic Info
+          </div>
         </div>
-        <div class="form-group col-xs-12 col-sm-12 srow">
-          <p class="col-xs-3 col-sm-3 left lh-50">Client</p>
-          <input class="col-xs-1 col-sm-1" type="checkbox" [(ngModel)]="this.currentPastPerformance.client.gov" />
-          <div class="col-xs-8 col-sm-8" *ngIf='this.currentPastPerformance.client.gov'>
-            <div class="autocomplete-form" style="width: 100%">
-              <input ngui-auto-complete class="" style="width: 100%" placeholder="Must match an existing agency" [(ngModel)] = 'this.currentPastPerformance.client.name' [source]='this.allAgencies' [list-formatter]="agencyListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': !agencyValidCheck(this.currentPastPerformance.client.name)}">
+        <div class="" [ngClass]="{'edit-tab-inactive': this.createMode}">
+          <div class="edit-tab">
+            <div class="edit-tab" (click)='switchTab(1)' [ngClass]="{'edit-tab-active': this.activeTab.main == 1}">
+              Employees
             </div>
           </div>
-          <div class="col-xs-7 col-sm-8" *ngIf='!this.currentPastPerformance.client.gov'><input type="text" placeholder="Client" style="width: 100%" class="right" [(ngModel)] = "this.currentPastPerformance.client.name" (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentPastPerformance.client.name}"></div>
-        </div>
-        <div class="form-group col-xs-12 col-sm-12 srow">
-          <p class="col-xs-3 col-sm-3 left lh-50">Topic</p>
-          <div class="col-xs-9 col-sm-9"><input type="text" placeholder="Topic" style="width: 100%" class="right" [(ngModel)] = "this.currentPastPerformance.topic" (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentPastPerformance.topic}"></div>
-        </div>
-        <div class="form-group col-xs-12 col-sm-12 srow">
-          <p class="col-xs-3 col-sm-3 left lh-50">Cleared</p>
-          <div class="col-xs-9 col-sm-9"><input type="checkbox" [(ngModel)] = "this.currentPastPerformance.cleared" name="cleared" class="right"></div>
-        </div>
-        <div class="form-group col-xs-12 col-sm-12 srow">
-          <p class="col-xs-3 col-sm-3 left lh-50">Publically Viewable</p>
-          <div class="col-xs-9 col-sm-9"><input type="checkbox" [(ngModel)] = "this.currentPastPerformance.public" name="public" class="right"></div>
-        </div>
-        <div *ngIf="!createMode" class="col-xs-12">
-          <p class="left lh-50">Image</p>
-          <img *ngIf="this.currentPastPerformance.avatar" src="{{this.currentPastPerformance.avatar}}" class="avatar right">
-          <div *ngIf="!createMode && (!this.currentPastPerformance.avatar || this.currentPastPerformance.avatar.startsWith('..'))" style="clear: both">
-            <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
-            <button style="width: 100%; color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;" class="btn btn-primary" (click)="uploadPhoto()">Upload Photo</button>
+          <div class="edit-tab-bottom">
+            <div class="edit-tab-bottom" (click)='switchTab(2)' [ngClass]="{'edit-tab-bottom-active': this.activeTab.main == 2}">
+              Write-Up
+            </div>
           </div>
-          <div *ngIf="this.currentPastPerformance.avatar && !this.currentPastPerformance.avatar.startsWith('..')" style="clear: both">
-            <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
-            <button style="width: 100%; color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;" class="btn btn-primary" (click)="editPhoto()">Edit Photo</button>
-          </div>
-          <!--<div class="right text-container div-uploadImage" [style.width]="''+ppInputWidth+'px'">-->
-          <!--<p class="left lh-50" [style.cursor] = "'pointer'" (click) = 'uploadImage()' >Upload Image</p>-->
-          <!--</div>-->
-        </div>
-      </div>
-      <div class="form-horizontal col-xs-6 right">
-        <div class="form-group col-xs-12 col-sm-12 srow">
-          <p class="col-xs-3 col-sm-3 left lh-25">Functional<br>area in PP</p>
-          <div class="col-xs-9 col-sm-9"><input [(ngModel)]="this.currentPastPerformance.area" type="text" placeholder="Functional area in PP" class="right" style="width: 100%" (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentPastPerformance.area}"></div>
-        </div>
-        <div class="form-group col-xs-12 col-sm-12 srow">
-          <p class="col-xs-3 col-sm-3 left lh-50">Start Date</p>
-          <div class="col-xs-9 col-sm-9"><input [(ngModel)]="this.currentPastPerformance.startDate" type='date' placeholder="Start Date" style="width: 100%" class="right" (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentPastPerformance.startDate}"></div>
-        </div>
-        <div class="form-group col-xs-12 col-sm-12 srow">
-          <p class="col-xs-3 col-sm-3 left lh-50">End Date</p>
-          <div class="col-xs-9 col-sm-9"><input [(ngModel)]="this.currentPastPerformance.endDate" type='date' placeholder="End Date" style="width: 100%" class="right" (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentPastPerformance.endDate}"></div>
-        </div>
-        <div class="form-group col-xs-12 col-sm-12 srow">
-          <p class="col-xs-3 col-sm-3 left lh-50">Rating</p>
-          <div class="col-xs-9 col-sm-9"><rating [(ngModel)]="this.currentPastPerformance.rating" [max]="5" [readonly]="isReadOnly" class="right srow" [style.line-height]="'50px'"></rating></div>
-        </div>
-        <div class="form-group col-xs-12 col-sm-12 srow mt15">
-          <p class="col-xs-3 col-sm-3 left lh-25">Location<br>(zipcode)</p>
-          <div class="col-xs-9 col-sm-9"><input type="text" [(ngModel)] = "this.currentPastPerformance.location" placeholder="Your zipcode" class="right" style="width: 100%" (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentPastPerformance.location}"></div>
-        </div>
-        <div class="form-group col-xs-12 col-sm-12 srow mt15">
-          <p class="col-xs-3 col-sm-3 left lh-25">Value of work<br>done ($)</p>
-          <div class="col-xs-9 col-sm-9"><input type="text" [(ngModel)] = "this.currentPastPerformance.value" placeholder="Value in $" class="right" style="width: 100%" (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentPastPerformance.value}"></div>
-        </div>
-        <div class="form-group col-xs-12 col-sm-12 srow mt15">
-          <p class="col-xs-3 col-sm-3 left lh-50"># of FTE</p>
-          <div class="col-xs-9 col-sm-9"><input type="text" [(ngModel)] = "this.currentPastPerformance.fte" placeholder="FTE" class="right" style="width: 100%" (ngModelChange)="checkFields()" [ngClass]="{'empty-field': !this.currentPastPerformance.fte}"></div>
         </div>
       </div>
     </div>
+    <div class="col-xs-10 edit-panel">
+      <div class="profile" style="" *ngIf='activeTab.main == 0'>
+        <div class="" style="position: relative; height: 360px; width: 180px;">
+          <div class="" style="height: 180px; width: 180px; position: relative; float: left;">
+            <div class="left avatar">
+              <img src='{{ this.currentPastPerformance.avatar }}' class="avatar-img">
+            </div>
+            <div class="" style="position: absolute; top: 180px">
+              <div *ngIf="!this.currentPastPerformance.avatar || this.currentPastPerformance.avatar.startsWith('..')" class="left">
+                <input type="file" #fileInput accept=".jpg,.png" style="width:90%; margin-left: 5%"/>
+                <button class="btn btn-primary" style="width: 90%; margin-left: 5%;" (click)="uploadPhoto()">Upload Avatar</button>
+              </div>
+              <div *ngIf="this.currentPastPerformance.avatar && !this.currentPastPerformance.avatar.startsWith('..')" class="left">
+                <input type="file" #fileInput accept=".jpg,.png" style="width:90%; margin-left: 5%"/>
+                <button class="btn btn-primary" style="width: 90%; margin-left: 5%;" (click)="editPhoto()">Edit Avatar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="" style="position: absolute; height: 35vh; width: calc(100% - 180px); top: 2vh; right: 0px; float: left; background: none;">
+          <div class="" style="position: absolute; float: left; top: 0px; left: 0px; width: 100%; height: 42px; padding: 2vh 2vw 2vh 2vw;">
+            <div class="left" style="width: 115px; line-height: 42px; float: left; padding-top: 4px;">
+              <p class="">Performance Title</p>
+            </div>
+            <div class="" style="width: calc(100% - 115px); float: left;">
+              <input class="" style="width: 100%;" type="text" placeholder="" [(ngModel)] = 'this.currentPastPerformance.title' [ngClass]="{'empty-field': !this.currentPastPerformance.title}">
+            </div>
+          </div>
+          <div class="" style="position: absolute; float: left; top: calc(2vh + 42px); left: 0px; width: 55%; height: 244px; margin-top: 8px; padding: 0vh 2vw 2vh 2vw; border-right: 2px solid rgba(0,0,0,0.5);">
+            <div class="" style="margin-top: -8px">
+              <div class="left" style="width: 115px; line-height: 42px; float: left; padding-top: 4px;">
+                <p class="">Client Name</p>
+                <p class="">Govt Client</p>
+                <p class="">Topic</p>
+              </div>
+              <div class="" style="width: calc(100% - 115px); float: left;">
+                <div class="" style="width: 100%" *ngIf='this.currentPastPerformance.client.gov'>
+                  <div class="autocomplete-form" style="width: 100%">
+                    <input ngui-auto-complete class="" style="width: 100%" placeholder="Must match an existing agency" [(ngModel)] = 'this.currentPastPerformance.client.name' [source]='this.allAgencies' [list-formatter]="agencyListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': !agencyValidCheck(this.currentPastPerformance.client.name)}">
+                  </div>
+                </div>
+                <div class="" style="width: 100%;" *ngIf='!this.currentPastPerformance.client.gov'><input type="text" style="width: 100%;" placeholder="Client" style="width: 100%" class="right" [(ngModel)] = "this.currentPastPerformance.client.name" [ngClass]="{'empty-field': !this.currentPastPerformance.client.name}"></div>
+                <input class="" style="height: 42px;" type="checkbox" [(ngModel)]="this.currentPastPerformance.client.gov" />
+                <input class="" style="width: 100%; margin-top: -1px;" type="text" placeholder="The company's email address" [(ngModel)] = 'this.currentPastPerformance.topic' [ngClass]="{'empty-field': !this.currentPastPerformance.topic}">
+              </div>
+              <div class="" style="position: absolute; float: left; bottom: 0px; right: calc(2vw - 6px); height: 93px; width: 100%;">
+                <p class="left" style="width: calc(100% - 60px); line-height: 42px; float: left; padding-top: 6px; text-align: right; padding-right: 2px;">Cleared?</p>
+                <input type="checkbox" style="width: 42px; height: 42px; float: left" class="" [(ngModel)] = 'this.currentPastPerformance.public'>
+                <p class="left" style="width: calc(100% - 60px); line-height: 42px; float: left; padding-top: 6px; text-align: right; padding-right: 2px;">Publically viewable?</p>
+                <input type="checkbox" style="width: 42px; height: 42px; float: left" class="" [(ngModel)] = 'this.currentPastPerformance.public'>
+              </div>
+            </div>
+          </div>
+          <div class="" style="position: absolute; float: left; top: 42px; right: 0px; width: 45%; height: 244px; padding: 2vh 2vw 2vh 2vw;">
+            <div class="left" style="width: 110px; line-height: 42px; float: left; padding-top: 4px;">
+              <p class="">Start Date</p>
+              <p class="">End Date</p>
+              <p class="">Functional Area</p>
+              <p class="">Location (Zip)</p>
+              <p class="">Value of Work</p>
+              <p class="">FTE</p>
+            </div>
+            <div class="" style="width: calc(100% - 110px); float: left;">
+              <input [(ngModel)]="this.currentPastPerformance.startDate" type='date' style="width: 100%" class="" [ngClass]="{'empty-field': !this.currentPastPerformance.startDate}">
+              <input [(ngModel)]="this.currentPastPerformance.endDate" type='date' style="width: 100%" class="" [ngClass]="{'empty-field': !this.currentPastPerformance.endDate}">
+              <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentPastPerformance.area' [ngClass]="{'empty-field': !this.currentPastPerformance.area}">
+              <input class="" style="width: 100%;" type="number" max="99999" maxlength="5" [(ngModel)] = 'this.currentPastPerformance.location' [ngClass]="{'empty-field': !this.currentPastPerformance.location}">
+              <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentPastPerformance.value' [ngClass]="{'empty-field': !this.currentPastPerformance.value}">
+              <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentPastPerformance.fte' [ngClass]="{'empty-field': !this.currentPastPerformance.fte}">
+            </div>
+          </div>
+        </div>
+        <div class="" style="position: absolute; width: 45vw; height: 20vh; bottom: 4.5vh; left: 1vw;">
+          <div class="" *ngIf='this.creatingNew'>
+            <p>Your new company will be initialized with you as an admin.</p>
+            <p>After its creation, you can go back in to editing to add more employees or products.</p>
+          </div>
+        </div>
+      </div>
+      <div class="sub-box" *ngIf='activeTab.main == 1' style="position: relative;">
+        <div class="div-title" style="margin-top: 2vh; margin-bottom: 1vh;">
+          <p>Employees</p>
+        </div>
+        <div id='employee-search' class="employee-search-bar" style="position: relative; width: 100%; height: 42px; margin-bottom: 8px;">
+          <input type="text" name="test" value="" style="width: calc(100% - 153px); margin-bottom: 1px;" [(ngModel)]='searchTerms.name' (keyup.enter)="search()">
+          <button class="edit-button" type="button" name="button" style="width: 150px; height: 37px;" (click)='search()'>Search</button>
+          <div id='employee-dropdown' class="search-results-interior" style="padding-top: 0px;" *ngIf='this.searchOpen'>
+            <div class="search-results-interior-2" style="padding-top: 0px">
+              <div class="" *ngIf='this.searchRunning'>
+                <div class="loader"></div>
+              </div>
+              <div class="" *ngIf='!this.searchRunning'>
+                <div class="" *ngIf='this.noResults'>
+                  <h4 style="text-align: center">No Results Found</h4>
+                </div>
+                <div class="" *ngIf='searchResults.people.length > 0'>
+                  <div class="" *ngFor='let p of searchResults.people; let i = index'>
+                    <div class="search-item" (click)='addEmployee(p._id, i)'>
+                      <div class="search-item-not-expand col-xs-12">
+                        <div class="search-item-header">{{p.firstName}} {{p.lastName}}</div>
+                        <div class="search-item-subheader">{{p.username}}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scrollbar sub-box-inner" style="height: calc(43vh - 50px);">
+          <div class="col-xs-12 employee-item" *ngFor='let employee of this.userProfiles' style="padding-right: 0px">
+            <div (click)='deleteEmployee(employee.proxyId)'>
+              <img src="./assets/img/btn-close.png" alt="" class="search-item-x">
+            </div>
+            <div class="col-xs-12" style="width: 100%; margin-right: -5px">
+              <div class="col-xs-4">
+                <p style="line-height: 42px; padding-top: 4px;">{{employee.name}}</p>
+                <p style="line-height: 42px; padding-top: 4px;">{{employee.username}}</p>
+              </div>
+              <div class="col-xs-4">
+                <p style="line-height: 42px; padding-top: 4px;">Start Date:</p>
+                <input style="width: 100%; min-width: 150px" type="date" [(ngModel)]="employee.startDate" (blur)="updateEmployee(employee.proxyId, 'startDate', employee.startDate)" (focus)="this.lastStartDate = employee.startDate" [ngClass]="{'empty-field': !employee.startDate}">
+              </div>
+              <div class="col-xs-4">
+                <p style="line-height: 42px; padding-top: 4px;">Role:</p>
+                <input style="width: 100%;" placeholder="role" (blur)="updateEmployee(employee.proxyId, 'role', employee.role)" type="text" [(ngModel)]="employee.role" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sub-box" style="" *ngIf='activeTab.main == 2'>
+        <div class="div-title" style="margin-top: .5vh; margin-bottom: .5vh;">
+          <p>Write-Up</p>
+        </div>
+        <div class="sub-box-inner" style="height: calc(50vh - 48px); padding-bottom: 0px; overflow-y: hidden;">
+          <div class="" style="border: 1px solid rgba(0,0,0,0.25); width: 100%; height: 30%; float: left;"><p class="col-xs-12">Synopsis</p><textarea class="scrollbar" style="height: calc(100% - 20px); max-height: calc(100% - 20px); min-height: calc(100% - 20px); min-width: 100%; max-width: 100%; width: 100%" [(ngModel)] = 'this.currentPastPerformance.synopsis'></textarea></div>
+          <div class="" style="border: 1px solid rgba(0,0,0,0.25); width: 50%; height: 40%; float: left;"><p class="col-xs-12">Technical Challenge, approach and outcome</p><textarea class="scrollbar" style="height: calc(100% - 20px); max-height: calc(100% - 20px); min-height: calc(100% - 20px); min-width: 100%; max-width: 100%; width: 100%" [(ngModel)] = 'this.currentPastPerformance.technical'></textarea></div>
+          <div class="" style="border: 1px solid rgba(0,0,0,0.25); width: 50%; height: 40%; float: left;"><p class="col-xs-12">Management Challenge, approach and outcome</p><textarea class="scrollbar" style="height: calc(100% - 20px); max-height: calc(100% - 20px); min-height: calc(100% - 20px); min-width: 100%; max-width: 100%; width: 100%" [(ngModel)] = 'this.currentPastPerformance.management'></textarea></div>
+          <div class="" style="margin-bottom: 0px; border: 1px solid rgba(0,0,0,0.25); width: 100%; height: 30%; float: left;"><p class="col-xs-12">Other</p><textarea class="scrollbar" style="height: calc(100% - 20px); max-height: calc(100% - 20px); min-height: calc(100% - 20px); min-width: 100%; max-width: 100%; width: 100%" [(ngModel)] = 'this.currentPastPerformance.other'></textarea></div>
+        </div>
+      </div>
+
+      <button class="edit-button edit-button-next" type="button" name="button" (click)='activeTab.main = activeTab.main+1' *ngIf="checkFields(activeTab.main) && activeTab.main < 2">Next</button>
+      <button class="edit-button edit-button-prev" type="button" name="button" (click)='activeTab.main = activeTab.main-1' *ngIf="activeTab.main>0">Back</button>
+      <button class="edit-button edit-button-save" type="button" name="button" (click)='updatePP(this.currentPastPerformance)' *ngIf="checkFields()">Save</button>
+      <button class="edit-button-nope edit-button-next" type="button" name="button" style="" *ngIf=!checkFields(activeTab.main)>Incomplete</button>
+      <button class="edit-button-nope edit-button-nope-2" type="button" name="button" style="" *ngIf='!checkFields()'>Incomplete</button>
+    </div>
   </div>
 
-  <div *ngIf="!this.createMode" class="employee col-xs-12 clear">
-    <div class="div-title col-xs-12">
-      <img src="./assets/img/employee.png">
-      <p>EMPLOYEES</p>
-      <div></div>
-    </div>
-    <div class="container">
-      <table style="margin-top: 1em" class="table">
-        <tr>
-          <th></th>
-          <th><span>Name</span></th>
-          <th><span>Start Date</span></th>
-          <th><span>End Date</span></th>
-          <th><span>Role</span></th>
-        </tr>
-        <tr *ngFor=" let employee of this.userProfiles">
-          <td>
-            <button *ngIf="this.isUserAdmin" (click)="deleteEmployee(employee.proxyId)" style="width: 1.5em; height: 1.75em; margin-right: 1em;">X</button>
-          </td>
-          <td>
-            <span>{{employee.name}}</span>
-          </td>
-          <!-- <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" onblur="(this.type='text')" onfocus="(this.type='date')" placeholder="{{employee.startDate}}"></span> -->
-          <td>
-            <span><input (change)="updateEmployee(employee.proxyId, 'startDate', employee.startDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="employee.startDate"></span>
-          </td>
-          <td>
-            <span><input (change)="updateEmployee(employee.proxyId, 'endDate', employee.endDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="employee.endDate"></span>
-          </td>
-          <td>
-            <span><input (blur)="updateEmployee(employee.proxyId, 'role', employee.role)" type="text" [(ngModel)]="employee.role" /></span>
-          </td>
-        </tr>
-      </table>
-      <select *ngIf="this.isUserAdmin" style="margin-top: 1em" class="form-control" [(ngModel)]="this.newUserSelected">
-        <option *ngFor="let user of this.allCompanyEmployees" value={{user._id}}>{{user.firstName}} {{user.lastName}}: {{user.username}}</option>
-      </select>
-      <div *ngIf="this.isUserAdmin" class="col-xs-12" [style.margin]="'auto'" [style.margin-top]="'1em'"><button class="center-block" (click)="addEmployee(this.newUserSelected)">Add</button></div>
-    </div>
-  </div>
 
-  <div *ngIf="!this.createMode" class="employee col-xs-12 clear">
-    <div class="div-title col-xs-12">
-      <img src="./assets/img/commercia.png">
-      <p>COMPANIES</p>
-      <div></div>
+  <!-- OLD PAGE -->
+  <div class="page" *ngIf='activeTab.main==7'>
+    <div class="past-performance col-xs-12 clear">
+      <div class="div-title col-xs-12">
+        <img src="./assets/img/performance.png">
+        <p>PAST PERFORMANCE</p>
+        <div></div>
+      </div>
+      <div class="container">
+        <div class="form-horizontal col-xs-6 left" [style.border-right] = "'3px solid #757575'">
+          <div class="form-group col-xs-12 col-sm-12 srow">
+            <p class="col-xs-3 col-sm-3 left lh-50">Title of PP</p>
+            <div class="col-xs-9 col-sm-9"><input type="text" placeholder="Past Performance" style="width: 100%" class="right" [(ngModel)] = 'this.currentPastPerformance.title' [ngClass]="{'empty-field': !this.currentPastPerformance.title}"></div>
+          </div>
+          <div class="form-group col-xs-12 col-sm-12 srow">
+            <p class="col-xs-3 col-sm-3 left lh-50">Client</p>
+            <input class="col-xs-1 col-sm-1" type="checkbox" [(ngModel)]="this.currentPastPerformance.client.gov" />
+            <div class="col-xs-8 col-sm-8" *ngIf='this.currentPastPerformance.client.gov'>
+              <div class="autocomplete-form" style="width: 100%">
+                <input ngui-auto-complete class="" style="width: 100%" placeholder="Must match an existing agency" [(ngModel)] = 'this.currentPastPerformance.client.name' [source]='this.allAgencies' [list-formatter]="agencyListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': !agencyValidCheck(this.currentPastPerformance.client.name)}">
+              </div>
+            </div>
+            <div class="col-xs-7 col-sm-8" *ngIf='!this.currentPastPerformance.client.gov'><input type="text" placeholder="Client" style="width: 100%" class="right" [(ngModel)] = "this.currentPastPerformance.client.name" [ngClass]="{'empty-field': !this.currentPastPerformance.client.name}"></div>
+          </div>
+          <div class="form-group col-xs-12 col-sm-12 srow">
+            <p class="col-xs-3 col-sm-3 left lh-50">Topic</p>
+            <div class="col-xs-9 col-sm-9"><input type="text" placeholder="Topic" style="width: 100%" class="right" [(ngModel)] = "this.currentPastPerformance.topic" [ngClass]="{'empty-field': !this.currentPastPerformance.topic}"></div>
+          </div>
+          <div class="form-group col-xs-12 col-sm-12 srow">
+            <p class="col-xs-3 col-sm-3 left lh-50">Cleared</p>
+            <div class="col-xs-9 col-sm-9"><input type="checkbox" [(ngModel)] = "this.currentPastPerformance.cleared" name="cleared" class="right"></div>
+          </div>
+          <div class="form-group col-xs-12 col-sm-12 srow">
+            <p class="col-xs-3 col-sm-3 left lh-50">Publically Viewable</p>
+            <div class="col-xs-9 col-sm-9"><input type="checkbox" [(ngModel)] = "this.currentPastPerformance.public" name="public" class="right"></div>
+          </div>
+          <div *ngIf="!createMode" class="col-xs-12">
+            <p class="left lh-50">Image</p>
+            <img *ngIf="this.currentPastPerformance.avatar" src="{{this.currentPastPerformance.avatar}}" class="avatar right">
+            <div *ngIf="!createMode && (!this.currentPastPerformance.avatar || this.currentPastPerformance.avatar.startsWith('..'))" style="clear: both">
+              <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
+              <button style="width: 100%; color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;" class="btn btn-primary" (click)="uploadPhoto()">Upload Photo</button>
+            </div>
+            <div *ngIf="this.currentPastPerformance.avatar && !this.currentPastPerformance.avatar.startsWith('..')" style="clear: both">
+              <input type="file" #fileInput accept=".jpg,.png" style="width:100%"/>
+              <button style="width: 100%; color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;" class="btn btn-primary" (click)="editPhoto()">Edit Photo</button>
+            </div>
+            <!--<div class="right text-container div-uploadImage" [style.width]="''+ppInputWidth+'px'">-->
+            <!--<p class="left lh-50" [style.cursor] = "'pointer'" (click) = 'uploadImage()' >Upload Image</p>-->
+            <!--</div>-->
+          </div>
+        </div>
+        <div class="form-horizontal col-xs-6 right">
+          <div class="form-group col-xs-12 col-sm-12 srow">
+            <p class="col-xs-3 col-sm-3 left lh-25">Functional<br>area in PP</p>
+            <div class="col-xs-9 col-sm-9"><input [(ngModel)]="this.currentPastPerformance.area" type="text" placeholder="Functional area in PP" class="right" style="width: 100%" [ngClass]="{'empty-field': !this.currentPastPerformance.area}"></div>
+          </div>
+          <div class="form-group col-xs-12 col-sm-12 srow">
+            <p class="col-xs-3 col-sm-3 left lh-50">Start Date</p>
+            <div class="col-xs-9 col-sm-9"><input [(ngModel)]="this.currentPastPerformance.startDate" type='date' placeholder="Start Date" style="width: 100%" class="right" [ngClass]="{'empty-field': !this.currentPastPerformance.startDate}"></div>
+          </div>
+          <div class="form-group col-xs-12 col-sm-12 srow">
+            <p class="col-xs-3 col-sm-3 left lh-50">End Date</p>
+            <div class="col-xs-9 col-sm-9"><input [(ngModel)]="this.currentPastPerformance.endDate" type='date' placeholder="End Date" style="width: 100%" class="right" [ngClass]="{'empty-field': !this.currentPastPerformance.endDate}"></div>
+          </div>
+          <div class="form-group col-xs-12 col-sm-12 srow">
+            <p class="col-xs-3 col-sm-3 left lh-50">Rating</p>
+            <div class="col-xs-9 col-sm-9"><rating [(ngModel)]="this.currentPastPerformance.rating" [max]="5" [readonly]="isReadOnly" class="right srow" [style.line-height]="'50px'"></rating></div>
+          </div>
+          <div class="form-group col-xs-12 col-sm-12 srow mt15">
+            <p class="col-xs-3 col-sm-3 left lh-25">Location<br>(zipcode)</p>
+            <div class="col-xs-9 col-sm-9"><input type="text" [(ngModel)] = "this.currentPastPerformance.location" placeholder="Your zipcode" class="right" style="width: 100%" [ngClass]="{'empty-field': !this.currentPastPerformance.location}"></div>
+          </div>
+          <div class="form-group col-xs-12 col-sm-12 srow mt15">
+            <p class="col-xs-3 col-sm-3 left lh-25">Value of work<br>done ($)</p>
+            <div class="col-xs-9 col-sm-9"><input type="text" [(ngModel)] = "this.currentPastPerformance.value" placeholder="Value in $" class="right" style="width: 100%" [ngClass]="{'empty-field': !this.currentPastPerformance.value}"></div>
+          </div>
+          <div class="form-group col-xs-12 col-sm-12 srow mt15">
+            <p class="col-xs-3 col-sm-3 left lh-50"># of FTE</p>
+            <div class="col-xs-9 col-sm-9"><input type="text" [(ngModel)] = "this.currentPastPerformance.fte" placeholder="FTE" class="right" style="width: 100%" [ngClass]="{'empty-field': !this.currentPastPerformance.fte}"></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="container">
-      <table style="margin-top: 1em" class="table">
-        <tr>
-          <th></th>
-          <th><span>Name</span></th>
-          <th><span>Start Date</span></th>
-          <th><span>End Date</span></th>
-          <th><span>Still Affiliated?</span></th>
-        </tr>
-        <tr *ngFor=" let company of this.companies">
-          <td>
-            <button *ngIf="this.isUserAdmin" (click)="deleteCompany(company.proxyId)" style="width: 1.5em; height: 1.75em; margin-right: 1em;">X</button>
-          </td>
-          <td>
-            <span>{{company.name}}</span>
-          </td>
-          <td>
-            <span><input (change)="updateCompany(company.proxyId, 'startDate', company.startDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="company.startDate"></span>
-          </td>
-          <td>
-            <span><input (change)="updateCompany(company.proxyId, 'endDate', company.endDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="company.endDate"></span>
-          </td>
 
-          <td>
-            <span><input (change)="updateCompany(company.proxyId, 'activeContract', company.activeContract)" type="checkbox" [(ngModel)]="company.activeContract" /></span>
-            <!-- <input style="margin-top:.75em; margin-left:1em" type="checkbox" [(ngModel)] = "this.currentPastPerformance.employees[i].stillWith" name="stillWith"> -->
-          </td>
-        </tr>
-      </table>
-      <select *ngIf="this.isUserAdmin" style="margin-top: 1em" class="form-control" [(ngModel)]="this.newCompanySelected">
-        <option *ngFor="let company of this.allUserCompanies" value={{company._id}}>{{company.name}}</option>
-      </select>
-      <div *ngIf="this.isUserAdmin" class="col-xs-12" [style.margin]="'auto'" [style.margin-top]="'1em'"><button class="center-block" (click)="addCompany(this.newCompanySelected)">Add</button></div>
+    <div *ngIf="!this.createMode" class="employee col-xs-12 clear">
+      <div class="div-title col-xs-12">
+        <img src="./assets/img/employee.png">
+        <p>EMPLOYEES</p>
+        <div></div>
+      </div>
+      <div class="container">
+        <table style="margin-top: 1em" class="table">
+          <tr>
+            <th></th>
+            <th><span>Name</span></th>
+            <th><span>Start Date</span></th>
+            <th><span>End Date</span></th>
+            <th><span>Role</span></th>
+          </tr>
+          <tr *ngFor=" let employee of this.userProfileProxies">
+            <td>
+              <button *ngIf="this.isUserAdmin" (click)="deleteEmployee(employee.proxyId)" style="width: 1.5em; height: 1.75em; margin-right: 1em;">X</button>
+            </td>
+            <td>
+              <span>{{employee.name}}</span>
+            </td>
+            <!-- <span class="col-xs-2 col-sm-2 col-md-2 text-center" ><input style="width: 100%" onblur="(this.type='text')" onfocus="(this.type='date')" placeholder="{{employee.startDate}}"></span> -->
+            <td>
+              <span><input (change)="updateEmployee(employee.proxyId, 'startDate', employee.startDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="employee.startDate"></span>
+            </td>
+            <td>
+              <span><input (change)="updateEmployee(employee.proxyId, 'endDate', employee.endDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="employee.endDate"></span>
+            </td>
+            <td>
+              <span><input (blur)="updateEmployee(employee.proxyId, 'role', employee.role)" type="text" [(ngModel)]="employee.role" /></span>
+            </td>
+          </tr>
+        </table>
+        <select *ngIf="this.isUserAdmin" style="margin-top: 1em" class="form-control" [(ngModel)]="this.newUserSelected">
+          <option *ngFor="let user of this.allCompanyEmployees" value={{user._id}}>{{user.firstName}} {{user.lastName}}: {{user.username}}</option>
+        </select>
+        <div *ngIf="this.isUserAdmin" class="col-xs-12" [style.margin]="'auto'" [style.margin-top]="'1em'"><button class="center-block" (click)="addEmployee(this.newUserSelected)">Add</button></div>
+      </div>
     </div>
-  </div>
 
-  <div class="write-up col-xs-12 clear">
-    <div class="div-title col-xs-12">
-      <img src="./assets/img/write-up.png">
-      <p>WRITE UP</p>ˀ
-      <div></div>
-    </div>
-    <div [style.width]="''+writeWidth+'px'">
-      <div class="text-container col-xs-12" [style.height]="'200px'"><p class="col-xs-12">Synopsis</p><textarea [(ngModel)] = 'this.currentPastPerformance.synopsis'></textarea></div>
-      <div class="text-container col-xs-6" [style.height]="'300px'"><p class="col-xs-12">Technical Challenge, approach and outcome</p><textarea [(ngModel)] = 'this.currentPastPerformance.technical'></textarea></div>
-      <div class="text-container col-xs-6" [style.height]="'300px'"><p class="col-xs-12">Management Challenge, approach and outcome</p><textarea [(ngModel)] = 'this.currentPastPerformance.management'></textarea></div>
-      <div class="text-container col-xs-12" [style.height]="'200px'"><p class="col-xs-12">Other</p><textarea [(ngModel)] = 'this.currentPastPerformance.other'></textarea></div>
-    </div>
-  </div>
+    <div *ngIf="!this.createMode" class="employee col-xs-12 clear">
+      <div class="div-title col-xs-12">
+        <img src="./assets/img/commercia.png">
+        <p>COMPANIES</p>
+        <div></div>
+      </div>
+      <div class="container">
+        <table style="margin-top: 1em" class="table">
+          <tr>
+            <th></th>
+            <th><span>Name</span></th>
+            <th><span>Start Date</span></th>
+            <th><span>End Date</span></th>
+            <th><span>Still Affiliated?</span></th>
+          </tr>
+          <tr *ngFor=" let company of this.companies">
+            <td>
+              <button *ngIf="this.isUserAdmin" (click)="deleteCompany(company.proxyId)" style="width: 1.5em; height: 1.75em; margin-right: 1em;">X</button>
+            </td>
+            <td>
+              <span>{{company.name}}</span>
+            </td>
+            <td>
+              <span><input (change)="updateCompany(company.proxyId, 'startDate', company.startDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="company.startDate"></span>
+            </td>
+            <td>
+              <span><input (change)="updateCompany(company.proxyId, 'endDate', company.endDate)" onblur="(this.type='text')" onfocus="(this.type='date')" [(ngModel)]="company.endDate"></span>
+            </td>
 
-  <div class="relates-to col-xs-12 clear">
-    <div class="div-title col-xs-12">
-      <img src="./assets/img/profile/capabilities-1.png">
-      <p>CAPABILITIES THIS PP RELATES TO</p>
-      <div></div>
+            <td>
+              <span><input (change)="updateCompany(company.proxyId, 'activeContract', company.activeContract)" type="checkbox" [(ngModel)]="company.activeContract" /></span>
+              <!-- <input style="margin-top:.75em; margin-left:1em" type="checkbox" [(ngModel)] = "this.currentPastPerformance.employees[i].stillWith" name="stillWith"> -->
+            </td>
+          </tr>
+        </table>
+        <select *ngIf="this.isUserAdmin" style="margin-top: 1em" class="form-control" [(ngModel)]="this.newCompanySelected">
+          <option *ngFor="let company of this.allUserCompanies" value={{company._id}}>{{company.name}}</option>
+        </select>
+        <div *ngIf="this.isUserAdmin" class="col-xs-12" [style.margin]="'auto'" [style.margin-top]="'1em'"><button class="center-block" (click)="addCompany(this.newCompanySelected)">Add</button></div>
+      </div>
     </div>
-    <div [style.width]="''+writeWidth+'px'">
-      <div class="col-xs-6 srow"><input type="text" placeholder="Capability 1" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
-      <div class="col-xs-6 srow"><input type="text" placeholder="Capability 2" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
-      <div class="col-xs-6 srow"><input type="text" placeholder="Capability 3" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
-      <div class="col-xs-6 srow"><input type="text" placeholder="Capability 4" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
+
+    <div class="write-up col-xs-12 clear">
+      <div class="div-title col-xs-12">
+        <img src="./assets/img/write-up.png">
+        <p>WRITE UP</p>ˀ
+        <div></div>
+      </div>
+      <div [style.width]="''+writeWidth+'px'">
+        <div class="text-container col-xs-12" [style.height]="'200px'"><p class="col-xs-12">Synopsis</p><textarea [(ngModel)] = 'this.currentPastPerformance.synopsis'></textarea></div>
+        <div class="text-container col-xs-6" [style.height]="'300px'"><p class="col-xs-12">Technical Challenge, approach and outcome</p><textarea [(ngModel)] = 'this.currentPastPerformance.technical'></textarea></div>
+        <div class="text-container col-xs-6" [style.height]="'300px'"><p class="col-xs-12">Management Challenge, approach and outcome</p><textarea [(ngModel)] = 'this.currentPastPerformance.management'></textarea></div>
+        <div class="text-container col-xs-12" [style.height]="'200px'"><p class="col-xs-12">Other</p><textarea [(ngModel)] = 'this.currentPastPerformance.other'></textarea></div>
+      </div>
     </div>
-  </div>
-  <div *ngIf="this.isUserAdmin" class="col-xs-4 col-xs-offset-4" style="margin-bottom: 10px">
-    <h2 style="text-align: center">SAVE CHANGES</h2>
-    <button class="btn btn-primary btn-block" style="color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;left: 50px" (click)="updatePP(this.currentPastPerformance)" *ngIf='this.fieldsFilled'>Save</button>
-    <button class="btn btn-primary btn-block" style="color: #fff; background-color: red; border-color: rgba(0, 0, 0, 0.5); font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;left: 50px" *ngIf='!this.fieldsFilled'>Page Unfinished</button>
+
+    <div class="relates-to col-xs-12 clear">
+      <div class="div-title col-xs-12">
+        <img src="./assets/img/profile/capabilities-1.png">
+        <p>CAPABILITIES THIS PP RELATES TO</p>
+        <div></div>
+      </div>
+      <div [style.width]="''+writeWidth+'px'">
+        <div class="col-xs-6 srow"><input type="text" placeholder="Capability 1" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
+        <div class="col-xs-6 srow"><input type="text" placeholder="Capability 2" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
+        <div class="col-xs-6 srow"><input type="text" placeholder="Capability 3" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
+        <div class="col-xs-6 srow"><input type="text" placeholder="Capability 4" class="left" [style.width]="'calc(100% - 50px)'"><input type="checkbox" class="right" [style.width] = "'50px'"></div>
+      </div>
+    </div>
+    <div *ngIf="this.isUserAdmin" class="col-xs-4 col-xs-offset-4" style="margin-bottom: 10px">
+      <h2 style="text-align: center">SAVE CHANGES</h2>
+      <button class="btn btn-primary btn-block" style="color: #fff; background-color: #337ab7; border-color: #2e6da4; font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;left: 50px" (click)="updatePP(this.currentPastPerformance)" *ngIf='this.fieldsFilled'>Save</button>
+      <button class="btn btn-primary btn-block" style="color: #fff; background-color: red; border-color: rgba(0, 0, 0, 0.5); font-size: 14px; line-height: 1.42857143;text-align: center;border: 1px solid transparent;border-radius: 4px;left: 50px" *ngIf='!this.fieldsFilled'>Page Unfinished</button>
+    </div>
   </div>
 </div>

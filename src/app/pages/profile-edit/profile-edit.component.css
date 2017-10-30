@@ -192,9 +192,6 @@
   width: calc(47.2vh / 5);
 }
 
-input {
-  border-radius: 0px;
-}
 
 .avatar {
   position: absolute;

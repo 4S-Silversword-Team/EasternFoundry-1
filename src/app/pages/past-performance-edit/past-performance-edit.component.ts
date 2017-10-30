@@ -21,6 +21,9 @@ import { environment } from "../../../environments/environment"
   selector: 'app-past-performance-edit',
   providers: [PastperformanceService, UserService, CompanyService, UserPastPerformanceProxyService, AuthService, AgencyService, RoleService, CompanyPastperformanceProxyService, s3Service],
   templateUrl: './past-performance-edit.component.html',
+  host: {
+      '(document:click)': 'handleClick($event)',
+  },
   styleUrls: ['./past-performance-edit.component.css']
 })
 export class PastPerformanceEditComponent implements OnInit {
@@ -32,6 +35,7 @@ export class PastPerformanceEditComponent implements OnInit {
   officeType: string[] = ['Pro', 'Amature'];
   clearedType: string[] = ['true', 'false'];
   userProfiles: any[] = [];
+  userProfilesAll: any[] = [];
   companies: any[] = [];
   allCompanyEmployees: any[] = [];
   allUserCompanies: any[] = [];
@@ -49,6 +53,18 @@ export class PastPerformanceEditComponent implements OnInit {
   promiseFinished: boolean = false
   currentDate: string = new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()
   tomorrow: string = new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + (new Date().getDate()+1)
+  searchTerms = {
+    name: ''
+  };
+  searchResults = {
+    people: []
+  };
+  searchOpen: boolean = false
+  noResults = false
+
+  activeTab = {
+    main: 0,
+  }
 
 
   constructor(
@@ -115,11 +131,14 @@ export class PastPerformanceEditComponent implements OnInit {
   ngOnInit() {
   }
 
+
+
   myCallback() {
     this.userProfiles = [];
     for (const i of this.currentPastPerformance.userProfileProxies){
       this.userProfiles.push({
         "name": i.user.firstName + " " + i.user.lastName,
+        "username": i.user.username,
         "userId": i.user._id,
         "proxyId": i._id,
         "startDate": i.startDate.slice(0,10),
@@ -139,7 +158,6 @@ export class PastPerformanceEditComponent implements OnInit {
         "activeContract": i.activeContract
       })
     }
-    this.checkFields()
     this.agencyService.getAgencies().then(val => {
       this.allAgencies = val
       this.promiseFinished = true;
@@ -174,6 +192,13 @@ export class PastPerformanceEditComponent implements OnInit {
       })
     })()});
   }
+  this.userService.getUsers().then(res => {
+    this.userProfilesAll = res.filter((user) => {
+      return !this.userProfiles.map(function(employee) {
+        return employee.userId;
+      }).includes(user._id)
+    })
+  })
 }
 
   getCreatorAdminStatus() {
@@ -245,6 +270,24 @@ export class PastPerformanceEditComponent implements OnInit {
     return match;
   }
 
+  handleClick(event){
+    var clickedComponent = event.target;
+    var inside = false;
+    do {
+      if (clickedComponent === document.getElementById('employee-dropdown') || clickedComponent === document.getElementById('employee-search')) {
+        inside = true;
+      }
+      clickedComponent = clickedComponent.parentNode;
+    } while (clickedComponent);
+    if(!inside){
+      this.searchOpen = false
+    }
+  }
+
+  switchTab(tab){
+    this.activeTab.main = tab
+  }
+
   checkFields(){
     if (
       this.currentPastPerformance.title &&
@@ -258,9 +301,9 @@ export class PastPerformanceEditComponent implements OnInit {
       this.currentPastPerformance.fte
     )
     {
-      this.fieldsFilled = true
+      return true
     } else {
-      this.fieldsFilled = false
+      return false
     }
   }
 
@@ -279,6 +322,33 @@ export class PastPerformanceEditComponent implements OnInit {
         this.updatePP(this.currentPastPerformance, true);
       }).catch((reason) =>console.log("reason ", reason));
     }
+  }
+
+  search() {
+    if (this.searchTerms.name) {
+      this.noResults = false
+      this.searchResults.people = []
+      for (let person of this.userProfilesAll) {
+        if (person.public) {
+          var name: string = person.firstName + ' ' + person.lastName
+          if (name.toLowerCase().includes(this.searchTerms.name.toLowerCase())) {
+            var alreadyThere = false
+            for (let employee of this.userProfiles) {
+              if (employee.username == person.username){
+                alreadyThere = true
+              }
+            }
+            if (!alreadyThere) {
+              this.searchResults.people.push(person)
+            }
+          }
+        }
+      }
+    }
+    if (this.searchResults.people.length < 1) {
+      this.noResults = true
+    }
+    this.searchOpen = true;
   }
 
   editPhoto() {
@@ -362,7 +432,7 @@ export class PastPerformanceEditComponent implements OnInit {
     }
     console.log(request)
     this.userPastPerformanceProxyService.addUserPPProxy(request).then(() => {
-      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2() });
+      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2(); this.searchOpen = false;});
     })
   }
 
