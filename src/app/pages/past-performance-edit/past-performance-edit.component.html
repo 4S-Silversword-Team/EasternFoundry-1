@@ -26,6 +26,11 @@
             </div>
           </div>
         </div>
+        <div class="edit-tab" *ngIf="this.createMode">
+          <div class="edit-tab" (click)='switchTab(2)' [ngClass]="{'edit-tab-active': this.activeTab.main == 2}">
+            Write-Up
+          </div>
+        </div>
       </div>
     </div>
     <div class="col-xs-10 edit-panel">
@@ -73,9 +78,9 @@
                 <input class="" style="height: 42px;" type="checkbox" [(ngModel)]="this.currentPastPerformance.client.gov" />
                 <input class="" style="width: 100%; margin-top: -1px;" type="text" placeholder="The company's email address" [(ngModel)] = 'this.currentPastPerformance.topic' [ngClass]="{'empty-field': !this.currentPastPerformance.topic}">
               </div>
-              <div class="" style="position: absolute; float: left; bottom: 0px; right: calc(2vw - 6px); height: 93px; width: 100%;">
+              <div class="" style="position: absolute; float: left; bottom: 1px; right: calc(2vw - 6px); height: 93px; width: 100%;">
                 <p class="left" style="width: calc(100% - 60px); line-height: 42px; float: left; padding-top: 6px; text-align: right; padding-right: 2px;">Cleared?</p>
-                <input type="checkbox" style="width: 42px; height: 42px; float: left" class="" [(ngModel)] = 'this.currentPastPerformance.public'>
+                <input type="checkbox" style="width: 42px; height: 42px; float: left" class="" [(ngModel)] = 'this.currentPastPerformance.cleared'>
                 <p class="left" style="width: calc(100% - 60px); line-height: 42px; float: left; padding-top: 6px; text-align: right; padding-right: 2px;">Publically viewable?</p>
                 <input type="checkbox" style="width: 42px; height: 42px; float: left" class="" [(ngModel)] = 'this.currentPastPerformance.public'>
               </div>
@@ -171,10 +176,12 @@
         </div>
       </div>
 
-      <button class="edit-button edit-button-next" type="button" name="button" (click)='activeTab.main = activeTab.main+1' *ngIf="checkFields(activeTab.main) && activeTab.main < 2">Next</button>
-      <button class="edit-button edit-button-prev" type="button" name="button" (click)='activeTab.main = activeTab.main-1' *ngIf="activeTab.main>0">Back</button>
+      <button class="edit-button edit-button-next" type="button" name="button" (click)='activeTab.main = activeTab.main+1' *ngIf="checkFields(activeTab.main) && activeTab.main < 2 && !this.createMode">Next</button>
+      <button class="edit-button edit-button-next" type="button" name="button" (click)='activeTab.main = 2' *ngIf="checkFields(activeTab.main) && activeTab.main < 2 && this.createMode">Next</button>
+      <button class="edit-button edit-button-prev" type="button" name="button" (click)='activeTab.main = activeTab.main-1' *ngIf="activeTab.main>0 && !this.createMode">Back</button>
+      <button class="edit-button edit-button-prev" type="button" name="button" (click)='activeTab.main = 0' *ngIf="activeTab.main>0 && this.createMode">Back</button>
       <button class="edit-button edit-button-save" type="button" name="button" (click)='updatePP(this.currentPastPerformance)' *ngIf="checkFields()">Save</button>
-      <button class="edit-button-nope edit-button-next" type="button" name="button" style="" *ngIf=!checkFields(activeTab.main)>Incomplete</button>
+      <button class="edit-button-nope edit-button-next" type="button" name="button" style="" *ngIf='!checkFields(activeTab.main) && activeTab.main < 2'>Incomplete</button>
       <button class="edit-button-nope edit-button-nope-2" type="button" name="button" style="" *ngIf='!checkFields()'>Incomplete</button>
     </div>
   </div>

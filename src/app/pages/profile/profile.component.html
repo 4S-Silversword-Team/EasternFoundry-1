@@ -84,7 +84,7 @@
       <div id="service_chart"  style="height: 36vh; margin: 0 auto" [chart]="serviceChart"></div>
     </div>
   </div>
-  
+
   <!-- EDUCATION TAB -->
   <div class="container" *ngIf='this.activeTab.main == 1'>
     <div class="education-1 col-xs-12">
@@ -219,7 +219,7 @@
 
   <!-- PAST PERFORMANCES TAB -->
   <div class="container" *ngIf='this.activeTab.main == 4'>
-    <div class="past-performances col-xs-12">
+    <div class="past-performances col-xs-12 scrollbar">
       <div class="col-xs-12 past-performance-panel" *ngFor='let pp of pastPerformances'>
         <div class="" *ngIf="pp.public">
           <div class="" style="height: 180px; width: 180px; position: relative; float: left;">

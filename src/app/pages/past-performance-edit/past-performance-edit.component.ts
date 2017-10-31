@@ -51,8 +51,8 @@ export class PastPerformanceEditComponent implements OnInit {
   isUserAdmin: boolean = false;
   fieldsFilled: boolean = false;
   promiseFinished: boolean = false
-  currentDate: string = new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()
-  tomorrow: string = new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + (new Date().getDate()+1)
+  currentDate: string =  (new Date().getMonth()+1) + '-' + new Date().getDate() + '-' + new Date().getFullYear()
+  tomorrow: string
   searchTerms = {
     name: ''
   };
@@ -81,6 +81,7 @@ export class PastPerformanceEditComponent implements OnInit {
     private s3Service: s3Service,
     private agencyService: AgencyService,
   ) {
+    this.getTomorrow()
     if (!auth.isLoggedIn()) {
       this.router.navigateByUrl("/login")
     } else {
@@ -108,7 +109,6 @@ export class PastPerformanceEditComponent implements OnInit {
         });
       } else {
         console.log("in past performance create")
-        console.log(this.currentPastPerformance.client)
         if (!this.currentPastPerformance.client){
           this.currentPastPerformance.client = {
             gov: false,
@@ -255,6 +255,38 @@ export class PastPerformanceEditComponent implements OnInit {
     })
   }
 
+  getTomorrow(){
+    var tomorrowMonth = new Date().getMonth()+1
+    var tomorrowDay = new Date().getDate()+1
+    var tomorrowYear = new Date().getFullYear()
+    if (tomorrowMonth == 13){
+      tomorrowMonth = 1
+    }
+    if (tomorrowMonth == (1 || 3 || 5 || 7 || 8 || 10)){
+      if (tomorrowDay > 31) {
+        tomorrowDay = 1
+        tomorrowMonth += 1
+      }
+    } else if (tomorrowMonth == 2){
+      if (tomorrowDay > 28) {
+        tomorrowDay = 1
+        tomorrowMonth += 1
+      }
+    } else if (tomorrowMonth == 12){
+      if (tomorrowDay > 31) {
+        tomorrowDay = 1
+        tomorrowMonth = 1
+      }
+    } else {
+      if (tomorrowDay > 30) {
+        tomorrowDay = 1
+        tomorrowMonth += 1
+      }
+    }
+    this.tomorrow = tomorrowMonth + '-' + tomorrowDay + '-' + tomorrowYear
+    console.log(this.tomorrow)
+  }
+
   agencyListFormatter (data: any) {
     return data.agency;
   }
@@ -285,7 +317,17 @@ export class PastPerformanceEditComponent implements OnInit {
   }
 
   switchTab(tab){
-    this.activeTab.main = tab
+    if (!this.createMode){
+      this.activeTab.main = tab
+    } else {
+      if (tab == 2){
+        if (this.checkFields()){
+          this.activeTab.main = tab
+        }
+      } else {
+        this.activeTab.main = tab
+      }
+    }
   }
 
   checkFields(){

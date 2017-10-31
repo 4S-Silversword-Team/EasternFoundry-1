@@ -38,7 +38,7 @@ export class PastPerformanceComponent implements OnInit {
   startDate: string
   endDate: string
   activeTab: any = {
-    main: 0,
+    main: 2,
     employees: 0,
   }
   promiseFinished: boolean = false
