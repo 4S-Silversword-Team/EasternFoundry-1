@@ -75,56 +75,87 @@ export class MessageComponent implements OnInit {
         this.allUsers = result
         this.messageService.getMailbox(this.currentUser._id).toPromise().then((result) => {
           var mail: any = result
-          if ( this.router.url !== '/bugreport' ) {
-            for (let i of mail) {
-              if (!i.timestamp){
-                i.timestamp = 0
-              }
-              if (i.sender.id == this.currentUser._id && !i.sender.delete){
-                this.outbox.push(i)
-              }
-              for (let r of i.recipient) {
-                if (r.id == this.currentUser._id && !r.delete){
-                  if (i.bugReport){
-                    this.bugbox.push(i)
-                  } else{
-                    this.inbox.push(i)
-                  }
-                }
-              }
+          var companies = []
+          var companyPromises = []
+          for (let p of this.currentUser.companyUserProxies){
+            if (p.role.title == 'admin'){
+              companies.push(p.company)
             }
-            this.inbox.sort(function(a,b){
-              return b.timestamp - a.timestamp;
-            })
-            this.outbox.sort(function(a,b){
-              return b.timestamp - a.timestamp;
-            })
-            this.bugbox.sort(function(a,b){
-              return b.timestamp - a.timestamp;
-            })
-            this.bugReport = false
-          } else {
-            for (let u of this.allUsers) {
-              if (u.power > 3){
-                if (this.newMessage.recipient.length < 2) {
-                  this.newMessage.recipient[0] = {
-                    id: u._id,
-                    name: u.firstName + ' ' + u.lastName
-                  }
-                } else {
-                  this.newMessage.recipient.push({
-                    id: u._id,
-                    name: u.firstName + ' ' + u.lastName
-                  })
-                }
-              }
-            }
-            console.log(this.newMessage.recipient)
-            this.newMessage.bugReport = true;
-            this.newMessage.subject = 'BUG REPORT'
-            this.bugReport = true
           }
-          this.promiseFinished = true;
+          for (let c of companies) {
+            companyPromises.push(this.messageService.getMailbox(c).toPromise().then((result) => {
+              var res: any = result
+              for (let m of res){
+                mail.push(m)
+              }
+            }))
+          }
+          Promise.all(companyPromises).then(res=>{
+            if ( this.router.url !== '/bugreport' ) {
+              for (let i of mail) {
+                if (!i.timestamp){
+                  i.timestamp = 0
+                }
+                if (i.sender.id == this.currentUser._id && !i.sender.delete){
+                  this.outbox.push(i)
+                } else {
+                  for (let c of companies){
+                    if (i.sender.id == c && !i.sender.delete) {
+                      this.outbox.push(i)
+                      break
+                    }
+                  }
+                }
+                for (let r of i.recipient) {
+                  if (r.id == this.currentUser._id && !r.delete){
+                    if (i.bugReport){
+                      this.bugbox.push(i)
+                    } else{
+                      this.inbox.push(i)
+                    }
+                  } else {
+                    for (let c of companies){
+                      if (r.id == c && !r.delete) {
+                        this.inbox.push(i)
+                        break
+                      }
+                    }
+                  }
+                }
+              }
+              this.inbox.sort(function(a,b){
+                return b.timestamp - a.timestamp;
+              })
+              this.outbox.sort(function(a,b){
+                return b.timestamp - a.timestamp;
+              })
+              this.bugbox.sort(function(a,b){
+                return b.timestamp - a.timestamp;
+              })
+              this.bugReport = false
+            } else {
+              for (let u of this.allUsers) {
+                if (u.power > 3){
+                  if (this.newMessage.recipient.length < 2) {
+                    this.newMessage.recipient[0] = {
+                      id: u._id,
+                      name: u.firstName + ' ' + u.lastName
+                    }
+                  } else {
+                    this.newMessage.recipient.push({
+                      id: u._id,
+                      name: u.firstName + ' ' + u.lastName
+                    })
+                  }
+                }
+              }
+              console.log(this.newMessage.recipient)
+              this.newMessage.bugReport = true;
+              this.newMessage.subject = 'BUG REPORT'
+              this.bugReport = true
+            }
+            this.promiseFinished = true;
+          })
         });
       });
     });
