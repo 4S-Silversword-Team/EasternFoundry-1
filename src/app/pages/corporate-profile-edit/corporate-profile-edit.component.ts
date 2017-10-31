@@ -4,6 +4,7 @@ import { Product } from '../../classes/product';
 import { Service } from '../../classes/service';
 import { User } from '../../classes/user';
 import { PastPerformance } from '../../classes/past-performance';
+import { Message } from '../../classes/message'
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -16,6 +17,7 @@ import { UserService } from '../../services/user.service'
 import { AgencyService } from '../../services/agency.service'
 import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
 import { CompanyPastperformanceProxyService } from '../../services/companypastperformanceproxy.service'
+import { MessageService } from '../../services/message.service'
 
 import { AuthService } from '../../services/auth.service'
 import { RoleService } from '../../services/role.service'
@@ -32,7 +34,7 @@ declare var $: any;
   },
   templateUrl: './corporate-profile-edit.component.html',
   styleUrls: ['./corporate-profile-edit.component.css'],
-  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, AgencyService, CompanyUserProxyService, CompanyPastperformanceProxyService, RoleService, s3Service]
+  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, AgencyService, CompanyUserProxyService, CompanyPastperformanceProxyService, RoleService, MessageService, s3Service]
 })
 export class CorporateProfileEditComponent implements OnInit {
 
@@ -70,13 +72,14 @@ export class CorporateProfileEditComponent implements OnInit {
   noResults = false
   productTabs = [0]
   activeTab = {
-    main: 0,
+    main: 1,
     product: 0,
   }
+  invitationSent: boolean[] = []
 
   allAgencies: any[] = []
 
-  currentDate: string = new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()
+  currentDate: string =  (new Date().getMonth()+1) + '-' + new Date().getDate() + '-' + new Date().getFullYear()
   tomorrow: string
 
   lastStartDate: string;
@@ -100,6 +103,7 @@ export class CorporateProfileEditComponent implements OnInit {
     private auth: AuthService,
     private roleService: RoleService,
     private myElement: ElementRef,
+    private messageService: MessageService,
     private s3Service: s3Service
   ) {
     this.elementRef = myElement
@@ -166,6 +170,42 @@ export class CorporateProfileEditComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  invite(person, i){
+    var date = new Date()
+    var time = date.getTime()
+    var invite = {
+      sender: {
+        id: this.currentAccount._id,
+        name: this.currentAccount.name,
+        avatar: this.currentAccount.avatar,
+        delete: false,
+      },
+      recipient: [{
+        id: person._id,
+        name: person.firstName + ' ' + person.lastName,
+        avatar: person.avatar,
+        delete: false,
+      }],
+      subject: 'Invitiation To Join ' + this.currentAccount.name,
+      content: this.currentAccount.name + ' has invited you to join their company. Would you like to accept?',
+      isInvitation: true,
+      invitation: {
+        fromUser: false,
+        companyId: this.currentAccount._id,
+        pastPerformanceId: '',
+      },
+      read: false,
+      replyToId: '',
+      date: date,
+      timestamp: time,
+      bugReport: false,
+    }
+    this.messageService.createMessage(invite).toPromise().then((result) => {
+      console.log('did it')
+      this.invitationSent[i] = true
+    });
   }
 
   trackByFn(index: any, item: any) {
@@ -558,6 +598,9 @@ export class CorporateProfileEditComponent implements OnInit {
     }
     if (this.searchResults.people.length < 1) {
       this.noResults = true
+    }
+    for (let p of this.searchResults.people) {
+      this.invitationSent.push(false)
     }
     this.searchOpen = true;
   }

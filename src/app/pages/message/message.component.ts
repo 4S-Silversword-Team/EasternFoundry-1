@@ -6,10 +6,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { UserService } from '../../services/user.service'
 import { MessageService } from '../../services/message.service'
+import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
 
 @Component({
   selector: 'app-message',
-  providers: [UserService, MessageService],
+  providers: [UserService, MessageService, CompanyUserProxyService],
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.css']
 })
@@ -29,7 +30,9 @@ export class MessageComponent implements OnInit {
     main:  0,
   }
   activeMessage: Message = new Message()
+  activeMessageIndex: 0
   messageOpen: Boolean = false
+  currentDate: string =  (new Date().getMonth()+1) + '-' + new Date().getDate() + '-' + new Date().getFullYear()
   newMessage: any = {
     sender: {
       id: '',
@@ -59,6 +62,7 @@ export class MessageComponent implements OnInit {
   constructor(
     private userService: UserService,
     private messageService: MessageService,
+    private companyUserProxyService: CompanyUserProxyService,
     private route: ActivatedRoute,
     private router: Router,
   ) {
@@ -131,8 +135,9 @@ export class MessageComponent implements OnInit {
   ngOnInit() {
   }
 
-  openMessage(message){
+  openMessage(message, i){
     this.activeMessage = message
+    this.activeMessageIndex = i
     this.messageOpen = true
     if (!message.read){
       this.messageService.markAsRead(message._id).toPromise().then((res) => {
@@ -205,6 +210,91 @@ export class MessageComponent implements OnInit {
     }
   }
 
+  acceptCompanyInvitation(message, company){
+    let request = {
+      "userProfile": this.currentUser._id,
+      "company": company.id,
+      "startDate": this.currentDate,
+      "endDate": this.currentDate,
+      "stillAffiliated": true
+    }
+    this.companyUserProxyService.addCompanyUserProxy(request).then(() => {
+      console.log('hell yeah')
+      var d = new Date()
+      var t = d.getTime()
+      var response = {
+        sender: {
+          id: this.currentUser._id,
+          name: this.currentUser.firstName + " " + this.currentUser.lastName,
+          avatar: this.currentUser.avatar,
+          delete: true,
+        },
+        recipient: [{
+          id: company.id,
+          name: company.name,
+          avatar: company.avatar,
+          delete: false,
+        }],
+        subject: 'Invitation Accepted!',
+        content: this.currentUser.firstName + " " + this.currentUser.lastName + ' accepted your invitation and has joined ' + company.name + '!',
+        isInvitation: false,
+        invitation: {
+          fromUser: false,
+          companyId: '',
+          pastPerformanceId: '',
+        },
+        read: false,
+        replyToId: '',
+        date: d,
+        timestamp: t,
+        bugReport: false,
+      }
+      this.messageService.createMessage(response).toPromise().then((result) => {
+        console.log('HELL YEA')
+        this.deleteMessage(message, 0, this.activeMessageIndex)
+        this.closeMessage()
+        this.router.navigate(['corporate-profile', company.id]);
+      });
+    });
+  }
+
+  declineCompanyInvitation(message, company){
+    var d = new Date()
+    var t = d.getTime()
+    var response = {
+      sender: {
+        id: this.currentUser._id,
+        name: this.currentUser.firstName + " " + this.currentUser.lastName,
+        avatar: this.currentUser.avatar,
+        delete: true,
+      },
+      recipient: [{
+        id: company.id,
+        name: company.name,
+        avatar: company.avatar,
+        delete: false,
+      }],
+      subject: 'Invitation Declined',
+      content: this.currentUser.firstName + " " + this.currentUser.lastName + ' has declined your invitation to join ' + company.name + '.',
+      isInvitation: false,
+      invitation: {
+        fromUser: false,
+        companyId: '',
+        pastPerformanceId: '',
+      },
+      read: false,
+      replyToId: '',
+      date: d,
+      timestamp: t,
+      bugReport: false,
+    }
+    this.messageService.createMessage(response).toPromise().then((result) => {
+      console.log('HELL YEA')
+      this.deleteMessage(message, 0, this.activeMessageIndex)
+      this.closeMessage()
+    });
+  }
+
   sendMessage(){
     var d = new Date()
     var t = d.getTime()
@@ -223,10 +313,14 @@ export class MessageComponent implements OnInit {
           sender: {
             id: '',
             name: '',
+            avatar: '',
+            delete: false
           },
           recipient: [{
             id: '',
             name: '',
+            avatar: '',
+            delete: false
           }],
           subject: '',
           content: '',

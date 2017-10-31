@@ -431,3 +431,16 @@ app-availablebar {
   white-space: nowrap;
   overflow: auto;
 }
+
+.pp-tab-small {
+  display: none
+}
+
+@media screen and (max-width: 992px) {
+  .pp-tab {
+    display: none
+  }
+  .pp-tab-small {
+    display: block;
+  }
+}

@@ -17,8 +17,11 @@
       <div class="profile-navbar-tab" (click)='switchTab(3)' [ngClass]="{'profile-navbar-tab-active': this.activeTab.main == 3}">
         Analytics
       </div>
-      <div class="profile-navbar-tab tab-right" (click)='switchTab(4)' [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 4}">
+      <div class="profile-navbar-tab tab-right pp-tab" (click)='switchTab(4)' [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 4}">
         Past Performances
+      </div>
+      <div class="profile-navbar-tab tab-right pp-tab-small" (click)='switchTab(4)' [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 4}">
+        Performances
       </div>
     </div>
     <div class="edit-box">
