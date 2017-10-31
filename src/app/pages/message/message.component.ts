@@ -78,7 +78,7 @@ export class MessageComponent implements OnInit {
           var companies = []
           var companyPromises = []
           for (let p of this.currentUser.companyUserProxies){
-            if (p.role.title == 'admin'){
+            if (p.role && p.role.title == 'admin'){
               companies.push(p.company)
             }
           }

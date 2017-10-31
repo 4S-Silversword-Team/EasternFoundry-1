@@ -20,6 +20,7 @@ import { ServiceService } from '../../services/service.service';
 import { PastperformanceService } from '../../services/pastperformance.service';
 import  { AuthService } from "../../services/auth.service";
 import  { RoleService} from "../../services/role.service";
+import { MessageService } from '../../services/message.service'
 
 declare var $: any;
 declare var Swiper: any;
@@ -27,13 +28,16 @@ declare var Swiper: any;
 // renderChart = false;
 @Component({
   selector: 'app-corporate-profile',
-  providers: [UserService, ProductService, ServiceService, PastperformanceService, CompanyService, AuthService, RoleService],
+  providers: [UserService, ProductService, ServiceService, PastperformanceService, CompanyService, AuthService, RoleService, MessageService],
   host: {'(window:keydown)': 'hotkeys($event)'},
   templateUrl: './corporate-profile.component.html',
   styleUrls: ['./corporate-profile.component.css']
 })
 export class CorporateProfileComponent implements OnInit, AfterViewInit {
   currentAccount: Company = new Company();
+  userIsEmployee: boolean = false
+  inviteSent: boolean = false
+
   users: User[] = [];
   products: Product[] = [];
   services: Service[] = [];
@@ -50,7 +54,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   renderChart: boolean;
   charts: any[] = []
   activeTab: any = {
-    main: 0,
+    main: 1,
     product: 0,
     productCustomer: 0,
     service: 0,
@@ -76,7 +80,8 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     private serviceService: ServiceService,
     private ppService: PastperformanceService,
     private auth: AuthService,
-    private  roleService: RoleService,
+    private roleService: RoleService,
+    private messageService: MessageService,
     private http: Http,
   ) {
     // console.log("testing1");
@@ -130,7 +135,12 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
           if (proxy.leader){
             this.users.push(proxy.userProfile)
           }
-        }
+          if (proxy.userProfile._id) {
+            if (proxy.userProfile._id == this.auth.getLoggedInUser()) {
+              this.userIsEmployee = true
+            }
+          }
+         }
         //After loop is finished myCallback2()
         myCallback2()
       }
@@ -202,13 +212,49 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
         console.log("I'm SUPER admin")
       }
       if(currentUserProxy){
-        this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
-          if (role.title && role.title == "admin") {
-            this.isUserAdmin = true;
-            console.log("I'm admin")
-          }
-        })
+        if (currentUserProxy.role.title && currentUserProxy.role.title == "admin") {
+          this.isUserAdmin = true;
+          console.log("I'm admin")
+        }
       }
+    })
+  }
+
+  requestToJoin() {
+    var date = new Date()
+    var time = date.getTime()
+    var userId = this.auth.getLoggedInUser()
+    this.userService.getUserbyID(userId).toPromise().then((user) =>{
+      var invite = {
+        sender: {
+          id: user._id,
+          name: user.firstName + ' ' + user.lastName,
+          avatar: user.avatar,
+          delete: true,
+        },
+        recipient: [{
+          id: this.currentAccount._id,
+          name: this.currentAccount.name,
+          avatar: this.currentAccount.avatar,
+          delete: false,
+        }],
+        subject: user.firstName + ' ' + user.lastName + ' Wants To Join ' + this.currentAccount.name,
+        content: user.firstName + ' ' + user.lastName + ' would like to join ' + this.currentAccount.name + '. Do you accept?',
+        isInvitation: true,
+        invitation: {
+          fromUser: true,
+          companyId: this.currentAccount._id,
+          pastPerformanceId: '',
+        },
+        read: false,
+        replyToId: '',
+        date: date,
+        timestamp: time,
+        bugReport: false,
+      }
+      this.messageService.createMessage(invite).toPromise().then((result) => {
+        this.inviteSent = true
+      });
     })
   }
 

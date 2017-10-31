@@ -123,11 +123,11 @@
     </div>
     <div class="leadership-inner" *ngIf="!users[0]">No leadership to show</div>
   </div>
-  <div class="employees col-xs-12 clear">
+  <div class="employees col-xs-12 clear" [ngClass]="{'employees-shrunk': !this.userIsEmployee}">
     <div class="col-xs-12 div-title" style="text-align: center; margin-top: 0.5vh; margin-bottom: 0.5vh;">
       <p class="">Employees</p>
     </div>
-    <div class="employees-inner scrollbar">
+    <div class="employees-inner scrollbar" [ngClass]="{'employees-inner-shrunk': !this.userIsEmployee}">
       <div class="" *ngIf='this.currentAccount.userProfileProxies'>
         <div class="col-xs-12 col-md-6 left" style="padding: 2px" *ngFor='let index of this.currentAccount.userProfileProxies'>
           <div class="employee-panel col-xs-12" *ngIf="index.userProfile">
@@ -152,6 +152,10 @@
     <div class="" *ngIf="this.currentAccount.userProfileProxies">
       <div *ngIf="!this.currentAccount.userProfileProxies[0]" class="main clear">No employees to show</div>
     </div>
+  </div>
+  <div class="" style="width: 100%; height: 60px; float: left; position: relative;">
+    <button class="edit-button edit-button-join" type="button" name="button" (click)='requestToJoin()' *ngIf="!this.inviteSent">Request to Join</button>
+    <button class="edit-button edit-button-join" type="button" name="button" *ngIf="this.inviteSent">Request Sent!</button>
   </div>
 </div>
 

@@ -180,7 +180,7 @@ export class CorporateProfileEditComponent implements OnInit {
         id: this.currentAccount._id,
         name: this.currentAccount.name,
         avatar: this.currentAccount.avatar,
-        delete: false,
+        delete: true,
       },
       recipient: [{
         id: person._id,
@@ -328,12 +328,10 @@ export class CorporateProfileEditComponent implements OnInit {
         console.log("I'm SUPER admin")
       }
       if(currentUserProxy){
-        this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
-          if (role.title && role.title == "admin") {
-            this.isUserAdmin = true;
-            console.log("I'm admin")
-          }
-        })
+        if (currentUserProxy.role.title && currentUserProxy.role.title == "admin") {
+          this.isUserAdmin = true;
+          console.log("I'm admin")
+        }
       }
     })
   }

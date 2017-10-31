@@ -184,6 +184,9 @@
   height: 55vh;
   overflow: hidden;
 }
+.employees-shrunk {
+  height: calc(55vh - 60px);
+}
 
 .employees-inner {
   height: calc(54vh - 49px);
@@ -191,6 +194,17 @@
   overflow-y: auto;
   border: 1px solid rgba(0,100,200, 0.9);
 }
+.employees-inner-shrunk {
+  height: calc(54vh - 109px);
+}
+.edit-button-join {
+  position: absolute;
+  width: 150px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
 
 .employees .div-title p{
     width: 200px;
