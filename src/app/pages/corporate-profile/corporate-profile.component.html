@@ -45,36 +45,28 @@
           <p>{{this.currentAccount.email}}, {{this.currentAccount.contactNumber}}</p>
         </div>
       </div>
-      <div class="" style="width: 100%; height: calc(43.5vh - 220px); padding-top: .9vh; float: left; padding-bottom: 2vh; padding-top: 2vh;">
+      <!-- <div class="" style="width: 100%; height: calc(43.5vh - 220px); padding-top: .9vh; float: left; padding-bottom: 2vh; padding-top: 2vh;">
         <div id="user-contact" class="col-xs-5" style="height: 100%; padding-top: .1v; padding-bottom: .1v; border-right: 2px solid rgba(0,0,0,0.25);">
           <div class="" style="width: 100%;">
             <p class="basic-info-text-2">{{ this.currentAccount.lastUpdated }} </p>
             <div class="basic-info-text-2">
               <rating [(ngModel)]="this.currentAccount.informationAccuracy" [max]="5" style="margin-left: 25%"></rating>
             </div>
-            <!-- <p class="basic-info-text-2">{{ this.currentAccount.address.city }}</p>
-            <p class=" basic-info-text-2">{{ this.currentAccount.cell }}</p>
-            <p class="basic-info-text-2">{{ this.currentAccount.username }}</p> -->
           </div>
           <div style="width: 100%; margin-top: 20px;">
-            <!-- <p class="basic-info-text-2">{{ this.currentAccount.lastUpdated }}</p>
-            <p class="basic-info-text-2">{{ this.currentAccount.informationAccuracy }}</p> -->
           </div>
         </div>
         <div id="user-contact" class="col-xs-7 scrollbar" style="overflow-y: auto; padding-top: .1vh; height: 100%;">
           <div class="basic-info-career-panel" style="width: 100%; height: auto;">
           </div>
-          <!-- <div class="col-xs-12 basic-info-text" style="margin-top: 2px"><p class=" basic-info-text-2">{{ this.currentAccount.cell }}</p></div>
-          <div class="col-xs-12 basic-info-text-2" style="margin-top: -10px">
-          <rating [(ngModel)]="this.currentAccount.informationAccuracy" [max]="5" style="margin-left: 25%"></rating>
-          <p class="noWrapScroll" style="margin-top: -25px; font-size: 12px; text-align: center">Updated {{ this.currentAccount.lastUpdated}}</p>
-        </div> -->
-      </div>
-      </div>
+        </div>
+      </div> -->
     </div>
   </div>
 
   <div class="analytics col-xs-12 clear" style="background: rgba(223,223,225,1); height: 50vh">
+    <div id="service_chart"  style="height: 46.5vh; margin: 0 auto" [chart]="serviceChart"></div>
+<!-- 
     <div class="product-tab-bar col-xs-10 col-xs-offset-1">
       <div class="product-tab col-xs-3" (click)='activeTab.service = activeTab.service-1' *ngIf='activeTab.service>0 && this.serviceChartNames[this.activeTab.service-1]'>
         <div *ngIf='this.serviceChartNames[this.activeTab.service-1].length < 20'>{{this.serviceChartNames[this.activeTab.service-1]}}</div>
@@ -95,7 +87,7 @@
     </div>
     <div class="" *ngFor='let c of this.charts; let i = index'>
       <div id="team_chart"  style="max-width: 85%; margin: 0 auto; height:calc(50vh - 40px)" [chart]='c' *ngIf='i==activeTab.service'></div>
-    </div>
+    </div> -->
   </div>
 </div>
 <!-- EMPLOYEES TAB -->

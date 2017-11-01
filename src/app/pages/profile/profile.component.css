@@ -77,6 +77,14 @@
   background: rgb(223,223,225);
 }
 
+.resume-link {
+  color: rgb(75, 175, 225);
+  font-size: 22px;
+  font-family: 'Audiowide', cursive;
+  width: 180px;
+  text-align: center;
+}
+
 .basic-info {
   padding: 0px;
   height: calc(53vh - 60px);
