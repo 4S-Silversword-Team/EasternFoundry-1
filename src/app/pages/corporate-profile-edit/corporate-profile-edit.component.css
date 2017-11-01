@@ -24,6 +24,13 @@
   left: 47.4%;
   transform: translateX(-50%);
 }
+.edit-button-add-2 {
+  position: absolute;
+  width: 150px;
+  bottom: 3vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
 
 .edit-button-office {
   position: absolute;

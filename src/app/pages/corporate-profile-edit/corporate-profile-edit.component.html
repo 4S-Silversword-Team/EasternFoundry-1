@@ -314,13 +314,13 @@
           </div>
         </div>
       </div>
-      <button class="edit-button edit-button-add" (click)="addProduct" style="bottom: 3vh">Add Product</button>
     </div>
 
     <div class="" *ngIf='!this.creatingNew'>
       <button class="edit-button edit-button-prev" type="button" name="button" (click)='activeTab.main = activeTab.main-1' *ngIf="activeTab.main>0">Back</button>
       <button class="edit-button edit-button-next" type="button" name="button" (click)='activeTab.main = activeTab.main+1' *ngIf="checkFields(activeTab.main) && activeTab.main < 2">Next</button>
-      <button class="edit-button-nope edit-button-next" type="button" name="button" style="" *ngIf=!checkFields(activeTab.main)>Incomplete</button>
+      <button class="edit-button edit-button-add-2" (click)="addProduct()" *ngIf="activeTab.main == 2">Add Product</button>
+      <button class="edit-button-nope edit-button-next" type="button" name="button" style="" *ngIf='!checkFields(activeTab.main) && activeTab.main < 2'>Incomplete</button>
     </div>
     <button class="edit-button edit-button-save" type="button" name="button" (click)='updateCompany(this.currentAccount)' *ngIf="checkFields(9)">Save</button>
     <button class="edit-button-nope edit-button-nope-2" type="button" name="button" style="" *ngIf='!checkFields(9)'>Incomplete</button>

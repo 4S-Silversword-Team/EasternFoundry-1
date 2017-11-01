@@ -382,30 +382,25 @@ export class CorporateProfileEditComponent implements OnInit {
     var productsPass = true
     for (let p of this.products) {
       if (!p.name) {
-        console.log('name failure')
         productsPass = false
       } else {
         for (let i of p.customers.defense) {
           if (i.length < 1) {
-            console.log('defense failure')
             productsPass = false
           }
         }
         for (let i of p.customers.commercial) {
           if (i.length < 1) {
-            console.log('commercial failure')
             productsPass = false
           }
         }
         for (let i of p.customers.civilian) {
           if (i.length < 1) {
-            console.log('civilian failure')
             productsPass = false
           }
         }
         for (let f of p.feature) {
           if (!f.name || !f.score) {
-            console.log('feature name/score failure')
             productsPass = false
           }
         }
