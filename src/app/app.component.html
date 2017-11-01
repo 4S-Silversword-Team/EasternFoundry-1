@@ -13,7 +13,6 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li class="active"><a href="#/search">Search</a></li>
-
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">Profile <span class="caret"></span></a>
           <ul class="dropdown-menu">
@@ -25,7 +24,23 @@
         <li><a href="#/corporate-profile-create">Create Company</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="">Report a Bug</a></li>
+        <li class="dropdown" *ngIf="this.companies.length > 0">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Company Mail [{{this.companyUnreadCount}}]<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li *ngFor="let company of this.companies"><a href="#/corporate-profile/{{company.id}}/mailbox">{{company.name}} [{{company.count}}]</a></li>
+          </ul>
+        </li>
+        <li *ngIf='this.bugCount>0'><a href="#/mailbox">
+          <div class="">
+            Bug Reports [{{this.bugCount}}]
+          </div>
+        </a></li>
+        <li><a href="#/mailbox">
+          <div class="">
+            Messages [{{this.unreadCount}}]
+          </div>
+        </a></li>
+        <li><a href="#/bugreport">Report a Bug</a></li>
         <li><a href="#/login" (click) = "this.navLogOut()"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
       </ul>
     </div>

@@ -80,10 +80,10 @@
 </div>
 <div class="col-xs-12" style="margin-top: 500px;">
   <div class="col-xs-6" style="padding: 2px;">
-    <div class="box-overlay" *ngIf='this.companyToDelete.on'>
+    <div class="box-overlay" *ngIf='this.companyUserProxyToDelete.on'>
       <div class="delete-box">
         Are you SURE you want to delete {{this.companyUserProxyToDelete.company.name}}-{{this.companyUserProxyToDelete.userProfile.firstName}} {{this.companyUserProxyToDelete.userProfile.lastName}}?
-        <div class="delete-button-2" style="" (click)='deleteCompanyUserProxy(this.companyToDelete.proxy, this.companyToDelete.index)'>
+        <div class="delete-button-2" style="" (click)='deleteCompanyUserProxy(this.companyUserProxyToDelete.proxy, this.companyUserProxyToDelete.index)'>
           DELETE
         </div>
       </div>
@@ -109,7 +109,7 @@
                       NO COMPANY
                     </div>
                     <div class="search-item-header" *ngIf='!c.userProfile'>
-                      NO COMPANY
+                      NO PERSON
                     </div>
                     <div class="" *ngIf='c.company && c.userProfile'>
                       <div class="search-item-header">{{c.company.name}}</div>
@@ -129,15 +129,14 @@
   </div>
 </div>
 
-<!-- <div class="col-xs-6" style="padding: 2px"> -->
-  <!-- <div class="col-xs-12" style='background: whitesmoke; border: 1px solid black; padding: 2px'>
-    <h4>CERTS SORT/UPLOAD</h4>
-    <p>(there really isn't any sorting involved with these though)</p>
+<div class="col-xs-6" style="padding: 2px">
+  <div class="col-xs-12" style='background: whitesmoke; border: 1px solid black; padding: 2px'>
+    <h4>TOOLS SORT/UPLOAD</h4>
     <button type="button" name="button" class="col-xs-6" (click)="sort()">Sort From {{this.sortCounter}}</button>
     <button type="button" name="button" class="col-xs-6" (click)="uploadSortedObjects()">Upload From {{this.uploadCounter}}</button>
   </div>
 </div>
-<div class="col-xs-6" style="padding: 2px">
+<!-- <div class="col-xs-6" style="padding: 2px">
   <div class="col-xs-12" style='background: whitesmoke; border: 1px solid black; padding: 2px'>
     <h4>CERTS SORT/UPLOAD</h4>
     <p>(there really isn't any sorting involved with these though)</p>
@@ -145,16 +144,5 @@
     <button type="button" name="button" class="col-xs-6" (click)="uploadSortedObjects()">Upload From {{this.uploadCounter}}</button>
   </div>
 </div> -->
-
-
-  <!-- <div class="col-xs-12 text-container" *ngFor='let user of users' (click) = "goTo(user._id)">
-    <div class="col-xs-2">
-      <img class="avatar" src='{{user.avatar}}'>
-    </div>
-    <div class="col-xs-10">
-      <div class="fs-30 lh-40" >{{user.firstName}} {{user.lastName}}</div>
-      <div class="fs-30 lh-40" >{{user.username}}</div>
-    </div>
-  </div> -->
 
 </div>

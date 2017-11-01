@@ -9,6 +9,7 @@ import { CompanyService } from '../../services/company.service'
 import { UserPastPerformanceProxyService } from '../../services/userpastperformanceproxy.service'
 import { AuthService } from "../../services/auth.service"
 import { RoleService } from "../../services/role.service"
+import { AgencyService } from '../../services/agency.service'
 import { CompanyPastperformanceProxyService } from "../../services/companypastperformanceproxy.service"
 import { s3Service } from "../../services/s3.service"
 
@@ -18,8 +19,11 @@ import { environment } from "../../../environments/environment"
 
 @Component({
   selector: 'app-past-performance-edit',
-  providers: [PastperformanceService, UserService, CompanyService, UserPastPerformanceProxyService, AuthService, RoleService, CompanyPastperformanceProxyService, s3Service],
+  providers: [PastperformanceService, UserService, CompanyService, UserPastPerformanceProxyService, AuthService, AgencyService, RoleService, CompanyPastperformanceProxyService, s3Service],
   templateUrl: './past-performance-edit.component.html',
+  host: {
+      '(document:click)': 'handleClick($event)',
+  },
   styleUrls: ['./past-performance-edit.component.css']
 })
 export class PastPerformanceEditComponent implements OnInit {
@@ -31,6 +35,7 @@ export class PastPerformanceEditComponent implements OnInit {
   officeType: string[] = ['Pro', 'Amature'];
   clearedType: string[] = ['true', 'false'];
   userProfiles: any[] = [];
+  userProfilesAll: any[] = [];
   companies: any[] = [];
   allCompanyEmployees: any[] = [];
   allUserCompanies: any[] = [];
@@ -42,9 +47,25 @@ export class PastPerformanceEditComponent implements OnInit {
   employeeWidth: number = 600;
   writeWidth: number = 800;
   rate: number = 0;
+  allAgencies: any[] = []
   isUserAdmin: boolean = false;
   fieldsFilled: boolean = false;
   promiseFinished: boolean = false
+  currentDate: string =  (new Date().getMonth()+1) + '-' + new Date().getDate() + '-' + new Date().getFullYear()
+  tomorrow: string
+  searchTerms = {
+    name: ''
+  };
+  searchResults = {
+    people: []
+  };
+  searchOpen: boolean = false
+  noResults = false
+
+  activeTab = {
+    main: 0,
+  }
+
 
   constructor(
     private pastPerformanceService: PastperformanceService,
@@ -58,7 +79,9 @@ export class PastPerformanceEditComponent implements OnInit {
     private roleService: RoleService,
     private companyPastPerformanceProxyService: CompanyPastperformanceProxyService,
     private s3Service: s3Service,
+    private agencyService: AgencyService,
   ) {
+    this.getTomorrow()
     if (!auth.isLoggedIn()) {
       this.router.navigateByUrl("/login")
     } else {
@@ -66,13 +89,37 @@ export class PastPerformanceEditComponent implements OnInit {
         console.log('in past performance edit')
         this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {
           this.currentPastPerformance = res;
+          if (!this.currentPastPerformance.client){
+            this.currentPastPerformance.client = {
+              gov: false,
+              name: '',
+            }
+          } else if (!this.currentPastPerformance.client.name){
+            this.currentPastPerformance.client = {
+              gov: false,
+              name: '',
+            }
+          }
+          if (!this.currentPastPerformance.area) {
+            this.currentPastPerformance.area = ""
+          }
           this.myCallback();
           this.myCallback2()
           this.getEditorAdminStatus()
         });
-
       } else {
         console.log("in past performance create")
+        if (!this.currentPastPerformance.client){
+          this.currentPastPerformance.client = {
+            gov: false,
+            name: '',
+          }
+        } else if (!this.currentPastPerformance.client.name){
+          this.currentPastPerformance.client = {
+            gov: false,
+            name: '',
+          }
+        }
         this.createMode = true;
         if (this.route.snapshot.queryParams["company"]) {
           this.getCreatorAdminStatus();
@@ -84,15 +131,18 @@ export class PastPerformanceEditComponent implements OnInit {
   ngOnInit() {
   }
 
+
+
   myCallback() {
     this.userProfiles = [];
     for (const i of this.currentPastPerformance.userProfileProxies){
       this.userProfiles.push({
         "name": i.user.firstName + " " + i.user.lastName,
+        "username": i.user.username,
         "userId": i.user._id,
         "proxyId": i._id,
-        "startDate": new Date(i.startDate).toDateString(),
-        "endDate": new Date(i.endDate).toDateString(),
+        "startDate": i.startDate.slice(0,10),
+        "endDate": i.endDate.slice(0,10),
         "stillAffiliated": i.stillAffiliated,
         "role": i.role
       })
@@ -103,12 +153,16 @@ export class PastPerformanceEditComponent implements OnInit {
         "name": i.company.name,
         "companyId": i.company._id,
         "proxyId": i._id,
-        "startDate": new Date(i.startDate).toDateString(),
-        "endDate": new Date(i.endDate).toDateString(),
+        "startDate": i.startDate.slice(0,10),
+        "endDate": i.endDate.slice(0,10),
         "activeContract": i.activeContract
       })
     }
-    this.promiseFinished = true
+    this.agencyService.getAgencies().then(val => {
+      this.allAgencies = val
+      this.promiseFinished = true;
+      window.scrollTo(0, 0)
+    });
   }
 
   myCallback2() {
@@ -138,6 +192,13 @@ export class PastPerformanceEditComponent implements OnInit {
       })
     })()});
   }
+  this.userService.getUsers().then(res => {
+    this.userProfilesAll = res.filter((user) => {
+      return !this.userProfiles.map(function(employee) {
+        return employee.userId;
+      }).includes(user._id)
+    })
+  })
 }
 
   getCreatorAdminStatus() {
@@ -194,21 +255,97 @@ export class PastPerformanceEditComponent implements OnInit {
     })
   }
 
+  getTomorrow(){
+    var tomorrowMonth = new Date().getMonth()+1
+    var tomorrowDay = new Date().getDate()+1
+    var tomorrowYear = new Date().getFullYear()
+    if (tomorrowMonth == 13){
+      tomorrowMonth = 1
+    }
+    if (tomorrowMonth == (1 || 3 || 5 || 7 || 8 || 10)){
+      if (tomorrowDay > 31) {
+        tomorrowDay = 1
+        tomorrowMonth += 1
+      }
+    } else if (tomorrowMonth == 2){
+      if (tomorrowDay > 28) {
+        tomorrowDay = 1
+        tomorrowMonth += 1
+      }
+    } else if (tomorrowMonth == 12){
+      if (tomorrowDay > 31) {
+        tomorrowDay = 1
+        tomorrowMonth = 1
+      }
+    } else {
+      if (tomorrowDay > 30) {
+        tomorrowDay = 1
+        tomorrowMonth += 1
+      }
+    }
+    this.tomorrow = tomorrowMonth + '-' + tomorrowDay + '-' + tomorrowYear
+    console.log(this.tomorrow)
+  }
+
+  agencyListFormatter (data: any) {
+    return data.agency;
+  }
+
+  agencyValidCheck (agency) {
+    var match = false
+    for (let a of this.allAgencies) {
+      if (a.agency.toString().toLowerCase() == agency.toString().toLowerCase()){
+        match = true
+        agency = a.agency
+      }
+    }
+    return match;
+  }
+
+  handleClick(event){
+    var clickedComponent = event.target;
+    var inside = false;
+    do {
+      if (clickedComponent === document.getElementById('employee-dropdown') || clickedComponent === document.getElementById('employee-search')) {
+        inside = true;
+      }
+      clickedComponent = clickedComponent.parentNode;
+    } while (clickedComponent);
+    if(!inside){
+      this.searchOpen = false
+    }
+  }
+
+  switchTab(tab){
+    if (!this.createMode){
+      this.activeTab.main = tab
+    } else {
+      if (tab == 2){
+        if (this.checkFields()){
+          this.activeTab.main = tab
+        }
+      } else {
+        this.activeTab.main = tab
+      }
+    }
+  }
+
   checkFields(){
     if (
       this.currentPastPerformance.title &&
-      this.currentPastPerformance.client &&
+      this.currentPastPerformance.client.name &&
       this.currentPastPerformance.topic &&
       this.currentPastPerformance.startDate &&
       this.currentPastPerformance.endDate &&
       this.currentPastPerformance.location &&
       this.currentPastPerformance.value &&
-      this.currentPastPerformance.FTE
+      this.currentPastPerformance.area &&
+      this.currentPastPerformance.fte
     )
     {
-      this.fieldsFilled = true
+      return true
     } else {
-      this.fieldsFilled = false
+      return false
     }
   }
 
@@ -227,6 +364,33 @@ export class PastPerformanceEditComponent implements OnInit {
         this.updatePP(this.currentPastPerformance, true);
       }).catch((reason) =>console.log("reason ", reason));
     }
+  }
+
+  search() {
+    if (this.searchTerms.name) {
+      this.noResults = false
+      this.searchResults.people = []
+      for (let person of this.userProfilesAll) {
+        if (person.public) {
+          var name: string = person.firstName + ' ' + person.lastName
+          if (name.toLowerCase().includes(this.searchTerms.name.toLowerCase())) {
+            var alreadyThere = false
+            for (let employee of this.userProfiles) {
+              if (employee.username == person.username){
+                alreadyThere = true
+              }
+            }
+            if (!alreadyThere) {
+              this.searchResults.people.push(person)
+            }
+          }
+        }
+      }
+    }
+    if (this.searchResults.people.length < 1) {
+      this.noResults = true
+    }
+    this.searchOpen = true;
   }
 
   editPhoto() {
@@ -272,7 +436,6 @@ export class PastPerformanceEditComponent implements OnInit {
         this.router.navigate(['past-performance', this.route.snapshot.params['id']]);
       }
     });
-
   } else {
     //creating a new PP
     console.log(model)
@@ -283,8 +446,8 @@ export class PastPerformanceEditComponent implements OnInit {
         var request = {
           company: this.route.snapshot.queryParams["company"],
           pastPerformance: result['_id'],
-          startDate: "01/01/2001",
-          endDate: "01/02/2001",
+          startDate: this.currentDate,
+          endDate: "",
           activeContract: true
         }
         this.companyPastPerformanceProxyService.addCompanyPPProxy(request).then((proxy) => {
@@ -304,14 +467,14 @@ export class PastPerformanceEditComponent implements OnInit {
     let request = {
         "user": employeeId,
         "pastPerformance": this.route.snapshot.params['id'],
-        "startDate": "01/01/2001",
-        "endDate": "01/02/2001",
+        "startDate": this.currentDate,
+        "endDate": this.tomorrow,
         "stillAffiliated": false,
         "role": "programmer"
     }
     console.log(request)
     this.userPastPerformanceProxyService.addUserPPProxy(request).then(() => {
-      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2() });
+      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2(); this.searchOpen = false;});
     })
   }
 
@@ -319,8 +482,8 @@ export class PastPerformanceEditComponent implements OnInit {
     let request = {
       "user": employeeId,
       "pastPerformance": pastPerformanceId,
-      "startDate": "01/01/2001",
-      "endDate": "01/02/2001",
+      "startDate": this.currentDate,
+      "endDate": this.tomorrow,
       "stillAffiliated": true,
       "role": "programmer"
     }
@@ -348,8 +511,8 @@ export class PastPerformanceEditComponent implements OnInit {
     let request = {
         "company": companyId,
         "pastPerformance": this.route.snapshot.params['id'],
-        "startDate": "01/01/2001",
-        "endDate": "01/02/2001",
+        "startDate": this.currentDate,
+        "endDate": this.tomorrow,
         "stillAffiliated": false
     }
     console.log(request)
@@ -372,8 +535,6 @@ export class PastPerformanceEditComponent implements OnInit {
     this.companyPastPerformanceProxyService.updateCompanyPPProxies(proxyId, req).toPromise().then(() =>
     {});
   }
-
-
 
   // addEmployee(modelEmployees: Array<Object>){
   //   modelEmployees.push({title: "", stillwith: false})

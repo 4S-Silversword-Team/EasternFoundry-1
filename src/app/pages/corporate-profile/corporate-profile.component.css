@@ -1,3 +1,325 @@
+
+.top-bar {
+
+}
+
+.basic-info {
+  padding: 0px;
+  height: calc(42.5vh - 60px);
+}
+.basic-info-inner {
+  position: absolute;
+  height: calc(42.5vh - 110px);
+  width: calc(100% - 180px);
+  bottom: 0px;
+  right: 0px;
+  float: left;
+  background: none;
+}
+
+.basic-info-header {
+  color: rgb(75, 175, 225);
+  font-size: 40px;
+  font-family: 'Audiowide', cursive;
+  margin-bottom: -7px;
+}
+
+.basic-info-sub {
+  font-size: 18px;
+  padding-top: 0px;
+}
+.basic-info-sub-2 {
+  font-size: 18px;
+  font-style: italic;
+  padding-top: 1px;
+}
+
+.basic-info-text {
+  float: left;
+  position: relative;
+  font-size: 12px;
+}
+
+.basic-info-text-2 {
+  width: 100%;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.basic-info-text img{
+  height: 38px;
+  margin-right: 3px;
+  /*margin-top: -5px;*/
+}
+
+.profile-navbar {
+  width: 100%;
+  height: 60px;
+  background: rgba(223,223,225,1);
+}
+
+.profile-navbar-tab {
+  cursor: pointer;
+  float: left;
+  line-height: 60px;
+  position: relative;
+  height: 100%;
+  width: calc(100% / 5);
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: rgba(0,0,0,0.5);
+  margin: 0px;
+  border-right: 2px solid rgba(173,173,175,1);
+}
+
+.profile-navbar-tab-active {
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-right: 2px solid rgba(173,173,175,1);
+}
+.profile-navbar-tab-active-left {
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-top: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  border-right: 2px solid rgba(173,173,175,1);
+}
+.profile-navbar-tab-active-right {
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.profile-navbar-tab:hover {
+  /*border: 1px solid rgba(0,0,0,0.01);*/
+  color: rgba(0,0,0,0.6);
+  background: rgba(253,253,255,0.35)
+}
+.profile-navbar-tab:active {
+  /*border: 1px solid rgba(0,0,0,0.05);*/
+  color: rgba(0,0,0,0.7);
+  background: rgba(253,253,255,0.7)
+}
+.profile-navbar-tab-active:hover {
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+}
+.profile-navbar-tab-active-left:hover {
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+}
+.profile-navbar-tab-active-right:hover {
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+}
+
+.employee-panel {
+  position: relative;
+  background: rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.15);
+  padding-top: 10px;
+  height: 100px;
+  line-height: 26px;
+}
+.employee-link {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: green;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  border: 2px solid rgba(255,255,255,0.25);
+  height: 80px;
+  width: 60px;
+  text-align: center;
+  line-height: 20px;
+}
+.leader-panel {
+  position: relative;
+  background: rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.15);
+  font-size: 16px;
+  padding-top: 10px;
+  height: 124px;
+  line-height: 33px;
+}
+.leader-link {
+  position: absolute;
+  right: 10px;
+  top: 15px;
+  background: green;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  border: 2px solid rgba(255,255,255,0.25);
+  height: 94px;
+  width: 60px;
+  text-align: center;
+  line-height: 30px;
+}
+
+.leadership {
+  /*background: blue;*/
+  padding-top: 0px;
+  height: calc(45vh - 130px);
+  overflow: hidden;
+}
+
+.leadership-inner {
+  height: calc(44vh - 179px);
+  background: rgba(0,0,0,0.02);
+  overflow-y: auto;
+  border: 1px solid rgba(0,100,200, 0.9);
+}
+
+.employees {
+  background: rgba(223,223,225,1);
+  padding-top: 0px;
+  height: 55vh;
+  overflow: hidden;
+}
+.employees-shrunk {
+  height: calc(55vh - 60px);
+}
+
+.employees-inner {
+  height: calc(54vh - 49px);
+  background: rgba(0,0,0,0.02);
+  overflow-y: auto;
+  border: 1px solid rgba(0,100,200, 0.9);
+}
+.employees-inner-shrunk {
+  height: calc(54vh - 109px);
+}
+.edit-button-join {
+  position: absolute;
+  width: 150px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.employees .div-title p{
+    width: 200px;
+}
+
+.employees .div-title div{
+    width: calc(100% - 210px);
+    margin-top: 0px;
+    margin-bottom: 0;
+}
+
+.service {
+  height: calc(82vh - 40px);
+  overflow: auto
+}
+
+.service-panel {
+  background: rgba(0,0,0,0.02);
+  border: 1px solid rgba(0,100,200, 0.9);
+  margin-top: 0.5vh;
+  margin-bottom: 0.5vh;
+}
+
+.product-tab-bar {
+  margin-top: 0.5vh;
+  height: 40px;
+}
+
+.product-tab {
+  cursor: pointer;
+  height: 30px;
+  line-height: 30px;
+  margin-top: 10px;
+  font-size: 16px;
+  text-align: center;
+  border: 1px solid rgba(0,0,0,0.05);
+  background: rgba(223,223,225,1);
+}
+.product-tab:hover{
+  background: rgba(238,238,240,1);
+  border: 1px solid rgba(0,0,0,0.25);
+}
+
+.product-tab-active {
+  cursor: auto;
+  margin-top: 0px;
+  height: 40px;
+  font-size: 20px;
+  line-height: 40px;
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border-left: 1px solid rgba(0,0,0,0.5);
+  border-right: 1px solid rgba(0,0,0,0.5);
+  border-top: 1px solid rgba(0,0,0,0.5);
+}
+.product-tab-active-small {
+  cursor: auto;
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border-left: 1px solid rgba(0,0,0,0.5);
+  border-right: 1px solid rgba(0,0,0,0.5);
+  border-top: 1px solid rgba(0,0,0,0.5);
+}
+
+.product-tab-active:hover {
+  background: rgba(253,253,255,1);
+}
+
+.product {
+  height: calc(99.5 - 170px);
+  width: 100%;
+}
+
+.product-customers {
+  height: calc(22vh - 30px);
+}
+.ad-service {
+  height: 22vh;
+}
+.ad-service li {
+  line-height: 7vh;
+  font-size: 20px;
+}
+
+.past-performance-inner {
+  position: relative;
+  height: calc(100vh - 250px);
+  background: rgba(0,0,0,0.02);
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid rgba(0,100,200, 0.9);
+}
+
+.analytics {
+  height: 62.1vh;
+}
+
+.performance {
+  height: calc(100vh - 130px);
+}
+
+.box .div-title {
+  text-align: center;
+  margin-top: 0.5vh;
+  margin-bottom: 0.5vh;
+}
+
+.capa-chart {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
 .fullwidth {
     width: 100%;
 }
@@ -74,19 +396,6 @@
     margin: 5px;
 }
 
-button {
-    height: 100%;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    border: none;
-    border-radius: 10px;
-    background-color: #585858;
-    text-align: center;
-    font-size: 20px;
-    color: white;
-    line-height: 40px;
-}
-
 .cert-container {
   overflow: auto;
 }
@@ -124,14 +433,6 @@ button {
     height: 3px;
     background-color: #757575;
     margin-bottom: 8px;
-}
-
-.text-container {
-    padding: 20px;
-    border-radius: 10px;
-    border: 2px solid #ccc;
-    color: #ccc;
-    background-color: #585858;
 }
 
 input {
@@ -172,12 +473,16 @@ textarea {
 }
 
 .avatar {
-  position: relative;
+  position: absolute;
   width: 150px;
   height: 150px;
-  margin-right: 30px;
-  border: 2px solid #ccc;
-  border-radius: 10px;
+  /*margin-right: 30px;
+  margin-left: 0px;*/
+  border-radius: 90%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(0,0,0,0.5);
   background: rgb(250,250,250);
   overflow: hidden;
 }
@@ -189,6 +494,48 @@ textarea {
   transform: translate(-50%, -50%);
   display: block;
   width: 150px;
+  height: auto;
+}
+
+.avatar-small {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin-right: 30px;
+  margin-left: 0px;
+  border-radius: 5px;
+  background: rgb(250,250,250);
+  overflow: hidden;
+}
+
+.avatar-img-small {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  width: 80px;
+  height: auto;
+}
+
+.leader-avatar-small {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-right: 30px;
+  margin-left: 0px;
+  border-radius: 5px;
+  background: rgb(250,250,250);
+  overflow: hidden;
+}
+
+.leader-avatar-img-small {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  width: 100px;
   height: auto;
 }
 
@@ -213,6 +560,7 @@ textarea {
 
 .leadership .div-title div{
     width: calc(100% - 210px);
+    margin-top: 0px;
     margin-bottom: 0;
 }
 

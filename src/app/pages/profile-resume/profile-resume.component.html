@@ -1,0 +1,101 @@
+<div class="container" *ngIf='!this.promiseFinished'>
+  <div class="loader"></div>
+  <!-- <p class="loading">Loading</p> -->
+</div>
+<div class="scrollbar" *ngIf='this.promiseFinished'>
+  <div class="container">
+    <!-- <button type="button" name="button" (click)='generateResume()'>resum</button>
+    <div class="" id='resume-pic'>
+
+    </div> -->
+    <div id="resume-box">
+      <div class="header">
+        <div class="resume-name">{{this.currentUser.firstName}} {{this.currentUser.lastName}}</div>
+        <div class="resume-title">{{this.jobTitle}}</div>
+        <div class="contact-bar">
+          <div class="contact">
+            {{this.currentUser.username}}
+          </div>
+          <div class="contact">
+            {{this.currentUser.cell}}
+          </div>
+          <div class="contact">
+            {{this.currentUser.address.city}}, {{this.currentUser.address.state}}
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="half-block">
+        <h3>Experience</h3>
+        <ul>
+          <li *ngFor='let job of this.currentUser.positionHistory'>
+            <p>{{job.PositionTitle}}, {{job.Employer}}</p>
+            <p>{{job.StartDate}} - {{job.EndDate}}</p>
+            <p>{{job.Description}}</p>
+          </li>
+        </ul>
+      </div>
+      <div class="half-block">
+        <h3>Education</h3>
+        <ul>
+          <li *ngFor='let degree of this.currentUser.education'>
+            <p>{{degree.DegreeType[0].Name}}, {{degree.MajorProgramName[0]}}</p>
+            <p>{{degree.School}}</p>
+            <p>{{degree.Comment}}</p>
+          </li>
+        </ul>
+      </div>
+      <div class="half-block">
+        <h3>Skills</h3>
+        <ul>
+          <li *ngFor='let skill of this.currentUser.foundTools'>
+            <p>{{skill.title}}</p>
+          </li>
+        </ul>
+      </div>
+      <div class="half-block" *ngIf='this.currentUser.certification.length > 0'>
+        <h3>Certifications</h3>
+        <ul>
+          <li *ngFor='let cert of this.currentUser.certification'>
+            <p>{{cert.CertificationName}}</p>
+            <p>Earned {{cert.DateEarned}}</p>
+          </li>
+        </ul>
+      </div>
+      <div class="half-block" *ngIf='this.currentUser.award.length > 0'>
+        <h3>Awards</h3>
+        <ul>
+          <li *ngFor='let award of this.currentUser.award'>
+            <p>{{award}}</p>
+          </li>
+        </ul>
+      </div>
+      <div class="half-block" *ngIf='this.currentUser.clearance.length > 0'>
+        <h3>Clearances</h3>
+        <ul>
+          <li *ngFor='let clearance of this.currentUser.clearance'>
+            <p>{{clearance.clearanceType}}</p>
+            <p>Awarded {{clearance.awarded}}</p>
+            <p>Expires {{clearance.expiration}}</p>
+          </li>
+        </ul>
+      </div>
+      <div class="half-block">
+        <h3>Agency Experience</h3>
+        <ul>
+          <li *ngFor='let agency of this.agencyExperience'>
+            <p>{{agency.title}}</p>
+            <p>{{agency.years}} years</p>
+            <p *ngIf='agency.offices.length > 0'>OFFICES:</p>
+            <ul *ngIf='agency.offices.length > 0'>
+              <li *ngFor='let office of agency.offices'>
+                <p>{{office.title}}</p>
+                <p>{{office.years}} years</p>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

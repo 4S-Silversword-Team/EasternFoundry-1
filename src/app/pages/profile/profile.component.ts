@@ -1,12 +1,15 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import {Http} from '@angular/http';
 
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { Chart } from 'angular-highcharts';
-
+import { PastPerformance } from '../../classes/past-performance';
 import { User } from '../../classes/user'
+
 import { UserService } from '../../services/user.service'
+import { CompanyService } from '../../services/company.service';
 import { AuthService } from '../../services/auth.service'
 
 
@@ -15,15 +18,16 @@ declare var $: any;
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  providers: [UserService, AuthService],
+  providers: [UserService, CompanyService, AuthService],
+  host: {'(window:keydown)': 'hotkeys($event)'},
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
 
   currentUser: User = new User()
   expColors: string[] = ['rgb(0,178,255)', 'rgb(69,199,255)', 'rgb(138,220,255)', 'rgb(198,241,255)' ];
-  strengthChartDatas: any[] = []
-  strengthChartLabels: string[] = []
+  capaChartDatas: any[] = []
+  capaChartLabels: string[] = []
   toolChartDatas: any[] = []
   toolChartLabels: string[] = []
   promiseFinished: boolean = false
@@ -37,6 +41,7 @@ export class ProfileComponent implements OnInit {
   currentJob: any = null
   positionHistory: any[] = []
   occupations: any[] = []
+  categories: any[] = []
   months: any[] = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
   ]
@@ -62,25 +67,38 @@ export class ProfileComponent implements OnInit {
       years: 2
     },
   ]
-
-  chart: any;
-
+  charts: any[] = [];
+  agencyChart: any;
+  skillChart: any;
+  serviceChart: any;
+  serviceChartNames = [];
   yearsOfSchool: number = 0;
   yearsOfWork: number = 0;
   professionalPoints: number = 0;
+  activeTab: any = {
+    main: 0,
+    skill: 0,
+    service: 0,
+  }
+  pastPerformances: any[] = [];
+  allCategories: any[]
+
 
   constructor(
     private userService: UserService,
+    private companyService: CompanyService,
     private route: ActivatedRoute,
     private router: Router,
     public location: Location,
-    private auth: AuthService
+    private auth: AuthService,
+    private http: Http,
+
   ) {
 
     // this.currentUser = this.userService.getTempUser();
 
-    this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
 
+    this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
       this.currentUser = result;
       if (this.auth.isLoggedIn()) {
         if (this.auth.getLoggedInUser() == this.route.snapshot.params['id']) {
@@ -92,7 +110,15 @@ export class ProfileComponent implements OnInit {
           this.isActiveProfile = false
         }
       }
-      myCallback();
+      this.http.get('../../../assets/occupations.json')
+      .map((res: any) => res.json())
+      .subscribe(
+        (data: any) => {
+          this.allCategories = data;
+        },
+        err => console.log(err), // error
+        () => myCallback() // complete
+      );
     });
 
     var myCallback = () => {
@@ -139,7 +165,7 @@ export class ProfileComponent implements OnInit {
       let temp: number[] = []
       if(this.currentUser.abilities) {
         for (let index of this.currentUser.abilities) {
-          this.strengthChartLabels.push(index[0])
+          this.capaChartLabels.push(index[0])
           temp.push(+index[1])
         }
       }
@@ -164,14 +190,16 @@ export class ProfileComponent implements OnInit {
       while (this.currentUser.availability.length > 1 && this.currentUser.availability[0].date != currentDate) {
         this.currentUser.availability.splice(0,1)
       }
-      if (this.currentUser.availability[0].date != currentDate) {
-        this.currentUser.availability.splice(0,1)
-        this.currentUser.availability.push({
-          date: currentDate,
-          available: avail
-        })
+      if (this.currentUser.availability[0]) {
+        if (this.currentUser.availability[0].date != currentDate) {
+          this.currentUser.availability.splice(0,1)
+          this.currentUser.availability.push({
+            date: currentDate,
+            available: avail
+          })
+        }
       }
-      while (this.currentUser.availability.length < 7){
+      while (this.currentUser.availability.length > 0 && this.currentUser.availability.length < 7){
         var lastNum = this.currentUser.availability.length
         var nextNum = this.months.indexOf(this.currentUser.availability[this.currentUser.availability.length - 1].date.slice(0,3)) + 1
         if (nextNum >= this.months.length) {
@@ -187,7 +215,7 @@ export class ProfileComponent implements OnInit {
         this.availabilityData.dates.push(index.date)
         this.availabilityData.values.push(index.available)
       }
-      this.strengthChartDatas.push({data: temp, label: 'Strength'})
+      this.capaChartDatas.push({data: temp, label: 'Strength'})
 
       for (let job of this.currentUser.positionHistory) {
         job.Year = +job.StartDate.slice(0, 4);
@@ -266,11 +294,9 @@ export class ProfileComponent implements OnInit {
           }
           if (!matchFound) {
             var newPosition = {
-              title: '',
-              score: 0
+              title: position,
+              score: 7
             }
-            newPosition.title = position
-            newPosition.score = 7
             toolsToPush.push(newPosition)
           }
         }
@@ -278,12 +304,9 @@ export class ProfileComponent implements OnInit {
       if (toolsToPush.length < 2) {
         for (let o of this.currentUser.occupations) {
           var newOccupation = {
-            title: '',
-            score: 0
+            title: o.title,
+            score: o.score
           }
-          newOccupation.title = o.title
-          newOccupation.score = o.score
-          // console.log(newOccupation.title)
           this.occupations.push(newOccupation)
         }
       } else {
@@ -297,15 +320,85 @@ export class ProfileComponent implements OnInit {
         toolsToPush.sort(function(a,b){
           return parseFloat(b.score) - parseFloat(a.score);
         })
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < 10; i++) {
           this.occupations.push(toolsToPush[i])
           // console.log(toolsToPush[i].score)
         }
-
+      }
+      for (let t of toolsToPush) {
+        // console.log(code.substring(0,2) + " - " + t.title)
+        var newName
+        var newCode
+        for (let i of this.allCategories) {
+          if (t.title == i.title){
+            newName = i.category
+            newCode = i.code.substring(0,2)
+          }
+        }
+        var newCategory = {
+          code: newCode,
+          name: newName,
+          score: 5
+        }
+        var match = false
+        for (let c of this.categories) {
+          if (newCategory.name == c.name) {
+            match = true
+            c.score = Math.round(c.score + (t.score / 5))
+          }
+        }
+        if (!match){
+          this.categories.push(newCategory)
+        }
       }
       // for (let o of this.occupations) {
       //   console.log(o.title + ' ' + o.score)
       // }
+      var serviceData = []
+      var catPointsTotal = 0
+      for (let c of this.categories) {
+        catPointsTotal += c.score
+      }
+      for (let c of this.categories) {
+        var percent = 360*(c.score/catPointsTotal)
+        serviceData.push({
+          name: c.name,
+          y: percent
+        })
+      }
+
+      this.serviceChart = new Chart({
+        chart: {
+            type: 'pie',
+            backgroundColor: 'rgba(0, 100, 200, 0.00)',
+            renderTo: "service_chart"
+        },
+        title: {
+            text: 'Capabilities'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+
+        plotOptions: {
+          pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+              enabled: true,
+              format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+              style: {
+                  color: 'black'
+              }
+            }
+          }
+        },
+        series: [{
+          name: 'Focus',
+          colorByPoint: true,
+          data: serviceData,
+        }]
+      });
 
       //right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
       //i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
@@ -439,12 +532,11 @@ export class ProfileComponent implements OnInit {
           prof[k] = data_prof.get( agencyNames[k] );
           peop[k] = data_peop.get( agencyNames[k] );
         }
-        this.chart = new Chart({
+        this.agencyChart = new Chart({
           chart: {
               type: 'bar',
-              backgroundColor: '#FDF5EB',
-              renderTo: "team_chart",
-              height: 400
+              backgroundColor: 'rgba(0, 100, 200, 0.00)',
+              renderTo: "team_chart"
           },
           title: {
               text: 'Agency Experience'
@@ -456,15 +548,10 @@ export class ProfileComponent implements OnInit {
               },
           }],
           yAxis: [{ // Primary yAxis
-    //            tickInterval: Math.round(100/numPeop),
-    //            tickAmount: numPeop,
-    //            max: 100,
-              // endOnTick:false ,
               min:0,
               tickInterval: 1,
               endOnTick: false,
               alignTicks: false,
-              ceiling: 20,
               labels: {
                   format: '{value}',
                   style: {
@@ -481,12 +568,9 @@ export class ProfileComponent implements OnInit {
           {
              // Secondary yAxis
               tickInterval: 1,
-    //            tickAmount: numPeop,
-    //              endOnTick:false ,
               min:0,
               endOnTick: false,
               alignTicks: false,
-
               title: {
                   text: '',
                   style: {
@@ -523,53 +607,261 @@ export class ProfileComponent implements OnInit {
           }]
         });
 
-
+      this.showTeam()
       this.calculateSkillChart()
+      this.calculateCapaChart()
+      this.pastPerformances = this.currentUser.pastPerformanceProxies.map(proxy => proxy.pastPerformance)
+      console.log(this.pastPerformances[0])
       this.promiseFinished = true;
     } else {
       this.promiseFinished = true;
     }
     }
-
   }
 
   ngOnInit() {
   }
 
-  calculateSkillChart(){
-    var temp: number[] = []
-    this.toolChartLabels = []
-    this.toolChartDatas = []
-    if(this.currentUser.foundTools) {
-      for (let index of this.currentUser.foundTools) {
-        if (!index.score) {
-          index.score = 0
+  hotkeys(event){
+    // console.log(event.keyCode);
+    if (this.activeTab.main == 3) {
+      if (event.keyCode == 37 && this.activeTab.skill == 1 && this.activeTab.service > 0){
+        this.activeTab.service--
+      } else if (event.keyCode == 39 && this.activeTab.skill == 1 && this.serviceChartNames[this.activeTab.service+1]){
+        this.activeTab.service++
+      }
+    }
+  }
+
+  switchTab(newTab) {
+    // if (this.activeTab.main == newTab) {
+    //   this.activeTab.main = 7
+    // } else {
+    // }
+    this.activeTab.main = newTab
+    console.log(newTab)
+  }
+
+    showTeam() {
+      var occupations = []
+      var toolsToPush = []
+      for (let tool of this.currentUser.foundTools) {
+        var matchFound = false
+        for (let position of tool.position) {
+          for (let toolDone of toolsToPush) {
+            if (position == toolDone.title) {
+              toolDone.score += 5
+              matchFound = true
+            }
+          }
+          if (!matchFound) {
+            var newPosition = {
+              title: '',
+              score: 0
+            }
+            newPosition.title = position
+            newPosition.score = 5
+            toolsToPush.push(newPosition)
+          }
         }
-        this.toolChartLabels.push(index.title)
+      }
+      if (toolsToPush.length < 2) {
+        for (let o of this.currentUser.occupations) {
+          var newOccupation = {
+            title: '',
+            score: 0
+          }
+          newOccupation.title = o.title
+          newOccupation.score = o.score
+          occupations.push(newOccupation)
+
+        }
+      } else {
+        for (let tool of toolsToPush) {
+          for (let o of this.currentUser.occupations) {
+            if (tool.title == o.title) {
+              tool.score += (o.score / 5)
+            }
+          }
+          occupations.push(tool)
+        }
+      }
+      occupations.sort(function(a,b){
+        return parseFloat(b.score) - parseFloat(a.score);
+      })
+      var sortedOccupations: any[] = []
+      for (let o of occupations){
+        for (let c of this.allCategories) {
+          if (o.title == c.title) {
+            if (o.score > 10) {
+              var match = false
+              for (let s of sortedOccupations) {
+                if (s.title == c.category) {
+                  match = true;
+                  var occupationMatch = false
+                  if (!s.occupations.includes(o)){
+                    s.occupations.push(o)
+                  }
+                }
+              }
+              if (!match) {
+                sortedOccupations.push({
+                  title: c.category,
+                  occupations: [o]
+                })
+              }
+            }
+          }
+        }
+      }
+      for (let s of sortedOccupations){
+        this.serviceChartNames.push(s.title)
+        // console.log(s.title + " - " + s.occupations.length)
+        var data_prof = new Map();
+        var data_peop = new Map();
+        var skill = [];
+        var prof = [];
+        var peop = [];
+        for (var j = 0; j < 10; j++) {
+          // console.log(j + ' - ' + occupations[j].title)
+          if (j < s.occupations.length && s.occupations[j].title){
+            if (data_prof.has(s.occupations[j].title)) {
+              // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
+              // we'll see if it clears up when all the profiles in the database have full data on them
+              data_prof.set(s.occupations[j].title, data_prof.get(s.occupations[j].title) + s.occupations[j].score);
+              data_peop.set(s.occupations[j].title, data_peop.get(s.occupations[j].title) + 1);
+            }
+            if (!data_prof.has(occupations[j].title)) {
+              data_prof.set(s.occupations[j].title, s.occupations[j].score);
+              data_peop.set(s.occupations[j].title, 1);
+              skill.push(s.occupations[j].title);
+            }
+          }
+        }
+      for(var k = 0; k < 10; k++){
+        if (k < s.occupations.length && skill[k]) {
+          data_prof.set( skill[k], ( data_prof.get( skill[k] )/data_peop.get( skill[k] ) ) );
+          prof[k] = data_prof.get( skill[k] );
+          peop[k] = data_peop.get( skill[k] );
+        }
+      }
+      this.charts.push(this.generateChart(s.title, skill, peop, prof))
+      }
+    }
+
+    generateChart(title, xCategories, series1, series2){
+      var chart = new Chart({
+        chart: {
+          type: 'column',
+          backgroundColor: 'rgba(0, 100, 200, 0.00)',
+        },
+        title: {
+          text: title
+        },
+        xAxis: {
+          categories: xCategories,
+          options : {
+            endOnTick: true
+          },
+        },
+        yAxis: {
+          max:100,
+          min:0,
+          tickInterval: 1,
+          endOnTick: false,
+          alignTicks: false,
+          title: {
+            text: 'Score'
+          }
+        },
+        series: [{
+          name: 'Score',
+          data: series2,
+          tooltip: {
+            valueSuffix: ' points'
+          }
+        }]
+      })
+      return chart
+    }
+
+
+  calculateSkillChart(){
+      var data_prof = new Map();
+      var data_peop = new Map();
+      var skill = [];
+      var prof = [];
+      var peop = [];
+      var tools = this.currentUser.foundTools
+      // var tools = this.currentUser.foundTools.sort(function(a,b){
+      //   return b.score - a.score;
+      // })
+
+      for (var j = 0; j < tools.length; j++) {
+        // console.log(j + ' - ' + occupations[j].title)
+        if (tools[j].title){
+          if (data_prof.has(tools[j].title)) {
+            // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
+            // we'll see if it clears up when all the profiles in the database have full data on them
+            data_prof.set(tools[j].title, data_prof.get(tools[j].title) + tools[j].score);
+          }
+          if (!data_prof.has(tools[j].title)) {
+            data_prof.set(tools[j].title, tools[j].score);
+            skill.push(tools[j].title);
+          }
+        }
+      }
+    for(var k = 0; k < tools.length; k++){
+      if (skill[k]) {
+        data_prof.set( skill[k], ( data_prof.get( skill[k] )) );
+        prof[k] = data_prof.get( skill[k] );
+      }
+    }
+    this.skillChart = new Chart({
+      chart: {
+        type: 'column',
+        backgroundColor: 'rgba(0, 100, 200, 0.00)',
+      },
+      title: {
+        text: "Tools"
+      },
+      xAxis: {
+        categories: skill,
+        options : {
+          endOnTick: true
+        },
+      },
+      yAxis: {
+        min:0,
+        tickInterval: 1,
+        endOnTick: false,
+        alignTicks: false,
+        title: {
+          text: 'Score'
+        }
+      },
+      series: [{
+        name: 'Score',
+        data: prof,
+        tooltip: {
+          valueSuffix: ' points'
+        }
+      }]
+    })
+  }
+
+  calculateCapaChart() {
+    var temp: number[] = []
+    this.capaChartLabels = []
+    this.capaChartDatas = []
+    if(this.occupations) {
+      for (let index of this.occupations) {
+        this.capaChartLabels.push(index.title)
         temp.push(+index.score)
       }
     }
-    this.toolChartDatas.push({data: temp, label: 'Score'})
+    this.capaChartDatas.push({data: temp, label: 'Score'})
   }
-
-
-  // getCapaChartValues(tempUser: User): number[] {
-  //   let temp: number[] = []
-  //   for (let index of tempUser.skills) {
-  //     temp.push(+index[1])
-  //   }
-  //   return temp
-  // }
-
-  // getCapaChartValues(tempUser: User): number[] {
-  //   let temp: number[] = []
-  //   if (tempUser.occupations) {
-  //     for (let index of tempUser.occupations) {
-  //       temp.push(index.score)
-  //     }
-  //   }
-  //   return temp
-  // }
 
   getCapaChartValues(occupations): number[] {
     let temp: number[] = []
@@ -616,6 +908,22 @@ export class ProfileComponent implements OnInit {
       }
     }
     return temp
+  }
+
+  getServiceChartData(): number[] {
+    const temp: number[] = [];
+    for (const i of this.categories) {
+      temp.push(i.score);
+    }
+    return temp;
+  }
+
+  getServiceChartLabel(): string[] {
+    const temp: string[] = [];
+    for (const i of this.categories) {
+      temp.push(i.name);
+    }
+    return temp;
   }
 
   currentYear() {

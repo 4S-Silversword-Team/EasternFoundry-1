@@ -225,6 +225,7 @@ export class User {
   ]
   foundTools: [
     {
+      code: string[],
       title: string
       category: string
       classification: string

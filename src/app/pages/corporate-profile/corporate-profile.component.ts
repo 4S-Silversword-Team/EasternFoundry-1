@@ -1,4 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import {Http} from '@angular/http';
+
 import { User } from '../../classes/user';
 import { Product } from '../../classes/product';
 import { PastPerformance } from '../../classes/past-performance';
@@ -18,6 +20,7 @@ import { ServiceService } from '../../services/service.service';
 import { PastperformanceService } from '../../services/pastperformance.service';
 import  { AuthService } from "../../services/auth.service";
 import  { RoleService} from "../../services/role.service";
+import { MessageService } from '../../services/message.service'
 
 declare var $: any;
 declare var Swiper: any;
@@ -25,12 +28,16 @@ declare var Swiper: any;
 // renderChart = false;
 @Component({
   selector: 'app-corporate-profile',
-  providers: [UserService, ProductService, ServiceService, PastperformanceService, CompanyService, AuthService, RoleService],
+  providers: [UserService, ProductService, ServiceService, PastperformanceService, CompanyService, AuthService, RoleService, MessageService],
+  host: {'(window:keydown)': 'hotkeys($event)'},
   templateUrl: './corporate-profile.component.html',
   styleUrls: ['./corporate-profile.component.css']
 })
 export class CorporateProfileComponent implements OnInit, AfterViewInit {
   currentAccount: Company = new Company();
+  userIsEmployee: boolean = false
+  inviteSent: boolean = false
+
   users: User[] = [];
   products: Product[] = [];
   services: Service[] = [];
@@ -45,8 +52,23 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   promiseFinished: boolean = false;
   team: User[]  = [];
   renderChart: boolean;
-  chart: any;
+  charts: any[] = []
+  activeTab: any = {
+    main: 0,
+    product: 0,
+    productCustomer: 0,
+    service: 0,
+    pp: 0,
+  }
+
+  productTab: number = 0;
+  productCustomerTab: number = 0;
+  serviceTab: number = 0;
+  ppTab: number = 0;
   isUserAdmin: boolean = false;
+  allCategories: any[]
+
+  serviceChartNames: any[] = []
 
   constructor(
     private route: ActivatedRoute,
@@ -58,14 +80,24 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     private serviceService: ServiceService,
     private ppService: PastperformanceService,
     private auth: AuthService,
-    private  roleService: RoleService
+    private roleService: RoleService,
+    private messageService: MessageService,
+    private http: Http,
   ) {
     // console.log("testing1");
     // console.log(this);
     this.renderChart = false;
     // this.currentAccount = this.companyService.getTestCompany()
     // Need to use companyservice.getCompanyByID
-    this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then(company => { this.currentAccount = company; myCallback(); });
+    this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then(company => { this.currentAccount = company; this.http.get('../../../assets/occupations.json')
+    .map((res: any) => res.json())
+    .subscribe(
+      (data: any) => {
+        this.allCategories = data;
+      },
+      err => console.log(err), // error
+      () => myCallback() // complete
+    ); });
     // this.companyService.getCompanyByID(this.route.params["id"] ).toPromise().then(company => this.currentAccount = company)
     const myCallback = () => {
       if (auth.isLoggedIn()) {
@@ -103,7 +135,12 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
           if (proxy.leader){
             this.users.push(proxy.userProfile)
           }
-        }
+          if (proxy.userProfile._id) {
+            if (proxy.userProfile._id == this.auth.getLoggedInUser()) {
+              this.userIsEmployee = true
+            }
+          }
+         }
         //After loop is finished myCallback2()
         myCallback2()
       }
@@ -142,6 +179,26 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   ngOnInit() {
   }
 
+  hotkeys(event){
+    // console.log(event.keyCode.toString());
+    if (this.activeTab.main == 0) {
+      if (event.keyCode == 37 && this.activeTab.service > 0){
+        this.activeTab.service--
+      } else if (event.keyCode == 39 && this.serviceChartNames[this.activeTab.service+1]){
+        this.activeTab.service++
+      }
+    }
+  }
+
+  switchTab(newTab) {
+    if (this.activeTab.main == newTab) {
+      this.activeTab.main = 7
+    } else {
+      this.activeTab.main = newTab
+    }
+    console.log(newTab)
+  }
+
   getAdminStatus() {
     var userId = this.auth.getLoggedInUser()
     this.userService.getUserbyID(userId).toPromise().then((user) =>{
@@ -155,13 +212,46 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
         console.log("I'm SUPER admin")
       }
       if(currentUserProxy){
-        this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
-          if (role.title && role.title == "admin") {
-            this.isUserAdmin = true;
-            console.log("I'm admin")
-          }
-        })
+        if (currentUserProxy.role.title && currentUserProxy.role.title == "admin") {
+          this.isUserAdmin = true;
+          console.log("I'm admin")
+        }
       }
+    })
+  }
+
+  requestToJoin() {
+    var date = new Date()
+    var time = date.getTime()
+    var userId = this.auth.getLoggedInUser()
+    this.userService.getUserbyID(userId).toPromise().then((user) =>{
+      var invite = {
+        bugReport: false,
+        sender: {
+          id: user._id,
+          name: user.firstName + ' ' + user.lastName,
+          avatar: user.avatar,
+        },
+        recipient: [{
+          id: this.currentAccount._id,
+          name: this.currentAccount.name,
+          avatar: this.currentAccount.avatar,
+        }],
+        subject: user.firstName + ' ' + user.lastName + ' Wants To Join ' + this.currentAccount.name,
+        content: user.firstName + ' ' + user.lastName + ' would like to join ' + this.currentAccount.name + '. Do you accept?',
+        isInvitation: true,
+        invitation: {
+          fromUser: true,
+          companyId: this.currentAccount._id,
+          pastPerformanceId: '',
+        },
+        replyToId: '',
+        date: date,
+        timestamp: time,
+      }
+      this.messageService.createMessage(invite).toPromise().then((result) => {
+        this.inviteSent = true
+      });
     })
   }
 
@@ -194,30 +284,18 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   }
 
 
-changeToTeam(){
-
-  this.currentTab = 1;
-  this.showTeam();
-}
-
-
-
-
-
+  changeToTeam(){
+    this.currentTab = 1;
+    this.showTeam();
+  }
 
   showTeam() {
-    var data_prof = new Map();
-    var data_peop = new Map();
-    var skill = [];
-    var prof = [];
-    var peop = [];
-    var numPeop = 0;
-
+    var numPeop = 0
+    var occupations = []
     for(const i of this.currentAccount.userProfileProxies){
       numPeop++;
       var member = i.userProfile;
       if (member) {
-        var occupations = []
         var toolsToPush = []
         for (let tool of member.foundTools) {
           var matchFound = false
@@ -248,7 +326,6 @@ changeToTeam(){
             newOccupation.title = o.title
             newOccupation.score = o.score
             occupations.push(newOccupation)
-
           }
         } else {
           for (let tool of toolsToPush) {
@@ -257,55 +334,92 @@ changeToTeam(){
                 tool.score += (o.score / 5)
               }
             }
-            if (tool.score > 50) {
-              occupations.push(tool)
-            }
+            occupations.push(tool)
+            // if (tool.score > 50) {
+            // }
           }
         }
         occupations.sort(function(a,b){
           return parseFloat(b.score) - parseFloat(a.score);
         })
-
-        for (var j = 0; j < occupations.length; j++) {
-          if (j < 8) {
-            if (data_prof.has(occupations[j].title)) {
-
-              // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
-              // we'll see if it clears up when all the profiles in the database have full data on them
-              data_prof.set(occupations[j].title, data_prof.get(occupations[j].title) + occupations[j].score);
-              data_peop.set(occupations[j].title, data_peop.get(occupations[j].title) + 1);
-            }
-            if (!data_prof.has(occupations[j].title)) {
-              data_prof.set(occupations[j].title, occupations[j].score);
-              data_peop.set(occupations[j].title, 1);
-              skill.push(occupations[j].title);
+        var sortedOccupations: any[] = []
+        for (let o of occupations){
+          for (let c of this.allCategories) {
+            if (o.title == c.title) {
+              if (o.score > 10) {
+                var match = false
+                for (let s of sortedOccupations) {
+                  if (s.title == c.category) {
+                    match = true;
+                    var occupationMatch = false
+                    if (!s.occupations.includes(o)){
+                      s.occupations.push(o)
+                    }
+                  }
+                }
+                if (!match) {
+                  sortedOccupations.push({
+                    title: c.category,
+                    occupations: [o]
+                  })
+                }
+              }
             }
           }
         }
       }
     }
-    for(var k = 0; k < skill.length; k++){
-      if (k < 8) {
+    for (let s of sortedOccupations){
+      this.serviceChartNames.push(s.title)
+      // console.log(s.title + " - " + s.occupations.length)
+      var data_prof = new Map();
+      var data_peop = new Map();
+      var skill = [];
+      var prof = [];
+      var peop = [];
+      for (var j = 0; j < 10; j++) {
+        // console.log(j + ' - ' + occupations[j].title)
+        if (j < s.occupations.length && s.occupations[j].title){
+          if (data_prof.has(s.occupations[j].title)) {
+            // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
+            // we'll see if it clears up when all the profiles in the database have full data on them
+            data_prof.set(s.occupations[j].title, data_prof.get(s.occupations[j].title) + s.occupations[j].score);
+            data_peop.set(s.occupations[j].title, data_peop.get(s.occupations[j].title) + 1);
+          }
+          if (!data_prof.has(occupations[j].title)) {
+            data_prof.set(s.occupations[j].title, s.occupations[j].score);
+            data_peop.set(s.occupations[j].title, 1);
+            skill.push(s.occupations[j].title);
+          }
+        }
+      }
+    for(var k = 0; k < 10; k++){
+      if (k < s.occupations.length && skill[k]) {
         data_prof.set( skill[k], ( data_prof.get( skill[k] )/data_peop.get( skill[k] ) ) );
         prof[k] = data_prof.get( skill[k] );
         peop[k] = data_peop.get( skill[k] );
       }
     }
+    // this.charts.push('asfgdgasgasdgasgasdf')
+    this.charts.push(this.generateChart(s.title, skill, numPeop, peop, prof))
+    }
 
-    this.chart = new Chart({
+  }
+
+  generateChart(title, xCategories, yMax, series1, series2){
+    var chart = new Chart({
       chart: {
           type: 'bar',
-          backgroundColor: '#FDF5EB',
+          backgroundColor: 'rgba(0, 100, 200, 0.00)',
           renderTo: "team_chart",
-          height: 400
       },
       title: {
-          text: 'Skills'
+          text: title
       },
       xAxis: [{
-          categories: skill,
+          categories: xCategories,
           options : {
-              endOnTick: false
+              endOnTick: true
           },
       }],
       yAxis: [{ // Primary yAxis
@@ -315,6 +429,7 @@ changeToTeam(){
           // endOnTick:false ,
           max:100,
           min:0,
+          tickInterval: 5,
           endOnTick: false,
           alignTicks: false,
 
@@ -332,7 +447,7 @@ changeToTeam(){
               }
           },
       }, { // Secondary yAxis
-          max: numPeop,
+          max: yMax,
           tickInterval: 1,
 //            tickAmount: numPeop,
 //              endOnTick:false ,
@@ -362,21 +477,21 @@ changeToTeam(){
           name: 'People',
           type: 'column',
           yAxis: 1,
-          data: peop,
+          data: series1,
           tooltip: {
-              valueSuffix: ' '
+              valueSuffix: ''
           }
       }, {
           name: 'Proficiency',
           type: 'column',
-          data: prof,
+          data: series2,
           tooltip: {
               valueSuffix: '%'
           }
       }]
-    });
+    })
+    return chart
   }
-
 
 
 

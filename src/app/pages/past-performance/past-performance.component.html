@@ -1,211 +1,354 @@
-<div class="past-performance col-xs-12 clear">
-    <div *ngIf="this.isUserAdmin" class="btn-edit" (click) = 'editPastPerformance()'>Edit</div>
-    <div class="btn-back" (click) = 'this.location.back()'></div>
-    <div class="div-title col-xs-12">
-        <img src="./assets/img/performance.png">
-        <p>PAST PERFORMANCE</p>
-        <div></div>
-    </div>
-    <div class="col-xs-12 mt20">
-        <div class="container">
-            <div class="col-xs-12 col-md-6">
-                <label class="col-xs-12 fs-30 fc-black t-upper text-center">{{ currentPastPerformance.title }}</label>
-                <img class="" [style.width] = "'100%'" [style.border-radius] = "'5px'" [style.border] = "'2px solid #333'" src="{{ currentPastPerformance.avatar }}">
-            </div>
-            <div class="col-xs-12 col-md-6">
-                <div class="col-xs-12 div-info">
-                    <img src="./assets/img/client.png" class="left">
-                    <p style="white-space: nowrap" class="col-xs-6 text-left" [style.line-height]="'50px'">Client</p>
-                    <p style="white-space: nowrap" class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.client }}</p>
-                </div>
-                <div class="col-xs-12 div-info">
-                    <img src="./assets/img/topic.png" class="left">
-                    <p style="white-space: nowrap" class="col-xs-6 text-left" [style.line-height]="'50px'">Topic</p>
-                    <p style="white-space: nowrap" class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.topic }}</p>
-                </div>
-                <div class="col-xs-12 div-info">
-                    <img src="./assets/img/profile/availability.png" class="left">
-                    <p style="white-space: nowrap" class="col-xs-6 text-left" [style.line-height]="'50px'">Start date</p>
-                    <p style="white-space: nowrap" class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.startDate }}</p>
-                </div>
-                <div class="col-xs-12 div-info">
-                    <img src="./assets/img/profile/availability.png" class="left">
-                    <p style="white-space: nowrap" class="col-xs-6 text-left" [style.line-height]="'50px'">End date</p>
-                    <p style="white-space: nowrap" class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.endDate }}</p>
-                </div>
-                <div class="col-xs-12 div-info">
-                    <img src="./assets/img/profile/clearances.png" class="left">
-                    <p style="white-space: nowrap" class="col-xs-6 text-left" [style.line-height]="'50px'">Cleared</p>
-                    <p style="white-space: nowrap" class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.cleared? 'Yes'
-                      : 'No' }}</p>
-                </div>
-                <div class="col-xs-12 div-info">
-                    <img src="./assets/img/location.png" class="left">
-                    <p style="white-space: nowrap" class="col-xs-6 text-left" [style.line-height]="'50px'">Location</p>
-                    <p style="white-space: nowrap" class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.location }}</p>
-                </div>
-                <div class="col-xs-12 div-info">
-                    <img src="./assets/img/employee.png" class="left">
-                    <p style="white-space: nowrap" class="col-xs-6 text-left" [style.line-height]="'50px'">FTE</p>
-                    <p class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.FTE }}</p>
-                </div>
-                <div class="col-xs-12 div-info">
-                    <img src="./assets/img/value.png" class="left">
-                    <p style="white-space: nowrap" class="col-xs-6 text-left" [style.line-height]="'50px'">$ Val</p>
-                    <p style="white-space: nowrap" class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.value }}</p>
-                </div>
-                <div class="col-xs-12 div-info">
-                    <img src="./assets/img/rating.png" class="left">
-                    <p style="white-space: nowrap" class="col-xs-6 text-left" [style.line-height]="'50px'">Rating</p>
-                    <p style="white-space: nowrap" class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.rating }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="container" *ngIf='!this.promiseFinished'>
+  <div class="loader"></div>
+  <!-- <p class="loading">Loading</p> -->
 </div>
-
-<div class="employee-big col-xs-12 clear">
-    <div class="div-title col-xs-12">
-        <img src="./assets/img/employee.png">
-        <p>EMPLOYEES</p>
-        <div></div>
+<div class="page" *ngIf='this.promiseFinished'>
+  <div class="container top-bar">
+    <div class="profile-navbar">
+      <div class="profile-navbar-tab" (click)='switchTab(0)' [ngClass]="{'profile-navbar-tab-active-left': this.activeTab.main == 0}">
+        Summary
+      </div>
+      <div class="profile-navbar-tab" (click)='switchTab(1)' [ngClass]="{'profile-navbar-tab-active': this.activeTab.main == 1}">
+        Team
+      </div>
+      <div class="profile-navbar-tab-right" (click)='switchTab(2)' [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 2}">
+        Descriptions
+      </div>
     </div>
-    <!-- <div>
-        <div class="text-container col-xs-6 left" [style.height]="'250px'">
-            <div class="col-xs-12" *ngFor='let index of currentPastPerformance.employees'>{{ '' + index.title +
-              ((index.stillWith == true) ?' (Still with company)':'')}}</div>
+    <div class="edit-box">
+      <div *ngIf="this.isUserAdmin" class="btn-edit" (click) = 'editPastPerformance()'>Edit</div>
+    </div>
+  </div>
+  <!-- PROFILE TAB -->
+  <div class="container" *ngIf='this.activeTab.main == 0'>
+    <div class="basic-info col-xs-12" style="background: none">
+      <div class="" style="height: 180px; width: 180px; position: relative; float: left;">
+        <div class="left avatar">
+          <img src='{{ this.currentPastPerformance.avatar }}' class="avatar-img">
         </div>
-        <div class="col-xs-6 mt10 mb10" [style.overflow] = "'hidden'" [style.max-width] = "'100%'" [style.height]="'250px'" [style.border-radius]="'5px'"><img src="{{ currentPastPerformance.avatar }}" [style.height]="'250px'" [style.border-radius]="'5px'" [style.border] = "'2px solid #333'" [style.margin] = "'0 auto'"></div>
-    </div> -->
-    <div class="main clear" *ngIf="this.currentPastPerformance.userProfileProxies">
-        <div class="col-xs-6 col-md-3 left" *ngFor='let index of this.currentPastPerformance.userProfileProxies'>
-          <div *ngIf="index.user">
-            <img src='{{index.user.avatar}}' class="left avatar" [style.width]="'150px'">
-            <p style="white-space: nowrap" class="srow">{{ index.user.firstName + ' ' + index.user.lastName}}</p>
-            <p style="white-space: nowrap" *ngIf="index.user.positionHistory[0]" class="srow">{{ index.user.positionHistory[0].PositionTitle }}</p>
-            <p style="white-space: nowrap" class="srow">{{ index.user.username }}</p>
-            <a href="#/user-profile/{{index._id}}">
-              <button style="font-size: 14px;" class="col-xs-8 col-xs-offset-2">More Information</button>
-            </a>
+      </div>
+      <div class="basic-info-inner">
+        <div class="" style="width: 95%; height: 110px;">
+          <div class="col-xs-12 basic-info-header">
+            <p>{{ this.currentPastPerformance.title }}</p>
+          </div>
+          <div class="col-xs-12 basic-info-sub">
+            <p>{{this.currentPastPerformance.client.name}}</p>
+          </div>
+          <div class="col-xs-12 basic-info-sub-2">
+            <p>{{this.currentPastPerformance.topic}}</p>
           </div>
         </div>
+        <div class="" style="width: 100%; height: calc(53vh - 220px); float: left; padding-bottom: 2vh; padding-top: 2vh;">
+          <div id="user-contact" class="col-xs-5 scrollbar" style="height: 100%; padding-top: .1v; padding-bottom: .1v; border-right: 2px solid rgba(0,0,0,0.25); overflow-y: auto">
+            <div class="" style="width: 100%;">
+              <p class="basic-info-text-2">{{this.currentPastPerformance.startDate}} - {{this.currentPastPerformance.endDate}}</p>
+              <p class="basic-info-text-2" *ngIf='this.currentPastPerformance.cleared'>Cleared</p>
+              <p class="basic-info-text-2">Location: {{ this.currentPastPerformance.location }}</p>
+              <p class="basic-info-text-2">Value: {{ this.currentPastPerformance.value }}</p>
+              <p class="basic-info-text-2">FTE: {{ this.currentPastPerformance.fte }}</p>
+            </div>
+            <div style="width: 100%; margin-top: 20px;">
+              <!-- <p class="basic-info-text-2">{{ this.currentPastPerformance.education[0].DegreeType[0].Name }}</p>
+              <p class="basic-info-text-2">{{ this.currentPastPerformance.education[0].MajorProgramName[0] }}, {{ this.currentPastPerformance.education[0].School }}</p>
+              <p class="basic-info-text-2">{{ this.currentPastPerformance.education[0].AttendanceEndDate.slice(0,4) }}</p> -->
+            </div>
+          </div>
+          <div id="user-contact" class="col-xs-7 scrollbar" style="overflow-y: auto; padding-top: .1vh; height: 100%;">
+            <div class="basic-info-career-panel" style="width: 100%; height: auto;">
+              <div class="basic-info-text-2">
+                <div class="left">
+                  {{ this.currentPastPerformance.companyProxies[0].company.name }}
+                </div>
+                <div class="right">
+                  <!-- {{p.StartDate.slice(0,4)}} - {{p.EndDate.slice(0,4)}} -->
+                </div>
+              </div><br>
+              <!-- <p class="basic-info-text-2 left">{{ p.PositionTitle }}</p>
+              <p class="basic-info-text-2 left" style="margin-bottom: 20px;">{{ p.Description.slice(0,50) }}...</p> -->
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  <div *ngIf="!this.currentPastPerformance.userProfileProxies" class="main clear"> No employees to show</div>
-</div>
-
-<div class="employee-small col-xs-12 clear">
-  <div class="div-title col-xs-12">
-    <img src="./assets/img/employee.png">
-    <p>EMPLOYEES</p>
-    <div></div>
-  </div>
-  <!-- <div>
-      <div class="text-container col-xs-6 left" [style.height]="'250px'">
-          <div class="col-xs-12" *ngFor='let index of currentPastPerformance.employees'>{{ '' + index.title +
-            ((index.stillWith == true) ?' (Still with company)':'')}}</div>
-      </div>
-      <div class="col-xs-6 mt10 mb10" [style.overflow] = "'hidden'" [style.max-width] = "'100%'" [style.height]="'250px'" [style.border-radius]="'5px'"><img src="{{ currentPastPerformance.avatar }}" [style.height]="'250px'" [style.border-radius]="'5px'" [style.border] = "'2px solid #333'" [style.margin] = "'0 auto'"></div>
-  </div> -->
-  <div class="main clear"></div>
-  <div style="display: flex; flex-wrap: wrap" *ngIf="this.currentPastPerformance.userProfileProxies">
-    <div class="col-xs-6 col-md-3 left" *ngFor='let index of this.currentPastPerformance.userProfileProxies'>
-      <div *ngIf="index.user">
-        <img src='{{index.user.avatar}}' class="avatar">
-        <p style="white-space: nowrap" class="srow">{{ index.user.firstName + ' ' + index.user.lastName}}</p>
-        <p style="white-space: nowrap" *ngIf="index.user.positionHistory[0]" class="srow">{{ index.user.positionHistory[0].PositionTitle }}</p>
-        <p style="white-space: nowrap" class="srow">{{ index.user.username }}</p>
-
-      </div>
-      <a href="#/user-profile/{{index._id}}">
-        <button style="white-space: nowrap" style="height: 4em;">More Information</button>
-      </a>
-    </div>
-  </div>
-  <div *ngIf="!this.currentPastPerformance.userProfileProxies" class="main clear"> No employees to show</div>
-</div>
-
-<!--  -->
-
-<div class="employee-small col-xs-12 clear">
-  <div class="div-title col-xs-12">
-    <img src="./assets/img/commercia.png">
-    <p>COMPANIES</p>
-    <div></div>
-  </div>
-  <!-- <div>
-      <div class="text-container col-xs-6 left" [style.height]="'250px'">
-          <div class="col-xs-12" *ngFor='let index of currentPastPerformance.employees'>{{ '' + index.title +
-            ((index.stillWith == true) ?' (Still with company)':'')}}</div>
-      </div>
-      <div class="col-xs-6 mt10 mb10" [style.overflow] = "'hidden'" [style.max-width] = "'100%'" [style.height]="'250px'" [style.border-radius]="'5px'"><img src="{{ currentPastPerformance.avatar }}" [style.height]="'250px'" [style.border-radius]="'5px'" [style.border] = "'2px solid #333'" [style.margin] = "'0 auto'"></div>
-  </div> -->
-  <div class="main clear"></div>
-  <div style="display: flex; flex-wrap: wrap" *ngIf="this.currentPastPerformance.companyProxies">
-    <div class="col-xs-6 col-md-3 left" *ngFor='let index of this.currentPastPerformance.companyProxies'>
-      <div *ngIf="index.company">
-        <img src='{{index.company.avatar}}' class="avatar">
-        <p style="white-space: nowrap" class="srow">{{index.company.name}}</p>
-        <p style="white-space: nowrap" class="srow">{{index.company.city}}, {{index.company.state}}</p>
-      </div>
-      <a href="#/corporate-profile/{{index.company._id}}">
-        <button style="white-space: nowrap" style="height: 4em;">More Information</button>
-      </a>
+    <div class="col-xs-12" style="background: rgba(223,223,225,1); height: 39.5vh; width: 100%;">
+      <div id="service_chart"  style="height: 36vh; margin: 0 auto" [chart]="serviceChart"></div>
     </div>
   </div>
-  <div *ngIf="!this.currentPastPerformance.companyProxies" class="main clear"> No companies to show</div>
-</div>
+  <div class="container" *ngIf='this.activeTab.main == 1'>
+    <div class="team col-xs-12 clear">
+      <div class="div-title col-xs-12" style="margin-top: 0px;">
+        <p>Produced By</p>
+      </div>
+      <div class="" *ngIf="this.currentPastPerformance.companyProxies">
+        <div class="col-xs-12 left" *ngIf="this.currentPastPerformance.companyProxies[0].company" style="height: 35vh; position: relative;">
+          <div class="" style="height: 180px; width: 180px; position: relative; float: left;">
+            <div class="left avatar">
+              <img src='{{ this.currentPastPerformance.companyProxies[0].company.avatar }}' class="avatar-img">
+            </div>
+          </div>
+          <div class="" style="position: absolute; height: 32vh; width: calc(100% - 180px); bottom: 0px; right: 0px; float: left; background: none;">
+            <div class="" style="width: 100%; height: 32vh; padding-top: .9vh; float: left; padding-bottom: 2vh; padding-top: 2vh;">
+              <a href="#/corporate-profile/{{this.currentPastPerformance.companyProxies[0].company._id}}">
+                <div class="col-xs-12 basic-info-header" style="padding-top: 6px">
+                  <p style="white-space: nowrap">{{ this.currentPastPerformance.companyProxies[0].company.name }}</p>
+                </div>
+              </a>
+              <div class="col-xs-12 basic-info-sub" style="padding-top: 6px">
+                <p>{{this.currentPastPerformance.client.name}}</p>
+              </div>
+              <div class="col-xs-12 basic-info-sub" style="padding-top: 6px">
+                <p>{{this.currentPastPerformance.companyProxies[0].company.city}}, {{this.currentPastPerformance.companyProxies[0].company.state}}</p>
+              </div>
+              <div class="col-xs-12 basic-info-sub" style="padding-top: 6px">
+                <p>{{this.percentAffiliated}}% still affiliated</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="employees col-xs-12 clear">
+      <div class="col-xs-12 div-title" style="margin-top: 0px;">
+        <p class="">Team Members:</p>
+      </div>
+      <div class="employees-navbar">
+        <div class="employees-navbar-tab" (click)='activeTab.employees = 0' [ngClass]="{'employees-navbar-tab-active': this.activeTab.employees == 0}">
+          Still Affiliated
+        </div>
+        <div class="employees-navbar-tab-right" (click)='activeTab.employees = 1' [ngClass]="{'employees-navbar-tab-active-right': this.activeTab.employees == 1}">
+          No Longer Affiliated
+        </div>
+      </div>
+      <div class="employees-inner">
+        <div class="" *ngIf='this.currentPastPerformance.userProfileProxies'>
+          <div class="" *ngFor='let index of this.currentPastPerformance.userProfileProxies'>
+            <div class="" *ngIf='index.user'>
+              <div class="employee-panel col-xs-12 col-md-6 left" *ngIf='activeTab.employees == 0 && index.stillAffiliated && index.user.public'>
+                <div class="left avatar-small">
+                  <img src='{{ index.user.avatar }}' class="avatar-img-small">
+                </div>
+                <p class="">{{ index.user.firstName + ' ' + index.user.lastName}}</p>
+                <p *ngIf="index.user.positionHistory[0]" class="">{{ index.user.positionHistory[0].PositionTitle }}</p>
+                <p class="">{{ index.user.username }}</p>
+                <a href="/#/user-profile/{{index.user._id}}">
+                  <button class="employee-link">
+                    More<br>Info
+                  </button>
+                </a>
+              </div>
+              <div class="employee-panel col-xs-12 col-md-6 left" *ngIf='activeTab.employees == 1 && !index.stillAffiliated && index.user.public'>
+                <div class="left avatar-small">
+                  <img src='{{ index.user.avatar }}' class="avatar-img-small">
+                </div>
+                <p class="">{{ index.user.firstName + ' ' + index.user.lastName}}</p>
+                <p *ngIf="index.user.positionHistory[0]" class="">{{ index.user.positionHistory[0].PositionTitle }}</p>
+                <p class="">{{ index.user.username }}</p>
+                <a href="/#/user-profile/{{index.user._id}}">
+                  <button class="employee-link">
+                    More<br>Info
+                  </button>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="employee-panel col-xs-12 col-md-6 left" *ngIf='activeTab.employees == 0 && privateCount > 0'>
+            <p class="" *ngIf='privateCount == 1'>{{ privateCount }} Private Employee</p>
+            <p class="" *ngIf='privateCount > 1'>{{ privateCount }} Private Employees</p>
+          </div>
+        </div>
+      </div>
+      <div class="" *ngIf="!this.currentPastPerformance.userProfileProxies" class="main clear">
+         No employees to show
+      </div>
+      <div class="" *ngIf="this.currentPastPerformance.userProfileProxies">
+        <div *ngIf="!this.currentPastPerformance.userProfileProxies[0]" class="main clear">No employees to show</div>
+      </div>
+    </div>
+  </div>
+  <div class="container scrollbar" *ngIf='this.activeTab.main == 2'>
+    <div class="text-container" style="height: 25vh; width: 100%; float: left; margin-top: 2vh">
+      <p class="col-xs-12 fs-16 lh-20">Synopsis</p>
+      {{ currentPastPerformance.synopsis }}
+    </div>
+    <div class="text-container" style="height: calc(44vh - 130px); width: calc(50% - 1vw); float: left; margin-right: 1vw;">
+      <p class="col-xs-12 fs-16 lh-20">Technical Challenge, approach and outcome</p>
+      {{ currentPastPerformance.technical }}
+    </div>
+    <div class="text-container" style="height: calc(44vh - 130px); width: calc(50% - 1vw); float: left; margin-left: 1vw;">
+      <p class="col-xs-12 fs-16 lh-20">Management Challenge, approach and outcome</p>
+      {{ currentPastPerformance.management }}
+    </div>
+    <div class="text-container" style="height: 25vh; margin-bottom: 0px;; width: 100%; float: left;">
+      <p class="col-xs-12 fs-16 lh-20">Other</p>
+      {{ currentPastPerformance.other }}
+    </div>
+  </div>
 
-<div class="employee-big col-xs-12 clear">
+
+<div class="container" *ngIf="activeTab.main == 7 && this.promiseFinished">
+  <div class="past-performance col-xs-12 clear">
     <div class="div-title col-xs-12">
+      <img src="./assets/img/performance.png">
+      <p>PAST PERFORMANCE</p>
+      <div></div>
+    </div>
+    <div class="col-xs-12 mt20">
+      <div class="container">
+        <div class="col-xs-12 col-md-6">
+          <label class="col-xs-12 fs-30 fc-black t-upper text-center">{{ currentPastPerformance.title }}</label>
+          <img class="" [style.width] = "'100%'" [style.border-radius] = "'5px'" [style.border] = "'2px solid #333'" src="{{ currentPastPerformance.avatar }}">
+        </div>
+        <div class="col-xs-12 col-md-6">
+          <div class="col-xs-12 div-info">
+            <img src="./assets/img/client.png" class="left">
+            <p style="white-space: nowrap" class="col-xs-6 text-left" [style.line-height]="'50px'">Client</p>
+            <p style="white-space: nowrap" class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.client }}</p>
+          </div>
+          <div class="col-xs-12 div-info">
+            <img src="./assets/img/topic.png" class="left">
+            <p style="white-space: nowrap" class="col-xs-6 text-left" [style.line-height]="'50px'">Topic</p>
+            <p style="white-space: nowrap" class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.topic }}</p>
+          </div>
+          <div class="col-xs-12 div-info">
+            <img src="./assets/img/profile/availability.png" class="left">
+            <p style="white-space: nowrap" class="col-xs-6 text-left" [style.line-height]="'50px'">Start date</p>
+            <p style="white-space: nowrap" class="col-xs-6 text-right" [style.line-height]="'50px'">{{ this.startDate }}</p>
+          </div>
+          <div class="col-xs-12 div-info">
+            <img src="./assets/img/profile/availability.png" class="left">
+            <p style="white-space: nowrap" class="col-xs-6 text-left" [style.line-height]="'50px'">End date</p>
+            <p style="white-space: nowrap" class="col-xs-6 text-right" [style.line-height]="'50px'">{{ this.endDate }}</p>
+          </div>
+          <div class="col-xs-12 div-info">
+            <img src="./assets/img/profile/clearances.png" class="left">
+            <p style="white-space: nowrap" class="col-xs-6 text-left" [style.line-height]="'50px'">Cleared</p>
+            <p style="white-space: nowrap" class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.cleared? 'Yes'
+              : 'No' }}</p>
+            </div>
+            <div class="col-xs-12 div-info">
+              <img src="./assets/img/location.png" class="left">
+              <p style="white-space: nowrap" class="col-xs-6 text-left" [style.line-height]="'50px'">Location</p>
+              <p style="white-space: nowrap" class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.location }}</p>
+            </div>
+            <div class="col-xs-12 div-info">
+              <img src="./assets/img/employee.png" class="left">
+              <p style="white-space: nowrap" class="col-xs-6 text-left" [style.line-height]="'50px'">FTE</p>
+              <p class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.fte }}</p>
+            </div>
+            <div class="col-xs-12 div-info">
+              <img src="./assets/img/value.png" class="left">
+              <p style="white-space: nowrap" class="col-xs-6 text-left" [style.line-height]="'50px'">$ Val</p>
+              <p style="white-space: nowrap" class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.value }}</p>
+            </div>
+            <div class="col-xs-12 div-info">
+              <img src="./assets/img/rating.png" class="left">
+              <p style="white-space: nowrap" class="col-xs-6 text-left" [style.line-height]="'50px'">Rating</p>
+              <p style="white-space: nowrap" class="col-xs-6 text-right" [style.line-height]="'50px'">{{ currentPastPerformance.rating }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="employee-small col-xs-12 clear">
+      <div class="div-title col-xs-12">
+        <img src="./assets/img/commercia.png">
+        <p>COMPANY</p>
+        <div></div>
+      </div>
+    <div class="main clear"></div>
+    <div style="display: flex; flex-wrap: wrap" *ngIf="this.currentPastPerformance.companyProxies">
+      <div class="col-xs-6 col-md-3 left">
+        <div *ngIf="this.currentPastPerformance.companyProxies[0].company">
+          <img src='{{this.currentPastPerformance.companyProxies[0].company.avatar}}' class="avatar">
+          <p style="white-space: nowrap" class="srow">{{this.currentPastPerformance.companyProxies[0].company.name}}</p>
+          <p style="white-space: nowrap" class="srow">{{this.currentPastPerformance.companyProxies[0].company.city}}, {{this.currentPastPerformance.companyProxies[0].company.state}}</p>
+        </div>
+        <a href="#/corporate-profile/{{this.currentPastPerformance.companyProxies[0].company._id}}">
+          <button style="white-space: nowrap" style="height: 4em;">More Information</button>
+        </a>
+      </div>
+    </div>
+    <div *ngIf="!this.currentPastPerformance.companyProxies" class="main clear"> No companies to show</div>
+    </div>
+
+    <div class="employee-big col-xs-12 clear">
+      <div class="div-title col-xs-12">
         <img src="./assets/img/commercia.png">
         <p>COMPANIES</p>
         <div></div>
+      </div>
+      <!-- <div>
+      <div class="text-container col-xs-6 left" [style.height]="'250px'">
+      <div class="col-xs-12" *ngFor='let index of currentPastPerformance.employees'>{{ '' + index.title +
+      ((index.stillWith == true) ?' (Still with company)':'')}}</div>
     </div>
-    <!-- <div>
-        <div class="text-container col-xs-6 left" [style.height]="'250px'">
-            <div class="col-xs-12" *ngFor='let index of currentPastPerformance.employees'>{{ '' + index.title +
-              ((index.stillWith == true) ?' (Still with company)':'')}}</div>
-        </div>
-        <div class="col-xs-6 mt10 mb10" [style.overflow] = "'hidden'" [style.max-width] = "'100%'" [style.height]="'250px'" [style.border-radius]="'5px'"><img src="{{ currentPastPerformance.avatar }}" [style.height]="'250px'" [style.border-radius]="'5px'" [style.border] = "'2px solid #333'" [style.margin] = "'0 auto'"></div>
+    <div class="col-xs-6 mt10 mb10" [style.overflow] = "'hidden'" [style.max-width] = "'100%'" [style.height]="'250px'" [style.border-radius]="'5px'"><img src="{{ currentPastPerformance.avatar }}" [style.height]="'250px'" [style.border-radius]="'5px'" [style.border] = "'2px solid #333'" [style.margin] = "'0 auto'"></div>
     </div> -->
     <div class="main clear" *ngIf="this.currentPastPerformance.companyProxies">
-        <div class="col-xs-6 col-md-3 left" *ngFor='let index of this.currentPastPerformance.companyProxies'>
-          <div *ngIf="index.company">
-            <img src='{{index.company.avatar}}' class="left avatar" [style.width]="'150px'">
-            <p style="white-space: nowrap" class="srow">{{index.company.name}}</p>
-            <p style="white-space: nowrap" class="srow">{{index.company.city}}, {{index.company.state}}</p>
-            <a href="#/corporate-profile/{{index.company._id}}">
-              <button style="font-size: 14px;" class="col-xs-8 col-xs-offset-2">More Information</button>
-            </a>
-          </div>
+      <div class="col-xs-6 col-md-3 left" *ngFor='let index of this.currentPastPerformance.companyProxies'>
+        <div *ngIf="index.company">
+          <img src='{{index.company.avatar}}' class="left avatar" [style.width]="'150px'">
+          <p style="white-space: nowrap" class="srow">{{index.company.name}}</p>
+          <p style="white-space: nowrap" class="srow">{{index.company.city}}, {{index.company.state}}</p>
+          <a href="#/corporate-profile/{{index.company._id}}">
+            <button style="font-size: 14px;" class="col-xs-8 col-xs-offset-2">More Information</button>
+          </a>
         </div>
+      </div>
     </div>
-  <div *ngIf="!this.currentPastPerformance.companyProxies" class="main clear"> No companies to show</div>
-</div>
+    <div *ngIf="!this.currentPastPerformance.companyProxies" class="main clear"> No companies to show</div>
+    </div>
 
-
-<div class="write-up col-xs-12 clear">
+  <div class=" col-xs-12 clear">
     <div class="div-title col-xs-12">
-        <img src="./assets/img/write-up.png">
-        <p>WRITE UP</p>
-        <div></div>
+      <img src="./assets/img/employee.png">
+      <p>EMPLOYEES</p>
+      <div></div>
+    </div>
+    <div class="main clear" *ngIf="this.currentPastPerformance.userProfileProxies">
+      <div class="col-xs-6 col-md-3 left" *ngFor='let index of this.currentPastPerformance.userProfileProxies'>
+        <div *ngIf="index.user">
+          <img src='{{index.user.avatar}}' class="left avatar" [style.width]="'150px'">
+          <p style="white-space: nowrap" class="srow">{{ index.user.firstName + ' ' + index.user.lastName}}</p>
+          <p style="white-space: nowrap" *ngIf="index.user.positionHistory[0]" class="srow">{{ index.user.positionHistory[0].PositionTitle }}</p>
+          <p style="white-space: nowrap" class="srow">{{ index.user.username }}</p>
+          <p style="white-space: nowrap" class="srow" *ngIf='index.stillAffiliated'>Still Affiliated</p>
+          <p style="white-space: nowrap" class="srow" *ngIf='!index.stillAffiliated'>No Longer Affiliated</p>
+          <a href="#/user-profile/{{index.user._id}}">
+            <button style="font-size: 14px;" class="col-xs-8 col-xs-offset-2">More Information</button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!this.currentPastPerformance.userProfileProxies" class="main clear"> No employees to show</div>
+  </div>
+
+<!--  -->
+  <div class="write-up col-xs-12 clear">
+    <div class="div-title col-xs-12">
+      <img src="./assets/img/write-up.png">
+      <p>WRITE UP</p>
+      <div></div>
     </div>
     <div class="container">
-        <div class="text-container col-xs-12" [style.height]="'200px'">
-            <p class="col-xs-12 fs-16 lh-20">Synopisis</p>
-            {{ currentPastPerformance.synopsis }}
-        </div>
-        <div class="text-container col-xs-6" [style.height]="'300px'">
-            <p class="col-xs-12 fs-16 lh-20">Technical Challenge, approach and outcome</p>
-            {{ currentPastPerformance.technical }}
-        </div>
-        <div class="text-container col-xs-6" [style.height]="'300px'">
-            <p class="col-xs-12 fs-16 lh-20">Management Challenge, approach and outcome</p>
-            {{ currentPastPerformance.management }}
-        </div>
-        <div class="text-container col-xs-12" [style.height]="'200px'">
-            <p class="col-xs-12 fs-16 lh-20">Other</p>
-            {{ currentPastPerformance.other }}
-        </div>
+      <div class="text-container col-xs-12" [style.height]="'200px'">
+        <p class="col-xs-12 fs-16 lh-20">Synopisis</p>
+        {{ currentPastPerformance.synopsis }}
+      </div>
+      <div class="text-container col-xs-6" [style.height]="'300px'">
+        <p class="col-xs-12 fs-16 lh-20">Technical Challenge, approach and outcome</p>
+        {{ currentPastPerformance.technical }}
+      </div>
+      <div class="text-container col-xs-6" [style.height]="'300px'">
+        <p class="col-xs-12 fs-16 lh-20">Management Challenge, approach and outcome</p>
+        {{ currentPastPerformance.management }}
+      </div>
+      <div class="text-container col-xs-12" [style.height]="'200px'">
+        <p class="col-xs-12 fs-16 lh-20">Other</p>
+        {{ currentPastPerformance.other }}
+      </div>
     </div>
+  </div>
 </div>

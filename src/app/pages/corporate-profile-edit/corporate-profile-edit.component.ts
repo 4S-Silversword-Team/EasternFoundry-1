@@ -1,9 +1,10 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
 import { Company } from '../../classes/company';
 import { Product } from '../../classes/product';
 import { Service } from '../../classes/service';
 import { User } from '../../classes/user';
 import { PastPerformance } from '../../classes/past-performance';
+import { Message } from '../../classes/message'
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -16,6 +17,7 @@ import { UserService } from '../../services/user.service'
 import { AgencyService } from '../../services/agency.service'
 import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
 import { CompanyPastperformanceProxyService } from '../../services/companypastperformanceproxy.service'
+import { MessageService } from '../../services/message.service'
 
 import { AuthService } from '../../services/auth.service'
 import { RoleService } from '../../services/role.service'
@@ -27,9 +29,12 @@ declare var $: any;
 
 @Component({
   selector: 'app-corporate-profile-edit',
+  host: {
+      '(document:click)': 'handleClick($event)',
+  },
   templateUrl: './corporate-profile-edit.component.html',
   styleUrls: ['./corporate-profile-edit.component.css'],
-  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, AgencyService, CompanyUserProxyService, CompanyPastperformanceProxyService, RoleService, s3Service]
+  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, AgencyService, CompanyUserProxyService, CompanyPastperformanceProxyService, RoleService, MessageService, s3Service]
 })
 export class CorporateProfileEditComponent implements OnInit {
 
@@ -63,12 +68,25 @@ export class CorporateProfileEditComponent implements OnInit {
   searchResults = {
     people: []
   };
+  searchOpen: boolean = false
   noResults = false
   productTabs = [0]
+  activeTab = {
+    main: 0,
+    product: 0,
+  }
+  invitationSent: boolean[] = []
 
   allAgencies: any[] = []
 
+  currentDate: string =  (new Date().getMonth()+1) + '-' + new Date().getDate() + '-' + new Date().getFullYear()
+  tomorrow: string
+
+  lastStartDate: string;
+  lastEndDate: string;
+
   promiseFinished: boolean = false;
+  public elementRef
 
   constructor(
     private route: ActivatedRoute,
@@ -84,11 +102,15 @@ export class CorporateProfileEditComponent implements OnInit {
     private companyPastPerformanceProxyService: CompanyPastperformanceProxyService,
     private auth: AuthService,
     private roleService: RoleService,
+    private myElement: ElementRef,
+    private messageService: MessageService,
     private s3Service: s3Service
   ) {
+    this.elementRef = myElement
     // if(!auth.isLoggedIn()){
     //   this.router.navigateByUrl("/login")
     // }
+    this.getTomorrow()
     console.log(auth.isLoggedIn())
     if (!auth.isLoggedIn()) {
       this.router.navigateByUrl("/login")
@@ -124,7 +146,6 @@ export class CorporateProfileEditComponent implements OnInit {
           // this.router.navigateByUrl("/corporate-profile/"+this.route.snapshot.params['id'])
       }
       console.log('???????')
-      this.checkFields()
       for (let p of this.currentAccount.product) {
         if (this.productTabs.length > 0) {
           this.productTabs.push(0)
@@ -151,9 +172,89 @@ export class CorporateProfileEditComponent implements OnInit {
   ngOnInit() {
   }
 
+  invite(person, i){
+    var date = new Date()
+    var time = date.getTime()
+    var invite = {
+      bugReport: false,
+      sender: {
+        id: this.currentAccount._id,
+        name: this.currentAccount.name,
+        avatar: this.currentAccount.avatar,
+      },
+      recipient: [{
+        id: person._id,
+        name: person.firstName + ' ' + person.lastName,
+        avatar: person.avatar,
+      }],
+      subject: 'Invitiation To Join ' + this.currentAccount.name,
+      content: this.currentAccount.name + ' has invited you to join their company. Would you like to accept?',
+      isInvitation: true,
+      invitation: {
+        fromUser: false,
+        companyId: this.currentAccount._id,
+        pastPerformanceId: '',
+      },
+      replyToId: '',
+      date: date,
+      timestamp: time,
+    }
+    this.messageService.createMessage(invite).toPromise().then((result) => {
+      console.log('did it')
+      this.invitationSent[i] = true
+    });
+  }
+
   trackByFn(index: any, item: any) {
     return index;
   }
+
+  getTomorrow(){
+    var tomorrowMonth = new Date().getMonth()+1
+    var tomorrowDay = new Date().getDate()+1
+    var tomorrowYear = new Date().getFullYear()
+    if (tomorrowMonth == 13){
+      tomorrowMonth = 1
+    }
+    if (tomorrowMonth == (1 || 3 || 5 || 7 || 8 || 10)){
+      if (tomorrowDay > 31) {
+        tomorrowDay = 1
+        tomorrowMonth += 1
+      }
+    } else if (tomorrowMonth == 2){
+      if (tomorrowDay > 28) {
+        tomorrowDay = 1
+        tomorrowMonth += 1
+      }
+    } else if (tomorrowMonth == 12){
+      if (tomorrowDay > 31) {
+        tomorrowDay = 1
+        tomorrowMonth = 1
+      }
+    } else {
+      if (tomorrowDay > 30) {
+        tomorrowDay = 1
+        tomorrowMonth += 1
+      }
+    }
+    this.tomorrow = tomorrowMonth + '-' + tomorrowDay + '-' + tomorrowYear
+    console.log(this.tomorrow)
+  }
+
+  handleClick(event){
+    var clickedComponent = event.target;
+    var inside = false;
+    do {
+      if (clickedComponent === document.getElementById('employee-dropdown') || clickedComponent === document.getElementById('employee-search')) {
+        inside = true;
+      }
+      clickedComponent = clickedComponent.parentNode;
+    } while (clickedComponent);
+    if(!inside){
+      this.searchOpen = false
+    }
+  }
+
 
   uploadPhoto() {
     let fileBrowser = this.fileInput.nativeElement;
@@ -224,22 +325,47 @@ export class CorporateProfileEditComponent implements OnInit {
         console.log("I'm SUPER admin")
       }
       if(currentUserProxy){
-        this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
-          if (role.title && role.title == "admin") {
-            this.isUserAdmin = true;
-            console.log("I'm admin")
-          }
-        })
+        if (currentUserProxy.role.title && currentUserProxy.role.title == "admin") {
+          this.isUserAdmin = true;
+          console.log("I'm admin")
+        }
       }
     })
   }
 
-  changeCustomerTab(index, num) {
+  changeCustomerTab(index, product, num) {
+    var customersDefense = []
+    var customersCommercial = []
+    var customersCivilian = []
+    if (product.customers.defense) {
+      for (let i of product.customers.defense) {
+        if (i.name.length > 0) {
+          customersDefense.push(i)
+        }
+      }
+      product.customers.defense = customersDefense
+    }
+    if (product.customers.commercial) {
+      for (let i of product.customers.commercial) {
+        if (i.name.length > 0) {
+          customersCommercial.push(i)
+        }
+      }
+      product.customers.commercial = customersCommercial
+    }
+    if (product.customers.civilian) {
+      for (let i of product.customers.civilian) {
+        if (i.name.length > 0) {
+          customersCivilian.push(i)
+        }
+      }
+      product.customers.civilian = customersCivilian
+    }
     this.productTabs[index] = num
-    console.log(this.productTabs[index])
   }
 
-  checkFields(){
+  checkFields(num){
+    var profilePass = false
     if (
       this.currentAccount.name &&
       this.currentAccount.email &&
@@ -249,13 +375,57 @@ export class CorporateProfileEditComponent implements OnInit {
       this.currentAccount.city &&
       this.currentAccount.state &&
       this.currentAccount.zip
-    )
-    {
-      this.fieldsFilled = true
-    } else {
-      this.fieldsFilled = false
+    ){
+      profilePass = true
+    }
+
+    var productsPass = true
+    for (let p of this.products) {
+      if (!p.name) {
+        console.log('name failure')
+        productsPass = false
+      } else {
+        for (let i of p.customers.defense) {
+          if (i.length < 1) {
+            console.log('defense failure')
+            productsPass = false
+          }
+        }
+        for (let i of p.customers.commercial) {
+          if (i.length < 1) {
+            console.log('commercial failure')
+            productsPass = false
+          }
+        }
+        for (let i of p.customers.civilian) {
+          if (i.length < 1) {
+            console.log('civilian failure')
+            productsPass = false
+          }
+        }
+        for (let f of p.feature) {
+          if (!f.name || !f.score) {
+            console.log('feature name/score failure')
+            productsPass = false
+          }
+        }
+      }
+    }
+    if (num == 0){
+      return profilePass
+    } else if (num == 1){
+      return true
+    } else if (num == 2){
+      return productsPass
+    } else if (num == 9){
+      return (productsPass && profilePass)
     }
   }
+
+  switchTab(newTab) {
+    this.activeTab.main = newTab
+  }
+
 
   checkCompanyAdminCount() {
     let employeeRoleIds = this.currentAccount.userProfileProxies.map((proxy) => proxy.role);
@@ -273,8 +443,8 @@ export class CorporateProfileEditComponent implements OnInit {
     let request = {
       "userProfile": employeeId,
       "company": this.route.snapshot.params['id'],
-      "startDate": "01/01/2001",
-      "endDate": "01/02/2001",
+      "startDate": this.currentDate,
+      "endDate": this.currentDate,
       "stillAffiliated": false
     }
     this.companyUserProxyService.addCompanyUserProxy(request).then(() =>
@@ -282,6 +452,7 @@ export class CorporateProfileEditComponent implements OnInit {
       this.currentAccount.userProfileProxies = result.userProfileProxies;
       this.refreshEmployees();
       this.searchResults.people.splice(searchResultIndex, 1)
+      this.searchOpen = false
     }));
   }
 
@@ -331,13 +502,24 @@ export class CorporateProfileEditComponent implements OnInit {
     }
   }
 
+  updateEmployeeDate(employee, proxyId, key, value) {
+    if (employee.startDate.length < 10 || employee.endDate.length < 10) {
+      console.log('not lettin this thing break everything!')
+      return;
+    } else if (employee.startDate == this.lastStartDate || employee.endDate == this.lastEndDate) {
+      console.log('you didnt even change it! nah')
+      return;
+    } else {
+      this.updateEmployee(proxyId,key, value)
+    }
+  }
 
   updateEmployee(proxyId,key, value){
     if (!this.isUserAdmin){return;}
     let req = {};
     req[key] = value;
     this.companyUserProxyService.updateCompanyUserProxies(proxyId, req).toPromise().then(() =>
-      this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); })
+      this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); console.log('updated!')})
     );
 
   }
@@ -346,13 +528,25 @@ export class CorporateProfileEditComponent implements OnInit {
     this.userProfiles = []
     for (const i of this.currentAccount.userProfileProxies) {
       if (i.userProfile.firstName) {
+        var newStartDate
+        var newEndDate
+        if (!i.startDate || i.startDate.length < 10) {
+          newStartDate = ''
+        } else {
+          newStartDate = i.startDate.slice(0,10)
+        }
+        if (i.endDate || i.endDate < 10) {
+          newEndDate = i.endDate.slice(0,10)
+        } else {
+          newEndDate = ''
+        }
         this.userProfiles.push({
           "name": i.userProfile.firstName + " " + i.userProfile.lastName,
           "userId": i.userProfile._id,
           "proxyId": i._id,
           "username": i.userProfile.username,
-          "startDate": new Date(i.startDate).toDateString(),
-          "endDate": new Date(i.endDate).toDateString(),
+          "startDate": newStartDate,
+          "endDate": newEndDate,
           "avatar": i.userProfile.avatar,
           "stillAffiliated": i.stillAffiliated,
           "role": i.role,
@@ -400,6 +594,16 @@ export class CorporateProfileEditComponent implements OnInit {
     if (this.searchResults.people.length < 1) {
       this.noResults = true
     }
+    for (let p of this.searchResults.people) {
+      this.invitationSent.push(false)
+    }
+    this.searchOpen = true;
+  }
+  asdf(){
+    console.log('asdf')
+  }
+  no(){
+    console.log('no')
   }
 
   addProduct() {
@@ -408,10 +612,6 @@ export class CorporateProfileEditComponent implements OnInit {
         _id: "NEW",
         name: "",
         feature: [
-          {
-            name: "feature 1",
-            score: 10
-          }
         ],
         description: "",
         moreInfoLink: "",
@@ -421,13 +621,10 @@ export class CorporateProfileEditComponent implements OnInit {
         maintenance: true,
         customers: {
           defense: [
-
           ],
           civilian: [
-
           ],
           commercial: [
-
           ]
         }
       }
@@ -572,8 +769,8 @@ export class CorporateProfileEditComponent implements OnInit {
     let request = {
       "userProfile": user,
       "company": company,
-      "startDate": "01/01/2001",
-      "endDate": "01/02/2001",
+      "startDate": this.currentDate,
+      "endDate": this.tomorrow,
       "stillAffiliated": true,
       "role": role
     }
@@ -609,39 +806,6 @@ export class CorporateProfileEditComponent implements OnInit {
       this.companyService.createCompany(model).toPromise().then(newCompany => {
         var companyId = JSON.parse(newCompany._body)._id
         console.log(companyId)
-
-        //the nesting updates thing doesn't always work if you add a bunch of products/services
-        //and i cannot for the life of me make it do any of it any other way
-        //so as of now i am turning the entire thing off. make your products/services AFTER the company exists. fuck it
-        // if(model.product) {
-        //   for (const i of this.products) {
-        //     const productModel = i
-        //     delete productModel['_id'];
-        //     this.productService.createProduct(productModel).toPromise().then(result => {
-        //       var res: any = result
-        //       var productId = JSON.parse(res._body)._id
-        //       model.product.push(productId)
-        //       this.companyService.updateCompany(companyId, model).toPromise().then((result) => {
-        //         this.companyService.getCompanyByID(companyId).toPromise().then(result => model = result);
-        //        });
-        //     });
-        //   }
-        // }
-        // if (this.currentAccount.service) {
-        //   for (const i of this.services) {
-        //     const serviceModel = i
-        //     delete serviceModel['_id'];
-        //     this.serviceService.createService(serviceModel).toPromise().then(result => {
-        //       var res: any = result
-        //       var serviceId = JSON.parse(res._body)._id
-        //       model.service.push(serviceId)
-        //       this.companyService.updateCompany(companyId, model).toPromise().then((result) => {
-        //         this.companyService.getCompanyByID(companyId).toPromise().then(result => model = result);
-        //        });
-        //     });
-        //
-        //   }
-        // }
 
         //TODO handle if no admin in role collection in Db
         this.roleService.getRoleByTitle("admin").toPromise().then((admin) => {

@@ -10,6 +10,15 @@ export class CareerComponent {
 
    @Input() public Data: any[];
    @Input() public current: number;
+   detailsOn = false;
+   careerDetails: any = {
+     index: String,
+     PositionTitle: String,
+     Employer: String,
+     StartDate: String,
+     EndDate: String,
+     Description: String,
+   }
 
   public refresh(year: number) {
     for (let index of this.Data){
@@ -33,6 +42,16 @@ export class CareerComponent {
         $('#c-detail-' + index.StartDate.replace('', '').replace('', '')).addClass('career-detail');
       }
     }
+  }
+
+  setDetails(data, i) {
+    this.careerDetails.index = i
+    this.careerDetails.PositionTitle = data.PositionTitle
+    this.careerDetails.Employer = data.Employer
+    this.careerDetails.StartDate = data.StartDate
+    this.careerDetails.EndDate = data.EndDate
+    this.careerDetails.Description = data.Description
+    this.detailsOn = true
   }
 
 }

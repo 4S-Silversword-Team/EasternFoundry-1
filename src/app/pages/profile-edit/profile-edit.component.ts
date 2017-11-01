@@ -41,6 +41,7 @@ export class ProfileEditComponent implements OnInit {
   }
   promiseFinished: boolean = false
   toolSearch: string = ''
+  toolSearchLast: string = ''
   allTools: any[] = []
   filteredTools: any[] = []
   filteredToolsFromProfile: any[] = []
@@ -48,7 +49,7 @@ export class ProfileEditComponent implements OnInit {
   toolSubmitted: boolean = false
   fieldsFilled = false
   months: any[] = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
   ]
   degreeType: any[] = [
     {
@@ -73,7 +74,6 @@ export class ProfileEditComponent implements OnInit {
     },
   ]
   employmentCheck: any[] = []
-  dont: boolean = true
   allAgencies: any[] = []
   allCerts: any[] = []
   professionalPoints = 0
@@ -83,6 +83,21 @@ export class ProfileEditComponent implements OnInit {
   currentJobs: boolean[] = []
   lastUsedEndDate: string[] = []
   years: number[] = [];
+  activeTab: any = {
+    main: 0,
+    job: 0,
+    skills: 0,
+  }
+  finished: any = {
+    basic: false,
+    education: false,
+    cert: false,
+    awards: false,
+    clear: false,
+    career: false,
+    skills: false,
+  }
+
   customTrackBy(index: number, obj: any): any {
     return  index;
   }
@@ -121,16 +136,26 @@ export class ProfileEditComponent implements OnInit {
     if (!auth.isLoggedIn()) {
       this.router.navigateByUrl("/login")
     } else {
+      var year = this.currentYear()
+      for (var i = year; i>=1900; i--){
+        this.years.push(i)
+      }
       this.auth.getLoggedInUser() == this.route.snapshot.params['id']? console.log("welcome to your profile edit page"): (() => { console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})()
       this.toolService.getTools().then(val => {
         this.allTools = val
         for (let tool of this.allTools) {
           for (let t of this.currentUser.foundTools) {
-            if (t.title.toLowerCase() == tool.title.toLowerCase() && t.position.length < 1) {
-              console.log('Adding missing tool data to ' + tool.title + '...')
-              t.category = tool.category
-              t.classification = tool.classification
-              t.position = tool.position
+            if (t.title.toLowerCase() == tool.title.toLowerCase()) {
+              if (t.position.length < 1) {
+                console.log('Adding missing tool data to ' + tool.title + '...')
+                t.category = tool.category
+                t.classification = tool.classification
+                t.position = tool.position
+              }
+              t.code = tool.code
+              if (!t.code) {
+                console.log('Adding missing code to ' + tool.title + '...')
+              }
             }
           }
         }
@@ -186,6 +211,12 @@ export class ProfileEditComponent implements OnInit {
         while (this.currentUser.availability.length > 1 && this.currentUser.availability[0].date != currentDate) {
           this.currentUser.availability.splice(0,1)
         }
+        if (this.currentUser.availability.length < 1) {
+          this.currentUser.availability = [{
+            date: currentDate,
+            available: avail
+          }]
+        }
         if (this.currentUser.availability[0].date != currentDate) {
           this.currentUser.availability.splice(0,1)
           this.currentUser.availability.push({
@@ -193,19 +224,20 @@ export class ProfileEditComponent implements OnInit {
             available: avail
           })
         }
-        while (this.currentUser.availability.length < 7){
+        // this.currentUser.availability.splice(0,6)
+        while (this.currentUser.availability.length > 0 && this.currentUser.availability.length < 7){
           var lastNum = this.currentUser.availability.length
-          var nextNum = this.months.indexOf(this.currentUser.availability[this.currentUser.availability.length - 1].date.slice(0,3)) + 1
-          if (nextNum >= this.months.length) {
-            nextNum = 0
-            year = year + 1
-          }
-          this.currentUser.availability.push({
-            date: this.months[nextNum] + ', ' + year.toString().slice(2,4),
-            available: avail
-          })
-        }
+            var nextNum = this.months.indexOf(this.currentUser.availability[this.currentUser.availability.length - 1].date.slice(0,3)) + 1
+            if (nextNum >= this.months.length) {
+              nextNum = 0
+              year = year + 1
+            }
+            this.currentUser.availability.push({
+              date: this.months[nextNum] + ', ' + year.toString().slice(2,4),
+              available: avail
+            })
 
+        }
         for (let index of this.currentUser.availability) {
           this.availabilityData.dates.push(index.date)
           this.availabilityData.values.push(index.available)
@@ -217,6 +249,7 @@ export class ProfileEditComponent implements OnInit {
             if (tool.title.length > 1) {
               if (this.currentUser.resumeText.toLowerCase().indexOf(tool.title.toLowerCase()) >= 0) {
                 var toolToAdd = {
+                  code: [],
                   title: '',
                   category: '',
                   classification: '',
@@ -229,6 +262,7 @@ export class ProfileEditComponent implements OnInit {
                 if (this.currentUser.foundTools == null) {
                   this.currentUser.foundTools = [
                     {
+                      code: [],
                       title: '',
                       category: '',
                       classification: '',
@@ -327,7 +361,7 @@ export class ProfileEditComponent implements OnInit {
           if (this.currentUser.education[0].DegreeType[0] == null) {
             this.currentUser.education[0].DegreeType.push({Name: ''})
           }
-          this.checkFields()
+          this.checkFields(9)
           for (let d of this.currentUser.education){
             if (d.DegreeType[0]){
               if (d.DegreeType[0].Name) {
@@ -354,9 +388,7 @@ export class ProfileEditComponent implements OnInit {
             this.certService.getCerts().then(v => {
               this.allCerts = v
               this.promiseFinished = true;
-              console.log(document.body.scrollTop)
-              setTimeout(() => {document.body.scrollTop = document.documentElement.scrollTop = 0; window.scrollTo(0, 0); console.log('???')}, 280);
-              // window.scrollTo(0, 0);
+              window.scrollTo(0, 0)
             })
           });
         });
@@ -366,6 +398,49 @@ export class ProfileEditComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  switchTab(newTab) {
+    if (!this.currentUser.finished) {
+        if (newTab==0 && this.finished.basic){
+          this.activeTab.main = newTab
+        } else if (newTab==1 && this.finished.basic){
+          this.activeTab.main = newTab
+        } else if (newTab==2 && this.finished.education){
+          this.activeTab.main = newTab
+        } else if (newTab==3 && this.finished.cert){
+          this.activeTab.main = newTab
+        } else if (newTab==4 && this.finished.awards){
+          this.activeTab.main = newTab
+        } else if (newTab==5 && this.finished.clear){
+          this.activeTab.main = newTab
+        } else if (newTab==6 && this.finished.career){
+          this.activeTab.main = newTab
+        }
+    } else {
+      this.activeTab.main = newTab
+    }
+  }
+
+  nextTab(){
+    if (!this.currentUser.finished) {
+        if (this.activeTab.main==0){
+          this.finished.basic = true
+        } else if (this.activeTab.main==1){
+          this.finished.education = true
+        } else if (this.activeTab.main==2){
+          this.finished.cert = true
+        } else if (this.activeTab.main==3){
+          this.finished.awards = true
+        } else if (this.activeTab.main==4){
+          this.finished.clear = true
+        } else if (this.activeTab.main==5){
+          this.finished.career = true
+        } else if (this.activeTab.main==6){
+          this.finished.skill = true
+        }
+    }
+    this.activeTab.main = this.activeTab.main+1
   }
 
   calculateProfessionalPoints(){
@@ -569,7 +644,7 @@ export class ProfileEditComponent implements OnInit {
     return match;
   }
 
-  checkFields(){
+  checkFields(num){
     var profileCheck = true
     if (!this.currentUser.firstName ||
        !this.currentUser.lastName ||
@@ -577,7 +652,8 @@ export class ProfileEditComponent implements OnInit {
        !this.currentUser.cell ||
        this.currentUser.cell.length < 14 ||
        !this.currentUser.address.city ||
-       !this.currentUser.address.state){
+       !this.currentUser.address.state ||
+        !this.currentUser.address.zip){
       profileCheck = false
     }
 
@@ -589,10 +665,23 @@ export class ProfileEditComponent implements OnInit {
     }
 
     var positionCheck = true
+    var i = 0
     for (let job of this.currentUser.positionHistory) {
-      if (!job.PositionTitle || !job.EndDate || !job.StartDate || !job.Employer) {
+      if (!job.PositionTitle || (!this.currentJobs[i] && !job.EndDate) || !job.StartDate || !job.Employer) {
         positionCheck = false
+      } else {
+        for (let a of job.agencyExperience) {
+          if (!this.agencyValidCheck(a.main.title) || (a.main.isPM && a.main.pmScore > 3 && a.main.pmDescription.length < 300) || (a.main.isKO && a.main.koScore > 3 && a.main.koDescription.length < 300)) {
+            positionCheck = false
+          } else {
+            for (let o of a.offices)
+            if (!this.subagencyValidCheck(a.main.title, o.title) || (o.isPM && o.pmScore > 3 && o.pmDescription.length < 300) || (o.isKO && o.koScore > 3 && o.koDescription.length < 300)) {
+              positionCheck = false
+            }
+          }
+        }
       }
+      i++
     }
 
     var certCheck = true
@@ -606,6 +695,8 @@ export class ProfileEditComponent implements OnInit {
     for (let clear of this.currentUser.clearance) {
       if (!clear.clearanceType || !clear.awarded || !clear.expiration) {
         clearCheck = false
+      } else if (clear.awarded.toString().length != 4 || clear.expiration.toString().length != 4) {
+        clearCheck = false
       }
     }
 
@@ -616,19 +707,62 @@ export class ProfileEditComponent implements OnInit {
       }
     }
 
-    if (
-      profileCheck &&
-      degreesCheck &&
-      positionCheck &&
-      certCheck &&
-      clearCheck &&
-      awardCheck
-    ) {
-      this.fieldsFilled = true
+    var done = true
+    if (num == 0 || num == 9){
+      if (!profileCheck){
+        done = false
+      }
     }
-    else {
-      this.fieldsFilled = false
+    if (num == 1 || num == 9){
+      if (!degreesCheck){
+        done = false
+      }
     }
+    if (num == 2 || num == 9){
+      if (!certCheck){
+        done = false
+      }
+    }
+    if (num == 3 || num == 9){
+      if (!awardCheck){
+        done = false
+      }
+    }
+    if (num == 4 || num == 9){
+      if (!clearCheck){
+        done = false
+      }
+    }
+    if (num == 5 || num == 9){
+      if (!positionCheck){
+        done = false
+      }
+    }
+
+    if (num == 9){
+      this.fieldsFilled = done
+    }
+    return done
+  }
+
+  checkJob(job, num){
+    var positionCheck = true
+    var i = this.activeTab.job + num
+    if (!job.PositionTitle || (!this.currentJobs[i] && !job.EndDate) || !job.StartDate || !job.Employer) {
+      positionCheck = false
+    } else {
+      for (let a of job.agencyExperience) {
+        if (!this.agencyValidCheck(a.main.title) || (a.main.isPM && a.main.pmScore > 3 && a.main.pmDescription.length < 300) || (a.main.isKO && a.main.koScore > 3 && a.main.koDescription.length < 300)) {
+          positionCheck = false
+        } else {
+          for (let o of a.offices)
+          if (!this.subagencyValidCheck(a.main.title, o.title) || (o.isPM && o.pmScore > 3 && o.pmDescription.length < 300) || (o.isKO && o.koScore > 3 && o.koDescription.length < 300)) {
+            positionCheck = false
+          }
+        }
+      }
+    }
+    return positionCheck;
   }
 
   editPhoto() {
@@ -697,7 +831,7 @@ export class ProfileEditComponent implements OnInit {
     for (let tool of this.currentUser.foundTools) {
       toolNames.push(tool.title.toLowerCase())
     }
-    if (tool.title.toLowerCase().includes(this.toolSearch.toLowerCase())) {
+    if (tool.title.toLowerCase().includes(this.toolSearchLast.toLowerCase())) {
       if (!toolNames.includes(tool.title.toLowerCase())) {
         this.validNames.push(tool.title.toLowerCase())
         return true
@@ -707,6 +841,7 @@ export class ProfileEditComponent implements OnInit {
   }
 
   updateToolList(search){
+    this.toolSearchLast = this.toolSearch
     this.validNames = []
     var toolSearch = this.toolSearch
     var foundTools = this.currentUser.foundTools
@@ -771,7 +906,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteTool(i) {
     this.currentUser.foundTools.splice(i, 1);
-    this.checkFields()
+    this.checkFields(9)
     this.calculateSkillChart()
     this.refreshSkillChartBars()
   }
@@ -841,7 +976,10 @@ export class ProfileEditComponent implements OnInit {
 
   deleteJob(i) {
     this.currentUser.positionHistory.splice(i, 1);
-    this.checkFields()
+    while (!this.currentUser.positionHistory[this.activeTab.job]){
+      this.activeTab.job = this.activeTab.job-1
+    }
+    this.checkFields(9)
   }
 
 
@@ -877,7 +1015,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteDegree(i) {
     this.currentUser.education.splice(i, 1);
-    this.checkFields()
+    this.checkFields(9)
   }
 
   addClearance() {
@@ -892,7 +1030,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteClearance(i) {
     this.currentUser.clearance.splice(i, 1);
-    this.checkFields()
+    this.checkFields(9)
   }
 
 
@@ -904,7 +1042,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteAward(i) {
     this.currentUser.award.splice(i, 1);
-    this.checkFields()
+    this.checkFields(9)
   }
 
   addCertificate() {
@@ -918,7 +1056,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteCertificate(i) {
     this.currentUser.certification.splice(i, 1);
-    this.checkFields()
+    this.checkFields(9)
   }
 
   addAgency(job) {
@@ -944,7 +1082,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteAgency(job, i) {
     job.agencyExperience.splice(i, 1);
-    this.checkFields()
+    this.checkFields(9)
   }
   addOffice(agency) {
     agency.offices.push({
@@ -966,7 +1104,7 @@ export class ProfileEditComponent implements OnInit {
 
   deleteOffice(agency, i) {
     agency.offices.splice(i, 1);
-    this.checkFields()
+    this.checkFields(9)
   }
 
   checkYear(index) {
@@ -1129,7 +1267,7 @@ export class ProfileEditComponent implements OnInit {
     }
     for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
       if (this.currentUser.positionHistory[i].employmentType == 0) {
-        this.currentUser.positionHistory[i].agencyExperience[0].main.title = this.currentUser.positionHistory[i].Employer
+        this.currentUser.positionHistory[i].Employer = this.currentUser.positionHistory[i].agencyExperience[0].main.title
       }
       for (var x = 0; x < this.currentUser.positionHistory[i].agencyExperience.length; x++) {
         var endDate = 0

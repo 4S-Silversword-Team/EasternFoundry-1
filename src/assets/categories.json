@@ -1,0 +1,94 @@
+[
+  {
+    "code": 11,
+    "name": "Management"
+  },
+  {
+    "code": 13,
+    "name": "Business"
+  },
+  {
+    "code": 15,
+    "name": "Technology"
+  },
+  {
+    "code": 17,
+    "name": "Architecture & Engineering"
+  },
+  {
+    "code": 19,
+    "name": "Life, Physical, & Social Science"
+  },
+  {
+    "code": 21,
+    "name": "Community & Social Services"
+  },
+  {
+    "code": 23,
+    "name": "Legal"
+  },
+  {
+    "code": 25,
+    "name": "Education, Training, & Library"
+  },
+  {
+    "code": 27,
+    "name": "Arts, Design, Entertainment, Sports, & Media"
+  },
+  {
+    "code": 29,
+    "name": "Healthcare Practitioners & Technical"
+  },
+  {
+    "code": 31,
+    "name": "Healthcare Support"
+  },
+  {
+    "code": 33,
+    "name": "Protective Service"
+  },
+  {
+    "code": 35,
+    "name": "Food Prep & Serving"
+  },
+  {
+    "code": 37,
+    "name": "Building/Grounds Cleaning & Maintenance"
+  },
+  {
+    "code": 39,
+    "name": "Personal Care & Service"
+  },
+  {
+    "code": 41,
+    "name": "Sales"
+  },
+  {
+    "code": 43,
+    "name": "Office & Administrative Support"
+  },
+  {
+    "code": 45,
+    "name": "Farming, Fishing, & Forestry"
+  },
+  {
+    "code": 47,
+    "name": "Construction & Extraction"
+  },
+  {
+    "code": 49,
+    "name": "Installation, Maintenance, & Repair"
+  },
+  {
+    "code": 51,
+    "name": "Production"
+  },
+  {
+    "code": 53,
+    "name": "Transportation & Material"
+  },
+  {
+    "code": 55,
+    "name": "Military"
+  }
+]
