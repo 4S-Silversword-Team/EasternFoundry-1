@@ -226,17 +226,16 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     var userId = this.auth.getLoggedInUser()
     this.userService.getUserbyID(userId).toPromise().then((user) =>{
       var invite = {
+        bugReport: false,
         sender: {
           id: user._id,
           name: user.firstName + ' ' + user.lastName,
           avatar: user.avatar,
-          delete: true,
         },
         recipient: [{
           id: this.currentAccount._id,
           name: this.currentAccount.name,
           avatar: this.currentAccount.avatar,
-          delete: false,
         }],
         subject: user.firstName + ' ' + user.lastName + ' Wants To Join ' + this.currentAccount.name,
         content: user.firstName + ' ' + user.lastName + ' would like to join ' + this.currentAccount.name + '. Do you accept?',
@@ -246,11 +245,9 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
           companyId: this.currentAccount._id,
           pastPerformanceId: '',
         },
-        read: false,
         replyToId: '',
         date: date,
         timestamp: time,
-        bugReport: false,
       }
       this.messageService.createMessage(invite).toPromise().then((result) => {
         this.inviteSent = true

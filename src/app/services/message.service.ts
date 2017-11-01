@@ -53,9 +53,16 @@ export class MessageService {
   }
 
   createMessage(request: any): Observable<Message> {
-    var response = this.authHttp.post(environment.apiRoot + "messages/add", request)
+    var response = this.authHttp.post(environment.apiRoot + "messages/send", request)
       .map(response => <Message> JSON.parse(JSON.stringify(response)));
     return response;
   }
+
+  deleteMessage(id: string): Observable<any> {
+    var response = this.authHttp.delete(environment.apiRoot + "messages/" + id)
+      .map(response => <Message> JSON.parse(JSON.stringify(response)));
+    return response;
+  }
+
 
 }

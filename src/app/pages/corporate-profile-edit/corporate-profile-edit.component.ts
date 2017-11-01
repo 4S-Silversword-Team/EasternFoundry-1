@@ -176,17 +176,16 @@ export class CorporateProfileEditComponent implements OnInit {
     var date = new Date()
     var time = date.getTime()
     var invite = {
+      bugReport: false,
       sender: {
         id: this.currentAccount._id,
         name: this.currentAccount.name,
         avatar: this.currentAccount.avatar,
-        delete: true,
       },
       recipient: [{
         id: person._id,
         name: person.firstName + ' ' + person.lastName,
         avatar: person.avatar,
-        delete: false,
       }],
       subject: 'Invitiation To Join ' + this.currentAccount.name,
       content: this.currentAccount.name + ' has invited you to join their company. Would you like to accept?',
@@ -196,11 +195,9 @@ export class CorporateProfileEditComponent implements OnInit {
         companyId: this.currentAccount._id,
         pastPerformanceId: '',
       },
-      read: false,
       replyToId: '',
       date: date,
       timestamp: time,
-      bugReport: false,
     }
     this.messageService.createMessage(invite).toPromise().then((result) => {
       console.log('did it')

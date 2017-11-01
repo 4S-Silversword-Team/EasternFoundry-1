@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 
 import { User } from '../../classes/user'
+import { Company } from '../../classes/company'
 import { Message } from '../../classes/message'
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { UserService } from '../../services/user.service'
+import { CompanyService } from '../../services/company.service'
 import { MessageService } from '../../services/message.service'
 import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
 
 @Component({
   selector: 'app-message',
-  providers: [UserService, MessageService, CompanyUserProxyService],
+  providers: [UserService, CompanyService, MessageService, CompanyUserProxyService],
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.css']
 })
@@ -19,6 +21,7 @@ export class MessageComponent implements OnInit {
   promiseFinished: Boolean = false
   bugReport: Boolean = false
   currentUser: User = new User()
+  currentCompany: Company = new Company()
   inbox: Message[] = []
   outbox: Message[] = []
   bugbox: Message[] = []
@@ -34,15 +37,14 @@ export class MessageComponent implements OnInit {
   messageOpen: Boolean = false
   currentDate: string =  (new Date().getMonth()+1) + '-' + new Date().getDate() + '-' + new Date().getFullYear()
   newMessage: any = {
+    bugReport: false,
     sender: {
       id: '',
       name: '',
-      delete: false,
     },
     recipient: [{
       id: '',
       name: '',
-      delete: false,
     }],
     subject: '',
     content: '',
@@ -52,15 +54,14 @@ export class MessageComponent implements OnInit {
       companyId: '',
       pastPerformanceId: '',
     },
-    read: false,
     replyToId: '',
     date: '',
     timestamp: '',
-    bugReport: false,
   }
 
   constructor(
     private userService: UserService,
+    private companyService: CompanyService,
     private messageService: MessageService,
     private companyUserProxyService: CompanyUserProxyService,
     private route: ActivatedRoute,
@@ -73,54 +74,22 @@ export class MessageComponent implements OnInit {
       this.newMessage.sender.name = this.currentUser.firstName + ' ' + this.currentUser.lastName
       this.userService.getUsers().then((result) => {
         this.allUsers = result
-        this.messageService.getMailbox(this.currentUser._id).toPromise().then((result) => {
-          var mail: any = result
-          var companies = []
-          var companyPromises = []
-          for (let p of this.currentUser.companyUserProxies){
-            if (p.role && p.role.title == 'admin'){
-              companies.push(p.company)
-            }
-          }
-          for (let c of companies) {
-            companyPromises.push(this.messageService.getMailbox(c).toPromise().then((result) => {
-              var res: any = result
-              for (let m of res){
-                mail.push(m)
-              }
-            }))
-          }
-          Promise.all(companyPromises).then(res=>{
+        if (!this.router.url.startsWith('/corporate-profile')){
+          this.messageService.getMailbox(this.currentUser._id).toPromise().then((result) => {
+            var mail: any = result
             if ( this.router.url !== '/bugreport' ) {
               for (let i of mail) {
                 if (!i.timestamp){
                   i.timestamp = 0
                 }
-                if (i.sender.id == this.currentUser._id && !i.sender.delete){
-                  this.outbox.push(i)
-                } else {
-                  for (let c of companies){
-                    if (i.sender.id == c && !i.sender.delete) {
-                      this.outbox.push(i)
-                      break
-                    }
-                  }
+                if (i.inbox) {
+                  this.inbox.push(i)
                 }
-                for (let r of i.recipient) {
-                  if (r.id == this.currentUser._id && !r.delete){
-                    if (i.bugReport){
-                      this.bugbox.push(i)
-                    } else{
-                      this.inbox.push(i)
-                    }
-                  } else {
-                    for (let c of companies){
-                      if (r.id == c && !r.delete) {
-                        this.inbox.push(i)
-                        break
-                      }
-                    }
-                  }
+                if (i.outbox) {
+                  this.outbox.push(i)
+                }
+                if (i.bugReport) {
+                  this.bugbox.push(i)
                 }
               }
               this.inbox.sort(function(a,b){
@@ -155,8 +124,48 @@ export class MessageComponent implements OnInit {
               this.bugReport = true
             }
             this.promiseFinished = true;
+          });
+        } else {
+          this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => {
+            this.currentCompany = result
+            var admin = false
+            for (let p of this.currentUser.companyUserProxies){
+              if (p.company._id == this.currentCompany._id){
+                if (p.role && p.role.title == 'admin'){
+                  admin = true
+                }
+              }
+            }
+            if (admin) {
+              this.messageService.getMailbox(this.currentCompany._id).toPromise().then((result) => {
+                var mail: any = result
+                for (let i of mail) {
+                  if (!i.timestamp){
+                    i.timestamp = 0
+                  }
+                  if (i.inbox) {
+                    this.inbox.push(i)
+                  }
+                  if (i.outbox) {
+                    this.outbox.push(i)
+                  }
+                }
+                this.inbox.sort(function(a,b){
+                  return b.timestamp - a.timestamp;
+                })
+                this.outbox.sort(function(a,b){
+                  return b.timestamp - a.timestamp;
+                })
+                this.bugReport = false
+                this.promiseFinished = true;
+              });
+            }
+            else {
+              console.log('nope')
+              // window.history.back();
+            }
           })
-        });
+        }
       });
     });
 
@@ -183,44 +192,28 @@ export class MessageComponent implements OnInit {
     this.messageOpen = false
   }
 
-  deleteMessage(message, box, i){
+  deleteMessage(message, i){
     this.activeMessage = new Message()
     this.messageOpen = false
-    if (box == 0){
-      for (let r of message.recipient) {
-        if (r.id == this.currentUser._id){
-          r.delete = true
-        }
-      }
-      this.messageService.updateMessage(message._id, message).toPromise().then((res) => {
-        console.log('gone!')
+    var inbox = message.inbox
+    var outbox = message.outbox
+    var bugbox = message.bugReport
+    this.messageService.deleteMessage(message._id).toPromise().then((res) => {
+      console.log('gone!')
+      if (inbox){
         this.inbox.splice(i,1)
-      });
-    } else if (box == 1){
-      message.sender.delete = true
-      this.messageService.updateMessage(message._id, message).toPromise().then((res) => {
-        console.log('gone!')
-        this.outbox.splice(i,1)
-      });
-    } else if (box == 2){
-      for (let r of message.recipient) {
-        if (r.id == this.currentUser._id){
-          r.delete = true
-        }
       }
-      this.messageService.updateMessage(message._id, message).toPromise().then((res) => {
-        console.log('gone!')
+      if (outbox){
+        this.outbox.splice(i,1)
+      }
+      if (bugbox){
         this.bugbox.splice(i,1)
-      });
-    }
+      }
+    });
   }
 
   switchTab(newTab) {
-    if (this.activeTab.main == newTab) {
-      this.activeTab.main = 7
-    } else {
-      this.activeTab.main = newTab
-    }
+    this.activeTab.main = newTab
   }
 
   setRecipientUser(u){
@@ -250,21 +243,20 @@ export class MessageComponent implements OnInit {
       "stillAffiliated": true
     }
     this.companyUserProxyService.addCompanyUserProxy(request).then(() => {
-      console.log('hell yeah')
+      console.log('proxy created')
       var d = new Date()
       var t = d.getTime()
       var response = {
+        bugReport: false,
         sender: {
           id: this.currentUser._id,
           name: this.currentUser.firstName + " " + this.currentUser.lastName,
           avatar: this.currentUser.avatar,
-          delete: true,
         },
         recipient: [{
           id: company.id,
           name: company.name,
           avatar: company.avatar,
-          delete: false,
         }],
         subject: 'Invitation Accepted!',
         content: this.currentUser.firstName + " " + this.currentUser.lastName + ' accepted your invitation and has joined ' + company.name + '!',
@@ -274,15 +266,13 @@ export class MessageComponent implements OnInit {
           companyId: '',
           pastPerformanceId: '',
         },
-        read: false,
-        replyToId: '',
+        replyToId: message._id,
         date: d,
         timestamp: t,
-        bugReport: false,
       }
       this.messageService.createMessage(response).toPromise().then((result) => {
-        console.log('HELL YEA')
-        this.deleteMessage(message, 0, this.activeMessageIndex)
+        console.log('accepted')
+        this.deleteMessage(message, this.activeMessageIndex)
         this.closeMessage()
         this.router.navigate(['corporate-profile', company.id]);
       });
@@ -293,17 +283,16 @@ export class MessageComponent implements OnInit {
     var d = new Date()
     var t = d.getTime()
     var response = {
+      bugReport: false,
       sender: {
         id: this.currentUser._id,
         name: this.currentUser.firstName + " " + this.currentUser.lastName,
         avatar: this.currentUser.avatar,
-        delete: true,
       },
       recipient: [{
         id: company.id,
         name: company.name,
         avatar: company.avatar,
-        delete: false,
       }],
       subject: 'Invitation Declined',
       content: this.currentUser.firstName + " " + this.currentUser.lastName + ' has declined your invitation to join ' + company.name + '.',
@@ -313,15 +302,91 @@ export class MessageComponent implements OnInit {
         companyId: '',
         pastPerformanceId: '',
       },
-      read: false,
-      replyToId: '',
+      replyToId: message._id,
       date: d,
       timestamp: t,
-      bugReport: false,
     }
     this.messageService.createMessage(response).toPromise().then((result) => {
-      console.log('HELL YEA')
-      this.deleteMessage(message, 0, this.activeMessageIndex)
+      console.log('declined')
+      this.deleteMessage(message, this.activeMessageIndex)
+      this.closeMessage()
+    });
+  }
+
+  acceptPersonInvitation(message, person){
+    let request = {
+      "userProfile": person.id,
+      "company": this.currentCompany._id,
+      "startDate": this.currentDate,
+      "endDate": this.currentDate,
+      "stillAffiliated": true
+    }
+    this.companyUserProxyService.addCompanyUserProxy(request).then(() => {
+      console.log('proxy created')
+      var d = new Date()
+      var t = d.getTime()
+      var response = {
+        bugReport: false,
+        sender: {
+          id: this.currentCompany._id,
+          name: this.currentCompany.name,
+          avatar: this.currentCompany.avatar,
+        },
+        recipient: [{
+          id: person.id,
+          name: person.name,
+          avatar: person.avatar,
+        }],
+        subject: 'Request Accepted!',
+        content: this.currentCompany.name + ' has accepted your request to join!',
+        isInvitation: false,
+        invitation: {
+          fromUser: false,
+          companyId: '',
+          pastPerformanceId: '',
+        },
+        replyToId: message._id,
+        date: d,
+        timestamp: t,
+      }
+      this.messageService.createMessage(response).toPromise().then((result) => {
+        console.log('accepted')
+        this.deleteMessage(message, this.activeMessageIndex)
+        this.closeMessage()
+      });
+    });
+  }
+
+  declinePersonInvitation(message, person){
+    var d = new Date()
+    var t = d.getTime()
+    var response = {
+      bugReport: false,
+      sender: {
+        id: this.currentCompany._id,
+        name: this.currentCompany.name,
+        avatar: this.currentCompany.avatar,
+      },
+      recipient: [{
+        id: person.id,
+        name: person.name,
+        avatar: person.avatar,
+      }],
+      subject: 'Request Declined',
+      content: this.currentCompany.name + ' has declined your request to join.',
+      isInvitation: false,
+      invitation: {
+        fromUser: false,
+        companyId: '',
+        pastPerformanceId: '',
+      },
+      replyToId: message._id,
+      date: d,
+      timestamp: t,
+    }
+    this.messageService.createMessage(response).toPromise().then((result) => {
+      console.log('declined')
+      this.deleteMessage(message, this.activeMessageIndex)
       this.closeMessage()
     });
   }
@@ -341,17 +406,16 @@ export class MessageComponent implements OnInit {
         console.log('BUG SENT')
       } else {
         this.newMessage = {
+          bugReport: false,
           sender: {
             id: '',
             name: '',
             avatar: '',
-            delete: false
           },
           recipient: [{
             id: '',
             name: '',
             avatar: '',
-            delete: false
           }],
           subject: '',
           content: '',
@@ -361,11 +425,9 @@ export class MessageComponent implements OnInit {
             companyId: '',
             pastPerformanceId: '',
           },
-          read: false,
           replyToId: '',
           date: '',
           timestamp: '',
-          bugReport: false,
         }
         this.activeTab.main = 0
       }

@@ -17,11 +17,14 @@ export class AppComponent implements OnInit {
   signedIn: boolean = false;
   currentUser: any = null;
   unreadCount: number = 0
+  companies: any[] = []
+  companyUnreadCount: number = 0
   bugCount: number = 0
 
   constructor(
     private auth: AuthService,
     private messageService: MessageService,
+    private userService: UserService,
     private router: Router,
   ){
     console.log("Navbar checkin login status")
@@ -32,17 +35,36 @@ export class AppComponent implements OnInit {
       this.currentUser = null
     } else {
       this.currentUser = localStorage.getItem('uid')
-      this.messageService.getUnread(this.currentUser).toPromise().then((result) => {
-        this.unreadCount=result
-        console.log(this.unreadCount + ' unread messages')
-        this.messageService.getUnreadBugReports(this.currentUser).toPromise().then((result) => {
-          console.log('its checking')
-          this.bugCount=result
+      var user
+      this.userService.getUserbyID(localStorage.getItem('uid')).toPromise().then((result) => {
+        user = result
+        this.messageService.getUnread(this.currentUser).toPromise().then((result) => {
+          this.unreadCount = result
+          console.log(this.unreadCount + ' unread messages')
+          var companyPromises = []
+          for (let p of user.companyUserProxies) {
+            if (p.role && p.role.title == 'admin') {
+              companyPromises.push(this.messageService.getUnread(p.company._id).toPromise().then((result) => {
+                this.companies.push({
+                  id: p.company._id,
+                  name: p.company.name,
+                  count: result,
+                })
+              }))
+            }
+          }
+          Promise.all(companyPromises).then(result=>{
+            for (let c of this.companies){
+              this.companyUnreadCount += c.count
+            }
+            this.messageService.getUnreadBugReports(this.currentUser).toPromise().then((result) => {
+              console.log('its checking')
+              this.bugCount=result
+            })
+          })
         })
       })
     }
-
-
   }
 
 

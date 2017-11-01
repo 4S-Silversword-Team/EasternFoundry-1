@@ -29,6 +29,7 @@ export const ROUTES: Routes = [
   { path: 'user-profile/:id',      component: ProfileComponent },
   { path: 'user-profile/:id/resume',      component: ProfileResumeComponent },
   { path: 'corporate-profile/:id', component: CorporateProfileComponent },
+  { path: 'corporate-profile/:id/mailbox', component: MessageComponent },
   { path: 'past-performance/:id', component: PastPerformanceComponent},
   { path: 'user-profile-edit/:id',      component: ProfileEditComponent },
   { path: 'all-profiles',      component: AllProfilesComponent },

@@ -1,16 +1,18 @@
 export class Message {
     _id: string
+    ownerId: string
+    inbox: boolean
+    outbox: boolean
+    bugReport: boolean
     sender: {
       id: string
       name: string
       avatar: string
-      delete: boolean
     }
     recipient: [{
       id: string
       name: string
       avatar: string
-      delete: boolean
     }]
     subject: string
     content: string
@@ -24,5 +26,4 @@ export class Message {
     replyToId: string
     date: string
     timestamp: number
-    bugReport: boolean
 }
