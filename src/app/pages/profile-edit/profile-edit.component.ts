@@ -83,6 +83,7 @@ export class ProfileEditComponent implements OnInit {
   currentJobs: boolean[] = []
   lastUsedEndDate: string[] = []
   years: number[] = [];
+  clearances: string[] = ['Confidential', 'Secret', 'Top Secret']
   activeTab: any = {
     main: 0,
     job: 0,

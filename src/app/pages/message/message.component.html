@@ -48,7 +48,7 @@
   <div class="" *ngIf='this.messageOpen'>
     <div class="open-message">
       <p>FROM: {{this.activeMessage.sender.name}}</p>
-      <p>TO: {{this.activeMessage.recipient[0].name}}</p>
+      <p>TO: <span *ngFor="let r of this.activeMessage.recipient; let i = index">{{r.name}}<span *ngIf="i < this.activeMessage.recipient.length-1">, </span></span></p>
       <p>SUBJECT: {{this.activeMessage.subject}}</p>
       <p>CONTENT: {{this.activeMessage.content}}</p>
       <div class="invitation-box" *ngIf="this.activeMessage.isInvitation && !this.activeMessage.invitation.fromUser">
@@ -108,7 +108,7 @@
           <img src="./assets/img/btn-close.png" alt="" class="message-close">
         </div>
         <div class="" style="width: calc(100% - 15px); height: 100%;"  (click)='openMessage(i, index)'>
-          <p>TO: {{i.recipient[0].name}}</p>
+          <p>FROM: {{i.sender.name}}</p>
           <p>SUBJECT: {{i.subject}}</p>
         </div>
       </div>

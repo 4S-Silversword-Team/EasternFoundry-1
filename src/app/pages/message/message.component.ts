@@ -82,13 +82,13 @@ export class MessageComponent implements OnInit {
                 if (!i.timestamp){
                   i.timestamp = 0
                 }
-                if (i.inbox) {
+                if (i.inbox && !i.bugReport) {
                   this.inbox.push(i)
                 }
                 if (i.outbox) {
                   this.outbox.push(i)
                 }
-                if (i.bugReport) {
+                if (i.bugReport && !i.outbox) {
                   this.bugbox.push(i)
                 }
               }

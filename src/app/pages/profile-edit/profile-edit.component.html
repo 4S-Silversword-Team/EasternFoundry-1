@@ -211,7 +211,11 @@
             <p class="">Expiration</p>
           </div>
           <div class="" style="width: calc(100% - 160px); float: left;">
-            <input class="" style="width: 100%;" type="text" [(ngModel)] = 'clearance.clearanceType' [ngClass]="{'empty-field': !clearance.clearanceType}">
+            <select class="" style="width: 100%;" type="text" [(ngModel)] = 'clearance.clearanceType' [ngClass]="{'empty-field': !clearance.clearanceType}">
+              <option value="Confidential">Confidential</option>
+              <option value="Secret">Secret</option>
+              <option value="Top Secret">Top Secret</option>
+            </select>
             <input class="" style="width: 100%;" type="number" step="1" placeholder="Year" [(ngModel)] = 'clearance.awarded' [ngClass]="{'empty-field': !clearance.awarded || clearance.awarded.toString().length != 4}">
             <input class="" style="width: 100%;" type="number" step="1" placeholder="Year" [(ngModel)] = 'clearance.expiration' [ngClass]="{'empty-field': !clearance.expiration || clearance.expiration.toString().length != 4}">
           </div>

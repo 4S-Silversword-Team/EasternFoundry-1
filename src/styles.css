@@ -404,6 +404,13 @@ input {
     border-radius: 0px;
     border: 1px solid #ccc;
 }
+select {
+    height: 34px;
+    margin-top: 8px;
+    padding: 5px;
+    border-radius: 0px;
+    border: 1px solid #ccc;
+}
 
 .div-split-line {
     height: 1px;
