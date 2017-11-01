@@ -67,7 +67,8 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   ppTab: number = 0;
   isUserAdmin: boolean = false;
   allCategories: any[]
-
+  categories: any[] = []
+  serviceChart: any;
   serviceChartNames: any[] = []
 
   constructor(
@@ -367,6 +368,89 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
             }
           }
         }
+        for (let t of toolsToPush) {
+          // console.log(code.substring(0,2) + " - " + t.title)
+          var newName
+          var newCode
+          for (let i of this.allCategories) {
+            if (t.title == i.title){
+              newName = i.category
+              newCode = i.code.substring(0,2)
+            }
+          }
+            var newCategory = {
+              code: newCode,
+              name: newName,
+              score: 5
+            }
+            var match = false
+            for (let c of this.categories) {
+              if (newCategory.name == c.name) {
+                match = true
+                c.score = Math.round(c.score + (t.score / 5))
+              }
+            }
+            if (!match){
+              this.categories.push(newCategory)
+            }
+          }
+          // for (let o of this.occupations) {
+          //   console.log(o.title + ' ' + o.score)
+          // }
+          var serviceData = []
+          var catPointsTotal = 0
+          for (let c of this.categories) {
+            catPointsTotal += c.score
+          }
+          var other = {
+            name: 'Other',
+            y: 0,
+          }
+          for (let c of this.categories) {
+            var percent = 360*(c.score/catPointsTotal)
+            if (((c.score/catPointsTotal)*100) >= 2){
+              serviceData.push({
+                name: c.name,
+                y: percent
+              })
+            } else {
+              other.y = other.y + percent
+            }
+          }
+          serviceData.push(other)
+
+          this.serviceChart = new Chart({
+            chart: {
+                type: 'pie',
+                backgroundColor: 'rgba(0, 100, 200, 0.00)',
+                renderTo: "service_chart"
+            },
+            title: {
+                text: 'Capabilities'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+
+            plotOptions: {
+              pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                  enabled: true,
+                  format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                  style: {
+                      color: 'black'
+                  }
+                }
+              }
+            },
+            series: [{
+              name: 'Focus',
+              colorByPoint: true,
+              data: serviceData,
+            }]
+          });
       }
     }
     for (let s of sortedOccupations){
