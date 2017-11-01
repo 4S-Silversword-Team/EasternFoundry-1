@@ -72,7 +72,7 @@ export class CorporateProfileEditComponent implements OnInit {
   noResults = false
   productTabs = [0]
   activeTab = {
-    main: 1,
+    main: 0,
     product: 0,
   }
   invitationSent: boolean[] = []

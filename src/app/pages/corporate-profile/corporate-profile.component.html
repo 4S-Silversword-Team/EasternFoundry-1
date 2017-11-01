@@ -104,7 +104,7 @@
     <div class="col-xs-12 div-title" style="text-align: center; margin-top: 0.5vh; margin-bottom: 0.5vh;">
       <p class="">Leadership</p>
     </div>
-    <div *ngIf="users[0]" class="leadership-inner">
+    <div *ngIf="users[0]" class="leadership-inner scrollbar">
       <div class="col-xs-12 col-md-6" style="padding: 2px" *ngFor='let index of users'>
         <div class="leader-panel col-xs-12">
           <div class="left leader-avatar-small">
@@ -301,8 +301,8 @@
       <div class="div-title col-xs-12">
         <p>Past Performances</p>
       </div>
-      <div class="past-performance-inner">
-        <div *ngIf="!pastperformances[0]">No past performance to show</div>
+      <div class="past-performance-inner scrollbar">
+        <div *ngIf="pastperformances.length < 1">No past performance to show</div>
         <div class="" *ngFor='let pp of this.pastperformances; let i = index'>
           <div class="employee-panel col-xs-12 col-md-6">
             <div class="left avatar-small">
