@@ -14,6 +14,9 @@ import { CompanyUserProxyService } from '../../services/companyuserproxy.service
   selector: 'app-message',
   providers: [UserService, CompanyService, MessageService, CompanyUserProxyService],
   templateUrl: './message.component.html',
+  host: {
+      '(document:click)': 'handleClick($event)',
+  },
   styleUrls: ['./message.component.css']
 })
 export class MessageComponent implements OnInit {
@@ -231,8 +234,32 @@ export class MessageComponent implements OnInit {
           this.filteredUsers.push(i)
         }
       }
+      this.recipientSearchOn = true
+    } else if (search.length == 0) {
+      this.recipientSearchOn = false
     }
   }
+
+  turnOnSearch(){
+    if (this.newMessage.recipient[0].name.length > 0) {
+      this.recipientSearchOn = true
+    }
+  }
+
+  handleClick(event){
+    var clickedComponent = event.target;
+    var inside = false;
+    do {
+      if (clickedComponent === document.getElementById('recipient') || clickedComponent === document.getElementById('recipient-dropdown')) {
+        inside = true;
+      }
+      clickedComponent = clickedComponent.parentNode;
+    } while (clickedComponent);
+    if(!inside){
+      this.recipientSearchOn = false
+    }
+  }
+
 
   acceptCompanyInvitation(message, company){
     let request = {
