@@ -66,28 +66,6 @@
 
   <div class="analytics col-xs-12 clear" style="background: rgba(223,223,225,1); height: 50vh">
     <div id="service_chart"  style="height: 46.5vh; margin: 0 auto" [chart]="serviceChart"></div>
-<!-- 
-    <div class="product-tab-bar col-xs-10 col-xs-offset-1">
-      <div class="product-tab col-xs-3" (click)='activeTab.service = activeTab.service-1' *ngIf='activeTab.service>0 && this.serviceChartNames[this.activeTab.service-1]'>
-        <div *ngIf='this.serviceChartNames[this.activeTab.service-1].length < 20'>{{this.serviceChartNames[this.activeTab.service-1]}}</div>
-        <div *ngIf='this.serviceChartNames[this.activeTab.service-1].length >= 20'>{{this.serviceChartNames[this.activeTab.service-1].substring(0,20)}}...</div>
-      </div>
-      <div class="product-tab product-tab-active col-xs-6 col-xs-offset-3" *ngIf='activeTab.service<=0 && this.serviceChartNames[this.activeTab.service]'>
-        <div *ngIf='this.serviceChartNames[this.activeTab.service].length < 35'>{{this.serviceChartNames[this.activeTab.service]}}</div>
-        <div *ngIf='this.serviceChartNames[this.activeTab.service].length >= 35'>{{this.serviceChartNames[this.activeTab.service].substring(0,30)}}...</div>
-      </div>
-      <div class="product-tab product-tab-active col-xs-6" *ngIf='activeTab.service>0 && this.serviceChartNames[this.activeTab.service]'>
-        <div *ngIf='this.serviceChartNames[this.activeTab.service].length < 35'>{{this.serviceChartNames[this.activeTab.service]}}</div>
-        <div *ngIf='this.serviceChartNames[this.activeTab.service].length >= 35'>{{this.serviceChartNames[this.activeTab.service].substring(0,35)}}...</div>
-      </div>
-      <div class="product-tab col-xs-3" (click)='activeTab.service = activeTab.service+1' *ngIf='this.serviceChartNames[activeTab.service+1]'>
-        <div *ngIf='this.serviceChartNames[this.activeTab.service+1].length < 20'>{{this.serviceChartNames[this.activeTab.service+1]}}</div>
-        <div *ngIf='this.serviceChartNames[this.activeTab.service+1].length >= 20'>{{this.serviceChartNames[this.activeTab.service+1].substring(0,20)}}...</div>
-      </div>
-    </div>
-    <div class="" *ngFor='let c of this.charts; let i = index'>
-      <div id="team_chart"  style="max-width: 85%; margin: 0 auto; height:calc(50vh - 40px)" [chart]='c' *ngIf='i==activeTab.service'></div>
-    </div> -->
   </div>
 </div>
 <!-- EMPLOYEES TAB -->
