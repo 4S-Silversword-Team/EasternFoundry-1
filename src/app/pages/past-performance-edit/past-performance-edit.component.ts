@@ -103,9 +103,9 @@ export class PastPerformanceEditComponent implements OnInit {
           if (!this.currentPastPerformance.area) {
             this.currentPastPerformance.area = ""
           }
+          this.getEditorAdminStatus()
           this.myCallback();
           this.myCallback2()
-          this.getEditorAdminStatus()
         });
       } else {
         console.log("in past performance create")

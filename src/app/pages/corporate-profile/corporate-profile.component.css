@@ -5,11 +5,11 @@
 
 .basic-info {
   padding: 0px;
-  height: calc(42.5vh - 60px);
+  height: calc(50vh - 130px);
 }
 .basic-info-inner {
   position: absolute;
-  height: calc(42.5vh - 110px);
+  height: calc(50vh - 130px);
   width: calc(100% - 180px);
   bottom: 0px;
   right: 0px;

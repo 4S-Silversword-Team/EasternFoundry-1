@@ -87,12 +87,12 @@
 
 .basic-info {
   padding: 0px;
-  height: calc(53vh - 60px);
+  height: calc(60vh - 130px);
 }
 
 .basic-info-inner {
   position: absolute;
-  height: calc(53vh - 110px);
+  height: calc(60vh - 180px);
   width: calc(100% - 180px);
   bottom: 0px;
   right: 0px;

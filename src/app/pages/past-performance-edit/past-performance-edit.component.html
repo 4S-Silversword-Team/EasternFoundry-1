@@ -5,7 +5,7 @@
 <div class="past-performance col-xs-12 clear" *ngIf='this.promiseFinished && !this.isUserAdmin'>
   <h3>You don't have permission to edit this Past Performance.</h3>
 </div>
-<div class="container" *ngIf='this.isUserAdmin'>
+<div class="container" *ngIf='this.promiseFinished && this.isUserAdmin'>
   <div class="page">
     <div class="col-xs-2" style="margin: 0px; padding: 0px;">
       <div class="edit-tab-bar">
