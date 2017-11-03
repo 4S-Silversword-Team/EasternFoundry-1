@@ -319,6 +319,10 @@
   border-right: 0px solid black;
 }
 
+.pp-tab-small {
+  display: none
+}
+
 @media screen and (max-width: 1200px) {
   .pp-tab {
     display: none
@@ -329,9 +333,6 @@
     line-height: 16px;
     display: block;
   }
-}
-.pp-tab-small {
-  display: none
 }
 
 
