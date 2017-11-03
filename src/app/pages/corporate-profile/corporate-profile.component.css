@@ -211,7 +211,7 @@
 }
 
 .service {
-  height: calc(82vh - 40px);
+  height: calc(100vh - 130px);
   overflow: auto
 }
 
@@ -314,6 +314,26 @@
   top: 50%;
   transform: translate(-50%, -50%);
 }
+
+.tab-right {
+  border-right: 0px solid black;
+}
+
+@media screen and (max-width: 1200px) {
+  .pp-tab {
+    display: none
+  }
+  .pp-tab-small {
+    padding-top: 14px;
+    font-size: 16px;
+    line-height: 16px;
+    display: block;
+  }
+}
+.pp-tab-small {
+  display: none
+}
+
 
 
 .fullwidth {

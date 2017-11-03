@@ -222,6 +222,7 @@ export class MessageComponent implements OnInit {
   setRecipientUser(u){
     this.newMessage.recipient[0].id = u._id
     this.newMessage.recipient[0].name = u.firstName + ' ' + u.lastName
+    this.filterUsers(this.newMessage.recipient[0].name)
     this.recipientSearchOn = false
   }
 

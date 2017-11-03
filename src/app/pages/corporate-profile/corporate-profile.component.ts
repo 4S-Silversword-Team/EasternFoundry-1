@@ -182,22 +182,23 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
 
   hotkeys(event){
     // console.log(event.keyCode.toString());
-    if (this.activeTab.main == 0) {
+    if (this.activeTab.main == 2) {
       if (event.keyCode == 37 && this.activeTab.service > 0){
         this.activeTab.service--
       } else if (event.keyCode == 39 && this.serviceChartNames[this.activeTab.service+1]){
         this.activeTab.service++
       }
+    } else if (this.activeTab.main == 3) {
+      if (event.keyCode == 37 && this.activeTab.product > 0){
+        this.activeTab.product--
+      } else if (event.keyCode == 39 && this.products[this.activeTab.product+1]){
+        this.activeTab.product++
+      }
     }
   }
 
   switchTab(newTab) {
-    if (this.activeTab.main == newTab) {
-      this.activeTab.main = 7
-    } else {
-      this.activeTab.main = newTab
-    }
-    console.log(newTab)
+    this.activeTab.main = newTab
   }
 
   getAdminStatus() {

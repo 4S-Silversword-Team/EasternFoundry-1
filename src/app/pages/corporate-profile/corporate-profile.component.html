@@ -17,8 +17,11 @@
       <div class="profile-navbar-tab" (click)='switchTab(3)' [ngClass]="{'profile-navbar-tab-active': this.activeTab.main == 3}">
         Products
       </div>
-      <div class="profile-navbar-tab" (click)='switchTab(4)' style="border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-right: 0px solid black;" [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 4}">
+      <div class="profile-navbar-tab tab-right pp-tab" (click)='switchTab(4)' [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 4}">
         Past Performances
+      </div>
+      <div class="profile-navbar-tab tab-right pp-tab-small" (click)='switchTab(4)' style="overflow: hidden" [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 4}">
+        Past<br>Performances
       </div>
     </div>
     <div class="edit-box">
@@ -152,7 +155,7 @@
   </div>
   <div class="service col-xs-12 clear">
     <div class="" *ngFor='let c of this.charts; let i = index'>
-      <div id="team_chart"  style="max-width: 85%; margin: 0 auto; height:calc(82vh - 40px)" [chart]='c' *ngIf='i==activeTab.service'></div>
+      <div id="team_chart"  style="max-width: 100%; margin: 0 auto; height: calc(99.5vh - 170px)" [chart]='c' *ngIf='i==activeTab.service'></div>
     </div>
   </div>
 </div>

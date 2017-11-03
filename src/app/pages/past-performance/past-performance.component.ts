@@ -248,12 +248,7 @@ export class PastPerformanceComponent implements OnInit {
   }
 
   switchTab(newTab) {
-    if (this.activeTab.main == newTab) {
-      this.activeTab.main = 7
-    } else {
-      this.activeTab.main = newTab
-    }
-    console.log(newTab)
+    this.activeTab.main = newTab
   }
 
   getAdminStatus() {
