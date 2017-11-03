@@ -28,3 +28,9 @@
   margin-right: 1%;
   float: left;
 }
+.full-block {
+  width: 98%;
+  margin-left: 1%;
+  margin-right: 1%;
+  float: left;
+}

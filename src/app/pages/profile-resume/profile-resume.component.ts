@@ -11,7 +11,7 @@ import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
 import { CompanyService } from '../../services/company.service';
 import { AuthService } from '../../services/auth.service'
-import * as jsPDF  from 'jspdf'
+import * as jsPDF  from 'jspdf';
 import * as html2canvas from 'html2canvas';
 
 
@@ -21,7 +21,7 @@ declare var $: any;
   selector: 'app-profile-resume',
   templateUrl: './profile-resume.component.html',
   providers: [UserService, CompanyService, AuthService],
-  host: {'(window:keydown)': 'hotkeys($event)'},
+  // host: {'(window:keydown)': 'hotkeys($event)'},
   styleUrls: ['./profile-resume.component.css']
 })
 export class ProfileResumeComponent implements OnInit {
