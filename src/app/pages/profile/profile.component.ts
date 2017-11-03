@@ -76,7 +76,7 @@ export class ProfileComponent implements OnInit {
   yearsOfWork: number = 0;
   professionalPoints: number = 0;
   activeTab: any = {
-    main: 0,
+    main: 1,
     skill: 0,
     service: 0,
   }
@@ -639,7 +639,6 @@ export class ProfileComponent implements OnInit {
     // } else {
     // }
     this.activeTab.main = newTab
-    console.log(newTab)
   }
 
     showTeam() {
