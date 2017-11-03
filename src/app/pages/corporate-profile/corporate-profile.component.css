@@ -5,11 +5,11 @@
 
 .basic-info {
   padding: 0px;
-  height: calc(42.5vh - 60px);
+  height: calc(50vh - 130px);
 }
 .basic-info-inner {
   position: absolute;
-  height: calc(42.5vh - 110px);
+  height: calc(50vh - 180px);
   width: calc(100% - 180px);
   bottom: 0px;
   right: 0px;
@@ -50,12 +50,6 @@
   height: 38px;
   margin-right: 3px;
   /*margin-top: -5px;*/
-}
-
-.profile-navbar {
-  width: 100%;
-  height: 60px;
-  background: rgba(223,223,225,1);
 }
 
 .profile-navbar-tab {
@@ -217,7 +211,7 @@
 }
 
 .service {
-  height: calc(82vh - 40px);
+  height: calc(100vh - 130px);
   overflow: auto
 }
 
@@ -280,6 +274,8 @@
 
 .product-customers {
   height: calc(22vh - 30px);
+  overflow-y: auto;
+  width: 100%;
 }
 .ad-service {
   height: 22vh;
@@ -318,6 +314,26 @@
   top: 50%;
   transform: translate(-50%, -50%);
 }
+
+.tab-right {
+  border-right: 0px solid black;
+}
+
+@media screen and (max-width: 1200px) {
+  .pp-tab {
+    display: none
+  }
+  .pp-tab-small {
+    padding-top: 14px;
+    font-size: 16px;
+    line-height: 16px;
+    display: block;
+  }
+}
+.pp-tab-small {
+  display: none
+}
+
 
 
 .fullwidth {

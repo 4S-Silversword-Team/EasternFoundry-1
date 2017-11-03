@@ -639,7 +639,6 @@ export class ProfileComponent implements OnInit {
     // } else {
     // }
     this.activeTab.main = newTab
-    console.log(newTab)
   }
 
     showTeam() {

@@ -2,9 +2,7 @@
   <div class="career-detail" *ngIf='detailsOn'>
     <p class="job-title">{{careerDetails.PositionTitle}}, {{careerDetails.Employer}}</p>
     <p class="from">{{careerDetails.StartDate}} - {{careerDetails.EndDate}}</p>
-    <div class="description scrollbar">
-      <p>{{careerDetails.Description}}</p>
-    </div>
+    <textarea class="description scrollbar" readonly>{{careerDetails.Description}}</textarea>
   </div>
   <div class="career-detail" *ngIf='!detailsOn' style="text-align: center; font-size: 16px;">
     Click one of your jobs below to expand its details here

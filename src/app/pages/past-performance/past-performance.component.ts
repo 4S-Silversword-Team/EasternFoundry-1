@@ -248,12 +248,7 @@ export class PastPerformanceComponent implements OnInit {
   }
 
   switchTab(newTab) {
-    if (this.activeTab.main == newTab) {
-      this.activeTab.main = 7
-    } else {
-      this.activeTab.main = newTab
-    }
-    console.log(newTab)
+    this.activeTab.main = newTab
   }
 
   getAdminStatus() {
@@ -272,9 +267,10 @@ export class PastPerformanceComponent implements OnInit {
       if (!superUser) {
         var relevantCompanyIds = user.companyUserProxies.filter(async (proxy) =>{
           let returnVal;
-          await this.roleService.getRoleByID(proxy.role).toPromise().then(async (roleObj) => {
-            await roleObj.title == "admin"? returnVal = true: returnVal = false;
-          })
+          proxy.role.title == "admin"? returnVal = true: returnVal = false;
+          // await this.roleService.getRoleByID(proxy.role).toPromise().then(async (roleObj) => {
+          //   await proxy.role.title == "admin"? returnVal = true: returnVal = false;
+          // })
           return returnVal
         }).map((proxy) => proxy.company["_id"])
         console.log("Relevant companies", relevantCompanyIds)

@@ -17,11 +17,11 @@
       <div class="profile-navbar-tab" (click)='switchTab(3)' [ngClass]="{'profile-navbar-tab-active': this.activeTab.main == 3}">
         Analytics
       </div>
-      <div class="profile-navbar-tab tab-right pp-tab" (click)='switchTab(4)' [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 4}">
+      <div class="profile-navbar-tab tab-right pp-tab" (click)='switchTab(4)' style="overflow: hidden" [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 4}">
         Past Performances
       </div>
-      <div class="profile-navbar-tab tab-right pp-tab-small" (click)='switchTab(4)' [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 4}">
-        Performances
+      <div class="profile-navbar-tab tab-right pp-tab-small" (click)='switchTab(4)' style="overflow: hidden" [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 4}">
+        Past<br>Performances
       </div>
     </div>
     <div class="edit-box">
@@ -51,10 +51,10 @@
             <p>{{this.currentJob.Employer}}</p>
           </div>
         </div>
-        <div class="" style="width: 100%; height: calc(53vh - 220px); padding-top: .9vh; float: left; padding-bottom: 2vh; padding-top: 2vh;">
+        <div class="" style="width: 100%; height: calc(60vh - 280px); float: left; padding-bottom: 2vh; padding-top: 2vh;">
           <div id="user-contact" class="col-xs-5 scrollbar" style="overflow-y: auto; height: 100%; padding-top: .1v; padding-bottom: .1v; border-right: 2px solid rgba(0,0,0,0.25);">
             <div class="" style="width: 100%;">
-              <p class="basic-info-text-2">{{ this.currentUser.address.city }}</p>
+              <p class="basic-info-text-2">{{ this.currentUser.address.city }}, {{ this.currentUser.address.state }}</p>
               <p class=" basic-info-text-2">{{ this.currentUser.cell }}</p>
               <p class="basic-info-text-2">{{ this.currentUser.username }}</p>
             </div>
@@ -86,15 +86,15 @@
         </div>
       </div>
     </div>
-    <div class="col-xs-12" style="background: rgba(223,223,225,1); height: 39.5vh; border-bottom: 0px solid black">
-      <div id="service_chart"  style="height: 36vh; margin: 0 auto" [chart]="serviceChart"></div>
+    <div class="col-xs-12" style="background: rgba(223,223,225,1); height: 40vh; border-bottom: 0px solid black">
+      <div id="service_chart"  style="height: 40vh; margin: 0 auto" [chart]="serviceChart"></div>
     </div>
   </div>
 
   <!-- EDUCATION TAB -->
   <div class="container" *ngIf='this.activeTab.main == 1'>
-    <div class="education-1 col-xs-12">
-      <div class="education-left scrollbar col-xs-6" *ngIf = 'this.currentUser.education'>
+    <div class="education-1 col-xs-12" [ngClass]="{'education-1-tall': this.currentUser.clearance.length == 0 && this.currentUser.award.length == 0}">
+      <div class="education-left scrollbar" *ngIf = 'this.currentUser.education' [ngClass]="{'education-full': this.currentUser.certification.length == 0}">
         <div class="education-header">
           Degrees
         </div>
@@ -107,6 +107,7 @@
                     {{deg.School}}, {{deg.DegreeType[0].Name}} in {{deg.MajorProgramName[0]}}
                   </p>
                   <p class="degree-subtext">Graduated {{deg.AttendanceEndDate}}</p>
+                  <textarea class="degree-subtext" autosize>{{deg.Comment}}</textarea>
                 </div>
               </div>
             </div>
@@ -115,7 +116,7 @@
       </div>
       <div class="" *ngIf = 'this.currentUser.certification'>
         <div class="" *ngIf = 'this.currentUser.certification[0]'>
-          <div class="education-right scrollbar col-xs-6" *ngIf = 'this.currentUser.certification[0].CertificationName.length > 0'>
+          <div class="education-right scrollbar" *ngIf = 'this.currentUser.certification[0].CertificationName.length > 0' [ngClass]="{'education-full': this.currentUser.education.length == 0}">
             <div class="education-header">
               Certifications
             </div>
@@ -133,8 +134,8 @@
         </div>
       </div>
     </div>
-    <div class="education-2 col-xs-12">
-      <div class="education-left scrollbar col-xs-6">
+    <div class="education-2 col-xs-12" *ngIf="this.currentUser.clearance.length > 0 || this.currentUser.award.length > 0">
+      <div class="education-left scrollbar" [ngClass]="{'education-full': this.currentUser.clearance.length == 0}">
         <div class="education-header" *ngIf='this.currentUser.award.length > 0'>
           Awards
         </div>
@@ -144,7 +145,7 @@
       </div>
       <div class="" *ngIf='this.currentUser.clearance'>
         <div class="" *ngIf='this.currentUser.clearance[0]'>
-          <div class="education-right scrollbar col-xs-6" *ngIf='this.currentUser.clearance[0].clearanceType.length > 0'>
+          <div class="education-right scrollbar" *ngIf='this.currentUser.clearance[0].clearanceType.length > 0' [ngClass]="{'education-full': this.currentUser.award.length == 0}">
             <div class="education-header">
               Clearances
             </div>

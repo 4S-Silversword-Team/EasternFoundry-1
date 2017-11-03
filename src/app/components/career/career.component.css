@@ -32,9 +32,12 @@ h1 {
 .description {
   height: calc(100vh - 325px);
   width: 100%;
+  resize: none;
   overflow-y: auto;
   padding-top: 5px;
   padding-bottom: 10px;
+  background: none;
+  border: none;
 }
 
 .timeline-box {

@@ -23,6 +23,9 @@ declare var $: any;
 @Component({
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html',
+  host: {
+      '(document:click)': 'handleClick($event)',
+  },
   styleUrls: ['./profile-edit.component.css'],
   providers: [ UserService, AuthService, ToolService, ToolSubmissionService, s3Service, AgencyService, CertService ]
 })
@@ -89,6 +92,7 @@ export class ProfileEditComponent implements OnInit {
     job: 0,
     skills: 0,
   }
+  jobDeleteTab = false;
   finished: any = {
     basic: false,
     education: false,
@@ -975,12 +979,33 @@ export class ProfileEditComponent implements OnInit {
     );
   }
 
+  // deletePopup(){
+  //   console.log(document.getElementById('delete-x'))
+  //   this.jobDeleteTab = true
+  // }
+  handleClick(event){
+    var clickedComponent = event.target;
+    var deleteJob = false;
+    do {
+      if (clickedComponent === (document.getElementById('delete-x'))) {
+        deleteJob = true;
+      }
+      clickedComponent = clickedComponent.parentNode;
+    } while (clickedComponent);
+    if(deleteJob){
+      this.jobDeleteTab = true
+    } else {
+      this.jobDeleteTab = false
+    }
+    // console.log(this.jobDeleteTab)
+  }
+
   deleteJob(i) {
     this.currentUser.positionHistory.splice(i, 1);
     while (!this.currentUser.positionHistory[this.activeTab.job]){
       this.activeTab.job = this.activeTab.job-1
     }
-    this.checkFields(9)
+    this.jobDeleteTab = false
   }
 
 
@@ -1016,7 +1041,6 @@ export class ProfileEditComponent implements OnInit {
 
   deleteDegree(i) {
     this.currentUser.education.splice(i, 1);
-    this.checkFields(9)
   }
 
   addClearance() {
@@ -1031,7 +1055,6 @@ export class ProfileEditComponent implements OnInit {
 
   deleteClearance(i) {
     this.currentUser.clearance.splice(i, 1);
-    this.checkFields(9)
   }
 
 
@@ -1043,7 +1066,6 @@ export class ProfileEditComponent implements OnInit {
 
   deleteAward(i) {
     this.currentUser.award.splice(i, 1);
-    this.checkFields(9)
   }
 
   addCertificate() {

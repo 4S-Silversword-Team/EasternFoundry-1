@@ -383,11 +383,17 @@ selector {
 }
 
 .employee-item {
+  height: 93px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   background: rgba(0, 0, 0, 0.1);
   margin-bottom: 5px;
   padding-bottom: 5px;
   padding-left: 20px;
+}
+.employee-item-delete {
+  font-size: 20px;
+  line-height: 32px;
+  text-align: center;
 }
 
 .search-results-box {

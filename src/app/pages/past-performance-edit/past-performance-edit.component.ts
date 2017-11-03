@@ -103,9 +103,9 @@ export class PastPerformanceEditComponent implements OnInit {
           if (!this.currentPastPerformance.area) {
             this.currentPastPerformance.area = ""
           }
+          this.getEditorAdminStatus()
           this.myCallback();
           this.myCallback2()
-          this.getEditorAdminStatus()
         });
       } else {
         console.log("in past performance create")
@@ -209,13 +209,11 @@ export class PastPerformanceEditComponent implements OnInit {
         return proxy.company._id == this.route.snapshot.queryParams["company"]
       })[0]
       if(currentUserProxy){
-        this.roleService.getRoleByID(currentUserProxy.role).toPromise().then((role) => {
-          if (role.title && role.title == "admin") {
-            this.isUserAdmin = true;
-            console.log("I'm admin")
-            this.promiseFinished = true
-          }
-        })
+        if (currentUserProxy.role.title && currentUserProxy.role.title == "admin") {
+          this.isUserAdmin = true;
+          console.log("I'm admin")
+          this.promiseFinished = true
+        }
       }
     })
   }
@@ -235,9 +233,11 @@ export class PastPerformanceEditComponent implements OnInit {
         //get the company ids where the user is admin
         var relevantCompanyIds = user.companyUserProxies.filter(async (proxy) =>{
           let returnVal;
-          await this.roleService.getRoleByID(proxy.role).toPromise().then(async (roleObj) => {
-            await roleObj.title == "admin"? returnVal = true: returnVal = false;
-          })
+          proxy.roleObj.title == "admin"? returnVal = true: returnVal = false;
+
+          // await this.roleService.getRoleByID(proxy.role).toPromise().then(async (roleObj) => {
+          //   await roleObj.title == "admin"? returnVal = true: returnVal = false;
+          // })
           return returnVal
         }).map((proxy) => proxy.company["_id"])
         console.log("Relevant companies", relevantCompanyIds)

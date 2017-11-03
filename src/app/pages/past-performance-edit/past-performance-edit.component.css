@@ -170,7 +170,7 @@ input[type="checkbox"]{
 }
 
 .search-item {
-  background: white;
+  background: rgba(253,253,255,1);
   padding: 2px;
   border-bottom: 4px solid rgba(0, 0, 0, 0.2);
   min-height: 40px;
@@ -187,7 +187,7 @@ input[type="checkbox"]{
 }
 
 .search-item:hover {
-  background: rgb(225, 225, 225);
+  background: rgba(223,223,225,1);
   color: rgb(25, 25, 25);
 }
 

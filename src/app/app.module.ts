@@ -41,6 +41,7 @@ import { BarchartComponent } from './components/barchart/barchart.component';
 import { AvailablebarComponent } from './components/availablebar/availablebar.component';
 import { SelectorComponent } from './components/selector/selector.component';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
+import { TextareaAutosizeModule } from 'ngx-textarea-autosize';
 
 import { ChartModule } from 'angular-highcharts';
 
@@ -82,7 +83,8 @@ import { ChartModule } from 'angular-highcharts';
     HttpModule,
     NguiAutoCompleteModule,
     RouterModule.forRoot(ROUTES, {useHash: true}),
-    ChartModule
+    ChartModule,
+    TextareaAutosizeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

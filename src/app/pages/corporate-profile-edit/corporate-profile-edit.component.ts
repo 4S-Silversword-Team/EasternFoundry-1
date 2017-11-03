@@ -451,18 +451,16 @@ export class CorporateProfileEditComponent implements OnInit {
     }));
   }
 
-  deleteEmployee(proxyId, proxyRoleId){
+  deleteEmployee(proxyId, proxyRole){
     if (!this.isUserAdmin){return;}
-    if(proxyRoleId){
-      this.roleService.getRoleByID(proxyRoleId).toPromise().then((role) => {
-        if (!role.title || role.title !== "admin" || this.companyAdminCount >= 2) { // Prevents only admin from being deleted. TODO: Make a backend implementation
-            this.companyUserProxyService.deleteCompanyUserProxy(proxyId).then(() =>
-            this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }));
-        }
-        else {
-          console.log("Can't delete only admin")
-        }
-      })
+    if(proxyRole){
+      if (!proxyRole.role.title || proxyRole.role.title !== "admin" || this.companyAdminCount >= 2) { // Prevents only admin from being deleted. TODO: Make a backend implementation
+        this.companyUserProxyService.deleteCompanyUserProxy(proxyId).then(() =>
+        this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }));
+      }
+      else {
+        console.log("Can't delete only admin")
+      }
     } else {
         this.companyUserProxyService.deleteCompanyUserProxy(proxyId).then(() =>
         this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); }));
@@ -545,7 +543,8 @@ export class CorporateProfileEditComponent implements OnInit {
           "avatar": i.userProfile.avatar,
           "stillAffiliated": i.stillAffiliated,
           "role": i.role,
-          "leader": i.leader
+          "leader": i.leader,
+          "delete": false
         })
       }
     }
