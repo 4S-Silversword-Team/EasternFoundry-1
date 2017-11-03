@@ -543,7 +543,8 @@ export class CorporateProfileEditComponent implements OnInit {
           "avatar": i.userProfile.avatar,
           "stillAffiliated": i.stillAffiliated,
           "role": i.role,
-          "leader": i.leader
+          "leader": i.leader,
+          "delete": false
         })
       }
     }

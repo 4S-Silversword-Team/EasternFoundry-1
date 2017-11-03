@@ -142,7 +142,7 @@
             </div>
           </div>
         </div>
-        <div class="scrollbar sub-box-inner" style="height: calc(43vh - 50px);">
+        <div class="scrollbar sub-box-inner" style="height: calc(43vh - 50px); overflow-x: hidden;">
           <div class="col-xs-12 employee-item" *ngFor='let employee of this.userProfiles' style="padding-right: 0px">
             <div (click)='deleteEmployee(employee.proxyId)'>
               <img src="./assets/img/btn-close.png" alt="" class="search-item-x">
@@ -168,7 +168,7 @@
         <div class="div-title" style="margin-top: .5vh; margin-bottom: .5vh;">
           <p>Write-Up</p>
         </div>
-        <div class="sub-box-inner" style="height: calc(50vh - 48px); padding-bottom: 0px; overflow-y: hidden;">
+        <div class="sub-box-inner" style="height: calc(50vh - 48px); padding-bottom: 0px; overflow-y: hidden; overflow-x: hidden;">
           <div class="" style="border: 1px solid rgba(0,0,0,0.25); width: 100%; height: 30%; float: left;"><p class="col-xs-12">Synopsis</p><textarea class="scrollbar" style="height: calc(100% - 20px); max-height: calc(100% - 20px); min-height: calc(100% - 20px); min-width: 100%; max-width: 100%; width: 100%" [(ngModel)] = 'this.currentPastPerformance.synopsis'></textarea></div>
           <div class="" style="border: 1px solid rgba(0,0,0,0.25); width: 50%; height: 40%; float: left;"><p class="col-xs-12">Technical Challenge, approach and outcome</p><textarea class="scrollbar" style="height: calc(100% - 20px); max-height: calc(100% - 20px); min-height: calc(100% - 20px); min-width: 100%; max-width: 100%; width: 100%" [(ngModel)] = 'this.currentPastPerformance.technical'></textarea></div>
           <div class="" style="border: 1px solid rgba(0,0,0,0.25); width: 50%; height: 40%; float: left;"><p class="col-xs-12">Management Challenge, approach and outcome</p><textarea class="scrollbar" style="height: calc(100% - 20px); max-height: calc(100% - 20px); min-height: calc(100% - 20px); min-width: 100%; max-width: 100%; width: 100%" [(ngModel)] = 'this.currentPastPerformance.management'></textarea></div>

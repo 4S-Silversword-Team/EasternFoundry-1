@@ -23,6 +23,9 @@ declare var $: any;
 @Component({
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html',
+  host: {
+      '(document:click)': 'handleClick($event)',
+  },
   styleUrls: ['./profile-edit.component.css'],
   providers: [ UserService, AuthService, ToolService, ToolSubmissionService, s3Service, AgencyService, CertService ]
 })
@@ -976,8 +979,25 @@ export class ProfileEditComponent implements OnInit {
     );
   }
 
-  deletePopup(){
-    this.jobDeleteTab = true
+  // deletePopup(){
+  //   console.log(document.getElementById('delete-x'))
+  //   this.jobDeleteTab = true
+  // }
+  handleClick(event){
+    var clickedComponent = event.target;
+    var deleteJob = false;
+    do {
+      if (clickedComponent === (document.getElementById('delete-x'))) {
+        deleteJob = true;
+      }
+      clickedComponent = clickedComponent.parentNode;
+    } while (clickedComponent);
+    if(deleteJob){
+      this.jobDeleteTab = true
+    } else {
+      this.jobDeleteTab = false
+    }
+    // console.log(this.jobDeleteTab)
   }
 
   deleteJob(i) {

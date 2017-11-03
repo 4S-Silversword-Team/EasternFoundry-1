@@ -243,13 +243,13 @@
         <div class="job-side-tab" *ngIf='!this.currentUser.positionHistory[activeTab.job-1]' style="background: none; border: 0px solid rgba(0,0,0,0)">
         </div>
         <div class="job-side-tab-active" style="" [ngClass]="{'job-side-tab-incomplete': !checkJob(this.currentUser.positionHistory[activeTab.job], 0)}" *ngIf='!this.jobDeleteTab'>
-          <div (click)='deletePopup()' style="position: absolute; z-index: 4; left: 2px; bottom: 0px">
-            <img src="./assets/img/btn-close.png" alt="" class="close-x-sideways">
+          <div id='delete' style="position: absolute; z-index: 4; left: 2px; bottom: 0px">
+            <img id='delete-x' src="./assets/img/btn-close.png" alt="" class="close-x-sideways">
           </div>
           <p class="job-side-tab-text" *ngIf='this.currentUser.positionHistory[activeTab.job].Employer.length > 10' style="">{{this.currentUser.positionHistory[activeTab.job].Employer.substring(0,10)}}...</p>
           <p class="job-side-tab-text" *ngIf='this.currentUser.positionHistory[activeTab.job].Employer.length < 10' style="">{{this.currentUser.positionHistory[activeTab.job].Employer}}</p>
         </div>
-        <div class="job-side-tab-delete" style="" (click)=deleteJob(activeTab.job) *ngIf='this.jobDeleteTab'>
+        <div id="job-side-tab-delete" class="job-side-tab-delete" style="" (click)=deleteJob(activeTab.job) *ngIf='this.jobDeleteTab'>
           <p class="job-side-tab-text" style="">Delete?</p>
         </div>
         <div class="job-side-tab" style="" *ngIf='this.currentUser.positionHistory[activeTab.job+1]' (click)='activeTab.job = activeTab.job+1' [ngClass]="{'job-side-tab-incomplete': !checkJob(this.currentUser.positionHistory[activeTab.job+1], 1)}">
