@@ -194,6 +194,7 @@ export class CorporateProfileEditComponent implements OnInit {
         fromUser: false,
         companyId: this.currentAccount._id,
         pastPerformanceId: '',
+        pastPerformanceName: '',
       },
       replyToId: '',
       date: date,

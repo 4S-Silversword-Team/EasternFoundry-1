@@ -21,6 +21,7 @@ export class Message {
       fromUser: boolean
       companyId: string
       pastPerformanceId: string
+      pastPerformanceName: string
     }
     read: boolean
     replyToId: string

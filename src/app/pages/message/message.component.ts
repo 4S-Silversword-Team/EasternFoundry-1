@@ -58,6 +58,7 @@ export class MessageComponent implements OnInit {
       fromUser: false,
       companyId: '',
       pastPerformanceId: '',
+      pastPerformanceName: '',
     },
     replyToId: '',
     date: '',
@@ -297,6 +298,7 @@ export class MessageComponent implements OnInit {
           fromUser: false,
           companyId: '',
           pastPerformanceId: '',
+          pastPerformanceName: '',
         },
         replyToId: message._id,
         date: d,
@@ -333,6 +335,7 @@ export class MessageComponent implements OnInit {
         fromUser: false,
         companyId: '',
         pastPerformanceId: '',
+        pastPerformanceName: '',
       },
       replyToId: message._id,
       date: d,
@@ -376,6 +379,7 @@ export class MessageComponent implements OnInit {
           fromUser: false,
           companyId: '',
           pastPerformanceId: '',
+          pastPerformanceName: '',
         },
         replyToId: message._id,
         date: d,
@@ -411,6 +415,7 @@ export class MessageComponent implements OnInit {
         fromUser: false,
         companyId: '',
         pastPerformanceId: '',
+        pastPerformanceName: '',
       },
       replyToId: message._id,
       date: d,
@@ -456,6 +461,7 @@ export class MessageComponent implements OnInit {
           fromUser: false,
           companyId: '',
           pastPerformanceId: '',
+          pastPerformanceName: '',
         },
         replyToId: message._id,
         date: d,
@@ -465,6 +471,7 @@ export class MessageComponent implements OnInit {
         console.log('accepted')
         this.deleteMessage(message, this.activeMessageIndex)
         this.closeMessage()
+        this.router.navigate(['past-performance', message.invitation.pastPerformanceId]);
       });
     })
   }
@@ -491,6 +498,7 @@ export class MessageComponent implements OnInit {
         fromUser: false,
         companyId: '',
         pastPerformanceId: '',
+        pastPerformanceName: '',
       },
       replyToId: message._id,
       date: d,
@@ -536,6 +544,7 @@ export class MessageComponent implements OnInit {
             fromUser: false,
             companyId: '',
             pastPerformanceId: '',
+            pastPerformanceName: '',
           },
           replyToId: '',
           date: '',

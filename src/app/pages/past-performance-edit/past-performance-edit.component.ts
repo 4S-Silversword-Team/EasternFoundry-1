@@ -418,6 +418,7 @@ export class PastPerformanceEditComponent implements OnInit {
         fromUser: false,
         companyId: '',
         pastPerformanceId: this.currentPastPerformance._id,
+        pastPerformanceName: this.currentPastPerformance.title,
       },
       replyToId: '',
       date: date,
