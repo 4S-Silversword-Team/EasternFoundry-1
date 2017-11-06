@@ -611,7 +611,6 @@ export class ProfileComponent implements OnInit {
       this.calculateSkillChart()
       this.calculateCapaChart()
       this.pastPerformances = this.currentUser.pastPerformanceProxies.map(proxy => proxy.pastPerformance)
-      console.log(this.pastPerformances[0])
       this.promiseFinished = true;
     } else {
       this.promiseFinished = true;

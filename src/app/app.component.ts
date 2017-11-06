@@ -20,6 +20,9 @@ export class AppComponent implements OnInit {
   companies: any[] = []
   companyUnreadCount: number = 0
   bugCount: number = 0
+  myCompanies: any[] = []
+  myPastPerformances: any[] = []
+
 
   constructor(
     private auth: AuthService,
@@ -52,6 +55,17 @@ export class AppComponent implements OnInit {
                 })
               }))
             }
+            this.myCompanies.push({
+              id: p.company._id,
+              name: p.company.name,
+            })
+          }
+          for (let pp of user.pastPerformanceProxies) {
+            console.log(pp.pastPerformance)
+              this.myPastPerformances.push({
+                id: pp.pastPerformance._id,
+                name: pp.pastPerformance.title,
+              })
           }
           Promise.all(companyPromises).then(result=>{
             for (let c of this.companies){
