@@ -137,38 +137,31 @@
   </div>
   <div class="container" *ngIf='activeTab.main == 2'>
     <div class="send-field">
-      <div class="" style="width: 100%; position: relative;">
-        <input id='recipient' class="" style="width: 100%; margin-bottom: -1px;" type="text" placeholder="To" [(ngModel)] = 'this.newMessage.recipient[0].name' (ngModelChange)='filterUsers(this.newMessage.recipient[0].name)' [ngClass]="{'empty-field': !this.newMessage.recipient[0].name}" (focus)='this.turnOnSearch()'>
-        <div id='recipient-dropdown' class="search-results-interior" style="padding-top: 0px;" *ngIf='this.recipientSearchOn'>
-          <div class="search-results-interior-2" style="padding-top: 0px">
-            <div class="" *ngIf='this.searchRunning'>
-              <div class="loader"></div>
+      <input id='recipient' class="" style="width: 100%; margin-bottom: -1px;" type="text" placeholder="To" [(ngModel)] = 'this.newMessage.recipient[0].name' (ngModelChange)='filterUsers(this.newMessage.recipient[0].name)' [ngClass]="{'empty-field': !this.newMessage.recipient[0].name}" (focus)='this.turnOnSearch()'>
+      <div id='recipient-dropdown' class="search-results-interior" style="padding-top: 0px;" *ngIf='this.recipientSearchOn'>
+        <div class="search-results-interior-2" style="padding-top: 0px">
+          <div class="" *ngIf='this.searchRunning'>
+            <div class="loader"></div>
+          </div>
+          <div class="" *ngIf='!this.searchRunning'>
+            <div class="" *ngIf='this.noResults'>
+              <h4 style="text-align: center">No Results Found</h4>
             </div>
-            <div class="" *ngIf='!this.searchRunning'>
-              <div class="" *ngIf='this.noResults'>
-                <h4 style="text-align: center">No Results Found</h4>
-              </div>
-              <div class="" *ngIf='filteredUsers.length > 0'>
-                <div class="search-item" *ngFor='let p of filteredUsers; let i = index' (click)='setRecipientUser(p)'>
-                  <div class="search-item-not-expand col-xs-12">
-                    <div class="search-item-header">{{p.firstName}} {{p.lastName}}</div>
-                    <div class="search-item-subheader">{{p.username}}</div>
-                  </div>
+            <div class="" *ngIf='filteredUsers.length > 0'>
+              <div class="search-item" *ngFor='let p of filteredUsers; let i = index' (click)='setRecipientUser(p)'>
+                <div class="search-item-not-expand col-xs-12">
+                  <div class="search-item-header">{{p.firstName}} {{p.lastName}}</div>
+                  <div class="search-item-subheader">{{p.username}}</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- <div class="recipient-search" *ngIf='this.recipientSearchOn && this.newMessage.recipient[0].name.length > 0'>
-        <div class="" *ngFor='let u of this.filteredUsers' (click)='setRecipientUser(u)'>
-          {{u.firstName}} {{u.lastName}}
-        </div>
-      </div> -->
       <input class="" style="width: 100%; margin-top: 0px;" type="text" placeholder="Subject" [(ngModel)] = 'this.newMessage.subject' (focus)='recipientSearchOn=false' [ngClass]="{'empty-field': !this.newMessage.subject}">
       <textarea class="" style="width: 100%; height: 25vh; resize: none; margin-top: -1px; border: 1px solid #ccc" placeholder="" [(ngModel)] = 'this.newMessage.content' (focus)='recipientSearchOn=false'></textarea>
-      <button class="col-xs-4 col-xs-offset-4" type="button" name="button" (click)='sendMessage()'>Send</button>
+      <button class="edit-button" style="margin-left: calc(100% - 303px); width: 150px" type="button" name="button" (click)='clearMessage()'>Discard</button>
+      <button class="edit-button" style="width: 150px" type="button" name="button" (click)='sendMessage()'>Send</button>
     </div>
   </div>
 </div>
