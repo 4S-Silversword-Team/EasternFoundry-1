@@ -545,6 +545,7 @@ export class MessageComponent implements OnInit {
     var t = d.getTime()
     this.newMessage.date = d
     this.newMessage.timestamp = t
+    this.newMessage.sender.avatar = this.currentUser.avatar
 
     this.messageService.createMessage(this.newMessage).toPromise().then((result) => {
       console.log('Message sent!')
