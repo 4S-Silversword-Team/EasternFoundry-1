@@ -16,7 +16,7 @@
   font-weight: bold;
   color: rgba(0,0,0,0.5);
   margin: 0px;
-  border-right: 2px solid rgba(173,173,175,1);
+  border-right: 1px solid rgba(0,0,0,0.25);
   border-bottom: 1px solid rgba(0,0,0,0.25);
 }
 .message-navbar-tab-right {
@@ -37,8 +37,8 @@
 .message-navbar-tab-active {
   color: rgba(0,0,0,1);
   background: rgba(253,253,255,1);
-  border: 1px solid rgba(0,0,0,0.25);
-  border-right: 2px solid rgba(173,173,175,1);
+  border-top: 1px solid rgba(0,0,0,0.25);
+  border-right: 1px solid rgba(0,0,0,0.25);
   border-bottom: none;
 }
 .message-navbar-tab-active-left {
@@ -46,7 +46,7 @@
   background: rgba(253,253,255,1);
   border-left: 1px solid rgba(0,0,0,0.25);
   border-top: 1px solid rgba(0,0,0,0.25);
-  border-right: 2px solid rgba(173,173,175,1);
+  border-right: 1px solid rgba(0,0,0,0.25);
   border-bottom: none;
 }
 .message-navbar-tab-active-right {

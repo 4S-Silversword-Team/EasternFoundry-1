@@ -256,7 +256,6 @@ export class PastPerformanceComponent implements OnInit {
     //get user
     this.userService.getUserbyID(userId).toPromise().then((user) => {
       //get the company ids where the user is admin
-      console.log(user.power)
       var superUser = false
       if (user.power) {
         if (user.power > 3) {

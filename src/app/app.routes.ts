@@ -32,7 +32,6 @@ export const ROUTES: Routes = [
   { path: 'corporate-profile/:id/mailbox', component: MessageComponent },
   { path: 'past-performance/:id', component: PastPerformanceComponent},
   { path: 'user-profile-edit/:id',      component: ProfileEditComponent },
-  { path: 'all-profiles',      component: AllProfilesComponent },
   { path: 'corporate-profile-edit/:id', component: CorporateProfileEditComponent },
   { path: 'past-performance-edit/:id', component: PastPerformanceEditComponent},
   { path: 'user-profile-create',      component: ProfileCreateComponent },
