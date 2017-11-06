@@ -49,34 +49,43 @@
   </div>
   <div class="" *ngIf='this.messageOpen'>
     <div class="open-message">
-      <p>FROM: {{this.activeMessage.sender.name}}</p>
-      <p>TO: <span *ngFor="let r of this.activeMessage.recipient; let i = index">{{r.name}}<span *ngIf="i < this.activeMessage.recipient.length-1">, </span></span></p>
-      <p>SUBJECT: {{this.activeMessage.subject}}</p>
-      <p>CONTENT: {{this.activeMessage.content}}</p>
-      <div class="invitation-box" *ngIf="this.activeMessage.isInvitation && !this.activeMessage.invitation.fromUser && this.activeMessage.invitation.companyId && !this.activeMessage.invitation.pastPerformanceId ">
-        <p>Join {{this.activeMessage.sender.name}}?</p>
-        <div class="" style="position: relative; width: 100%; height: 40px;">
-          <div class="" style="position: absolute; left: 50%; top: 0px; transform: translate(-50%, -50%); width: 320px;">
-            <button type="button" name="button" style="left: 0px;" (click)='acceptCompanyInvitation(this.activeMessage, this.activeMessage.sender)'>Accept</button>
-            <button type="button" name="button" style="right: 0px;" (click)='declineCompanyInvitation(this.activeMessage, this.activeMessage.sender)'>Decline</button>
-          </div>
+      <div class="" style="width: 100%; float: left;">
+        <div class="message-avatar">
+          <img src='{{ this.activeMessage.sender.avatar }}' class="message-avatar-img">
+        </div>
+        <div class="" style="width: calc(100% - 54px); margin-left: 54px; float: left; line-height: 25px; padding-top: 2px;">
+          <p style="font-weight: bold; font-size: 16px;">{{this.activeMessage.sender.name}}</p>
+          <p style="color: rgba(0,0,0,0.67)">To <span *ngFor="let r of this.activeMessage.recipient; let i = index">{{r.name}}<span *ngIf="i < this.activeMessage.recipient.length-1">, </span></span></p>
         </div>
       </div>
-      <div class="invitation-box" *ngIf="this.activeMessage.isInvitation && !this.activeMessage.invitation.fromUser && !this.activeMessage.invitation.companyId && this.activeMessage.invitation.pastPerformanceId ">
-        <p>Accept Invitation?</p>
-        <div class="" style="position: relative; width: 100%; height: 40px;">
-          <div class="" style="position: absolute; left: 50%; top: 0px; transform: translate(-50%, -50%); width: 320px;">
-            <button type="button" name="button" style="left: 0px;" (click)='acceptPPInvitation(this.activeMessage, this.activeMessage.sender)'>Accept</button>
-            <button type="button" name="button" style="right: 0px;" (click)='declinePPInvitation(this.activeMessage, this.activeMessage.sender)'>Decline</button>
+      <div style="width: 100%; padding-left: 5px; padding-right: 5px; padding-top: 5px; height: calc(50vh - 58px); margin-top: 54px;">
+        <p style="font-size: 18px; font-weight: bold">{{this.activeMessage.subject}}</p>
+        <textarea class="message-content scrollbar">{{this.activeMessage.content}}</textarea>
+        <div class="invitation-box" *ngIf="this.activeMessage.isInvitation && !this.activeMessage.invitation.fromUser && this.activeMessage.invitation.companyId && !this.activeMessage.invitation.pastPerformanceId ">
+          <p>Join {{this.activeMessage.sender.name}}?</p>
+          <div class="" style="position: relative; width: 100%; height: 40px;">
+            <div class="" style="position: absolute; left: 50%; top: 0px; transform: translate(-50%, -50%); width: 320px;">
+              <button type="button" name="button" style="left: 0px;" (click)='acceptCompanyInvitation(this.activeMessage, this.activeMessage.sender)'>Accept</button>
+              <button type="button" name="button" style="right: 0px;" (click)='declineCompanyInvitation(this.activeMessage, this.activeMessage.sender)'>Decline</button>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="invitation-box" *ngIf="this.activeMessage.isInvitation && this.activeMessage.invitation.fromUser">
-        <p>Accept {{this.activeMessage.sender.name}}?</p>
-        <div class="" style="position: relative; width: 100%; height: 40px;">
-          <div class="" style="position: absolute; left: 50%; top: 0px; transform: translate(-50%, -50%); width: 320px;">
-            <button type="button" name="button" style="left: 0px;" (click)='acceptPersonInvitation(this.activeMessage, this.activeMessage.sender)'>Accept</button>
-            <button type="button" name="button" style="right: 0px;" (click)='declinePersonInvitation(this.activeMessage, this.activeMessage.sender)'>Decline</button>
+        <div class="invitation-box" *ngIf="this.activeMessage.isInvitation && !this.activeMessage.invitation.fromUser && !this.activeMessage.invitation.companyId && this.activeMessage.invitation.pastPerformanceId ">
+          <p>Accept Invitation?</p>
+          <div class="" style="position: relative; width: 100%; height: 40px;">
+            <div class="" style="position: absolute; left: 50%; top: 0px; transform: translate(-50%, -50%); width: 320px;">
+              <button type="button" name="button" style="left: 0px;" (click)='acceptPPInvitation(this.activeMessage, this.activeMessage.sender)'>Accept</button>
+              <button type="button" name="button" style="right: 0px;" (click)='declinePPInvitation(this.activeMessage, this.activeMessage.sender)'>Decline</button>
+            </div>
+          </div>
+        </div>
+        <div class="invitation-box" *ngIf="this.activeMessage.isInvitation && this.activeMessage.invitation.fromUser">
+          <p>Accept {{this.activeMessage.sender.name}}?</p>
+          <div class="" style="position: relative; width: 100%; height: 40px;">
+            <div class="" style="position: absolute; left: 50%; top: 0px; transform: translate(-50%, -50%); width: 320px;">
+              <button type="button" name="button" style="left: 0px;" (click)='acceptPersonInvitation(this.activeMessage, this.activeMessage.sender)'>Accept</button>
+              <button type="button" name="button" style="right: 0px;" (click)='declinePersonInvitation(this.activeMessage, this.activeMessage.sender)'>Decline</button>
+            </div>
           </div>
         </div>
       </div>
@@ -91,10 +100,10 @@
           <img src="./assets/img/btn-close.png" alt="" class="message-close">
         </div>
         <div class="" style="width: calc(100% - 15px); height: 100%; padding-left: 10px;"  (click)='openMessage(i, index)'>
-          <div class="" style="width: 20%; float: left;">
+          <div class="message-left">
             <p>{{i.sender.name}}</p>
           </div>
-          <div class="" style="width: 80%; float: left;">
+          <div class="message-right">
             <p>{{i.subject}}</p>
           </div>
         </div>
@@ -108,10 +117,10 @@
           <img src="./assets/img/btn-close.png" alt="" class="message-close">
         </div>
         <div class="" style="width: calc(100% - 15px); height: 100%; padding-left: 10px;"  (click)='openMessage(i, index)'>
-          <div class="" style="width: 20%; float: left;">
+          <div class="message-left">
             <p>{{i.recipient[0].name}}</p>
           </div>
-          <div class="" style="width: 80%; float: left;">
+          <div class="message-right">
             <p>{{i.subject}}</p>
           </div>
         </div>
@@ -125,10 +134,10 @@
           <img src="./assets/img/btn-close.png" alt="" class="message-close">
         </div>
         <div class="" style="width: calc(100% - 15px); height: 100%; padding-left: 10px;"  (click)='openMessage(i, index)'>
-          <div class="" style="width: 20%; float: left;">
+          <div class="message-left">
             <p>{{i.sender.name}}</p>
           </div>
-          <div class="" style="width: 80%; float: left;">
+          <div class="message-right">
             <p>{{i.subject}}</p>
           </div>
         </div>
