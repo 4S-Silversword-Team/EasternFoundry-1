@@ -1,5 +1,10 @@
-
-.profile-navbar-tab {
+.message-navbar {
+  font-family: 'Audiowide', cursive;
+  width: 100%;
+  height: 60px;
+  background: rgba(223,223,225,1);
+}
+.message-navbar-tab {
   cursor: pointer;
   float: left;
   line-height: 60px;
@@ -12,8 +17,9 @@
   color: rgba(0,0,0,0.5);
   margin: 0px;
   border-right: 2px solid rgba(173,173,175,1);
+  border-bottom: 1px solid rgba(0,0,0,0.25);
 }
-.profile-navbar-tab-right {
+.message-navbar-tab-right {
   cursor: pointer;
   float: left;
   line-height: 60px;
@@ -25,57 +31,61 @@
   font-weight: bold;
   color: rgba(0,0,0,0.5);
   margin: 0px;
+  border-bottom: 1px solid rgba(0,0,0,0.25);
 }
 
-.profile-navbar-tab-active {
+.message-navbar-tab-active {
   color: rgba(0,0,0,1);
   background: rgba(253,253,255,1);
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 1px solid rgba(0,0,0,0.25);
   border-right: 2px solid rgba(173,173,175,1);
+  border-bottom: none;
 }
-.profile-navbar-tab-active-left {
+.message-navbar-tab-active-left {
   color: rgba(0,0,0,1);
   background: rgba(253,253,255,1);
-  border-left: 1px solid rgba(0,0,0,0.1);
-  border-top: 1px solid rgba(0,0,0,0.1);
-  border-bottom: 1px solid rgba(0,0,0,0.1);
+  border-left: 1px solid rgba(0,0,0,0.25);
+  border-top: 1px solid rgba(0,0,0,0.25);
   border-right: 2px solid rgba(173,173,175,1);
+  border-bottom: none;
 }
-.profile-navbar-tab-active-right {
+.message-navbar-tab-active-right {
   color: rgba(0,0,0,1);
   background: rgba(253,253,255,1);
-  border: 1px solid rgba(0,0,0,0.1);
+  border-right: 1px solid rgba(0,0,0,0.25);
+  border-top: 1px solid rgba(0,0,0,0.25);
+  border-bottom: none;
 }
 
-.profile-navbar-tab:hover {
+.message-navbar-tab:hover {
   /*border: 1px solid rgba(0,0,0,0.01);*/
   color: rgba(0,0,0,0.6);
   background: rgba(253,253,255,0.35)
 }
-.profile-navbar-tab:active {
+.message-navbar-tab:active {
   /*border: 1px solid rgba(0,0,0,0.05);*/
   color: rgba(0,0,0,0.7);
   background: rgba(253,253,255,0.7)
 }
-.profile-navbar-tab-right:hover {
+.message-navbar-tab-right:hover {
   /*border: 1px solid rgba(0,0,0,0.01);*/
   color: rgba(0,0,0,0.6);
   background: rgba(253,253,255,0.35)
 }
-.profile-navbar-tab-right:active {
+.message-navbar-tab-right:active {
   /*border: 1px solid rgba(0,0,0,0.05);*/
   color: rgba(0,0,0,0.7);
   background: rgba(253,253,255,0.7)
 }
-.profile-navbar-tab-active:hover {
+.message-navbar-tab-active:hover {
   color: rgba(0,0,0,1);
   background: rgba(253,253,255,1);
 }
-.profile-navbar-tab-active-left:hover {
+.message-navbar-tab-active-left:hover {
   color: rgba(0,0,0,1);
   background: rgba(253,253,255,1);
 }
-.profile-navbar-tab-active-right:hover {
+.message-navbar-tab-active-right:hover {
   color: rgba(0,0,0,1);
   background: rgba(253,253,255,1);
 }
@@ -112,13 +122,20 @@
   position: relative;
   width: 100%;
   z-index: 0;
-  border: 1px solid rgba(0,0,0,0.5);
-  margin-bottom: 2px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  border-bottom: 1px solid rgba(0,0,0,0.25);
+  font-weight: bold;
   background: rgba(253,253,255,1);
 }
+.message:first-child {
+  border-top: 1px solid rgba(0,0,0,0.25);
+}
+
 .message-read {
   background: rgba(223,223,225,1);
-  color: rgba(0,0,0,0.9);
+  font-weight: normal;
 }
 .message-close {
   cursor: pointer;

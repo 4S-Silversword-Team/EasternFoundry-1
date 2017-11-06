@@ -14,28 +14,30 @@
 </div>
 <div class="page" *ngIf='this.promiseFinished && !this.bugReport'>
   <div class="container top-bar">
-    <div class="profile-navbar" *ngIf='this.currentUser.power <= 3 || !this.currentUser.power'>
-      <div class="profile-navbar-tab" (click)='switchTab(0)' [ngClass]="{'profile-navbar-tab-active-left': this.activeTab.main == 0}">
+    <p style="font-size: 16px; text-align: center">The mailbox is still early and under construction - use with care!</p>
+    <br>
+    <div class="message-navbar" *ngIf='this.currentUser.power <= 3 || !this.currentUser.power'>
+      <div class="message-navbar-tab" (click)='switchTab(0)' [ngClass]="{'message-navbar-tab-active-left': this.activeTab.main == 0}">
         Inbox
       </div>
-      <div class="profile-navbar-tab" (click)='switchTab(1)' [ngClass]="{'profile-navbar-tab-active': this.activeTab.main == 1}">
+      <div class="message-navbar-tab" (click)='switchTab(1)' [ngClass]="{'message-navbar-tab-active': this.activeTab.main == 1}">
         Outbox
       </div>
-      <div class="profile-navbar-tab-right" (click)='switchTab(2)' [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 2}">
+      <div class="message-navbar-tab-right" (click)='switchTab(2)' [ngClass]="{'message-navbar-tab-active-right': this.activeTab.main == 2}">
         Compose
       </div>
     </div>
-    <div class="profile-navbar" *ngIf='this.currentUser.power > 3'>
-      <div class="profile-navbar-tab" (click)='switchTab(0)' style="width: calc(100% / 4)" [ngClass]="{'profile-navbar-tab-active-left': this.activeTab.main == 0}">
+    <div class="message-navbar" *ngIf='this.currentUser.power > 3'>
+      <div class="message-navbar-tab" (click)='switchTab(0)' style="width: calc(100% / 4)" [ngClass]="{'message-navbar-tab-active-left': this.activeTab.main == 0}">
         Inbox
       </div>
-      <div class="profile-navbar-tab" (click)='switchTab(1)' style="width: calc(100% / 4)" [ngClass]="{'profile-navbar-tab-active': this.activeTab.main == 1}">
+      <div class="message-navbar-tab" (click)='switchTab(1)' style="width: calc(100% / 4)" [ngClass]="{'message-navbar-tab-active': this.activeTab.main == 1}">
         Outbox
       </div>
-      <div class="profile-navbar-tab" (click)='switchTab(3)' style="width: calc(100% / 4)" [ngClass]="{'profile-navbar-tab-active': this.activeTab.main == 3}">
+      <div class="message-navbar-tab" (click)='switchTab(3)' style="width: calc(100% / 4)" [ngClass]="{'message-navbar-tab-active': this.activeTab.main == 3}">
         Bug Reports
       </div>
-      <div class="profile-navbar-tab-right" (click)='switchTab(2)' style="width: calc(100% / 4)" [ngClass]="{'profile-navbar-tab-active-right': this.activeTab.main == 2}">
+      <div class="message-navbar-tab-right" (click)='switchTab(2)' style="width: calc(100% / 4)" [ngClass]="{'message-navbar-tab-active-right': this.activeTab.main == 2}">
         Compose
       </div>
     </div>
@@ -43,15 +45,15 @@
       <div *ngIf="this.isActiveProfile" class="btn-edit" (click) = 'editProfile()'>Edit</div>
     </div>
   </div>
-  <p style="font-size: 16px; text-align: center">The mailbox is still early and under construction - use with care!</p>
-  <br>
+  <div class="" style="width: 100%; height: 5px; background: rgba(253,253,255,1), border-top: 1px solid rgba(0,0,0,0.25)">
+  </div>
   <div class="" *ngIf='this.messageOpen'>
     <div class="open-message">
       <p>FROM: {{this.activeMessage.sender.name}}</p>
       <p>TO: <span *ngFor="let r of this.activeMessage.recipient; let i = index">{{r.name}}<span *ngIf="i < this.activeMessage.recipient.length-1">, </span></span></p>
       <p>SUBJECT: {{this.activeMessage.subject}}</p>
       <p>CONTENT: {{this.activeMessage.content}}</p>
-      <div class="invitation-box" *ngIf="this.activeMessage.isInvitation && !this.activeMessage.invitation.fromUser">
+      <div class="invitation-box" *ngIf="this.activeMessage.isInvitation && !this.activeMessage.invitation.fromUser && this.activeMessage.invitation.companyId && !this.activeMessage.invitation.pastPerformanceId ">
         <p>Join {{this.activeMessage.sender.name}}?</p>
         <div class="" style="position: relative; width: 100%; height: 40px;">
           <div class="" style="position: absolute; left: 50%; top: 0px; transform: translate(-50%, -50%); width: 320px;">
@@ -59,7 +61,17 @@
             <button type="button" name="button" style="right: 0px;" (click)='declineCompanyInvitation(this.activeMessage, this.activeMessage.sender)'>Decline</button>
           </div>
         </div>
-      </div><div class="invitation-box" *ngIf="this.activeMessage.isInvitation && this.activeMessage.invitation.fromUser">
+      </div>
+      <div class="invitation-box" *ngIf="this.activeMessage.isInvitation && !this.activeMessage.invitation.fromUser && !this.activeMessage.invitation.companyId && this.activeMessage.invitation.pastPerformanceId ">
+        <p>Accept Invitation?</p>
+        <div class="" style="position: relative; width: 100%; height: 40px;">
+          <div class="" style="position: absolute; left: 50%; top: 0px; transform: translate(-50%, -50%); width: 320px;">
+            <button type="button" name="button" style="left: 0px;" (click)='acceptPPInvitation(this.activeMessage, this.activeMessage.sender)'>Accept</button>
+            <button type="button" name="button" style="right: 0px;" (click)='declinePPInvitation(this.activeMessage, this.activeMessage.sender)'>Decline</button>
+          </div>
+        </div>
+      </div>
+      <div class="invitation-box" *ngIf="this.activeMessage.isInvitation && this.activeMessage.invitation.fromUser">
         <p>Accept {{this.activeMessage.sender.name}}?</p>
         <div class="" style="position: relative; width: 100%; height: 40px;">
           <div class="" style="position: absolute; left: 50%; top: 0px; transform: translate(-50%, -50%); width: 320px;">
@@ -73,43 +85,52 @@
     </div>
   </div>
   <div class="container" *ngIf='activeTab.main == 0'>
-    <div class="inbox col-xs-12">
-      INBOX
+    <div class="inbox">
       <div class="message" *ngFor='let i of this.inbox; let index = index' [ngClass]="{'message-read': i.read}">
         <div (click)='deleteMessage(i, index)'>
           <img src="./assets/img/btn-close.png" alt="" class="message-close">
         </div>
-        <div class="" style="width: calc(100% - 15px); height: 100%;"  (click)='openMessage(i, index)'>
-          <p>FROM: {{i.sender.name}}</p>
-          <p>SUBJECT: {{i.subject}}</p>
+        <div class="" style="width: calc(100% - 15px); height: 100%; padding-left: 10px;"  (click)='openMessage(i, index)'>
+          <div class="" style="width: 20%; float: left;">
+            <p>{{i.sender.name}}</p>
+          </div>
+          <div class="" style="width: 80%; float: left;">
+            <p>{{i.subject}}</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <div class="container" *ngIf='activeTab.main == 1'>
-    <div class="outbox col-xs-12">
-      OUTBOX
+    <div class="outbox">
       <div class="message" *ngFor='let i of this.outbox; let index = index' [ngClass]="{'message-read': i.read}">
         <div (click)='deleteMessage(i, index)'>
           <img src="./assets/img/btn-close.png" alt="" class="message-close">
         </div>
-        <div class="" style="width: calc(100% - 15px); height: 100%;"  (click)='openMessage(i, index)'>
-          <p>TO: {{i.recipient[0].name}}</p>
-          <p>SUBJECT: {{i.subject}}</p>
+        <div class="" style="width: calc(100% - 15px); height: 100%; padding-left: 10px;"  (click)='openMessage(i, index)'>
+          <div class="" style="width: 20%; float: left;">
+            <p>{{i.recipient[0].name}}</p>
+          </div>
+          <div class="" style="width: 80%; float: left;">
+            <p>{{i.subject}}</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <div class="container" *ngIf='activeTab.main == 3'>
-    <div class="outbox col-xs-12">
-      BUG REPORTS FOR YOU
+    <div class="outbox">
       <div class="message" *ngFor='let i of this.bugbox; let index = index' [ngClass]="{'message-read': i.read}">
         <div (click)='deleteMessage(i, index)'>
           <img src="./assets/img/btn-close.png" alt="" class="message-close">
         </div>
-        <div class="" style="width: calc(100% - 15px); height: 100%;"  (click)='openMessage(i, index)'>
-          <p>FROM: {{i.sender.name}}</p>
-          <p>SUBJECT: {{i.subject}}</p>
+        <div class="" style="width: calc(100% - 15px); height: 100%; padding-left: 10px;"  (click)='openMessage(i, index)'>
+          <div class="" style="width: 20%; float: left;">
+            <p>{{i.sender.name}}</p>
+          </div>
+          <div class="" style="width: 80%; float: left;">
+            <p>{{i.subject}}</p>
+          </div>
         </div>
       </div>
     </div>

@@ -10,6 +10,7 @@ import { UserPastPerformanceProxyService } from '../../services/userpastperforma
 import { AuthService } from "../../services/auth.service"
 import { RoleService } from "../../services/role.service"
 import { AgencyService } from '../../services/agency.service'
+import { MessageService } from '../../services/message.service'
 import { CompanyPastperformanceProxyService } from "../../services/companypastperformanceproxy.service"
 import { s3Service } from "../../services/s3.service"
 
@@ -80,6 +81,7 @@ export class PastPerformanceEditComponent implements OnInit {
     private companyPastPerformanceProxyService: CompanyPastperformanceProxyService,
     private s3Service: s3Service,
     private agencyService: AgencyService,
+    private messageService: MessageService,
   ) {
     this.getTomorrow()
     if (!auth.isLoggedIn()) {
@@ -381,6 +383,7 @@ export class PastPerformanceEditComponent implements OnInit {
               }
             }
             if (!alreadyThere) {
+              person.invited = false
               this.searchResults.people.push(person)
             }
           }
@@ -391,6 +394,40 @@ export class PastPerformanceEditComponent implements OnInit {
       this.noResults = true
     }
     this.searchOpen = true;
+  }
+
+  invite(person, i){
+    var date = new Date()
+    var time = date.getTime()
+    var invite = {
+      bugReport: false,
+      sender: {
+        id: this.currentPastPerformance.companyProxies[0].company._id,
+        name: this.currentPastPerformance.companyProxies[0].company.name,
+        avatar: this.currentPastPerformance.companyProxies[0].company.avatar,
+      },
+      recipient: [{
+        id: person._id,
+        name: person.firstName + ' ' + person.lastName,
+        avatar: person.avatar,
+      }],
+      subject: 'Invitiation To Join ' + this.currentPastPerformance.title,
+      content: this.currentPastPerformance.companyProxies[0].name + ' has invited you to join ' + this.currentPastPerformance.title + '. Would you like to accept?',
+      isInvitation: true,
+      invitation: {
+        fromUser: false,
+        companyId: '',
+        pastPerformanceId: this.currentPastPerformance._id,
+        pastPerformanceName: this.currentPastPerformance.title,
+      },
+      replyToId: '',
+      date: date,
+      timestamp: time,
+    }
+    this.messageService.createMessage(invite).toPromise().then((result) => {
+      console.log('did it')
+      person.invited = true
+    });
   }
 
   editPhoto() {

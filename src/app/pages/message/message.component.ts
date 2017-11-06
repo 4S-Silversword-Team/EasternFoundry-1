@@ -9,10 +9,12 @@ import { UserService } from '../../services/user.service'
 import { CompanyService } from '../../services/company.service'
 import { MessageService } from '../../services/message.service'
 import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
+import { PastperformanceService } from '../../services/pastperformance.service';
+import { UserPastPerformanceProxyService } from '../../services/userpastperformanceproxy.service'
 
 @Component({
   selector: 'app-message',
-  providers: [UserService, CompanyService, MessageService, CompanyUserProxyService],
+  providers: [UserService, CompanyService, MessageService, CompanyUserProxyService, PastperformanceService, UserPastPerformanceProxyService],
   templateUrl: './message.component.html',
   host: {
       '(document:click)': 'handleClick($event)',
@@ -56,6 +58,7 @@ export class MessageComponent implements OnInit {
       fromUser: false,
       companyId: '',
       pastPerformanceId: '',
+      pastPerformanceName: '',
     },
     replyToId: '',
     date: '',
@@ -67,6 +70,8 @@ export class MessageComponent implements OnInit {
     private companyService: CompanyService,
     private messageService: MessageService,
     private companyUserProxyService: CompanyUserProxyService,
+    private pastPerformanceService: PastperformanceService,
+    private userPastPerformanceProxyService: UserPastPerformanceProxyService,
     private route: ActivatedRoute,
     private router: Router,
   ) {
@@ -293,6 +298,7 @@ export class MessageComponent implements OnInit {
           fromUser: false,
           companyId: '',
           pastPerformanceId: '',
+          pastPerformanceName: '',
         },
         replyToId: message._id,
         date: d,
@@ -329,6 +335,7 @@ export class MessageComponent implements OnInit {
         fromUser: false,
         companyId: '',
         pastPerformanceId: '',
+        pastPerformanceName: '',
       },
       replyToId: message._id,
       date: d,
@@ -372,6 +379,7 @@ export class MessageComponent implements OnInit {
           fromUser: false,
           companyId: '',
           pastPerformanceId: '',
+          pastPerformanceName: '',
         },
         replyToId: message._id,
         date: d,
@@ -407,6 +415,90 @@ export class MessageComponent implements OnInit {
         fromUser: false,
         companyId: '',
         pastPerformanceId: '',
+        pastPerformanceName: '',
+      },
+      replyToId: message._id,
+      date: d,
+      timestamp: t,
+    }
+    this.messageService.createMessage(response).toPromise().then((result) => {
+      console.log('declined')
+      this.deleteMessage(message, this.activeMessageIndex)
+      this.closeMessage()
+    });
+  }
+
+  acceptPPInvitation(message, company){
+    let request = {
+      "user": this.currentUser._id,
+      "pastPerformance": message.invitation.pastPerformanceId,
+      "startDate": this.currentDate,
+      "endDate": this.currentDate,
+      "stillAffiliated": false,
+      "role": "programmer"
+    }
+    console.log(request)
+    this.userPastPerformanceProxyService.addUserPPProxy(request).then(() => {
+      console.log('proxy created')
+      var d = new Date()
+      var t = d.getTime()
+      var response = {
+        bugReport: false,
+        sender: {
+          id: this.currentUser._id,
+          name: this.currentUser.firstName + " " + this.currentUser.lastName,
+          avatar: this.currentUser.avatar,
+        },
+        recipient: [{
+          id: company.id,
+          name: company.name,
+          avatar: company.avatar,
+        }],
+        subject: 'Past Performance Invitation Accepted!',
+        content: this.currentUser.firstName + " " + this.currentUser.lastName + ' accepted your Past Performance invitation.',
+        isInvitation: false,
+        invitation: {
+          fromUser: false,
+          companyId: '',
+          pastPerformanceId: '',
+          pastPerformanceName: '',
+        },
+        replyToId: message._id,
+        date: d,
+        timestamp: t,
+      }
+      this.messageService.createMessage(response).toPromise().then((result) => {
+        console.log('accepted')
+        this.deleteMessage(message, this.activeMessageIndex)
+        this.closeMessage()
+        this.router.navigate(['past-performance', message.invitation.pastPerformanceId]);
+      });
+    })
+  }
+
+  declinePPInvitation(message, company){
+    var d = new Date()
+    var t = d.getTime()
+    var response = {
+      bugReport: false,
+      sender: {
+        id: this.currentUser._id,
+        name: this.currentUser.firstName + " " + this.currentUser.lastName,
+        avatar: this.currentUser.avatar,
+      },
+      recipient: [{
+        id: company.id,
+        name: company.name,
+        avatar: company.avatar,
+      }],
+      subject: 'Invitation Declined',
+      content: this.currentUser.firstName + " " + this.currentUser.lastName + ' has declined your invitation to join ' + company.name + '.',
+      isInvitation: false,
+      invitation: {
+        fromUser: false,
+        companyId: '',
+        pastPerformanceId: '',
+        pastPerformanceName: '',
       },
       replyToId: message._id,
       date: d,
@@ -452,6 +544,7 @@ export class MessageComponent implements OnInit {
             fromUser: false,
             companyId: '',
             pastPerformanceId: '',
+            pastPerformanceName: '',
           },
           replyToId: '',
           date: '',
