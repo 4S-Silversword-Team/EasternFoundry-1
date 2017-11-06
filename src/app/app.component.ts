@@ -61,11 +61,10 @@ export class AppComponent implements OnInit {
             })
           }
           for (let pp of user.pastPerformanceProxies) {
-            console.log(pp.pastPerformance)
-              this.myPastPerformances.push({
-                id: pp.pastPerformance._id,
-                name: pp.pastPerformance.title,
-              })
+            this.myPastPerformances.push({
+              id: pp.pastPerformance._id,
+              name: pp.pastPerformance.title,
+            })
           }
           Promise.all(companyPromises).then(result=>{
             for (let c of this.companies){

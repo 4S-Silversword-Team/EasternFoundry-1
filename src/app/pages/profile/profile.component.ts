@@ -489,7 +489,6 @@ export class ProfileComponent implements OnInit {
         }
       }
       this.professionalPoints = Math.round(Math.sqrt((this.yearsOfSchool * 2) + this.yearsOfWork + this.currentUser.certification.length) * 50)
-      console.log('You have ' + this.professionalPoints + ' professional points')
 
       // here is some CHART CALCULATION!
 
