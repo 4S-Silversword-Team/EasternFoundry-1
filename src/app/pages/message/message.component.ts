@@ -511,46 +511,49 @@ export class MessageComponent implements OnInit {
     });
   }
 
+  clearMessage(){
+    this.newMessage = {
+      bugReport: false,
+      sender: {
+        id: '',
+        name: '',
+        avatar: '',
+      },
+      recipient: [{
+        id: '',
+        name: '',
+        avatar: '',
+      }],
+      subject: '',
+      content: '',
+      isInvitation: false,
+      invitation: {
+        fromUser: false,
+        companyId: '',
+        pastPerformanceId: '',
+        pastPerformanceName: '',
+      },
+      replyToId: '',
+      date: '',
+      timestamp: '',
+    }
+    this.activeTab.main = 0
+  }
+
   sendMessage(){
     var d = new Date()
     var t = d.getTime()
     this.newMessage.date = d
     this.newMessage.timestamp = t
 
-    console.log(this.newMessage)
     this.messageService.createMessage(this.newMessage).toPromise().then((result) => {
-      console.log('did it')
+      console.log('Message sent!')
       if (this.bugReport) {
         window.scrollTo(0, 0);
         this.router.navigate(['']);
         console.log('BUG SENT')
       } else {
-        this.newMessage = {
-          bugReport: false,
-          sender: {
-            id: '',
-            name: '',
-            avatar: '',
-          },
-          recipient: [{
-            id: '',
-            name: '',
-            avatar: '',
-          }],
-          subject: '',
-          content: '',
-          isInvitation: false,
-          invitation: {
-            fromUser: false,
-            companyId: '',
-            pastPerformanceId: '',
-            pastPerformanceName: '',
-          },
-          replyToId: '',
-          date: '',
-          timestamp: '',
-        }
-        this.activeTab.main = 0
+        this.clearMessage()
       }
     });
   }
