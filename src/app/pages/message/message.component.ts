@@ -546,16 +546,19 @@ export class MessageComponent implements OnInit {
     this.newMessage.date = d
     this.newMessage.timestamp = t
     this.newMessage.sender.avatar = this.currentUser.avatar
-
-    this.messageService.createMessage(this.newMessage).toPromise().then((result) => {
-      console.log('Message sent!')
-      if (this.bugReport) {
-        window.scrollTo(0, 0);
-        this.router.navigate(['']);
-        console.log('BUG SENT')
-      } else {
-        this.clearMessage()
-      }
-    });
+    if (this.newMessage.recipient[0].id.length > 0 && this.newMessage.subject.length > 0 && this.newMessage.content.length > 0) {
+      this.messageService.createMessage(this.newMessage).toPromise().then((result) => {
+        console.log('Message sent!')
+        if (this.bugReport) {
+          window.scrollTo(0, 0);
+          this.router.navigate(['']);
+          console.log('BUG SENT')
+        } else {
+          this.clearMessage()
+        }
+      });
+    } else {
+      console.log('NOPE')
+    }
   }
 }
