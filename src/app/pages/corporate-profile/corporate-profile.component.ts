@@ -170,11 +170,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
           // let myCallback = () => {console.log(this.pastperformances);}
         }
       }
-
-//TIM
-
-//
-  };
+    };
   }
 
   ngOnInit() {
@@ -422,15 +418,15 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
 
           this.serviceChart = new Chart({
             chart: {
-                type: 'pie',
-                backgroundColor: 'rgba(0, 100, 200, 0.00)',
-                renderTo: "service_chart"
+              type: 'pie',
+              backgroundColor: 'rgba(0, 100, 200, 0.00)',
+              renderTo: "service_chart"
             },
             title: {
-                text: 'Capabilities'
+              text: 'Capabilities'
             },
             tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
             },
 
             plotOptions: {
@@ -441,7 +437,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
                   enabled: true,
                   format: '<b>{point.name}</b>: {point.percentage:.1f} %',
                   style: {
-                      color: 'black'
+                    color: 'black'
                   }
                 }
               }
@@ -485,7 +481,6 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
         peop[k] = data_peop.get( skill[k] );
       }
     }
-    // this.charts.push('asfgdgasgasdgasgasdf')
     this.charts.push(this.generateChart(s.title, skill, numPeop, peop, prof))
     }
 
@@ -494,103 +489,91 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   generateChart(title, xCategories, yMax, series1, series2){
     var chart = new Chart({
       chart: {
-          type: 'bar',
-          backgroundColor: 'rgba(0, 100, 200, 0.00)',
-          renderTo: "team_chart",
+        type: 'bar',
+        backgroundColor: 'rgba(0, 100, 200, 0.00)',
+        renderTo: "team_chart",
       },
       title: {
-          text: title
+        text: title
       },
       xAxis: [{
-          categories: xCategories,
-          options : {
-              endOnTick: true
-          },
+        categories: xCategories,
+        options : {
+          endOnTick: true
+        },
       }],
-      yAxis: [{ // Primary yAxis
-//            tickInterval: Math.round(100/numPeop),
-//            tickAmount: numPeop,
-//            max: 100,
-          // endOnTick:false ,
-          max:100,
-          min:0,
-          tickInterval: 5,
-          endOnTick: false,
-          alignTicks: false,
+      yAxis: [{
+        // Primary yAxis
+        // tickInterval: Math.round(100/numPeop),
+        // tickAmount: numPeop,
+        // max: 100,
+        // endOnTick:false ,
+        max:100,
+        min:0,
+        tickInterval: 5,
+        endOnTick: false,
+        alignTicks: false,
 
-          ceiling: 100,
-          labels: {
-              format: '{value}%',
-              style: {
-                  color: '#434348'
-              },
+        ceiling: 100,
+        labels: {
+          format: '{value}%',
+          style: {
+            color: '#434348'
           },
-          title: {
-              text: 'Proficiency',
-              style: {
-                  color: '#434348'
-              }
-          },
-      }, { // Secondary yAxis
-          max: yMax,
-          tickInterval: 1,
-//            tickAmount: numPeop,
-//              endOnTick:false ,
-          min:0,
-          endOnTick: false,
-          alignTicks: false,
+        },
+        title: {
+          text: 'Proficiency',
+          style: {
+            color: '#434348'
+          }
+        },
+      }, {
+        // Secondary yAxis
+        max: yMax,
+        tickInterval: 1,
+        // tickAmount: numPeop,
+        // endOnTick:false ,
+        min:0,
+        endOnTick: false,
+        alignTicks: false,
 
-          title: {
-              text: 'Number of Employees',
-              style: {
-                  color: '#7cb5ec'
-              }
-          },
-          labels: {
-              step: 1,
-              format: '{value:.0f}',
-              style: {
-                  color: '#7cb5ec'
-              }
-          },
-          opposite: true
+        title: {
+          text: 'Number of Employees',
+          style: {
+            color: '#7cb5ec'
+          }
+        },
+        labels: {
+          step: 1,
+          format: '{value:.0f}',
+          style: {
+            color: '#7cb5ec'
+          }
+        },
+        opposite: true
       }],
       tooltip: {
-          shared: true
+        shared: true
       },
       series: [{
-          name: 'People',
-          type: 'column',
-          yAxis: 1,
-          data: series1,
-          tooltip: {
-              valueSuffix: ''
-          }
+        name: 'People',
+        type: 'column',
+        yAxis: 1,
+        data: series1,
+        tooltip: {
+          valueSuffix: ''
+        }
       }, {
-          name: 'Proficiency',
-          type: 'column',
-          data: series2,
-          tooltip: {
-              valueSuffix: '%'
-          }
+        name: 'Proficiency',
+        type: 'column',
+        data: series2,
+        tooltip: {
+          valueSuffix: '%'
+        }
       }]
     })
     return chart
   }
-
-
-
-  showService() {
-    this.currentTab = 3;
-    this.renderChart = false;
-  }
-
-  showProduct() {
-    this.currentTab = 2;
-    this.renderChart = false;
-  }
-
-
 
   getServiceChartValue(id: string): number[] {
     const temp: number[] = [];
