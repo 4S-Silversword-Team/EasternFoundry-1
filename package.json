@@ -41,7 +41,7 @@
     "angular-google-chart": "^0.1.0",
     "angular-highcharts": "^3.5.2",
     "angular2-click-outside": "^0.1.0",
-    "angulartics": "^1.4.0",
+    "angulartics": "^1.0.0",
     "angulartics-clicky": "^1.0.0",
     "angulartics-google-analytics": "^0.4.0",
     "bootstrap": "^3.3.7",
