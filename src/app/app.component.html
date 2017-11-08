@@ -13,23 +13,23 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li class="active"><a href="#/search">Search</a></li>
-        <li><a href="#/user-profile/{{this.currentUser}}">My Profile</a></li>
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">My Companies <span class="caret"></span></a>
+        <li><a href="#/user-profile/{{this.currentUser}}">Profile</a></li>
+        <li class="dropdown ">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Companies <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li *ngFor="let company of this.myCompanies"><a href="#/corporate-profile/{{company.id}}">{{company.name}}</a></li>
             <li><a href="#/corporate-profile-create">Create New Company</a></li>
           </ul>
         </li>
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">My Past Performances <span class="caret"></span></a>
+        <li class="dropdown ">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Past Performances <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li *ngFor="let pp of this.myPastPerformances"><a href="#/past-performance/{{pp.id}}">{{pp.name}}</a></li>
           </ul>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown" *ngIf="this.companies.length > 0">
+        <li class="dropdown when-big" *ngIf="this.companies.length > 0">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">Company Mail [{{this.companyUnreadCount}}]<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li *ngFor="let company of this.companies"><a href="#/corporate-profile/{{company.id}}/mailbox">{{company.name}} [{{company.count}}]</a></li>
@@ -42,7 +42,7 @@
         </a></li>
         <li><a href="#/mailbox">
           <div class="">
-            Messages [{{this.unreadCount}}]
+            Mail [{{this.unreadCount}}]
           </div>
         </a></li>
         <li><a href="#/bugreport">Report a Bug</a></li>
