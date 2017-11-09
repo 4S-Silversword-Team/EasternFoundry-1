@@ -44,6 +44,9 @@ import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 import { TextareaAutosizeModule } from 'ngx-textarea-autosize';
 
 import { ChartModule } from 'angular-highcharts';
+import { Angulartics2Module } from 'angulartics2';
+import { Angulartics2Clicky } from 'angulartics2/clicky';
+
 
 
 @NgModule({
@@ -84,7 +87,8 @@ import { ChartModule } from 'angular-highcharts';
     NguiAutoCompleteModule,
     RouterModule.forRoot(ROUTES, {useHash: true}),
     ChartModule,
-    TextareaAutosizeModule
+    TextareaAutosizeModule,
+    Angulartics2Module.forRoot([Angulartics2Clicky]),
   ],
   providers: [],
   bootstrap: [AppComponent]
