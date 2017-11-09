@@ -12,6 +12,7 @@ import { UserService } from '../../services/user.service'
 import { PastperformanceService } from '../../services/pastperformance.service'
 import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
 import { AgencyService } from '../../services/agency.service'
+import { Angulartics2 } from 'angulartics2';
 
 
 @Component({
@@ -57,7 +58,8 @@ export class SearchComponent implements OnInit {
     private userService: UserService,
     private pastPerformanceService: PastperformanceService,
     private companyUserProxyService: CompanyUserProxyService,
-    private agencyService: AgencyService
+    private agencyService: AgencyService,
+    private angulartics2: Angulartics2
 
   ) {
     this.companyService.getCompanies().then(val =>{
