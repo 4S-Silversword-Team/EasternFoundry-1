@@ -4,6 +4,7 @@ import { UserService } from './services/user.service'
 import { Router, NavigationEnd } from '@angular/router';
 import { Message } from './classes/message'
 import { MessageService } from './services/message.service'
+import { Angulartics2Clicky } from 'angulartics2/clicky';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit {
     private messageService: MessageService,
     private userService: UserService,
     private router: Router,
+    private angulartics2Clicky: Angulartics2Clicky,
   ){
     console.log("Navbar checkin login status")
     this.signedIn = auth.isLoggedIn()
