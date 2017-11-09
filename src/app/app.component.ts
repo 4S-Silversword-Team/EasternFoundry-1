@@ -24,7 +24,6 @@ export class AppComponent implements OnInit {
   myCompanies: any[] = []
   myPastPerformances: any[] = []
 
-
   constructor(
     private auth: AuthService,
     private messageService: MessageService,
