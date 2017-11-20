@@ -249,7 +249,7 @@
         </div>
       </div>
     </div>
-    <button type="button" name="button" class="col-xs-8 col-xs-offset-2 search-ready" (click)='search()' *ngIf='searchReady()' angulartics2On="click" angularticsAction="event-button" [angularticsProperties]="{title: 'Search Clicked', termsName: searchTerms.name}">Search</button>
+    <button type="button" name="button" class="col-xs-8 col-xs-offset-2 search-ready" (click)='search()' *ngIf='searchReady()' angulartics2On="click" angularticsAction="search" [angularticsProperties]="{title: 'Search Clicked', termsName: searchTerms.name}">Search</button>
     <button type="button" name="button" class="col-xs-8 col-xs-offset-2 search-nope" *ngIf='!searchReady()'>Search</button>
   </div>
 </div>
