@@ -41,7 +41,7 @@
     "angular-google-chart": "^0.1.0",
     "angular-highcharts": "^3.5.2",
     "angular2-click-outside": "^0.1.0",
-    "angulartics2": "^3.6.0",
+    "angulartics2": "^4.0.2",
     "bootstrap": "^3.3.7",
     "chart.js": "^2.7.1",
     "cli": "^1.0.1",
