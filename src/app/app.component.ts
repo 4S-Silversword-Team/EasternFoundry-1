@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
     private messageService: MessageService,
     private userService: UserService,
     private router: Router,
-    private angulartics2Clicky: Angulartics2Clicky,
+    angulartics2Clicky: Angulartics2Clicky,
   ){
     console.log("Navbar checkin login status")
     this.signedIn = auth.isLoggedIn()
