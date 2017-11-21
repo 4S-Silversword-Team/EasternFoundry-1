@@ -50,6 +50,7 @@ export class SearchComponent implements OnInit {
   };
   searchRunning = false
   noResults = false
+  analyticsString = ''
 
   constructor(
     private router: Router,
@@ -94,6 +95,81 @@ export class SearchComponent implements OnInit {
     console.log(JSON.stringify(data))
     return data.agency;
   }
+
+  updateAnalyticsString(){
+    this.analyticsString = 'SEARCH: '
+    let firstSlash = false;
+    if (this.searchTerms.company){
+      this.analyticsString += 'Company'
+      firstSlash = true;
+    }
+    if (this.searchTerms.person){
+      if (firstSlash) {
+        this.analyticsString += '/'
+      } else {
+        firstSlash = true
+      }
+      this.analyticsString += 'Person'
+    }
+    if (this.searchTerms.pastPerformance){
+      if (firstSlash) {
+        this.analyticsString += '/'
+      }
+      this.analyticsString += 'Performance'
+    }
+    this.analyticsString += ' - '
+    let firstComma = false;
+    if (this.searchTerms.name) {
+      this.analyticsString += this.searchTerms.name
+      firstComma = true
+    }
+    if (this.searchTerms.agency) {
+      if (firstSlash) {
+        this.analyticsString += ', '
+      } else {
+        firstComma = true
+      }
+      this.analyticsString += this.searchTerms.agency
+    }
+    if (this.searchTerms.subagency) {
+      if (firstSlash) {
+        this.analyticsString += ', '
+      } else {
+        firstComma = true
+      }
+      this.analyticsString += this.searchTerms.subagency
+
+    }
+    if (this.searchTerms.skill) {
+      if (firstSlash) {
+        this.analyticsString += ', '
+      } else {
+        firstComma = true
+      }
+      this.analyticsString += this.searchTerms.skill
+
+    }
+    if (this.searchTerms.position) {
+      if (firstSlash) {
+        this.analyticsString += ', '
+      } else {
+        firstComma = true
+      }
+      this.analyticsString += this.searchTerms.position
+
+    }
+    if (this.searchTerms.cert) {
+      if (firstSlash) {
+        this.analyticsString += ', '
+      } else {
+        firstComma = true
+      }
+      this.analyticsString += this.searchTerms.cert
+
+    }
+
+  }
+
 
 
   agencyValidCheck (agency) {
