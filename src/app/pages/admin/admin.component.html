@@ -129,13 +129,18 @@
   </div>
 </div>
 
-<div class="col-xs-6" style="padding: 2px">
-  <div class="col-xs-12" style='background: whitesmoke; border: 1px solid black; padding: 2px'>
-    <h4>TOOLS SORT/UPLOAD</h4>
-    <button type="button" name="button" class="col-xs-6" (click)="sort()">Sort From {{this.sortCounter}}</button>
-    <button type="button" name="button" class="col-xs-6" (click)="uploadSortedObjects()">Upload From {{this.uploadCounter}}</button>
-  </div>
+<div class="col-xs-12">
+  <button angulartics2On="click" angularticsAction="event-button" [angularticsProperties]="{title: 'Event Button Clicked'}">Track Button Click Event 1</button>
 </div>
+
+
+  <!--<div class="col-xs-6" style="padding: 2px">-->
+  <!--<div class="col-xs-12" style='background: whitesmoke; border: 1px solid black; padding: 2px'>-->
+    <!--<h4>TOOLS SORT/UPLOAD</h4>-->
+    <!--<button type="button" name="button" class="col-xs-6" (click)="sort()">Sort From {{this.sortCounter}}</button>-->
+    <!--<button type="button" name="button" class="col-xs-6" (click)="uploadSortedObjects()">Upload From {{this.uploadCounter}}</button>-->
+  <!--</div>-->
+<!--</div>-->
 <!-- <div class="col-xs-6" style="padding: 2px">
   <div class="col-xs-12" style='background: whitesmoke; border: 1px solid black; padding: 2px'>
     <h4>CERTS SORT/UPLOAD</h4>

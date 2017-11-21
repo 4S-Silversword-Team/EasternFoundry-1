@@ -8,7 +8,6 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { ProfileEditComponent } from './pages/profile-edit/profile-edit.component';
 import { ProfileCreateComponent } from './pages/profile-create/profile-create.component';
 import { ProfileResumeComponent } from './pages/profile-resume/profile-resume.component';
-import { AllProfilesComponent } from './pages/all-profiles/all-profiles.component';
 import { PastPerformanceComponent } from './pages/past-performance/past-performance.component';
 import { PastPerformanceEditComponent } from './pages/past-performance-edit/past-performance-edit.component';
 import { NoContentComponent } from './pages/no-content/no-content.component';
