@@ -60,7 +60,7 @@ export class SearchComponent implements OnInit {
     private pastPerformanceService: PastperformanceService,
     private companyUserProxyService: CompanyUserProxyService,
     private agencyService: AgencyService,
-    private angulartics2: Angulartics2
+    angulartics2: Angulartics2
 
   ) {
     this.companyService.getCompanies().then(val =>{
