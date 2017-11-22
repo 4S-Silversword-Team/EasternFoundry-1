@@ -383,6 +383,8 @@ export class ProfileEditComponent implements OnInit {
                   d.DegreeType[0].Name = 'Other'
                 }
               }
+            } else {
+              d.DegreeType[0] = {Name: ''}
             }
           }
 
