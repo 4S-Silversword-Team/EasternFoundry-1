@@ -2,7 +2,10 @@
   <div class="loader"></div>
   <!-- <p class="loading">Loading</p> -->
 </div>
-<div class="page" *ngIf='this.promiseFinished'>
+<div class="page" *ngIf='this.promiseFinished && !this.isActiveProfile && !this.currentUser.finished'>
+  <h3 style="text-align: center">This user has not finished their profile yet. Check back when they've completed it!</h3>
+</div>
+<div class="page" *ngIf='this.promiseFinished && this.currentUser.finished'>
   <div class="container top-bar">
     <div class="profile-navbar">
       <div class="profile-navbar-tab" (click)='switchTab(0)' [ngClass]="{'profile-navbar-tab-active-left': this.activeTab.main == 0}">

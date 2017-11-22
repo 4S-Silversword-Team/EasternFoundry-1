@@ -47,8 +47,6 @@ import { ChartModule } from 'angular-highcharts';
 import { Angulartics2Module } from 'angulartics2';
 import { Angulartics2Clicky } from 'angulartics2/clicky';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,

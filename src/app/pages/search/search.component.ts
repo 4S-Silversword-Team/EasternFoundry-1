@@ -7,11 +7,11 @@ import { PastPerformance } from '../../classes/past-performance';
 import { Agency } from '../../classes/agency';
 
 import { CompanyService } from '../../services/company.service';
-import { AuthService } from '../../services/auth.service'
-import { UserService } from '../../services/user.service'
-import { PastperformanceService } from '../../services/pastperformance.service'
-import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
-import { AgencyService } from '../../services/agency.service'
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
+import { PastperformanceService } from '../../services/pastperformance.service';
+import { CompanyUserProxyService } from '../../services/companyuserproxy.service';
+import { AgencyService } from '../../services/agency.service';
 import { Angulartics2 } from 'angulartics2';
 
 
@@ -27,7 +27,7 @@ export class SearchComponent implements OnInit {
   users: User[] = [];
   pastPerformances: PastPerformance[] = [];
   agencies: Agency[] = [];
-  promiseFinished: boolean = false
+  promiseFinished: boolean = false;
   searchTerms = {
     company: false,
     person: false,
@@ -48,9 +48,9 @@ export class SearchComponent implements OnInit {
     privatePeople: 0,
     privatePP: 0
   };
-  searchRunning = false
-  noResults = false
-  analyticsString = ''
+  searchRunning = false;
+  noResults = false;
+  analyticsString = '';
 
   constructor(
     private router: Router,
@@ -63,18 +63,18 @@ export class SearchComponent implements OnInit {
     angulartics2: Angulartics2
 
   ) {
-    this.companyService.getCompanies().then(val =>{
-     this.companies = val
-     this.userService.getUsers().then(u =>{
-       this.users = u
-       this.pastPerformanceService.getPastPerformances().then(pp =>{
-         this.pastPerformances = pp
-         this.agencyService.getAgencies().then(a =>{
-           this.agencies = a
-           this.promiseFinished = true
-         })
-       })
-     })
+    this.companyService.getCompanies().then(val => {
+     this.companies = val;
+     this.userService.getUsers().then(u => {
+       this.users = u;
+       this.pastPerformanceService.getPastPerformances().then(pp => {
+         this.pastPerformances = pp;
+         this.agencyService.getAgencies().then(a => {
+           this.agencies = a;
+           this.promiseFinished = true;
+         });
+       });
+     });
    });
 
 
@@ -84,7 +84,7 @@ export class SearchComponent implements OnInit {
   }
 
   expandResult(i){
-    i.expand = !i.expand
+    i.expand = !i.expand;
   }
 
   autocompleListFormatter (data: any) {
@@ -92,79 +92,79 @@ export class SearchComponent implements OnInit {
   }
 
   subagencyListFormatter (data: any) {
-    console.log(JSON.stringify(data))
+    console.log(JSON.stringify(data));
     return data.agency;
   }
 
   updateAnalyticsString(){
-    this.analyticsString = 'SEARCH: '
+    this.analyticsString = 'SEARCH: ';
     let firstSlash = false;
     if (this.searchTerms.company){
-      this.analyticsString += 'Company'
+      this.analyticsString += 'Company';
       firstSlash = true;
     }
     if (this.searchTerms.person){
       if (firstSlash) {
-        this.analyticsString += '/'
+        this.analyticsString += '/';
       } else {
-        firstSlash = true
+        firstSlash = true;
       }
-      this.analyticsString += 'Person'
+      this.analyticsString += 'Person';
     }
     if (this.searchTerms.pastPerformance){
       if (firstSlash) {
-        this.analyticsString += '/'
+        this.analyticsString += '/';
       }
-      this.analyticsString += 'Performance'
+      this.analyticsString += 'Performance';
     }
-    this.analyticsString += ' - '
+    this.analyticsString += ' - ';
     let firstComma = false;
     if (this.searchTerms.name) {
-      this.analyticsString += this.searchTerms.name
-      firstComma = true
+      this.analyticsString += this.searchTerms.name;
+      firstComma = true;
     }
     if (this.searchTerms.agency) {
       if (firstSlash) {
-        this.analyticsString += ', '
+        this.analyticsString += ', ';
       } else {
-        firstComma = true
+        firstComma = true;
       }
-      this.analyticsString += this.searchTerms.agency
+      this.analyticsString += this.searchTerms.agency;
     }
     if (this.searchTerms.subagency) {
       if (firstSlash) {
-        this.analyticsString += ', '
+        this.analyticsString += ', ';
       } else {
-        firstComma = true
+        firstComma = true;
       }
-      this.analyticsString += this.searchTerms.subagency
+      this.analyticsString += this.searchTerms.subagency;
 
     }
     if (this.searchTerms.skill) {
       if (firstSlash) {
-        this.analyticsString += ', '
+        this.analyticsString += ', ';
       } else {
-        firstComma = true
+        firstComma = true;
       }
-      this.analyticsString += this.searchTerms.skill
+      this.analyticsString += this.searchTerms.skill;
 
     }
     if (this.searchTerms.position) {
       if (firstSlash) {
-        this.analyticsString += ', '
+        this.analyticsString += ', ';
       } else {
-        firstComma = true
+        firstComma = true;
       }
-      this.analyticsString += this.searchTerms.position
+      this.analyticsString += this.searchTerms.position;
 
     }
     if (this.searchTerms.cert) {
       if (firstSlash) {
-        this.analyticsString += ', '
+        this.analyticsString += ', ';
       } else {
-        firstComma = true
+        firstComma = true;
       }
-      this.analyticsString += this.searchTerms.cert
+      this.analyticsString += this.searchTerms.cert;
 
     }
 
@@ -173,10 +173,10 @@ export class SearchComponent implements OnInit {
 
 
   agencyValidCheck (agency) {
-    var match = false
-    for (let a of this.agencies) {
+    let match = false;
+    for (const a of this.agencies) {
       if (a.agency.toString().toLowerCase() == agency.toString().toLowerCase()){
-        match = true
+        match = true;
       }
     }
     return match;
@@ -185,78 +185,79 @@ export class SearchComponent implements OnInit {
   searchReady(){
     if (this.searchTerms.company || this.searchTerms.person || this.searchTerms.pastPerformance) {
       if (this.searchTerms.name || this.searchTerms.agency || this.searchTerms.skill || this.searchTerms.position || this.searchTerms.cert) {
-        return true
+        return true;
       }
     }
-    return false
+    return false;
   }
 
   clearSubagency() {
-    this.searchTerms.subagency = ''
+    this.searchTerms.subagency = '';
   }
 
   findSubAgencies(agency) {
-    var subagencies = ['No Subagencies Found']
-    for (let a of this.agencies){
+    let subagencies = ['No Subagencies Found'];
+    for (const a of this.agencies){
       if (a.agency.toString().toLowerCase() == agency.toString().toLowerCase()){
-        subagencies = a.subagencies
+        subagencies = a.subagencies;
       }
     }
-    return subagencies
+    return subagencies;
   }
 
   subagencyValidCheck (agency, subagency) {
-    var match = false
-    var subagencies = this.findSubAgencies(agency)
-    for (let i of subagencies) {
+    let match = false;
+    const subagencies = this.findSubAgencies(agency);
+    for (const i of subagencies) {
       if (i.toString().toLowerCase() == subagency.toString().toLowerCase()){
-        match = true
+        match = true;
       }
     }
     return match;
   }
 
   search(){
-    this.searchRunning = true
-    this.noResults = false
-    this.searchResults.companies = []
-    this.searchResults.people = []
-    this.searchResults.pastPerformances = []
-    this.searchResults.privateCompanies = 0
-    this.searchResults.privatePeople = 0
-    this.searchResults.privatePP = 0
+    this.searchRunning = true;
+    this.noResults = false;
+    this.searchResults.companies = [];
+    this.searchResults.people = [];
+    this.searchResults.pastPerformances = [];
+    this.searchResults.privateCompanies = 0;
+    this.searchResults.privatePeople = 0;
+    this.searchResults.privatePP = 0;
 
     if (this.searchTerms.company){
-      for (let company of this.companies) {
-        var newCompany: any = company
-        newCompany.relevantAgencies = []
-        newCompany.relevantSubagencies = []
-        newCompany.relevantSkills = []
-        newCompany.relevantPositions = []
-        newCompany.relevantCerts = []
-        newCompany.nameMatch = false
+      for (const company of this.companies) {
+        const newCompany: any = company;
+        newCompany.relevantAgencies = [];
+        newCompany.relevantSubagencies = [];
+        newCompany.relevantSkills = [];
+        newCompany.relevantPositions = [];
+        newCompany.relevantCerts = [];
+        newCompany.nameMatch = false;
+        let matchFound = false;
         if (this.searchTerms.name){
           if (newCompany.name.toLowerCase().includes(this.searchTerms.name.toLowerCase())) {
-            newCompany.nameMatch = true
-            matchFound = true
+            newCompany.nameMatch = true;
+            matchFound = true;
           }
         }
         if (this.searchTerms.agency) {
-          for (let p of newCompany.userProfileProxies) {
-            var agenciesDone = []
+          for (const p of newCompany.userProfileProxies) {
+            const agenciesDone = [];
             if (p.userProfile){
-              for (let j of p.userProfile.positionHistory) {
-                for (let a of j.agencyExperience) {
+              for (const j of p.userProfile.positionHistory) {
+                for (const a of j.agencyExperience) {
                   if (a.main.title.toLowerCase().includes(this.searchTerms.agency.toLowerCase())) {
                     if (!this.searchTerms.subagency) {
-                      matchFound = true
+                      matchFound = true;
                     }
-                    var agencyFound = false
+                    let agencyFound = false;
                     if (!agenciesDone.includes(a.main.title)){
-                      for (let ra of newCompany.relevantAgencies) {
+                      for (const ra of newCompany.relevantAgencies) {
                         if (ra.name.toLowerCase() == a.main.title.toLowerCase()){
-                          agencyFound = true
-                          ra.count++
+                          agencyFound = true;
+                          ra.count++;
                           agenciesDone.push(a.main.title);
                         }
                       }
@@ -264,7 +265,7 @@ export class SearchComponent implements OnInit {
                         newCompany.relevantAgencies.push({
                           name: a.main.title,
                           count: 1,
-                        })
+                        });
                         agenciesDone.push(a.main.title);
                       }
                     }
@@ -274,22 +275,22 @@ export class SearchComponent implements OnInit {
             }
           }
           if (this.searchTerms.subagency) {
-            for (let p of newCompany.userProfileProxies) {
-              var subagenciesDone = []
+            for (const p of newCompany.userProfileProxies) {
+              const subagenciesDone = [];
               if (p.userProfile){
-                for (let j of p.userProfile.positionHistory) {
-                  for (let a of j.agencyExperience) {
+                for (const j of p.userProfile.positionHistory) {
+                  for (const a of j.agencyExperience) {
                     if (a.offices[0]) {
                       if (a.offices[0].title.length > 0) {
-                        for (let s of a.offices) {
+                        for (const s of a.offices) {
                           if (s.title.toLowerCase().includes(this.searchTerms.subagency.toLowerCase())) {
-                            matchFound = true
-                            var agencyFound = false
+                            matchFound = true;
+                            let agencyFound = false;
                             if (!subagenciesDone.includes(s.title)){
-                              for (let rs of newCompany.relevantSubagencies) {
+                              for (const rs of newCompany.relevantSubagencies) {
                                 if (rs.name.toLowerCase() == s.title.toLowerCase()){
-                                  agencyFound = true
-                                  rs.count++
+                                  agencyFound = true;
+                                  rs.count++;
                                   subagenciesDone.push(s.title);
                                 }
                               }
@@ -297,7 +298,7 @@ export class SearchComponent implements OnInit {
                                 newCompany.relevantSubagencies.push({
                                   name: s.title,
                                   count: 1,
-                                })
+                                });
                                 subagenciesDone.push(s.title);
                               }
                             }
@@ -312,20 +313,20 @@ export class SearchComponent implements OnInit {
           }
         }
         if (this.searchTerms.skill) {
-          for (let p of newCompany.userProfileProxies) {
-            var skillsDone = []
+          for (const p of newCompany.userProfileProxies) {
+            const skillsDone = [];
             if (p.userProfile){
               if (p.userProfile.foundTools) {
-                var newPerson = p.userProfile
-                for (let t of newPerson.foundTools) {
+                const newPerson = p.userProfile;
+                for (const t of newPerson.foundTools) {
                   if (t.title.toLowerCase().includes(this.searchTerms.skill.toLowerCase())) {
-                    matchFound = true
-                    var skillFound = false
+                    matchFound = true;
+                    let skillFound = false;
                     if (!skillsDone.includes(t.title)){
-                      for (let s of newCompany.relevantSkills) {
+                      for (const s of newCompany.relevantSkills) {
                         if (s.name.toLowerCase() == t.title.toLowerCase()){
-                          skillFound = true
-                          s.count++
+                          skillFound = true;
+                          s.count++;
                           skillsDone.push(s.title);
                         }
                       }
@@ -333,7 +334,7 @@ export class SearchComponent implements OnInit {
                         newCompany.relevantSkills.push({
                           name: t.title,
                           count: 1,
-                        })
+                        });
                         skillsDone.push(t.title);
                       }
                     }
@@ -345,45 +346,45 @@ export class SearchComponent implements OnInit {
         }
 
         if (this.searchTerms.position) {
-          var toolsToPush = []
-          for (let p of newCompany.userProfileProxies) {
+          const toolsToPush = [];
+          for (const p of newCompany.userProfileProxies) {
             if (p.userProfile) {
               if (p.userProfile.foundTools) {
-                for (let tool of p.userProfile.foundTools) {
-                  var matchFound = false
-                  for (let position of tool.position) {
-                    for (let toolDone of toolsToPush) {
+                for (const tool of p.userProfile.foundTools) {
+                  let matchFound = false;
+                  for (const position of tool.position) {
+                    for (const toolDone of toolsToPush) {
                       if (position == toolDone.title) {
-                        toolDone.score += 5
-                        matchFound = true
+                        toolDone.score += 5;
+                        matchFound = true;
                       }
                     }
                     if (!matchFound) {
-                      var newPosition = {
+                      const newPosition = {
                         title: '',
                         score: 0
-                      }
-                      newPosition.title = position
-                      newPosition.score = 5
-                      toolsToPush.push(newPosition)
+                      };
+                      newPosition.title = position;
+                      newPosition.score = 5;
+                      toolsToPush.push(newPosition);
                     }
                   }
                 }
-                for (let tool of toolsToPush) {
-                  var toolsDone = []
+                for (const tool of toolsToPush) {
+                  const toolsDone = [];
                   if (tool.title.toLowerCase().includes(this.searchTerms.position.toLowerCase())) {
-                    for (let o of p.userProfile.occupations) {
+                    for (const o of p.userProfile.occupations) {
                       if (tool.title == o.title) {
-                        tool.score += (o.score / 5)
+                        tool.score += (o.score / 5);
                       }
                     }
                     if (tool.score > 50) {
-                      var agencyFound = false
+                      let agencyFound = false;
                       if (!toolsDone.includes(tool.title)){
-                        for (let rp of newCompany.relevantPositions) {
+                        for (const rp of newCompany.relevantPositions) {
                           if (rp.name.toLowerCase() == tool.title.toLowerCase()){
-                            agencyFound = true
-                            rp.count++
+                            agencyFound = true;
+                            rp.count++;
                             toolsDone.push(tool.title);
                           }
                         }
@@ -391,7 +392,7 @@ export class SearchComponent implements OnInit {
                           newCompany.relevantPositions.push({
                             name: tool.title,
                             count: 1,
-                          })
+                          });
                           toolsDone.push(tool.title);
                         }
                       }
@@ -403,38 +404,38 @@ export class SearchComponent implements OnInit {
           }
         }
         if (this.searchTerms.cert) {
-          var certsToPush = []
-          for (let p of newCompany.userProfileProxies) {
+          const certsToPush = [];
+          for (const p of newCompany.userProfileProxies) {
             if (p.userProfile) {
               if (p.userProfile.certification) {
-                for (let cert of p.userProfile.certification) {
-                  var matchFound = false
-                  for (let certDone of certsToPush) {
+                for (const cert of p.userProfile.certification) {
+                  let matchFound = false;
+                  for (const certDone of certsToPush) {
                     if (cert.CertificationName == certDone) {
-                      matchFound = true
+                      matchFound = true;
                     }
                   }
                   if (!matchFound) {
-                    certsToPush.push(cert.CertificationName)
+                    certsToPush.push(cert.CertificationName);
                   }
                 }
-                for (let cert of certsToPush) {
-                  var certsDone = []
+                for (const cert of certsToPush) {
+                  const certsDone = [];
                   if (cert.toLowerCase().includes(this.searchTerms.cert.toLowerCase())) {
-                    var certFound = false
+                    let certFound = false;
                     if (!certsDone.includes(cert)){
-                      for (let c of newCompany.relevantCerts) {
+                      for (const c of newCompany.relevantCerts) {
                         if (c.name.toLowerCase() == cert.toLowerCase()){
-                          certFound = true
-                          c.count++
-                          certsDone.push(cert)
+                          certFound = true;
+                          c.count++;
+                          certsDone.push(cert);
                         }
                       }
                       if (!certFound) {
                         newCompany.relevantCerts.push({
                           name: cert,
                           count: 1
-                        })
+                        });
                         certsDone.push(cert);
                       }
                     }
@@ -445,142 +446,142 @@ export class SearchComponent implements OnInit {
           }
         }
         if (matchFound){
-          var resultValid = true
+          let resultValid = true;
 
           if (this.searchTerms.name && !newCompany.nameMatch) {
-            resultValid = false
+            resultValid = false;
           }
           if (this.searchTerms.agency && newCompany.relevantAgencies.length < 1) {
-            resultValid = false
+            resultValid = false;
           }
           if (this.searchTerms.subagency && newCompany.relevantSubagencies.length < 1) {
-            resultValid = false
+            resultValid = false;
           }
           if (this.searchTerms.skill && newCompany.relevantSkills.length < 1) {
-            resultValid = false
+            resultValid = false;
           }
           if (this.searchTerms.position && newCompany.relevantPositions.length < 1) {
-            resultValid = false
+            resultValid = false;
           }
           if (this.searchTerms.cert && newCompany.relevantCerts.length < 1) {
-            resultValid = false
+            resultValid = false;
           }
           if (resultValid){
             if (newCompany.public) {
-              newCompany.expand = false
-              this.searchResults.companies.push(newCompany)
+              newCompany.expand = false;
+              this.searchResults.companies.push(newCompany);
             } else {
-              this.searchResults.privateCompanies++
+              this.searchResults.privateCompanies++;
             }
           }
         }
       }
     }
     if (this.searchTerms.person) {
-      for (let person of this.users) {
-        var newPerson: any = person
-        var subPromises = []
-        var matchFound = false
-        newPerson.relevantAgencies = []
-        newPerson.relevantSubagencies = []
-        newPerson.relevantSkills = []
-        newPerson.relevantPositions = []
-        newPerson.relevantCerts = []
+      for (const person of this.users) {
+        const newPerson: any = person;
+        const subPromises = [];
+        let matchFound = false;
+        newPerson.relevantAgencies = [];
+        newPerson.relevantSubagencies = [];
+        newPerson.relevantSkills = [];
+        newPerson.relevantPositions = [];
+        newPerson.relevantCerts = [];
         if (this.searchTerms.agency) {
-          for (let j of newPerson.positionHistory){
-            for (let a of j.agencyExperience) {
+          for (const j of newPerson.positionHistory){
+            for (const a of j.agencyExperience) {
               if (a.main.title.toLowerCase().includes(this.searchTerms.agency.toLowerCase())) {
                 if (!this.searchTerms.subagency) {
-                  matchFound = true
+                  matchFound = true;
                 }
-                newPerson.relevantAgencies.push(a.main.title)
+                newPerson.relevantAgencies.push(a.main.title);
               }
             }
           }
         }
         if (this.searchTerms.subagency) {
-          var subagenciesDone = []
-          for (let j of newPerson.positionHistory){
-            for (let a of j.agencyExperience) {
-              for (let s of a.offices) {
+          const subagenciesDone = [];
+          for (const j of newPerson.positionHistory){
+            for (const a of j.agencyExperience) {
+              for (const s of a.offices) {
                 if (s.title.toLowerCase().includes(this.searchTerms.subagency.toLowerCase())) {
-                  matchFound = true
-                  var agencyFound = false
+                  matchFound = true;
+                  let agencyFound = false;
                   if (!subagenciesDone.includes(s.title)){
-                    for (let rs of newPerson.relevantSubagencies) {
+                    for (const rs of newPerson.relevantSubagencies) {
                       if (rs.toLowerCase() == s.title.toLowerCase()){
-                        agencyFound = true
+                        agencyFound = true;
                         subagenciesDone.push(s.title);
                       }
                     }
                     if (!agencyFound) {
-                      newPerson.relevantSubagencies.push(s.title)
+                      newPerson.relevantSubagencies.push(s.title);
                       subagenciesDone.push(s.title);
                     }
                   }
                 }
               }
               if (a.main.title.toLowerCase().includes(this.searchTerms.agency.toLowerCase())) {
-                matchFound = true
-                newPerson.relevantAgencies.push(a.main.title)
+                matchFound = true;
+                newPerson.relevantAgencies.push(a.main.title);
               }
             }
           }
         }
         if (this.searchTerms.skill) {
           if (newPerson.foundTools){
-            for (let t of newPerson.foundTools) {
+            for (const t of newPerson.foundTools) {
               if (t.title.toLowerCase().includes(this.searchTerms.skill.toLowerCase())) {
-                matchFound = true
-                newPerson.relevantSkills.push(t.title)
+                matchFound = true;
+                newPerson.relevantSkills.push(t.title);
               }
             }
           }
         }
         if (this.searchTerms.position) {
-          var toolsToPush = []
-          for (let tool of newPerson.foundTools) {
-            var matchFound = false
-            for (let position of tool.position) {
-              for (let toolDone of toolsToPush) {
+          const toolsToPush = [];
+          for (const tool of newPerson.foundTools) {
+            let matchFound = false;
+            for (const position of tool.position) {
+              for (const toolDone of toolsToPush) {
                 if (position == toolDone.title) {
-                  toolDone.score += 5
-                  matchFound = true
+                  toolDone.score += 5;
+                  matchFound = true;
                 }
               }
               if (!matchFound) {
-                var newPosition = {
+                const newPosition = {
                   title: '',
                   score: 0
-                }
-                newPosition.title = position
-                newPosition.score = 5
-                toolsToPush.push(newPosition)
+                };
+                newPosition.title = position;
+                newPosition.score = 5;
+                toolsToPush.push(newPosition);
               }
             }
           }
           if (toolsToPush.length < 2) {
-            for (let o of person.occupations) {
-              var newOccupation = {
+            for (const o of person.occupations) {
+              const newOccupation = {
                 title: '',
                 score: 0
-              }
-              newOccupation.title = o.title
-              newOccupation.score = o.score
+              };
+              newOccupation.title = o.title;
+              newOccupation.score = o.score;
               if (newOccupation.title.toLowerCase().includes(this.searchTerms.position.toLowerCase())) {
-                newPerson.relevantPositions.push(newOccupation)
+                newPerson.relevantPositions.push(newOccupation);
               }
             }
           } else {
-            for (let tool of toolsToPush) {
-              for (let o of person.occupations) {
+            for (const tool of toolsToPush) {
+              for (const o of person.occupations) {
                 if (tool.title == o.title) {
-                  tool.score += (o.score / 5)
+                  tool.score += (o.score / 5);
                 }
               }
               if (tool.score > 50) {
                 if (tool.title.toLowerCase().includes(this.searchTerms.position.toLowerCase())) {
-                  newPerson.relevantPositions.push(tool)
+                  newPerson.relevantPositions.push(tool);
                 }
               }
             }
@@ -588,119 +589,104 @@ export class SearchComponent implements OnInit {
         }
         if (this.searchTerms.cert) {
           if (newPerson.certification) {
-            for (let cert of newPerson.certification) {
-              var matchFound = false
+            for (const cert of newPerson.certification) {
+              let matchFound = false;
               if (cert.CertificationName.toLowerCase().includes(this.searchTerms.cert.toLowerCase())) {
                 if (!newPerson.relevantCerts.includes(cert.CertificationName)){
-                  matchFound = true
-                  newPerson.relevantCerts.push(cert.CertificationName)
+                  matchFound = true;
+                  newPerson.relevantCerts.push(cert.CertificationName);
                 }
               }
             }
           }
         }
-        for (let c of newPerson.companyUserProxies) {
+        for (const c of newPerson.companyUserProxies) {
           if (c.stillAffiliated) {
             if (c.company) {
               if (c.company.name) {
-                newPerson.currentCompany = c.company.name
+                newPerson.currentCompany = c.company.name;
               }
             }
           }
         }
-        if (matchFound){
-          var resultValid = true
+        if (matchFound) {
+          let resultValid = true;
 
           if (this.searchTerms.agency && newPerson.relevantAgencies.length < 1) {
-            resultValid = false
+            resultValid = false;
           }
           if (this.searchTerms.subagency && newPerson.relevantSubagencies.length < 1) {
-            resultValid = false
+            resultValid = false;
           }
           if (this.searchTerms.skill && newPerson.relevantSkills.length < 1) {
-            resultValid = false
+            resultValid = false;
           }
           if (this.searchTerms.position && newPerson.relevantPositions.length < 1) {
-            resultValid = false
+            resultValid = false;
           }
           if (this.searchTerms.cert && newPerson.relevantCerts.length < 1) {
-            resultValid = false
+            resultValid = false;
           }
           if (this.searchTerms.freelancer && newPerson.currentCompany) {
-            resultValid = false
+            resultValid = false;
           }
           if (resultValid){
             if (person.public) {
-              newPerson.expand = false
-              this.searchResults.people.push(newPerson)
+              newPerson.expand = false;
+              this.searchResults.people.push(newPerson);
             } else {
-              this.searchResults.privatePeople++
+              this.searchResults.privatePeople++;
             }
           }
         }
       }
     }
     if (this.searchTerms.pastPerformance) {
-      for (let pp of this.pastPerformances) {
-        var newPP: any = pp
-        newPP.nameMatch = false
-        var subPromises = []
-        var matchFound = false
+      for (const pp of this.pastPerformances) {
+        const newPP: any = pp;
+        newPP.nameMatch = false;
+        const subPromises = [];
+        let matchFound = false;
         if (this.searchTerms.name) {
           if (newPP.title) {
             if (newPP.title.toLowerCase().includes(this.searchTerms.name.toLowerCase())) {
-              matchFound = true
-              newPP.nameMatch = true
+              matchFound = true;
+              newPP.nameMatch = true;
             }
           }
         }
         if (matchFound) {
-          var resultValid = true
+          let resultValid = true;
           if (this.searchTerms.name.length > 0 && !newPP.nameMatch) {
-            resultValid = false
+            resultValid = false;
           }
 
           if (resultValid) {
             if (newPP.public) {
-              newPP.expand = false
-              this.searchResults.pastPerformances.push(newPP)
+              newPP.expand = false;
+              this.searchResults.pastPerformances.push(newPP);
             } else {
-              this.searchResults.privatePP++
+              this.searchResults.privatePP++;
             }
           }
         }
       }
     }
     if (this.searchResults.companies.length < 1 && this.searchResults.people.length < 1 && this.searchResults.pastPerformances.length < 1 && this.searchResults.privatePeople < 1 ) {
-      this.noResults = true
+      this.noResults = true;
     }
     if (this.searchResults.companies.length < 1 && this.searchResults.pastPerformances.length < 1) {
       if (this.searchTerms.freelancer) {
-        this.noResults = true
-        for (let p of this.searchResults.people) {
+        this.noResults = true;
+        for (const p of this.searchResults.people) {
           if (!p.currentCompany) {
-            this.noResults = false
+            this.noResults = false;
           }
         }
       }
     }
-    this.searchRunning = false
-  }
-
-  goTo(which: string, id: string) {
-    window.scrollTo(0, 0);
-    if (which == 'company'){
-      this.router.navigate(['corporate-profile', id]);
-    } else if (which == 'person'){
-      this.router.navigate(['user-profile', id]);
-    } else if (which == 'pastPerformance'){
-      this.router.navigate(['past-performance', id]);
-    }
-  }
-
-  newCompany() {
-    window.scrollTo(0, 0);
-    this.router.navigate(['corporate-profile-create']);
+    console.log(this.analyticsString)
+    this.searchRunning = false;
   }
 
 }

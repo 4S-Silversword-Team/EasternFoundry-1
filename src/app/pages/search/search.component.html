@@ -212,7 +212,6 @@
     <div class="col-xs-12" style="margin-bottom: 5px">
       <p style="text-align: center" >Agency</p>
       <p style="text-align: center" class="search-term-desc">Find people with experience at an agency</p>
-      <!-- <input type="text" name="test" value="" class="col-xs-12"  [(ngModel)]='searchTerms.agency'> -->
       <div class="autocomplete-form">
         <input ngui-auto-complete class="col-xs-12" [(ngModel)] = 'searchTerms.agency' [source]='this.agencies' [list-formatter]="autocompleListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' (ngModelChange)='clearSubagency(); updateAnalyticsString()' [ngClass]="{'empty-field': agencyValidCheck(searchTerms.agency) == false}">
       </div>
@@ -220,7 +219,6 @@
     <div class="col-xs-12" style="margin-bottom: 5px">
       <p style="text-align: center" >Subagency</p>
       <p style="text-align: center" class="search-term-desc">Find people with experience at a subagency</p>
-      <!-- <input type="text" name="test" value="" class="col-xs-12"  [(ngModel)]='searchTerms.agency'> -->
       <div class="autocomplete-form">
         <input ngui-auto-complete class="col-xs-12" [(ngModel)] = 'searchTerms.subagency' [source]='findSubAgencies(searchTerms.agency)'  auto-select-first-item='true' (ngModelChange)='updateAnalyticsString()' [ngClass]="{'empty-field': subagencyValidCheck(searchTerms.agency, searchTerms.subagency) == false}">
       </div>
