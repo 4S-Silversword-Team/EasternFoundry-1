@@ -29,6 +29,7 @@ export class ProfileCreateComponent implements OnInit {
   };
   paramsError:string = ""
   registerInProcess: boolean = false
+  registerFailed: boolean = false
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -54,6 +55,8 @@ export class ProfileCreateComponent implements OnInit {
 
   registerUser() {
     this.registerInProcess = true
+    setTimeout(function(){ this.registerFailed = true; }, 120000);
+    console.log('past timer')
     this.paramsError = ''
     //const fileList: FileList = event.target.files;
     let fileBrowser = this.fileInput.nativeElement;
