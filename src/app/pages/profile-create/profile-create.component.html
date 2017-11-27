@@ -1,10 +1,11 @@
 <div class="container loader-container" *ngIf='this.registerInProcess && !this.paramsError'>
   <div class="loader-box">
     <div class="loader"></div>
-    <h2 *ngIf="!this.registerFailed">We're working on your account.</h2>
-    <h2 *ngIf="!this.registerFailed">It might take a while. Please don't navigate away from this page.</h2>
-    <h2 *ngIf="this.registerFailed">Okay...this has taken too long. The backend has probably crashed.</h2>
-    <h2 *ngIf="this.registerFailed">NOW you can navigate away. Try again later, and we'll hopefully have it fixed.</h2>
+    <h2>We're working on your account.</h2>
+    <!--<h2>It might take a minute. Please don't navigate away from this page.</h2>-->
+    <h3>If it takes more than two minutes, the backend has likely crashed. Try again in a few minutes.</h3>
+    <!--<h2 *ngIf="this.registerFailed">Okay...this has taken too long. The backend has probably crashed.</h2>-->
+    <!--<h2 *ngIf="this.registerFailed">NOW you can navigate away. Try again later, and we'll hopefully have it fixed.</h2>-->
   </div>
   <!-- <p class="loading">Loading</p> -->
 </div>
