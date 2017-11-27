@@ -1,4 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+
 import {Http} from '@angular/http';
 
 import { Router, ActivatedRoute, Params } from '@angular/router';
@@ -86,6 +88,7 @@ export class ProfileComponent implements OnInit {
     public location: Location,
     private auth: AuthService,
     private http: Http,
+    private titleService: Title,
 
   ) {
 
@@ -93,6 +96,7 @@ export class ProfileComponent implements OnInit {
 
     this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
       this.currentUser = result;
+      this.titleService.setTitle(this.currentUser.firstName + ' ' + this.currentUser.lastName + "'s Profile - Federal Foundry Forge")
       if (this.auth.isLoggedIn()) {
         if (this.auth.getLoggedInUser() == this.route.snapshot.params['id']) {
           this.isActiveProfile = true

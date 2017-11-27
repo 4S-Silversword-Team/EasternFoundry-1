@@ -5,6 +5,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Message } from './classes/message';
 import { MessageService } from './services/message.service';
 import { Angulartics2Clicky } from 'angulartics2/clicky';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -23,13 +24,13 @@ export class AppComponent implements OnInit {
   bugCount: number = 0;
   myCompanies: any[] = [];
   myPastPerformances: any[] = [];
-
   constructor(
     private auth: AuthService,
     private messageService: MessageService,
     private userService: UserService,
     private router: Router,
     angulartics2Clicky: Angulartics2Clicky,
+    private titleService: Title,
   ){
     console.log('Navbar checkin login status');
     this.signedIn = auth.isLoggedIn();
@@ -81,6 +82,9 @@ export class AppComponent implements OnInit {
     }
   }
 
+  public setTitle( newTitle: string) {
+    this.titleService.setTitle( newTitle );
+  }
 
   ngOnInit() {
     this.router.events.subscribe((evt) => {

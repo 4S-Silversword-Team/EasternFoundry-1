@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router'
 import { Location } from '@angular/common'
 import {Http} from '@angular/http';
 import { Chart } from 'angular-highcharts';
+import { Title } from '@angular/platform-browser';
 
 import { PastPerformance } from '../../classes/past-performance'
 
@@ -63,11 +64,15 @@ export class PastPerformanceComponent implements OnInit {
     private userService: UserService,
     private roleService: RoleService,
     private http: Http,
+    private titleService: Title,
+
   ) {
     this.currentPastPerformance.id = this.route.snapshot.params['id']
     //this.currentPastPerformance = this.pastPerformanceService.getPastPerformancebyID(this.currentPastPerformance.id)
     this.pastPerformanceService.getPastPerformancebyID(this.currentPastPerformance.id).toPromise().then(res => {
       this.currentPastPerformance = res ;
+      this.titleService.setTitle(this.currentPastPerformance.title + " - Federal Foundry Forge")
+
       this.startDate = new Date(this.currentPastPerformance.startDate).toDateString()
       this.endDate = new Date(this.currentPastPerformance.endDate).toDateString()
 

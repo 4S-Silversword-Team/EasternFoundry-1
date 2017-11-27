@@ -1,17 +1,16 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import {Http} from '@angular/http';
+import { Title } from '@angular/platform-browser';
 
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { Chart } from 'angular-highcharts';
-import { PastPerformance } from '../../classes/past-performance';
 import { User } from '../../classes/user'
 
 import { UserService } from '../../services/user.service'
 import { CompanyService } from '../../services/company.service';
 import { AuthService } from '../../services/auth.service'
-import * as jsPDF  from 'jspdf';
+// import * as jsPDF  from 'jspdf';
 import * as html2canvas from 'html2canvas';
 
 
@@ -46,11 +45,14 @@ export class ProfileResumeComponent implements OnInit {
     public location: Location,
     private auth: AuthService,
     private http: Http,
+    private titleService: Title,
 
   ) {
 
     this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
       this.currentUser = result;
+      this.titleService.setTitle(this.currentUser.firstName + ' ' + this.currentUser.lastName + "'s Resume - Federal Foundry Forge")
+
       var toolsToPush = []
       for (let tool of this.currentUser.foundTools) {
         var matchFound = false

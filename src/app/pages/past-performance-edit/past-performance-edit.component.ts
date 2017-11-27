@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PastperformanceService } from '../../services/pastperformance.service';
 import { Location } from '@angular/common'
+import { Title } from '@angular/platform-browser';
 
 import { PastPerformance } from '../../classes/past-performance'
 import { UserService } from '../../services/user.service'
@@ -82,6 +83,8 @@ export class PastPerformanceEditComponent implements OnInit {
     private s3Service: s3Service,
     private agencyService: AgencyService,
     private messageService: MessageService,
+    private titleService: Title,
+
   ) {
     this.getTomorrow()
     if (!auth.isLoggedIn()) {
@@ -91,6 +94,8 @@ export class PastPerformanceEditComponent implements OnInit {
         console.log('in past performance edit')
         this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {
           this.currentPastPerformance = res;
+          this.titleService.setTitle("Editing " + this.currentPastPerformance.title + " - Federal Foundry Forge")
+
           if (!this.currentPastPerformance.client){
             this.currentPastPerformance.client = {
               gov: false,

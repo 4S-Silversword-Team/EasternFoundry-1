@@ -11,6 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { Chart } from 'angular-highcharts';
+import { Title } from '@angular/platform-browser';
 
 
 import { UserService } from '../../services/user.service';
@@ -84,13 +85,18 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     private roleService: RoleService,
     private messageService: MessageService,
     private http: Http,
+    private titleService: Title,
+
   ) {
     // console.log("testing1");
     // console.log(this);
     this.renderChart = false;
     // this.currentAccount = this.companyService.getTestCompany()
     // Need to use companyservice.getCompanyByID
-    this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then(company => { this.currentAccount = company; this.http.get('../../../assets/occupations.json')
+    this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then(company => {
+      this.currentAccount = company;
+      this.titleService.setTitle(this.currentAccount.name + "'s Profile - Federal Foundry Forge")
+      this.http.get('../../../assets/occupations.json')
     .map((res: any) => res.json())
     .subscribe(
       (data: any) => {

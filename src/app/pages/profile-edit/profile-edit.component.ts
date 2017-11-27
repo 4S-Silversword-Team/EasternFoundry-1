@@ -4,6 +4,7 @@ import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { Title } from '@angular/platform-browser';
 
 import { User } from '../../classes/user'
 import { UserService } from '../../services/user.service'
@@ -132,7 +133,9 @@ export class ProfileEditComponent implements OnInit {
     private toolSubmissionService: ToolSubmissionService,
     private certService: CertService,
     private s3Service: s3Service,
-    private agencyService: AgencyService
+    private agencyService: AgencyService,
+    private titleService: Title,
+
   ) {
     window.scrollTo(0, 0);
     for (var i = 1900; i<=2099; i++){
@@ -169,7 +172,8 @@ export class ProfileEditComponent implements OnInit {
     if (this.router.url !== '/user-profile-create') {
         this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
         this.currentUser = result;
-        if(!this.currentUser.positionHistory[0]){
+          this.titleService.setTitle('Editing ' + this.currentUser.firstName + ' ' + this.currentUser.lastName + "'s Profile - Federal Foundry Forge")
+          if(!this.currentUser.positionHistory[0]){
           console.log("NO POS HISTORY.") //TODO create backend functionality for default pos history
 
         }

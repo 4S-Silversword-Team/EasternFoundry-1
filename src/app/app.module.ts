@@ -83,7 +83,7 @@ import { Angulartics2Clicky } from 'angulartics2/clicky';
     FormsModule,
     HttpModule,
     NguiAutoCompleteModule,
-    RouterModule.forRoot(ROUTES, {useHash: true}),
+    RouterModule.forRoot(ROUTES, {useHash: false}),
     ChartModule,
     TextareaAutosizeModule,
     Angulartics2Module.forRoot([Angulartics2Clicky]),

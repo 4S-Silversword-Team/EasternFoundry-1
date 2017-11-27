@@ -4,6 +4,7 @@ import { User } from '../../classes/user'
 import { Company } from '../../classes/company'
 import { Message } from '../../classes/message'
 import { Router, ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 import { UserService } from '../../services/user.service'
 import { CompanyService } from '../../services/company.service'
@@ -74,10 +75,17 @@ export class MessageComponent implements OnInit {
     private userPastPerformanceProxyService: UserPastPerformanceProxyService,
     private route: ActivatedRoute,
     private router: Router,
+    private titleService: Title,
+
   ) {
 
     this.userService.getUserbyID(localStorage.getItem('uid')).toPromise().then((result) => {
       this.currentUser = result
+      if ( this.router.url !== '/bugreport' ) {
+        this.titleService.setTitle(this.currentUser.firstName + ' ' + this.currentUser.lastName + "'s Mailbox - Federal Foundry Forge")
+      } else {
+        this.titleService.setTitle("Bug Report - Federal Foundry Forge")
+      }
       this.newMessage.sender.id = this.currentUser._id
       this.newMessage.sender.name = this.currentUser.firstName + ' ' + this.currentUser.lastName
       this.userService.getUsers().then((result) => {

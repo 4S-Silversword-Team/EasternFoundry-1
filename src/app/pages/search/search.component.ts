@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 import { Company } from '../../classes/company';
 import { User } from '../../classes/user';
@@ -60,9 +61,12 @@ export class SearchComponent implements OnInit {
     private pastPerformanceService: PastperformanceService,
     private companyUserProxyService: CompanyUserProxyService,
     private agencyService: AgencyService,
-    angulartics2: Angulartics2
+    angulartics2: Angulartics2,
+    private titleService: Title,
 
   ) {
+    this.titleService.setTitle("Search - Federal Foundry Forge")
+
     this.companyService.getCompanies().then(val => {
      this.companies = val;
      this.userService.getUsers().then(u => {

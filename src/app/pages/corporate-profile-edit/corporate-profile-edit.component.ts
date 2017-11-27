@@ -5,6 +5,7 @@ import { Service } from '../../classes/service';
 import { User } from '../../classes/user';
 import { PastPerformance } from '../../classes/past-performance';
 import { Message } from '../../classes/message'
+import { Title } from '@angular/platform-browser';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -104,7 +105,9 @@ export class CorporateProfileEditComponent implements OnInit {
     private roleService: RoleService,
     private myElement: ElementRef,
     private messageService: MessageService,
-    private s3Service: s3Service
+    private s3Service: s3Service,
+    private titleService: Title,
+
   ) {
     this.elementRef = myElement
     // if(!auth.isLoggedIn()){
@@ -117,7 +120,10 @@ export class CorporateProfileEditComponent implements OnInit {
     } else {
     if ( this.router.url !== '/corporate-profile-create' ) {
       this.getAdminStatus()
-      this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount = result; myCallback(); });
+      this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => {
+        this.currentAccount = result;
+        this.titleService.setTitle("Editing " + this.currentAccount.name + "'s Profile - Federal Foundry Forge")
+        myCallback(); });
       // .subscribe(result => this.currentAccount =result).
       // this.currentAccount = this.companyService.getTestCompany()
       const myCallback = () => {
