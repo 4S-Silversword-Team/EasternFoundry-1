@@ -32,7 +32,7 @@
                   <div class="search-item-subheader" *ngIf='c.relevantSkills.length > 0'>{{c.relevantSkills[0].count}} employees with experience in {{c.relevantSkills[0].name}}</div>
                   <div class="search-item-subheader" *ngIf='c.relevantCerts.length > 0'>{{c.relevantCerts[0].count}} employees certified as {{c.relevantCerts[0].name}}</div>
                   <div class="search-item-link" style="margin-bottom: -5px">
-                    <a href="#/corporate-profile/{{c._id}}">Visit {{c.name}}</a>
+                    <a href="corporate-profile/{{c._id}}">Visit {{c.name}}</a>
                   </div>
                 </div>
                 <div class="search-item-expand" (click)='expandResult(c)'>v------EXPAND------v</div>
@@ -75,7 +75,7 @@
 
                 </div>
                 <div class="col-xs-12 search-item-link">
-                  <a href="#/corporate-profile/{{c._id}}">Visit {{c.name}}</a>
+                  <a href="corporate-profile/{{c._id}}">Visit {{c.name}}</a>
                 </div>
                 <div class="search-item-expand col-xs-12" (click)='expandResult(c)'>^------RETRACT------^</div>
               </div>
@@ -104,7 +104,7 @@
                   <div class="search-item-subheader" *ngIf='p.relevantPositions.length > 0'>Rated {{p.relevantPositions[0].score}} as {{p.relevantPositions[0].title}}</div>
                   <div class="search-item-subheader" *ngIf='p.relevantCerts.length > 0'>Certified as {{p.relevantCerts[0]}}</div>
                   <div class="search-item-link col-xs-12" style="margin-bottom: -5px">
-                    <a href="#/user-profile/{{p._id}}">Visit {{p.firstName}} {{p.lastName}}</a>
+                    <a href="user-profile/{{p._id}}">Visit {{p.firstName}} {{p.lastName}}</a>
                   </div>
                 </div>
                 <div class="search-item-expand col-xs-12" (click)='expandResult(p)'>v------EXPAND------v</div>
@@ -147,7 +147,7 @@
                   </div>
                 </div>
                 <div class="search-item-link col-xs-12" style="margin-bottom: -5px">
-                  <a href="#/user-profile/{{p._id}}">Visit {{p.firstName}} {{p.lastName}}</a>
+                  <a href="user-profile/{{p._id}}">Visit {{p.firstName}} {{p.lastName}}</a>
                 </div>
                 <div class="search-item-expand col-xs-12" (click)='expandResult(p)'>^------RETRACT------^</div>
               </div>
@@ -169,7 +169,7 @@
                 <div class="search-item-subheader" *ngIf='pp.topic'>{{pp.topic}}</div>
               </div>
               <div class="search-item-link col-xs-12" style="margin-bottom: -5px">
-                <a href="#/past-performance/{{pp._id}}">Visit {{pp.title}}</a>
+                <a href="past-performance/{{pp._id}}">Visit {{pp.title}}</a>
               </div>
               <div class="search-item-expand col-xs-12" (click)='expandResult(pp)'>v------EXPAND------v</div>
               <!-- <div class="search-item-expand col-xs-12" >v------EXPAND------v</div> -->

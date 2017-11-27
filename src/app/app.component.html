@@ -12,19 +12,19 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#/search">Search</a></li>
-        <li><a href="#/user-profile/{{this.currentUser}}">Profile</a></li>
+        <li class="active"><a href="search">Search</a></li>
+        <li><a href="user-profile/{{this.currentUser}}">Profile</a></li>
         <li class="dropdown ">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">Companies <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li *ngFor="let company of this.myCompanies"><a href="#/corporate-profile/{{company.id}}">{{company.name}}</a></li>
-            <li><a href="#/corporate-profile-create">Create New Company</a></li>
+            <li *ngFor="let company of this.myCompanies"><a href="corporate-profile/{{company.id}}">{{company.name}}</a></li>
+            <li><a href="corporate-profile-create">Create New Company</a></li>
           </ul>
         </li>
         <li class="dropdown ">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">Past Performances <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li *ngFor="let pp of this.myPastPerformances"><a href="#/past-performance/{{pp.id}}">{{pp.name}}</a></li>
+            <li *ngFor="let pp of this.myPastPerformances"><a href="past-performance/{{pp.id}}">{{pp.name}}</a></li>
           </ul>
         </li>
       </ul>
@@ -32,21 +32,21 @@
         <li class="dropdown when-big" *ngIf="this.companies.length > 0">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">Company Mail [{{this.companyUnreadCount}}]<span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li *ngFor="let company of this.companies"><a href="#/corporate-profile/{{company.id}}/mailbox">{{company.name}} [{{company.count}}]</a></li>
+            <li *ngFor="let company of this.companies"><a href="corporate-profile/{{company.id}}/mailbox">{{company.name}} [{{company.count}}]</a></li>
           </ul>
         </li>
-        <li *ngIf='this.bugCount>0'><a href="#/mailbox">
+        <li *ngIf='this.bugCount>0'><a href="mailbox">
           <div class="">
             Bug Reports [{{this.bugCount}}]
           </div>
         </a></li>
-        <li><a href="#/mailbox">
+        <li><a href="mailbox">
           <div class="">
             Mail [{{this.unreadCount}}]
           </div>
         </a></li>
-        <li><a href="#/bugreport">Report a Bug</a></li>
-        <li><a href="#/login" (click) = "this.navLogOut()"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+        <li><a href="bugreport">Report a Bug</a></li>
+        <li><a href="login" (click) = "this.navLogOut()"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
       </ul>
     </div>
   </div>
@@ -66,11 +66,11 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#/">Home</a></li>
+        <li class="active"><a href="">Home</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#/user-profile-create"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-        <li><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <li><a href="user-profile-create"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li><a href="login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
       </ul>
     </div>
   </div>

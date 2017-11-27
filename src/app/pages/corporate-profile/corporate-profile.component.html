@@ -86,7 +86,7 @@
           <p class="">{{ index.firstName + ' ' + index.lastName}}</p>
           <p *ngIf="index.positionHistory[0]" class="">{{ index.positionHistory[0].PositionTitle }}</p>
           <p class="">{{ index.username }}</p>
-          <a href="/#/user-profile/{{index._id}}">
+          <a href="/user-profile/{{index._id}}">
             <button class="leader-link">
               More<br>Info
             </button>
@@ -110,7 +110,7 @@
             <p class="">{{ index.userProfile.firstName + ' ' + index.userProfile.lastName}}</p>
             <p *ngIf="index.userProfile.positionHistory[0]" class="">{{ index.userProfile.positionHistory[0].PositionTitle }}</p>
             <p class="">{{ index.userProfile.username }}</p>
-            <a href="/#/user-profile/{{index.userProfile._id}}">
+            <a href="/user-profile/{{index.userProfile._id}}">
               <button class="employee-link">
                 More<br>Info
               </button>
@@ -288,7 +288,7 @@
               <p><strong>Client</strong> - {{pp.client.name}}</p>
               <p><strong>Project</strong> - {{pp.topic}}</p>
             </div>
-            <a href="/#/past-performance/{{pp._id}}">
+            <a href="/past-performance/{{pp._id}}">
               <button class="employee-link">
                 More<br>Info
               </button>

@@ -90,7 +90,7 @@
           </div>
           <div class="" style="position: absolute; height: 32vh; width: calc(100% - 180px); bottom: 0px; right: 0px; float: left; background: none;">
             <div class="" style="width: 100%; height: 32vh; padding-top: .9vh; float: left; padding-bottom: 2vh; padding-top: 2vh;">
-              <a href="#/corporate-profile/{{this.currentPastPerformance.companyProxies[0].company._id}}">
+              <a href="corporate-profile/{{this.currentPastPerformance.companyProxies[0].company._id}}">
                 <div class="col-xs-12 basic-info-header" style="padding-top: 6px">
                   <p style="white-space: nowrap">{{ this.currentPastPerformance.companyProxies[0].company.name }}</p>
                 </div>
@@ -132,7 +132,7 @@
                 <p class="">{{ index.user.firstName + ' ' + index.user.lastName}}</p>
                 <p *ngIf="index.user.positionHistory[0]" class="">{{ index.user.positionHistory[0].PositionTitle }}</p>
                 <p class="">{{ index.user.username }}</p>
-                <a href="/#/user-profile/{{index.user._id}}">
+                <a href="/user-profile/{{index.user._id}}">
                   <button class="employee-link">
                     More<br>Info
                   </button>
@@ -145,7 +145,7 @@
                 <p class="">{{ index.user.firstName + ' ' + index.user.lastName}}</p>
                 <p *ngIf="index.user.positionHistory[0]" class="">{{ index.user.positionHistory[0].PositionTitle }}</p>
                 <p class="">{{ index.user.username }}</p>
-                <a href="/#/user-profile/{{index.user._id}}">
+                <a href="/user-profile/{{index.user._id}}">
                   <button class="employee-link">
                     More<br>Info
                   </button>
@@ -266,7 +266,7 @@
           <p style="white-space: nowrap" class="srow">{{this.currentPastPerformance.companyProxies[0].company.name}}</p>
           <p style="white-space: nowrap" class="srow">{{this.currentPastPerformance.companyProxies[0].company.city}}, {{this.currentPastPerformance.companyProxies[0].company.state}}</p>
         </div>
-        <a href="#/corporate-profile/{{this.currentPastPerformance.companyProxies[0].company._id}}">
+        <a href="corporate-profile/{{this.currentPastPerformance.companyProxies[0].company._id}}">
           <button style="white-space: nowrap" style="height: 4em;">More Information</button>
         </a>
       </div>
@@ -293,7 +293,7 @@
           <img src='{{index.company.avatar}}' class="left avatar" [style.width]="'150px'">
           <p style="white-space: nowrap" class="srow">{{index.company.name}}</p>
           <p style="white-space: nowrap" class="srow">{{index.company.city}}, {{index.company.state}}</p>
-          <a href="#/corporate-profile/{{index.company._id}}">
+          <a href="corporate-profile/{{index.company._id}}">
             <button style="font-size: 14px;" class="col-xs-8 col-xs-offset-2">More Information</button>
           </a>
         </div>
@@ -317,7 +317,7 @@
           <p style="white-space: nowrap" class="srow">{{ index.user.username }}</p>
           <p style="white-space: nowrap" class="srow" *ngIf='index.stillAffiliated'>Still Affiliated</p>
           <p style="white-space: nowrap" class="srow" *ngIf='!index.stillAffiliated'>No Longer Affiliated</p>
-          <a href="#/user-profile/{{index.user._id}}">
+          <a href="user-profile/{{index.user._id}}">
             <button style="font-size: 14px;" class="col-xs-8 col-xs-offset-2">More Information</button>
           </a>
         </div>
