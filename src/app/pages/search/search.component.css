@@ -21,6 +21,11 @@
     transition: all 0.4s;
     background-color: #585878;
 }
+.checkbox-text {
+    margin: 0 auto;
+    line-height: 30px;
+    text-align: right;
+}
 
 .search-results-box {
   height: 90vh;
