@@ -81,7 +81,7 @@ export class MessageComponent implements OnInit {
 
     this.userService.getUserbyID(localStorage.getItem('uid')).toPromise().then((result) => {
       this.currentUser = result
-      if ( this.router.url !== '/bugreport' ) {
+      if ( this.router.url !== '/bugreport' && !this.router.url.startsWith('/corporate-profile')) {
         this.titleService.setTitle(this.currentUser.firstName + ' ' + this.currentUser.lastName + "'s Mailbox - Federal Foundry Forge")
       } else {
         this.titleService.setTitle("Bug Report - Federal Foundry Forge")
@@ -144,6 +144,7 @@ export class MessageComponent implements OnInit {
         } else {
           this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => {
             this.currentCompany = result
+            this.titleService.setTitle(this.currentCompany.name + "'s Mailbox - Federal Foundry Forge")
             var admin = false
             for (let p of this.currentUser.companyUserProxies){
               if (p.company._id == this.currentCompany._id){
