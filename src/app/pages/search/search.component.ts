@@ -128,7 +128,7 @@ export class SearchComponent implements OnInit {
       firstComma = true;
     }
     if (this.searchTerms.agency) {
-      if (firstSlash) {
+      if (firstComma) {
         this.analyticsString += ', ';
       } else {
         firstComma = true;
@@ -136,7 +136,7 @@ export class SearchComponent implements OnInit {
       this.analyticsString += this.searchTerms.agency;
     }
     if (this.searchTerms.subagency) {
-      if (firstSlash) {
+      if (firstComma) {
         this.analyticsString += ', ';
       } else {
         firstComma = true;
@@ -145,7 +145,7 @@ export class SearchComponent implements OnInit {
 
     }
     if (this.searchTerms.skill) {
-      if (firstSlash) {
+      if (firstComma) {
         this.analyticsString += ', ';
       } else {
         firstComma = true;
@@ -154,7 +154,7 @@ export class SearchComponent implements OnInit {
 
     }
     if (this.searchTerms.position) {
-      if (firstSlash) {
+      if (firstComma) {
         this.analyticsString += ', ';
       } else {
         firstComma = true;
@@ -163,7 +163,7 @@ export class SearchComponent implements OnInit {
 
     }
     if (this.searchTerms.cert) {
-      if (firstSlash) {
+      if (firstComma) {
         this.analyticsString += ', ';
       } else {
         firstComma = true;
