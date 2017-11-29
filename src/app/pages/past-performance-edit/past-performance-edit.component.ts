@@ -1,22 +1,19 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PastperformanceService } from '../../services/pastperformance.service';
-import { Location } from '@angular/common'
+import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
-
-import { PastPerformance } from '../../classes/past-performance'
-import { UserService } from '../../services/user.service'
-import { CompanyService } from '../../services/company.service'
-import { UserPastPerformanceProxyService } from '../../services/userpastperformanceproxy.service'
-import { AuthService } from "../../services/auth.service"
-import { RoleService } from "../../services/role.service"
-import { AgencyService } from '../../services/agency.service'
-import { MessageService } from '../../services/message.service'
-import { CompanyPastperformanceProxyService } from "../../services/companypastperformanceproxy.service"
-import { s3Service } from "../../services/s3.service"
-
-import { environment } from "../../../environments/environment"
-
+import { PastPerformance } from '../../classes/past-performance';
+import { UserService } from '../../services/user.service';
+import { CompanyService } from '../../services/company.service';
+import { UserPastPerformanceProxyService } from '../../services/userpastperformanceproxy.service';
+import { AuthService } from '../../services/auth.service';
+import { RoleService } from '../../services/role.service';
+import { AgencyService } from '../../services/agency.service';
+import { MessageService } from '../../services/message.service';
+import { CompanyPastperformanceProxyService } from '../../services/companypastperformanceproxy.service';
+import { s3Service } from '../../services/s3.service';
+import { environment } from '../../../environments/environment';
 
 
 @Component({
@@ -31,11 +28,8 @@ import { environment } from "../../../environments/environment"
 export class PastPerformanceEditComponent implements OnInit {
   @ViewChild('fileInput') fileInput;
 
-  currentPastPerformance: PastPerformance = new PastPerformance()
+  currentPastPerformance: PastPerformance = new PastPerformance();
 
-  agencyType: string[] = ['Pro', 'Amature'];
-  officeType: string[] = ['Pro', 'Amature'];
-  clearedType: string[] = ['true', 'false'];
   userProfiles: any[] = [];
   userProfilesAll: any[] = [];
   companies: any[] = [];
@@ -49,25 +43,24 @@ export class PastPerformanceEditComponent implements OnInit {
   employeeWidth: number = 600;
   writeWidth: number = 800;
   rate: number = 0;
-  allAgencies: any[] = []
+  allAgencies: any[] = [];
   isUserAdmin: boolean = false;
   fieldsFilled: boolean = false;
-  promiseFinished: boolean = false
-  currentDate: string =  (new Date().getMonth()+1) + '-' + new Date().getDate() + '-' + new Date().getFullYear()
-  tomorrow: string
+  promiseFinished: boolean = false;
+  currentDate: string =  (new Date().getMonth() + 1) + '-' + new Date().getDate() + '-' + new Date().getFullYear();
+  tomorrow: string;
   searchTerms = {
     name: ''
   };
   searchResults = {
     people: []
   };
-  searchOpen: boolean = false
-  noResults = false
+  searchOpen: boolean = false;
+  noResults = false;
 
   activeTab = {
     main: 0,
-  }
-
+  };
 
   constructor(
     private pastPerformanceService: PastperformanceService,
@@ -86,49 +79,49 @@ export class PastPerformanceEditComponent implements OnInit {
     private titleService: Title,
 
   ) {
-    this.getTomorrow()
+    this.getTomorrow();
     if (!auth.isLoggedIn()) {
-      this.router.navigateByUrl("/login")
+      this.router.navigateByUrl('/login');
     } else {
       if (!this.router.url.startsWith('/past-performance-create')) {
-        console.log('in past performance edit')
+        console.log('in past performance edit');
         this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {
           this.currentPastPerformance = res;
-          this.titleService.setTitle("Editing " + this.currentPastPerformance.title + " - Federal Foundry Forge")
+          this.titleService.setTitle('Editing ' + this.currentPastPerformance.title + ' - Federal Foundry Forge');
 
           if (!this.currentPastPerformance.client){
             this.currentPastPerformance.client = {
               gov: false,
               name: '',
-            }
+            };
           } else if (!this.currentPastPerformance.client.name){
             this.currentPastPerformance.client = {
               gov: false,
               name: '',
-            }
+            };
           }
           if (!this.currentPastPerformance.area) {
-            this.currentPastPerformance.area = ""
+            this.currentPastPerformance.area = '';
           }
-          this.getEditorAdminStatus()
+          this.getEditorAdminStatus();
           this.myCallback();
-          this.myCallback2()
+          this.myCallback2();
         });
       } else {
-        console.log("in past performance create")
+        console.log('in past performance create');
         if (!this.currentPastPerformance.client){
           this.currentPastPerformance.client = {
             gov: false,
             name: '',
-          }
+          };
         } else if (!this.currentPastPerformance.client.name){
           this.currentPastPerformance.client = {
             gov: false,
             name: '',
-          }
+          };
         }
         this.createMode = true;
-        if (this.route.snapshot.queryParams["company"]) {
+        if (this.route.snapshot.queryParams['company']) {
           this.getCreatorAdminStatus();
         }
       }
@@ -138,160 +131,158 @@ export class PastPerformanceEditComponent implements OnInit {
   ngOnInit() {
   }
 
-
-
   myCallback() {
     this.userProfiles = [];
     for (const i of this.currentPastPerformance.userProfileProxies){
       this.userProfiles.push({
-        "name": i.user.firstName + " " + i.user.lastName,
-        "username": i.user.username,
-        "userId": i.user._id,
-        "proxyId": i._id,
-        "startDate": i.startDate.slice(0,10),
-        "endDate": i.endDate.slice(0,10),
-        "stillAffiliated": i.stillAffiliated,
-        "role": i.role
-      })
+        'name': i.user.firstName + ' ' + i.user.lastName,
+        'username': i.user.username,
+        'userId': i.user._id,
+        'proxyId': i._id,
+        'startDate': i.startDate.slice(0, 10),
+        'endDate': i.endDate.slice(0, 10),
+        'stillAffiliated': i.stillAffiliated,
+        'role': i.role
+      });
     }
     this.companies = [];
     for (const i of this.currentPastPerformance.companyProxies){
       this.companies.push({
-        "name": i.company.name,
-        "companyId": i.company._id,
-        "proxyId": i._id,
-        "startDate": i.startDate.slice(0,10),
-        "endDate": i.endDate.slice(0,10),
-        "activeContract": i.activeContract
-      })
+        'name': i.company.name,
+        'companyId': i.company._id,
+        'proxyId': i._id,
+        'startDate': i.startDate.slice(0, 10),
+        'endDate': i.endDate.slice(0, 10),
+        'activeContract': i.activeContract
+      });
     }
     this.agencyService.getAgencies().then(val => {
-      this.allAgencies = val
+      this.allAgencies = val;
       this.promiseFinished = true;
-      window.scrollTo(0, 0)
+      window.scrollTo(0, 0);
     });
   }
 
   myCallback2() {
   this.allCompanyEmployees = [];
-  var allCompanyEmployees = [];
+  const allCompanyEmployees = [];
   this.allUserCompanies = [];
-  var allUserCompanies = [];
+  const allUserCompanies = [];
   for (const companyProxy of this.currentPastPerformance.companyProxies) {
-    var myCompany;
+    let myCompany;
     this.companyService.getCompanyByID(companyProxy.company._id).toPromise().then((res) => {myCompany = res; (() => {
       for (const userProfileProxy of myCompany.userProfileProxies) {
-        allCompanyEmployees.push(userProfileProxy.userProfile)
+        allCompanyEmployees.push(userProfileProxy.userProfile);
       }
       this.allCompanyEmployees = allCompanyEmployees.filter((employee) => {
-        return !this.currentPastPerformance.userProfileProxies.map((userProxy) => userProxy.user._id).includes(employee._id)
-      })
-    })()});
+        return !this.currentPastPerformance.userProfileProxies.map((userProxy) => userProxy.user._id).includes(employee._id);
+      });
+    })(); });
   }
   for (const userProxy of this.currentPastPerformance.userProfileProxies) {
-    var myUser;
+    let myUser;
     this.userService.getUserbyID(userProxy.user._id).toPromise().then((res) => {myUser = res; (() => {
       for (const companyProxy of myUser.companyUserProxies) {
-        allUserCompanies.push(companyProxy.company)
+        allUserCompanies.push(companyProxy.company);
       }
       this.allUserCompanies = allUserCompanies.filter((company) => {
-        return !this.currentPastPerformance.companyProxies.map((companyProxy) => companyProxy.company._id).includes(company._id)
-      })
-    })()});
+        return !this.currentPastPerformance.companyProxies.map((companyProxy) => companyProxy.company._id).includes(company._id);
+      });
+    })(); });
   }
   this.userService.getUsers().then(res => {
     this.userProfilesAll = res.filter((user) => {
       return !this.userProfiles.map(function(employee) {
         return employee.userId;
-      }).includes(user._id)
-    })
-  })
+      }).includes(user._id);
+    });
+  });
 }
 
   getCreatorAdminStatus() {
-    console.log("GETTING ADMIN STATUS")
-    var userId = this.auth.getLoggedInUser()
-    this.userService.getUserbyID(userId).toPromise().then((user) =>{
-      var currentUserProxy = user.companyUserProxies.filter((proxy) => {
-        return proxy.company._id == this.route.snapshot.queryParams["company"]
-      })[0]
-      if(currentUserProxy){
-        if (currentUserProxy.role.title && currentUserProxy.role.title == "admin") {
+    console.log('GETTING ADMIN STATUS');
+    const userId = this.auth.getLoggedInUser();
+    this.userService.getUserbyID(userId).toPromise().then((user) => {
+      const currentUserProxy = user.companyUserProxies.filter((proxy) => {
+        return proxy.company._id === this.route.snapshot.queryParams['company'];
+      })[0];
+      if (currentUserProxy) {
+        if (currentUserProxy.role.title && currentUserProxy.role.title === 'admin') {
           this.isUserAdmin = true;
-          console.log("I'm admin")
-          this.promiseFinished = true
+          console.log('I\'m admin');
+          this.promiseFinished = true;
         }
       }
-    })
+    });
   }
 
   getEditorAdminStatus() {
-    var userId = this.auth.getLoggedInUser()
-    //get user
+    const userId = this.auth.getLoggedInUser();
+    // get user
     this.userService.getUserbyID(userId).toPromise().then((user) => {
-      var superUser = false
+      let superUser = false;
       if (user.power) {
         if (user.power > 3) {
           this.isUserAdmin = true;
-          superUser = true
+          superUser = true;
         }
       }
       if (!superUser) {
-        //get the company ids where the user is admin
-        var relevantCompanyIds = user.companyUserProxies.filter(async (proxy) =>{
+        // get the company ids where the user is admin
+        const relevantCompanyIds = user.companyUserProxies.filter(async (proxy) => {
           let returnVal;
-          proxy.roleObj.title == "admin"? returnVal = true: returnVal = false;
+          proxy.roleObj.title == 'admin' ? returnVal = true : returnVal = false;
 
           // await this.roleService.getRoleByID(proxy.role).toPromise().then(async (roleObj) => {
           //   await roleObj.title == "admin"? returnVal = true: returnVal = false;
           // })
-          return returnVal
-        }).map((proxy) => proxy.company["_id"])
-        console.log("Relevant companies", relevantCompanyIds)
-        //then get the company ids associated with the past performance
-        var ppCompanyIds = this.currentPastPerformance.companyProxies.map((cproxy) => cproxy.company["_id"])
-        console.log("pp companies", ppCompanyIds)
-        //finally check if the two sets have anything in common.
+          return returnVal;
+        }).map((proxy) => proxy.company['_id']);
+        console.log('Relevant companies', relevantCompanyIds);
+        // then get the company ids associated with the past performance
+        const ppCompanyIds = this.currentPastPerformance.companyProxies.map((cproxy) => cproxy.company['_id']);
+        console.log('pp companies', ppCompanyIds);
+        // finally check if the two sets have anything in common.
         for (const companyId of ppCompanyIds){
-          if(relevantCompanyIds.includes(companyId)){
+          if (relevantCompanyIds.includes(companyId)){
             this.isUserAdmin = true;
-            console.log("I'm a pp admin")
+            console.log('I\'m a pp admin');
           }
         }
       }
-    })
+    });
   }
 
   getTomorrow(){
-    var tomorrowMonth = new Date().getMonth()+1
-    var tomorrowDay = new Date().getDate()+1
-    var tomorrowYear = new Date().getFullYear()
-    if (tomorrowMonth == 13){
-      tomorrowMonth = 1
+    let tomorrowMonth = new Date().getMonth() + 1;
+    let tomorrowDay = new Date().getDate() + 1;
+    const tomorrowYear = new Date().getFullYear();
+    if (tomorrowMonth === 13) {
+      tomorrowMonth = 1;
     }
-    if (tomorrowMonth == (1 || 3 || 5 || 7 || 8 || 10)){
+    if (tomorrowMonth === (1 || 3 || 5 || 7 || 8 || 10)) {
       if (tomorrowDay > 31) {
-        tomorrowDay = 1
-        tomorrowMonth += 1
+        tomorrowDay = 1;
+        tomorrowMonth += 1;
       }
-    } else if (tomorrowMonth == 2){
+    } else if (tomorrowMonth === 2) {
       if (tomorrowDay > 28) {
-        tomorrowDay = 1
-        tomorrowMonth += 1
+        tomorrowDay = 1;
+        tomorrowMonth += 1;
       }
-    } else if (tomorrowMonth == 12){
+    } else if (tomorrowMonth === 12) {
       if (tomorrowDay > 31) {
-        tomorrowDay = 1
-        tomorrowMonth = 1
+        tomorrowDay = 1;
+        tomorrowMonth = 1;
       }
     } else {
       if (tomorrowDay > 30) {
-        tomorrowDay = 1
-        tomorrowMonth += 1
+        tomorrowDay = 1;
+        tomorrowMonth += 1;
       }
     }
-    this.tomorrow = tomorrowMonth + '-' + tomorrowDay + '-' + tomorrowYear
-    console.log(this.tomorrow)
+    this.tomorrow = tomorrowMonth + '-' + tomorrowDay + '-' + tomorrowYear;
+    console.log(this.tomorrow);
   }
 
   agencyListFormatter (data: any) {
@@ -299,45 +290,45 @@ export class PastPerformanceEditComponent implements OnInit {
   }
 
   agencyValidCheck (agency) {
-    var match = false
-    for (let a of this.allAgencies) {
+    let match = false;
+    for (const a of this.allAgencies) {
       if (a.agency.toString().toLowerCase() == agency.toString().toLowerCase()){
-        match = true
-        agency = a.agency
+        match = true;
+        agency = a.agency;
       }
     }
     return match;
   }
 
-  handleClick(event){
-    var clickedComponent = event.target;
-    var inside = false;
+  handleClick(event) {
+    let clickedComponent = event.target;
+    let inside = false;
     do {
       if (clickedComponent === document.getElementById('employee-dropdown') || clickedComponent === document.getElementById('employee-search')) {
         inside = true;
       }
       clickedComponent = clickedComponent.parentNode;
     } while (clickedComponent);
-    if(!inside){
-      this.searchOpen = false
+    if (!inside) {
+      this.searchOpen = false;
     }
   }
 
-  switchTab(tab){
-    if (!this.createMode){
-      this.activeTab.main = tab
+  switchTab(tab) {
+    if (!this.createMode) {
+      this.activeTab.main = tab;
     } else {
-      if (tab == 2){
-        if (this.checkFields()){
-          this.activeTab.main = tab
+      if (tab === 2) {
+        if (this.checkFields()) {
+          this.activeTab.main = tab;
         }
       } else {
-        this.activeTab.main = tab
+        this.activeTab.main = tab;
       }
     }
   }
 
-  checkFields(){
+  checkFields() {
     if (
       this.currentPastPerformance.title &&
       this.currentPastPerformance.client.name &&
@@ -350,61 +341,61 @@ export class PastPerformanceEditComponent implements OnInit {
       this.currentPastPerformance.fte
     )
     {
-      return true
+      return true;
     } else {
-      return false
+      return false;
     }
   }
 
   uploadPhoto() {
-    let fileBrowser = this.fileInput.nativeElement;
+    const fileBrowser = this.fileInput.nativeElement;
     if (fileBrowser.files && fileBrowser.files[0]) {
-      let formData = new FormData();
-      let file = fileBrowser.files[0]
-      console.log(file)
-      formData.append("bucket", environment.bucketName);
-      formData.append("key", "pastPerformancePhotos/"+this.currentPastPerformance._id+"_0");
-      formData.append("file", file);
+      const formData = new FormData();
+      const file = fileBrowser.files[0];
+      console.log(file);
+      formData.append('bucket', environment.bucketName);
+      formData.append('key', 'pastPerformancePhotos/' + this.currentPastPerformance._id + '_0');
+      formData.append('file', file);
       this.s3Service.postPhoto(formData).toPromise().then(result => {
-        console.log("Photo upload success",result);
-        this.currentPastPerformance.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/pastPerformancePhotos/"+this.currentPastPerformance._id+"_0"
+        console.log('Photo upload success', result);
+        this.currentPastPerformance.avatar = 'http://s3.amazonaws.com/' + environment.bucketName + '/pastPerformancePhotos/' + this.currentPastPerformance._id + '_0';
         this.updatePP(this.currentPastPerformance, true);
-      }).catch((reason) =>console.log("reason ", reason));
+      }).catch((reason) => console.log('reason ', reason));
     }
   }
 
   search() {
     if (this.searchTerms.name) {
-      this.noResults = false
-      this.searchResults.people = []
-      for (let person of this.userProfilesAll) {
+      this.noResults = false;
+      this.searchResults.people = [];
+      for (const person of this.userProfilesAll) {
         if (person.public) {
-          var name: string = person.firstName + ' ' + person.lastName
+          const name: string = person.firstName + ' ' + person.lastName;
           if (name.toLowerCase().includes(this.searchTerms.name.toLowerCase())) {
-            var alreadyThere = false
-            for (let employee of this.userProfiles) {
-              if (employee.username == person.username){
-                alreadyThere = true
+            let alreadyThere = false;
+            for (const employee of this.userProfiles) {
+              if (employee.username === person.username) {
+                alreadyThere = true;
               }
             }
             if (!alreadyThere) {
-              person.invited = false
-              this.searchResults.people.push(person)
+              person.invited = false;
+              this.searchResults.people.push(person);
             }
           }
         }
       }
     }
     if (this.searchResults.people.length < 1) {
-      this.noResults = true
+      this.noResults = true;
     }
     this.searchOpen = true;
   }
 
-  invite(person, i){
-    var date = new Date()
-    var time = date.getTime()
-    var invite = {
+  invite(person, i) {
+    const date = new Date();
+    const time = date.getTime();
+    const invite = {
       bugReport: false,
       sender: {
         id: this.currentPastPerformance.companyProxies[0].company._id,
@@ -428,33 +419,33 @@ export class PastPerformanceEditComponent implements OnInit {
       replyToId: '',
       date: date,
       timestamp: time,
-    }
+    };
     this.messageService.createMessage(invite).toPromise().then((result) => {
-      console.log('did it')
-      person.invited = true
+      console.log('did it');
+      person.invited = true;
     });
   }
 
   editPhoto() {
-    let fileBrowser = this.fileInput.nativeElement;
+    const fileBrowser = this.fileInput.nativeElement;
     if (fileBrowser.files && fileBrowser.files[0]) {
-      if(!this.currentPastPerformance._id){return}
+      if (!this.currentPastPerformance._id) {return; }
       const uid = this.currentPastPerformance._id;
-      let formData = new FormData();
-      let file = fileBrowser.files[0]
-      let myArr = this.currentPastPerformance.avatar.split("_")
-      let i: any = myArr[myArr.length - 1]
+      const formData = new FormData();
+      const file = fileBrowser.files[0];
+      const myArr = this.currentPastPerformance.avatar.split('_');
+      let i: any = myArr[myArr.length - 1];
       i = parseInt(i);
-      console.log(file)
-      formData.append("bucket", environment.bucketName);
-      formData.append("key", "pastPerformancePhotos/"+uid+"_"+(i+1).toString());
-      formData.append("file", file);
+      console.log(file);
+      formData.append('bucket', environment.bucketName);
+      formData.append('key', 'pastPerformancePhotos/' + uid + '_' + (i + 1).toString());
+      formData.append('file', file);
       this.s3Service.postPhoto(formData).toPromise().then(result => {
-        console.log("Photo upload success",result);
-        this.currentPastPerformance.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/pastPerformancePhotos/"+uid+"_"+(i+1).toString()
+        console.log('Photo upload success', result);
+        this.currentPastPerformance.avatar = 'http://s3.amazonaws.com/' + environment.bucketName + '/pastPerformancePhotos/' + uid + '_' + (i + 1).toString();
         this.updatePP(this.currentPastPerformance, true);
-        this.s3Service.deletePhoto("/pastPerformancePhotos/"+uid+"_"+(i).toString()).toPromise().then( res => console.log("Old photo deleted " + res))
-      }).catch((reason) =>console.log("reason ", reason));
+        this.s3Service.deletePhoto('/pastPerformancePhotos/' + uid + '_' + (i).toString()).toPromise().then( res => console.log('Old photo deleted ' + res));
+      }).catch((reason) => console.log('reason ', reason));
     }
 
   }
@@ -462,10 +453,10 @@ export class PastPerformanceEditComponent implements OnInit {
 
   updatePP(model, noNav?: boolean) {
     // require auth of a signed in user with admin priveleges to the company that this past performance will be associated with.
-    if (!this.isUserAdmin){return;}
+    if (!this.isUserAdmin) {return; }
 
     if (!model.avatar) {
-      model.avatar = '../../assets/img/defaultLogo.png'
+      model.avatar = '../../assets/img/defaultLogo.png';
     }
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     if ( !this.createMode ) {
@@ -473,106 +464,106 @@ export class PastPerformanceEditComponent implements OnInit {
     this.pastPerformanceService.updatePP(this.route.snapshot.params['id'], model).toPromise().then(result => {
       console.log(result);
       this.currentPastPerformance = result;
-      if(!noNav) {
+      if (!noNav) {
         window.scrollTo(0, 0);
         this.router.navigate(['past-performance', this.route.snapshot.params['id']]);
       }
     });
   } else {
-    //creating a new PP
-    console.log(model)
-    this.pastPerformanceService.createPastPerformance(model).toPromise().then(result => {console.log(result)
+    // creating a new PP
+    console.log(model);
+    this.pastPerformanceService.createPastPerformance(model).toPromise().then(result => {console.log(result);
 
       // a call to create a companyPastPerformanceProxy with the appropriate company and the newly created past performance's id
-      let callback = () => {
-        var request = {
-          company: this.route.snapshot.queryParams["company"],
+      const callback = () => {
+        const request = {
+          company: this.route.snapshot.queryParams['company'],
           pastPerformance: result['_id'],
           startDate: this.currentDate,
-          endDate: "",
+          endDate: '',
           activeContract: true
-        }
+        };
         this.companyPastPerformanceProxyService.addCompanyPPProxy(request).then((proxy) => {
-          //Finally, redirect to the past performance
+          // Finally, redirect to the past performance
           window.scrollTo(0, 0);
           this.router.navigate(['past-performance', result['_id']]);
-        })
+        });
 
-      }
+      };
       // call addEmployee with the signed in user's id and the new pastperformance id.
-      this.addFirstEmployee(this.auth.getLoggedInUser(), result['_id'], callback)
+      this.addFirstEmployee(this.auth.getLoggedInUser(), result['_id'], callback);
     });
   }
   }
   addEmployee(employeeId) {
-    if(!this.isUserAdmin){return;}
-    let request = {
-        "user": employeeId,
-        "pastPerformance": this.route.snapshot.params['id'],
-        "startDate": this.currentDate,
-        "endDate": this.tomorrow,
-        "stillAffiliated": false,
-        "role": "programmer"
-    }
-    console.log(request)
+    if (!this.isUserAdmin) {return; }
+    const request = {
+      'user': employeeId,
+      'pastPerformance': this.route.snapshot.params['id'],
+      'startDate': this.currentDate,
+      'endDate': this.tomorrow,
+      'stillAffiliated': false,
+      'role': 'programmer'
+    };
+    console.log(request);
     this.userPastPerformanceProxyService.addUserPPProxy(request).then(() => {
-      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2(); this.searchOpen = false;});
-    })
+      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2(); this.searchOpen = false; });
+    });
   }
 
   addFirstEmployee(employeeId, pastPerformanceId, callback) {
-    let request = {
-      "user": employeeId,
-      "pastPerformance": pastPerformanceId,
-      "startDate": this.currentDate,
-      "endDate": this.tomorrow,
-      "stillAffiliated": true,
-      "role": "programmer"
-    }
-    console.log(request)
+    const request = {
+      'user': employeeId,
+      'pastPerformance': pastPerformanceId,
+      'startDate': this.currentDate,
+      'endDate': this.tomorrow,
+      'stillAffiliated': true,
+      'role': 'programmer'
+    };
+    console.log(request);
     this.userPastPerformanceProxyService.addUserPPProxy(request).then(() => callback());
   }
 
-  deleteEmployee(proxyId){
-    if(!this.isUserAdmin){return;}
+  deleteEmployee(proxyId) {
+    if (!this.isUserAdmin){return; }
     this.userPastPerformanceProxyService.deleteUserPPProxy(proxyId).then(() => {
-      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2() });
-    })
+      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2(); });
+    });
   }
 
-  updateEmployee(proxyId,key, value){
-    if(!this.isUserAdmin){return;}
-    let req = {};
+  updateEmployee(proxyId, key, value) {
+    if (!this.isUserAdmin){return; }
+    const req = {};
     req[key] = value;
     this.userPastPerformanceProxyService.updateUserPPProxies(proxyId, req).toPromise().then(() =>
     {});
   }
 
   addCompany(companyId) {
-    if(!this.isUserAdmin){return;}
-    let request = {
-        "company": companyId,
-        "pastPerformance": this.route.snapshot.params['id'],
-        "startDate": this.currentDate,
-        "endDate": this.tomorrow,
-        "stillAffiliated": false
-    }
-    console.log(request)
+    if (!this.isUserAdmin){return; }
+    const request = {
+      'company': companyId,
+      'pastPerformance': this.route.snapshot.params['id'],
+      'startDate': this.currentDate,
+      'endDate': this.tomorrow,
+      'stillAffiliated': false
+    };
+    console.log(request);
     this.companyPastPerformanceProxyService.addCompanyPPProxy(request).then(() => {
-      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2() });
-    })
+      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2(); });
+    });
   }
 
-  deleteCompany(proxyId){
-    if(!this.isUserAdmin){return;}
+  deleteCompany(proxyId) {
+    if (!this.isUserAdmin){return; }
     this.companyPastPerformanceProxyService.deleteCompanyPPProxy(proxyId).then(() => {
-      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2() });
-    })
+      this.pastPerformanceService.getPastPerformancebyID(this.route.snapshot.params['id']).toPromise().then(res => {this.currentPastPerformance = res; this.myCallback(); this.myCallback2(); });
+    });
   }
 
-  updateCompany(proxyId, key, value){
-    if(!this.isUserAdmin){return;}
-    let req = {};
+  updateCompany(proxyId, key, value) {
+    if (!this.isUserAdmin){return; }
+    const req = {};
     req[key] = value;
     this.companyPastPerformanceProxyService.updateCompanyPPProxies(proxyId, req).toPromise().then(() =>
     {});
@@ -581,11 +572,11 @@ export class PastPerformanceEditComponent implements OnInit {
   // addEmployee(modelEmployees: Array<Object>){
   //   modelEmployees.push({title: "", stillwith: false})
   // }
-  deleteArrayIndex(modelArray: Array<Object>, i: number){
+  deleteArrayIndex(modelArray: Array<Object>, i: number) {
     modelArray.splice(i, 1);
   }
   back() {
-    this.location.back()
+    this.location.back();
   }
 
 }

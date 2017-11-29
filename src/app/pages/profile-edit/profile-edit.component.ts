@@ -138,22 +138,22 @@ export class ProfileEditComponent implements OnInit {
 
   ) {
     window.scrollTo(0, 0);
-    for (var i = 1900; i<=2099; i++){
+    for (var i = 1900; i <= 2099; i++){
       this.years.push(i)
     }
     if (!auth.isLoggedIn()) {
       this.router.navigateByUrl("/login")
     } else {
       var year = this.currentYear()
-      for (var i = year; i>=1900; i--){
+      for (var i = year; i >= 1900; i--){
         this.years.push(i)
       }
-      this.auth.getLoggedInUser() == this.route.snapshot.params['id']? console.log("welcome to your profile edit page"): (() => { console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})()
+      this.auth.getLoggedInUser() === this.route.snapshot.params['id']? console.log("welcome to your profile edit page"): (() => { console.log("login check failed. redirecting"); this.router.navigateByUrl("/login")})()
       this.toolService.getTools().then(val => {
         this.allTools = val
         for (let tool of this.allTools) {
           for (let t of this.currentUser.foundTools) {
-            if (t.title.toLowerCase() == tool.title.toLowerCase()) {
+            if (t.title.toLowerCase() === tool.title.toLowerCase()) {
               if (t.position.length < 1) {
                 console.log('Adding missing tool data to ' + tool.title + '...')
                 t.category = tool.category
@@ -181,15 +181,15 @@ export class ProfileEditComponent implements OnInit {
           return (val + '').toLowerCase() === 'true';
         };
 
-        //this is the code that makes sure the availability bar lines up with the current date & starts on the current month
-        //i haven't fully tested it, it may not work properly on dummy data.
-        //i may need to duplicate it elsewhere, but for the moment it's a decent way to keep the bar updated
+        // this is the code that makes sure the availability bar lines up with the current date & starts on the current month
+        // i haven't fully tested it, it may not work properly on dummy data.
+        // i may need to duplicate it elsewhere, but for the moment it's a decent way to keep the bar updated
 
         var date = new Date(),
             locale = "en-us",
             month = date.toLocaleString(locale, { month: "long" }).slice(0,3);
         var year = new Date().getFullYear()
-        //if one of your jobs is tagged as "current", it assumes you're unavailable and vice versa
+        // if one of your jobs is tagged as "current", it assumes you're unavailable and vice versa
         var avail = true
         for (let pos of this.currentUser.positionHistory) {
           if (pos.EndDate) {
@@ -252,7 +252,7 @@ export class ProfileEditComponent implements OnInit {
           this.availabilityData.values.push(index.available)
         }
 
-        //here's the logic to check the skillsengine tools against the resume text!
+        // here's the logic to check the skillsengine tools against the resume text!
         if (this.currentUser.resumeText && this.currentUser.foundTools[0] == undefined) {
           for (let tool of this.currentUser.tools) {
             if (tool.title.length > 1) {
@@ -287,8 +287,8 @@ export class ProfileEditComponent implements OnInit {
             }
           }
         }
-        //right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
-        //i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
+        // right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
+        // i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
         if (typeof this.currentUser.disabled === "string") {
           this.currentUser.disabled = stringToBool(this.currentUser.disabled)
         }
@@ -299,7 +299,7 @@ export class ProfileEditComponent implements OnInit {
           this.currentUser.finished = stringToBool(this.currentUser.finished)
         }
           for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
-            if (this.currentUser.positionHistory[i].EndDate == "Current") {
+            if (this.currentUser.positionHistory[i].EndDate === "Current") {
               this.currentJobs[i] = true
             } else {
               this.currentJobs[i] = false
@@ -517,7 +517,6 @@ export class ProfileEditComponent implements OnInit {
 
   calculateSkillChart(){
     var temp: number[] = []
-    var labels: string[] = []
     this.toolChartDatas = []
     this.toolChartLabels = []
 
@@ -574,8 +573,6 @@ export class ProfileEditComponent implements OnInit {
         this.maxToolScores[i] = 9999
       }
     }
-
-
   }
 
   uploadPhoto() {
@@ -608,8 +605,6 @@ export class ProfileEditComponent implements OnInit {
     return data.name;
   }
 
-
-
   agencyValidCheck (agency) {
     var match = false
     for (let a of this.allAgencies) {
@@ -637,7 +632,7 @@ export class ProfileEditComponent implements OnInit {
     var match = false
     var subagencies = this.findSubAgencies(agency)
     for (let i of subagencies) {
-      if (i.toString().toLowerCase() == subagency.toString().toLowerCase()){
+      if (i.toString().toLowerCase() === subagency.toString().toLowerCase()){
         match = true
         subagency = i
       }
@@ -649,7 +644,7 @@ export class ProfileEditComponent implements OnInit {
     var match = false
     for (let a of this.allCerts) {
       if (a.name && cert) {
-        if (a.name.toString().toLowerCase() == cert.toString().toLowerCase()){
+        if (a.name.toString().toLowerCase() === cert.toString().toLowerCase()){
           match = true
         }
       }
@@ -801,17 +796,6 @@ export class ProfileEditComponent implements OnInit {
         this.s3Service.deletePhoto("/userPhotos/"+uid+"_"+(i).toString()).toPromise().then( res => console.log("Old photo deleted " + res))
       }).catch((reason) =>console.log("reason ", reason));
     }
-
-  }
-
-
-  saveChanges() {
-    console.log('This button doesnt do anything!')
-  }
-
-  availabilitySwitch(index, i){
-    index = !index
-    console.log(index)
   }
 
   addTool(tool) {
@@ -1247,7 +1231,7 @@ export class ProfileEditComponent implements OnInit {
       array.splice(new_index, 0, array.splice(old_index, 1)[0]);
     };
 
-    //this SHOULD automatically arrange jobs by date so more recent ones are on top. it doesnt seem to work 100% but it kind of works?
+    // this SHOULD automatically arrange jobs by date so more recent ones are on top. it doesnt seem to work 100% but it kind of works?
     for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
       if (this.currentUser.positionHistory[i].employmentType > 1) {
         this.currentUser.positionHistory[i].agencyExperience = [{

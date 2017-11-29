@@ -82,10 +82,6 @@ export class AppComponent implements OnInit {
     }
   }
 
-  public setTitle( newTitle: string) {
-    this.titleService.setTitle( newTitle );
-  }
-
   ngOnInit() {
     this.router.events.subscribe((evt) => {
        if (!(evt instanceof NavigationEnd)) {

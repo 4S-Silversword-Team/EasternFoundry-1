@@ -7,11 +7,11 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { Chart } from 'angular-highcharts';
-import { User } from '../../classes/user'
+import { User } from '../../classes/user';
 
-import { UserService } from '../../services/user.service'
+import { UserService } from '../../services/user.service';
 import { CompanyService } from '../../services/company.service';
-import { AuthService } from '../../services/auth.service'
+import { AuthService } from '../../services/auth.service';
 
 declare var $: any;
 
@@ -24,47 +24,47 @@ declare var $: any;
 })
 export class ProfileComponent implements OnInit {
 
-  currentUser: User = new User()
+  currentUser: User = new User();
   expColors: string[] = ['rgb(0,178,255)', 'rgb(69,199,255)', 'rgb(138,220,255)', 'rgb(198,241,255)' ];
-  capaChartDatas: any[] = []
-  capaChartLabels: string[] = []
-  promiseFinished: boolean = false
+  capaChartDatas: any[] = [];
+  capaChartLabels: string[] = [];
+  promiseFinished: boolean = false;
   availabilityData: any = {
     values: [],
     dates: []
-  }
-  agencyExperience: any[] = []
-  subagencyCountForChart = 0
-  isActiveProfile: boolean = false
-  currentJob: any = null
-  positionHistory: any[] = []
-  occupations: any[] = []
-  categories: any[] = []
+  };
+  agencyExperience: any[] = [];
+  subagencyCountForChart = 0;
+  isActiveProfile: boolean = false;
+  currentJob: any = null;
+  positionHistory: any[] = [];
+  occupations: any[] = [];
+  categories: any[] = [];
   months: any[] = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-  ]
+  ];
   degreeType: any[] = [
     {
       name: 'Associate',
       years: 2
     },
     {
-      name: "Bachelor's",
+      name: 'Bachelor\'s',
       years: 4
     },
     {
-      name: "Master's",
+      name: 'Master\'s',
       years: 6
     },
     {
-      name: "Ph.D.",
+      name: 'Ph.D.',
       years: 8
     },
     {
       name: 'Other',
       years: 2
     },
-  ]
+  ];
   charts: any[] = [];
   agencyChart: any;
   skillChart: any;
@@ -77,9 +77,9 @@ export class ProfileComponent implements OnInit {
     main: 0,
     skill: 0,
     service: 0,
-  }
+  };
   pastPerformances: any[] = [];
-  allCategories: any[]
+  allCategories: any[];
 
   constructor(
     private userService: UserService,
@@ -92,19 +92,17 @@ export class ProfileComponent implements OnInit {
 
   ) {
 
-    // this.currentUser = this.userService.getTempUser();
-
     this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
       this.currentUser = result;
-      this.titleService.setTitle(this.currentUser.firstName + ' ' + this.currentUser.lastName + "'s Profile - Federal Foundry Forge")
+      this.titleService.setTitle(this.currentUser.firstName + ' ' + this.currentUser.lastName + '\'s Profile - Federal Foundry Forge');
       if (this.auth.isLoggedIn()) {
         if (this.auth.getLoggedInUser() == this.route.snapshot.params['id']) {
-          this.isActiveProfile = true
+          this.isActiveProfile = true;
           if (!this.currentUser.finished){
-            this.router.navigateByUrl("/user-profile-edit/" + this.currentUser._id)
+            this.router.navigateByUrl('/user-profile-edit/' + this.currentUser._id);
           }
         } else {
-          this.isActiveProfile = false
+          this.isActiveProfile = false;
         }
       }
       this.http.get('../../../assets/occupations.json')
@@ -118,251 +116,250 @@ export class ProfileComponent implements OnInit {
       );
     });
 
-    var myCallback = () => {
-
-      let index: number = 0
-      this.availabilityData.values = []
-      this.availabilityData.dates = []
+    const myCallback = () => {
+      let index: number = 0;
+      this.availabilityData.values = [];
+      this.availabilityData.dates = [];
       function stringToBool(val) {
         return (val + '').toLowerCase() === 'true';
       };
 
       if (this.currentUser.finished) {
-      for (let job of this.currentUser.positionHistory) {
+      for (const job of this.currentUser.positionHistory) {
         if (job.EndDate) {
-          if (job.EndDate == "Current") {
-            this.currentJob = job
+          if (job.EndDate === 'Current') {
+            this.currentJob = job;
           } else {
             if (this.currentJob == null) {
-              this.currentJob = job
-            } else if (this.currentJob.endDate != "Current"){
-              var jobYear = +job.EndDate.slice(0, 4);
-              var currentYear = +this.currentJob.EndDate.slice(0, 4);
+              this.currentJob = job;
+            } else if (this.currentJob.endDate != 'Current'){
+              const jobYear = +job.EndDate.slice(0, 4);
+              const currentYear = +this.currentJob.EndDate.slice(0, 4);
               if (jobYear > currentYear) {
-                this.currentJob = job
-              } else if (jobYear == currentYear) {
-                var jobMonth = +job.EndDate.slice(5, 2);
-                var currentMonth = +this.currentJob.EndDate.slice(5, 2);
+                this.currentJob = job;
+              } else if (jobYear === currentYear) {
+                const jobMonth = +job.EndDate.slice(5, 2);
+                const currentMonth = +this.currentJob.EndDate.slice(5, 2);
                 if (jobMonth > currentMonth) {
-                  this.currentJob = job
+                  this.currentJob = job;
                 }
               }
             }
           }
-          for (let exp of job.agencyExperience) {
-            for (let data of exp.main.data) {
-              let color = 4
-              color = Math.floor(color)
-              this.expColors[exp.main.title] = this.expColors[index++]
+          for (const exp of job.agencyExperience) {
+            for (const data of exp.main.data) {
+              let color = 4;
+              color = Math.floor(color);
+              this.expColors[exp.main.title] = this.expColors[index++];
             }
           }
         }
       }
 
-      let temp: number[] = []
-      if(this.currentUser.abilities) {
-        for (let index of this.currentUser.abilities) {
-          this.capaChartLabels.push(index[0])
-          temp.push(+index[1])
+      const temp: number[] = [];
+      if (this.currentUser.abilities) {
+        for (const index of this.currentUser.abilities) {
+          this.capaChartLabels.push(index[0]);
+          temp.push(+index[1]);
         }
       }
 
-      var date = new Date(),
-          locale = "en-us",
-          month = date.toLocaleString(locale, { month: "long" }).slice(0,3);
-      var year = new Date().getFullYear()
+      const date = new Date(),
+          locale = 'en-us',
+          month = date.toLocaleString(locale, { month: 'long' }).slice(0, 3);
+      let year = new Date().getFullYear();
       //if one of your jobs is tagged as "current", it assumes you're unavailable and vice versa
-      var avail = true
+      let avail = true;
       if (this.currentUser.positionHistory){
-        for (let pos of this.currentUser.positionHistory) {
+        for (const pos of this.currentUser.positionHistory) {
           if (pos.EndDate) {
-            if (pos.EndDate.toLowerCase() == "current"){
-              avail = false
+            if (pos.EndDate.toLowerCase() == 'current'){
+              avail = false;
             }
           }
         }
       }
 
-      var currentDate = month + ', ' + year.toString().slice(2,4)
+      const currentDate = month + ', ' + year.toString().slice(2, 4);
       while (this.currentUser.availability.length > 1 && this.currentUser.availability[0].date != currentDate) {
-        this.currentUser.availability.splice(0,1)
+        this.currentUser.availability.splice(0, 1);
       }
       if (this.currentUser.availability[0]) {
-        if (this.currentUser.availability[0].date != currentDate) {
-          this.currentUser.availability.splice(0,1)
+        if (this.currentUser.availability[0].date !== currentDate) {
+          this.currentUser.availability.splice(0, 1);
           this.currentUser.availability.push({
             date: currentDate,
             available: avail
-          })
+          });
         }
       }
       while (this.currentUser.availability.length > 0 && this.currentUser.availability.length < 7){
-        var nextNum = this.months.indexOf(this.currentUser.availability[this.currentUser.availability.length - 1].date.slice(0,3)) + 1
+        let nextNum = this.months.indexOf(this.currentUser.availability[this.currentUser.availability.length - 1].date.slice(0, 3)) + 1;
         if (nextNum >= this.months.length) {
-          nextNum = 0
-          year = year + 1
+          nextNum = 0;
+          year = year + 1;
         }
         this.currentUser.availability.push({
-          date: this.months[nextNum] + ', ' + year.toString().slice(2,4),
+          date: this.months[nextNum] + ', ' + year.toString().slice(2, 4),
           available: avail
-        })
+        });
       }
-      for (let index of this.currentUser.availability) {
-        this.availabilityData.dates.push(index.date)
-        this.availabilityData.values.push(index.available)
+      for (const index of this.currentUser.availability) {
+        this.availabilityData.dates.push(index.date);
+        this.availabilityData.values.push(index.available);
       }
-      this.capaChartDatas.push({data: temp, label: 'Strength'})
+      this.capaChartDatas.push({data: temp, label: 'Strength'});
 
-      for (let job of this.currentUser.positionHistory) {
+      for (const job of this.currentUser.positionHistory) {
         job.Year = +job.StartDate.slice(0, 4);
-        var endYear = 0
-        if (job.EndDate.slice(0, 4) == "Curr") {
-          endYear = new Date().getFullYear()
+        let endYear = 0;
+        if (job.EndDate.slice(0, 4) == 'Curr') {
+          endYear = new Date().getFullYear();
         } else {
-          endYear = +job.EndDate.slice(0, 4)
+          endYear = +job.EndDate.slice(0, 4);
         }
-        for (let agency of job.agencyExperience) {
-          var newAgency: any = agency
-          newAgency.years = (endYear - job.Year)
-          newAgency.jobs = 1
-          newAgency.subagencies = []
+        for (const agency of job.agencyExperience) {
+          const newAgency: any = agency;
+          newAgency.years = (endYear - job.Year);
+          newAgency.jobs = 1;
+          newAgency.subagencies = [];
           if (newAgency.years == 0) {
-            newAgency.years = 1
+            newAgency.years = 1;
           }
 
-          for (let s of agency.offices) {
-            var newSubagency: any = s
-            newSubagency.years = newAgency.years
-            newSubagency.jobs = 1
+          for (const s of agency.offices) {
+            const newSubagency: any = s;
+            newSubagency.years = newAgency.years;
+            newSubagency.jobs = 1;
             if (newSubagency.years == 0) {
-              newSubagency.years = 1
+              newSubagency.years = 1;
             }
-            var nameMatch = false
-            for (let i of newAgency.subagencies) {
+            let nameMatch = false;
+            for (const i of newAgency.subagencies) {
               if (newSubagency.title == i.title) {
                 nameMatch = true;
-                i.years += newSubagency.years
-                i.jobs++
+                i.years += newSubagency.years;
+                i.jobs++;
               }
             }
             if (nameMatch == false && newSubagency.title.length > 0) {
               if (newAgency.subagencies[0] == null) {
-                newAgency.subagencies[0] = newSubagency
-                this.subagencyCountForChart++
+                newAgency.subagencies[0] = newSubagency;
+                this.subagencyCountForChart++;
               } else {
-                newAgency.subagencies.push(newSubagency)
-                this.subagencyCountForChart++
+                newAgency.subagencies.push(newSubagency);
+                this.subagencyCountForChart++;
               }
             }
           }
 
-          var nameMatch = false
-          for (let i of this.agencyExperience) {
+          let nameMatch = false;
+          for (const i of this.agencyExperience) {
             if (newAgency.main.title == i.main.title) {
               // console.log('merging ' + newAgency.main.title + ' & ' + i.main.title)
               nameMatch = true;
-              i.years += newAgency.years
-              i.jobs++
+              i.years += newAgency.years;
+              i.jobs++;
             }
           }
 
           if (nameMatch == false && job.agencyExperience[0].main.title.length > 0) {
             if (this.agencyExperience[0] == null) {
               // console.log('setting first one as ' + newAgency.main.title)
-              this.agencyExperience[0] = newAgency
+              this.agencyExperience[0] = newAgency;
             } else {
               // console.log('pushing in ' + newAgency.main.title)
-              this.agencyExperience.push(newAgency)
+              this.agencyExperience.push(newAgency);
             }
           }
         }
       }
 
-      var toolsToPush = []
-      for (let tool of this.currentUser.foundTools) {
-        var matchFound = false
-        for (let position of tool.position) {
-          for (let toolDone of toolsToPush) {
+      const toolsToPush = [];
+      for (const tool of this.currentUser.foundTools) {
+        let matchFound = false;
+        for (const position of tool.position) {
+          for (const toolDone of toolsToPush) {
             if (position == toolDone.title) {
-              toolDone.score += 7
-              matchFound = true
+              toolDone.score += 7;
+              matchFound = true;
             }
           }
           if (!matchFound) {
-            var newPosition = {
+            const newPosition = {
               title: position,
               score: 7
-            }
-            toolsToPush.push(newPosition)
+            };
+            toolsToPush.push(newPosition);
           }
         }
       }
       if (toolsToPush.length < 2) {
-        for (let o of this.currentUser.occupations) {
-          var newOccupation = {
+        for (const o of this.currentUser.occupations) {
+          const newOccupation = {
             title: o.title,
             score: o.score
-          }
-          this.occupations.push(newOccupation)
+          };
+          this.occupations.push(newOccupation);
         }
       } else {
-        for (let tool of toolsToPush) {
-          for (let o of this.currentUser.occupations) {
+        for (const tool of toolsToPush) {
+          for (const o of this.currentUser.occupations) {
             if (tool.title == o.title) {
-              tool.score += (o.score / 5)
+              tool.score += (o.score / 5);
             }
           }
         }
-        toolsToPush.sort(function(a,b){
+        toolsToPush.sort(function(a, b){
           return parseFloat(b.score) - parseFloat(a.score);
-        })
-        for (var i = 0; i < 10; i++) {
-          this.occupations.push(toolsToPush[i])
+        });
+        for (let i = 0; i < 10; i++) {
+          this.occupations.push(toolsToPush[i]);
         }
       }
-      for (let t of toolsToPush) {
-        var newName
-        var newCode
-        for (let i of this.allCategories) {
+      for (const t of toolsToPush) {
+        let newName;
+        let newCode;
+        for (const i of this.allCategories) {
           if (t.title == i.title){
-            newName = i.category
-            newCode = i.code.substring(0,2)
+            newName = i.category;
+            newCode = i.code.substring(0, 2);
           }
         }
-        var newCategory = {
+        const newCategory = {
           code: newCode,
           name: newName,
           score: 5
-        }
-        var match = false
-        for (let c of this.categories) {
+        };
+        let match = false;
+        for (const c of this.categories) {
           if (newCategory.name == c.name) {
-            match = true
-            c.score = Math.round(c.score + (t.score / 5))
+            match = true;
+            c.score = Math.round(c.score + (t.score / 5));
           }
         }
         if (!match){
-          this.categories.push(newCategory)
+          this.categories.push(newCategory);
         }
       }
-      var serviceData = []
-      var catPointsTotal = 0
-      for (let c of this.categories) {
-        catPointsTotal += c.score
+      const serviceData = [];
+      let catPointsTotal = 0;
+      for (const c of this.categories) {
+        catPointsTotal += c.score;
       }
-      for (let c of this.categories) {
-        var percent = 360*(c.score/catPointsTotal)
+      for (const c of this.categories) {
+        const percent = 360 * (c.score / catPointsTotal);
         serviceData.push({
           name: c.name,
           y: percent
-        })
+        });
       }
 
       this.serviceChart = new Chart({
         chart: {
           type: 'pie',
           backgroundColor: 'rgba(0, 100, 200, 0.00)',
-          renderTo: "service_chart"
+          renderTo: 'service_chart'
         },
         title: {
           text: 'Capabilities'
@@ -393,23 +390,23 @@ export class ProfileComponent implements OnInit {
 
       //right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
       //i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
-      if (typeof this.currentUser.disabled === "string") {
-        this.currentUser.disabled = stringToBool(this.currentUser.disabled)
+      if (typeof this.currentUser.disabled === 'string') {
+        this.currentUser.disabled = stringToBool(this.currentUser.disabled);
       }
-      for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
-        for (var x = 0; x < this.currentUser.positionHistory[i].agencyExperience.length; x++) {
-          if (typeof this.currentUser.positionHistory[i].agencyExperience[x].main.isPM === "string") {
-            this.currentUser.positionHistory[i].agencyExperience[x].main.isPM = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].main.isPM)
+      for (let i = 0; i < this.currentUser.positionHistory.length; i++) {
+        for (let x = 0; x < this.currentUser.positionHistory[i].agencyExperience.length; x++) {
+          if (typeof this.currentUser.positionHistory[i].agencyExperience[x].main.isPM === 'string') {
+            this.currentUser.positionHistory[i].agencyExperience[x].main.isPM = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].main.isPM);
           }
-          if (typeof this.currentUser.positionHistory[i].agencyExperience[x].main.isKO === "string") {
-            this.currentUser.positionHistory[i].agencyExperience[x].main.isKO = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].main.isKO)
+          if (typeof this.currentUser.positionHistory[i].agencyExperience[x].main.isKO === 'string') {
+            this.currentUser.positionHistory[i].agencyExperience[x].main.isKO = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].main.isKO);
           }
-          for (var y = 0; y < this.currentUser.positionHistory[i].agencyExperience[x].offices.length; y++) {
-            if (typeof this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isPM === "string") {
-              this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isPM = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isPM)
+          for (let y = 0; y < this.currentUser.positionHistory[i].agencyExperience[x].offices.length; y++) {
+            if (typeof this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isPM === 'string') {
+              this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isPM = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isPM);
             }
-            if (typeof this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isKO === "string") {
-              this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isKO = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isKO)
+            if (typeof this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isKO === 'string') {
+              this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isKO = stringToBool(this.currentUser.positionHistory[i].agencyExperience[x].offices[y].isKO);
             }
           }
         }
@@ -440,54 +437,54 @@ export class ProfileComponent implements OnInit {
           MajorProgramName: [''],
           MinorProgramName: [''],
           Comment: ''
-        }
+        };
       }
       if (this.currentUser.education[0].DegreeType[0] == null) {
-        this.currentUser.education[0].DegreeType.push({Name: ''})
+        this.currentUser.education[0].DegreeType.push({Name: ''});
       }
 
-      for (let j of this.currentUser.positionHistory) {
-        if (j.EndDate !== "Current") {
-          var endYear = +j.EndDate.slice(0, 4)
-          var startYear = +j.StartDate.slice(0, 4)
+      for (const j of this.currentUser.positionHistory) {
+        if (j.EndDate !== 'Current') {
+          const endYear = +j.EndDate.slice(0, 4);
+          const startYear = +j.StartDate.slice(0, 4);
         } else {
-          var endYear = new Date().getFullYear()
-          var startYear = +j.StartDate.slice(0, 4)
+          const endYear = new Date().getFullYear();
+          const startYear = +j.StartDate.slice(0, 4);
         }
-        this.yearsOfWork += (endYear - startYear)
+        this.yearsOfWork += (endYear - startYear);
 
-        if (j.EndDate !== "Current") {
-          var endMonth = +(((+j.EndDate.slice(5, 7))/12).toFixed(2))
-          var startMonth = +(((+j.StartDate.slice(5, 7))/12).toFixed(2))
+        if (j.EndDate !== 'Current') {
+          const endMonth = +(((+j.EndDate.slice(5, 7)) / 12).toFixed(2));
+          const startMonth = +(((+j.StartDate.slice(5, 7)) / 12).toFixed(2));
         } else {
-          var endMonth = new Date().getMonth()
-          var endMonth = +((+endMonth/12).toFixed(2))
-          var startMonth = +(((+j.StartDate.slice(5, 7))/12).toFixed(2))
+          let endMonth = new Date().getMonth();
+          const endMonth = +((+endMonth / 12).toFixed(2));
+          const startMonth = +(((+j.StartDate.slice(5, 7)) / 12).toFixed(2));
         }
-        this.yearsOfWork += (endMonth - startMonth)
+        this.yearsOfWork += (endMonth - startMonth);
       }
-      for (let d of this.currentUser.education) {
-        for (let t of this.degreeType) {
+      for (const d of this.currentUser.education) {
+        for (const t of this.degreeType) {
           if (d.DegreeType[0]) {
             if (d.DegreeType[0].Name == t.name) {
-              this.yearsOfSchool += t.years
+              this.yearsOfSchool += t.years;
             }
           }
         }
       }
-      this.professionalPoints = Math.round(Math.sqrt((this.yearsOfSchool * 2) + this.yearsOfWork + this.currentUser.certification.length) * 50)
+      this.professionalPoints = Math.round(Math.sqrt((this.yearsOfSchool * 2) + this.yearsOfWork + this.currentUser.certification.length) * 50);
 
       // here is some CHART CALCULATION!
 
-        var data_prof = new Map();
-        var data_peop = new Map();
-        var data_prof_sub = new Map();
-        var data_peop_sub = new Map();
-        var agencyNames = []
-        var subagencyNames = []
-        var prof = [];
-        var peop = [];
-        for (var j = 0; j < this.agencyExperience.length; j++) {
+        const data_prof = new Map();
+        const data_peop = new Map();
+        const data_prof_sub = new Map();
+        const data_peop_sub = new Map();
+        const agencyNames = [];
+        const subagencyNames = [];
+        const prof = [];
+        const peop = [];
+        for (let j = 0; j < this.agencyExperience.length; j++) {
           if (data_prof.has(this.agencyExperience[j].main.title)) {
             data_prof.set(this.agencyExperience[j].main.title, data_prof.get(this.agencyExperience[j].main.title) + (this.agencyExperience[j].years * this.agencyExperience[j].jobs));
             data_peop.set(this.agencyExperience[j].main.title, data_peop.get(this.agencyExperience[j].main.title) + this.agencyExperience[j].jobs);
@@ -498,7 +495,7 @@ export class ProfileComponent implements OnInit {
             agencyNames.push(this.agencyExperience[j].main.title);
           }
 
-          for (var x = 0; x < this.agencyExperience[j].subagencies.length; x++) {
+          for (let x = 0; x < this.agencyExperience[j].subagencies.length; x++) {
             if (data_prof_sub.has(this.agencyExperience[j].subagencies[x].title)) {
               data_prof_sub.set(this.agencyExperience[j].subagencies[x].title, data_prof.get(this.agencyExperience[j].subagencies[x].title) + (this.agencyExperience[j].subagencies[x].years * this.agencyExperience[j].subagencies[x].jobs));
               data_peop_sub.set(this.agencyExperience[j].subagencies[x].title, data_peop.get(this.agencyExperience[j].subagencies[x].title) + this.agencyExperience[j].subagencies[x].jobs);
@@ -511,8 +508,8 @@ export class ProfileComponent implements OnInit {
           }
         }
 
-        for(var k = 0; k < agencyNames.length; k++){
-          data_prof.set( agencyNames[k], ( data_prof.get( agencyNames[k] )/data_peop.get( agencyNames[k] ) ) );
+        for (let k = 0; k < agencyNames.length; k++){
+          data_prof.set( agencyNames[k], ( data_prof.get( agencyNames[k] ) / data_peop.get( agencyNames[k] ) ) );
           prof[k] = data_prof.get( agencyNames[k] );
           peop[k] = data_peop.get( agencyNames[k] );
         }
@@ -520,7 +517,7 @@ export class ProfileComponent implements OnInit {
           chart: {
             type: 'bar',
             backgroundColor: 'rgba(0, 100, 200, 0.00)',
-            renderTo: "team_chart"
+            renderTo: 'team_chart'
           },
           title: {
             text: 'Agency Experience'
@@ -532,7 +529,7 @@ export class ProfileComponent implements OnInit {
             },
           }],
           yAxis: [{ // Primary yAxis
-            min:0,
+            min: 0,
             tickInterval: 1,
             endOnTick: false,
             alignTicks: false,
@@ -552,7 +549,7 @@ export class ProfileComponent implements OnInit {
           {
            // Secondary yAxis
             tickInterval: 1,
-            min:0,
+            min: 0,
             endOnTick: false,
             alignTicks: false,
             title: {
@@ -591,15 +588,15 @@ export class ProfileComponent implements OnInit {
           }]
         });
 
-        this.showTeam()
-        this.calculateSkillChart()
-        this.calculateCapaChart()
-        this.pastPerformances = this.currentUser.pastPerformanceProxies.map(proxy => proxy.pastPerformance)
+        this.showTeam();
+        this.calculateSkillChart();
+        this.calculateCapaChart();
+        this.pastPerformances = this.currentUser.pastPerformanceProxies.map(proxy => proxy.pastPerformance);
         this.promiseFinished = true;
       } else {
         this.promiseFinished = true;
       }
-    }
+    };
   }
 
   ngOnInit() {
@@ -609,9 +606,9 @@ export class ProfileComponent implements OnInit {
     // console.log(event.keyCode);
     if (this.activeTab.main == 3) {
       if (event.keyCode == 37 && this.activeTab.skill == 1 && this.activeTab.service > 0){
-        this.activeTab.service--
-      } else if (event.keyCode == 39 && this.activeTab.skill == 1 && this.serviceChartNames[this.activeTab.service+1]){
-        this.activeTab.service++
+        this.activeTab.service--;
+      } else if (event.keyCode == 39 && this.activeTab.skill == 1 && this.serviceChartNames[this.activeTab.service + 1]){
+        this.activeTab.service++;
       }
     }
   }
@@ -621,68 +618,68 @@ export class ProfileComponent implements OnInit {
     //   this.activeTab.main = 7
     // } else {
     // }
-    this.activeTab.main = newTab
+    this.activeTab.main = newTab;
   }
 
   showTeam() {
-    var occupations = []
-    var toolsToPush = []
-    for (let tool of this.currentUser.foundTools) {
-      var matchFound = false
-      for (let position of tool.position) {
-        for (let toolDone of toolsToPush) {
+    const occupations = [];
+    const toolsToPush = [];
+    for (const tool of this.currentUser.foundTools) {
+      let matchFound = false;
+      for (const position of tool.position) {
+        for (const toolDone of toolsToPush) {
           if (position == toolDone.title) {
-            toolDone.score += 5
-            matchFound = true
+            toolDone.score += 5;
+            matchFound = true;
           }
         }
         if (!matchFound) {
-          var newPosition = {
+          const newPosition = {
             title: '',
             score: 0
-          }
-          newPosition.title = position
-          newPosition.score = 5
-          toolsToPush.push(newPosition)
+          };
+          newPosition.title = position;
+          newPosition.score = 5;
+          toolsToPush.push(newPosition);
         }
       }
     }
     if (toolsToPush.length < 2) {
-      for (let o of this.currentUser.occupations) {
-        var newOccupation = {
+      for (const o of this.currentUser.occupations) {
+        const newOccupation = {
           title: '',
           score: 0
-        }
-        newOccupation.title = o.title
-        newOccupation.score = o.score
-        occupations.push(newOccupation)
+        };
+        newOccupation.title = o.title;
+        newOccupation.score = o.score;
+        occupations.push(newOccupation);
 
       }
     } else {
-      for (let tool of toolsToPush) {
-        for (let o of this.currentUser.occupations) {
+      for (const tool of toolsToPush) {
+        for (const o of this.currentUser.occupations) {
           if (tool.title == o.title) {
-            tool.score += (o.score / 5)
+            tool.score += (o.score / 5);
           }
         }
-        occupations.push(tool)
+        occupations.push(tool);
       }
     }
-    occupations.sort(function(a,b){
+    occupations.sort(function(a, b){
       return parseFloat(b.score) - parseFloat(a.score);
-    })
-    var sortedOccupations: any[] = []
-    for (let o of occupations){
-      for (let c of this.allCategories) {
+    });
+    const sortedOccupations: any[] = [];
+    for (const o of occupations){
+      for (const c of this.allCategories) {
         if (o.title == c.title) {
           if (o.score > 10) {
-            var match = false
-            for (let s of sortedOccupations) {
+            let match = false;
+            for (const s of sortedOccupations) {
               if (s.title == c.category) {
                 match = true;
-                var occupationMatch = false
+                const occupationMatch = false;
                 if (!s.occupations.includes(o)){
-                  s.occupations.push(o)
+                  s.occupations.push(o);
                 }
               }
             }
@@ -690,21 +687,21 @@ export class ProfileComponent implements OnInit {
               sortedOccupations.push({
                 title: c.category,
                 occupations: [o]
-              })
+              });
             }
           }
         }
       }
     }
-    for (let s of sortedOccupations){
-      this.serviceChartNames.push(s.title)
+    for (const s of sortedOccupations){
+      this.serviceChartNames.push(s.title);
       // console.log(s.title + " - " + s.occupations.length)
-      var data_prof = new Map();
-      var data_peop = new Map();
-      var skill = [];
-      var prof = [];
-      var peop = [];
-      for (var j = 0; j < 10; j++) {
+      const data_prof = new Map();
+      const data_peop = new Map();
+      const skill = [];
+      const prof = [];
+      const peop = [];
+      for (let j = 0; j < 10; j++) {
         // console.log(j + ' - ' + occupations[j].title)
         if (j < s.occupations.length && s.occupations[j].title){
           if (data_prof.has(s.occupations[j].title)) {
@@ -720,19 +717,19 @@ export class ProfileComponent implements OnInit {
           }
         }
       }
-    for(var k = 0; k < 10; k++){
+    for (let k = 0; k < 10; k++){
       if (k < s.occupations.length && skill[k]) {
-        data_prof.set( skill[k], ( data_prof.get( skill[k] )/data_peop.get( skill[k] ) ) );
+        data_prof.set( skill[k], ( data_prof.get( skill[k] ) / data_peop.get( skill[k] ) ) );
         prof[k] = data_prof.get( skill[k] );
         peop[k] = data_peop.get( skill[k] );
       }
     }
-    this.charts.push(this.generateChart(s.title, skill, peop, prof))
+    this.charts.push(this.generateChart(s.title, skill, peop, prof));
     }
   }
 
   generateChart(title, xCategories, series1, series2){
-    var chart = new Chart({
+    const chart = new Chart({
       chart: {
         type: 'column',
         backgroundColor: 'rgba(0, 100, 200, 0.00)',
@@ -747,8 +744,8 @@ export class ProfileComponent implements OnInit {
         },
       },
       yAxis: {
-        max:100,
-        min:0,
+        max: 100,
+        min: 0,
         tickInterval: 1,
         endOnTick: false,
         alignTicks: false,
@@ -763,23 +760,23 @@ export class ProfileComponent implements OnInit {
           valueSuffix: ' points'
         }
       }]
-    })
-    return chart
+    });
+    return chart;
   }
 
 
-  calculateSkillChart(){
-      var data_prof = new Map();
-      var data_peop = new Map();
-      var skill = [];
-      var prof = [];
-      var peop = [];
-      var tools = this.currentUser.foundTools
+  calculateSkillChart() {
+      const data_prof = new Map();
+      const data_peop = new Map();
+      const skill = [];
+      const prof = [];
+      const peop = [];
+      const tools = this.currentUser.foundTools;
       // var tools = this.currentUser.foundTools.sort(function(a,b){
       //   return b.score - a.score;
       // })
 
-      for (var j = 0; j < tools.length; j++) {
+      for (let j = 0; j < tools.length; j++) {
         // console.log(j + ' - ' + occupations[j].title)
         if (tools[j].title){
           if (data_prof.has(tools[j].title)) {
@@ -793,7 +790,7 @@ export class ProfileComponent implements OnInit {
           }
         }
       }
-    for(var k = 0; k < tools.length; k++){
+    for (let k = 0; k < tools.length; k++){
       if (skill[k]) {
         data_prof.set( skill[k], ( data_prof.get( skill[k] )) );
         prof[k] = data_prof.get( skill[k] );
@@ -805,7 +802,7 @@ export class ProfileComponent implements OnInit {
         backgroundColor: 'rgba(0, 100, 200, 0.00)',
       },
       title: {
-        text: "Tools"
+        text: 'Tools'
       },
       xAxis: {
         categories: skill,
@@ -814,7 +811,7 @@ export class ProfileComponent implements OnInit {
         },
       },
       yAxis: {
-        min:0,
+        min: 0,
         tickInterval: 1,
         endOnTick: false,
         alignTicks: false,
@@ -829,67 +826,66 @@ export class ProfileComponent implements OnInit {
           valueSuffix: ' points'
         }
       }]
-    })
+    });
   }
 
   calculateCapaChart() {
-    var temp: number[] = []
-    this.capaChartLabels = []
-    this.capaChartDatas = []
-    if(this.occupations) {
-      for (let index of this.occupations) {
-        this.capaChartLabels.push(index.title)
-        temp.push(+index.score)
+    const temp: number[] = [];
+    this.capaChartLabels = [];
+    this.capaChartDatas = [];
+    if (this.occupations) {
+      for (const index of this.occupations) {
+        this.capaChartLabels.push(index.title);
+        temp.push(+index.score);
       }
     }
-    this.capaChartDatas.push({data: temp, label: 'Score'})
+    this.capaChartDatas.push({data: temp, label: 'Score'});
   }
 
   getCapaChartValues(occupations): number[] {
-    let temp: number[] = []
-    for (let index of occupations) {
-      temp.push(index.score)
+    const temp: number[] = [];
+    for (const index of occupations) {
+      temp.push(index.score);
     }
-    return temp
+    return temp;
   }
 
-
   getCapaChartColor(score: number): string {
-    let temp: string
-    var color: number = score/100*155
-    color = Math.floor(color)
-    temp = 'rgb(' + color.toString() + ',' + color.toString() + ',' + color.toString() + ')'
-    return temp
+    let temp: string;
+    let color: number = score / 100 * 155;
+    color = Math.floor(color);
+    temp = 'rgb(' + color.toString() + ',' + color.toString() + ',' + color.toString() + ')';
+    return temp;
   }
 
   expMainValues(tempUser: User, jobNum, agencyNum): number[] {
-    let temp: number[] = []
-    for (let data of this.agencyExperience[agencyNum].main.data) {
-      temp.push(data.score * 10)
+    const temp: number[] = [];
+    for (const data of this.agencyExperience[agencyNum].main.data) {
+      temp.push(data.score * 10);
     }
-    return temp
+    return temp;
   }
 
   expSub1Values(tempUser: User, jobNum, agencyNum, officeNum): number[] {
-    let temp: number[] = []
-    for (let data of this.currentUser.positionHistory[jobNum].agencyExperience[agencyNum].offices[officeNum].data) {
-      temp.push(data.score)
+    const temp: number[] = [];
+    for (const data of this.currentUser.positionHistory[jobNum].agencyExperience[agencyNum].offices[officeNum].data) {
+      temp.push(data.score);
     }
-    return temp
+    return temp;
   }
 
   expSub2Values(tempUser: User): number[] {
-    let temp: number[] = []
-    for (let job of this.currentUser.positionHistory) {
-      for (let exp of job.agencyExperience) {
-        for (let office of exp.offices) {
-          for (let data of office.data) {
-            temp.push(data.score)
+    const temp: number[] = [];
+    for (const job of this.currentUser.positionHistory) {
+      for (const exp of job.agencyExperience) {
+        for (const office of exp.offices) {
+          for (const data of office.data) {
+            temp.push(data.score);
           }
         }
       }
     }
-    return temp
+    return temp;
   }
 
   getServiceChartData(): number[] {
@@ -909,12 +905,12 @@ export class ProfileComponent implements OnInit {
   }
 
   currentYear() {
-    let year = new Date().getFullYear()
-    return year
+    const year = new Date().getFullYear();
+    return year;
   }
 
   back() {
-    this.location.back()
+    this.location.back();
   }
 
   editProfile() {

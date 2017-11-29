@@ -174,12 +174,10 @@ export class SearchComponent implements OnInit {
 
   }
 
-
-
   agencyValidCheck (agency) {
     let match = false;
     for (const a of this.agencies) {
-      if (a.agency.toString().toLowerCase() == agency.toString().toLowerCase()){
+      if (a.agency.toString().toLowerCase() === agency.toString().toLowerCase()){
         match = true;
       }
     }
@@ -386,7 +384,7 @@ export class SearchComponent implements OnInit {
                       let agencyFound = false;
                       if (!toolsDone.includes(tool.title)){
                         for (const rp of newCompany.relevantPositions) {
-                          if (rp.name.toLowerCase() == tool.title.toLowerCase()){
+                          if (rp.name.toLowerCase() === tool.title.toLowerCase()){
                             agencyFound = true;
                             rp.count++;
                             toolsDone.push(tool.title);
@@ -415,7 +413,7 @@ export class SearchComponent implements OnInit {
                 for (const cert of p.userProfile.certification) {
                   let matchFound = false;
                   for (const certDone of certsToPush) {
-                    if (cert.CertificationName == certDone) {
+                    if (cert.CertificationName === certDone) {
                       matchFound = true;
                     }
                   }
@@ -429,7 +427,7 @@ export class SearchComponent implements OnInit {
                     let certFound = false;
                     if (!certsDone.includes(cert)){
                       for (const c of newCompany.relevantCerts) {
-                        if (c.name.toLowerCase() == cert.toLowerCase()){
+                        if (c.name.toLowerCase() === cert.toLowerCase()){
                           certFound = true;
                           c.count++;
                           certsDone.push(cert);
