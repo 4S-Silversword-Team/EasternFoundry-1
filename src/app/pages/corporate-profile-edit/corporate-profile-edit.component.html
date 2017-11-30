@@ -112,11 +112,11 @@
                 <div class="" *ngFor='let p of searchResults.people; let i = index'>
                   <div class="search-item">
                     <div class="search-item-not-expand col-xs-12">
-                      <div class="" style="width: 100%; height: 50px; line-height: 25px;" *ngIf="invitationSent[i]">
+                      <div class="" style="width: 100%; height: 50px; line-height: 25px;" *ngIf="invited(p)">
                         <div class="search-item-header">{{p.firstName}} {{p.lastName}} has been invited to join your company.</div>
                         <div class="search-item-subheader">Watch your company inbox to see if they accept!</div>
                       </div>
-                      <div class="" *ngIf="!invitationSent[i]">
+                      <div class="" *ngIf="!invited(p)">
                         <div class="" style="width: 90%; height: 50px; float: left; line-height: 25px;">
                           <div class="search-item-header">{{p.firstName}} {{p.lastName}}</div>
                           <div class="search-item-subheader">{{p.username}}</div>

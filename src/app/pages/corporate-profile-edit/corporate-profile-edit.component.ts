@@ -76,7 +76,7 @@ export class CorporateProfileEditComponent implements OnInit {
     main: 0,
     product: 0,
   }
-  invitationSent: boolean[] = []
+  invitationSent: string[] = []
 
   allAgencies: any[] = []
 
@@ -208,7 +208,7 @@ export class CorporateProfileEditComponent implements OnInit {
     }
     this.messageService.createMessage(invite).toPromise().then((result) => {
       console.log('did it')
-      this.invitationSent[i] = true
+      this.invitationSent.push(person.firstName + ' ' + person.lastName)
     });
   }
 
@@ -615,16 +615,13 @@ export class CorporateProfileEditComponent implements OnInit {
     if (this.searchResults.people.length < 1) {
       this.noResults = true
     }
-    for (let p of this.searchResults.people) {
-      this.invitationSent.push(false)
-    }
     this.searchOpen = true;
   }
-  asdf(){
-    console.log('asdf')
-  }
-  no(){
-    console.log('no')
+
+  invited(person){
+    var name = person.firstName + ' ' + person.lastName
+    console.log(name)
+    return this.invitationSent.includes(name)
   }
 
   addProduct() {
