@@ -344,7 +344,7 @@ export class ProfileEditComponent implements OnInit {
               } else {
                 for (var y = this.currentUser.positionHistory[i].agencyExperience[x].offices.length; i < this.currentUser.positionHistory[i].agencyExperience[x].offices.length; x--) {
                   if (this.currentUser.positionHistory[i].agencyExperience[x].offices[y].title.length < 1) {
-                    this.currentUser.positionHistory[i].agencyExperience[x].offices[y].splice(y, 1)
+                    this.currentUser.positionHistory[i].agencyExperience[x].offices.splice(y, 1)
                   }
                 }
               }
