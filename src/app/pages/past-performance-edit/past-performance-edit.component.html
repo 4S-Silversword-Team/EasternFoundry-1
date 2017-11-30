@@ -76,7 +76,7 @@
                 </div>
                 <div class="" style="width: 100%;" *ngIf='!this.currentPastPerformance.client.gov'><input type="text" style="width: 100%;" placeholder="Client" style="width: 100%" class="right" [(ngModel)] = "this.currentPastPerformance.client.name" [ngClass]="{'empty-field': !this.currentPastPerformance.client.name}"></div>
                 <input class="" style="height: 42px;" type="checkbox" [(ngModel)]="this.currentPastPerformance.client.gov" />
-                <input class="" style="width: 100%; margin-top: -1px;" type="text" placeholder="The company's email address" [(ngModel)] = 'this.currentPastPerformance.topic' [ngClass]="{'empty-field': !this.currentPastPerformance.topic}">
+                <input class="" style="width: 100%; margin-top: -1px;" type="text" placeholder="The topic of the performance" [(ngModel)] = 'this.currentPastPerformance.topic' [ngClass]="{'empty-field': !this.currentPastPerformance.topic}">
               </div>
               <div class="" style="position: absolute; float: left; bottom: 1px; right: calc(2vw - 6px); height: 93px; width: 100%;">
                 <p class="left" style="width: calc(100% - 60px); line-height: 42px; float: left; padding-top: 6px; text-align: right; padding-right: 2px;">Cleared?</p>
