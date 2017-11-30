@@ -167,8 +167,8 @@
                   <input class="col-xs-3" type="checkbox" (change)="updateEmployee(employee.proxyId,'stillAffiliated',employee.stillAffiliated)" [(ngModel)]="employee.stillAffiliated" />
                 </div>
               </div>
-              <button style="width: 30%; height: 55px"*ngIf="this.isUserAdmin && employee.role != this.adminRoleId" class="btn btn-primary" (click)="updateEmployee(employee.proxyId, 'role', this.adminRoleId)" type="button" value="Make Admin" name="button">Make<br>Admin</button>
-              <button style="width: 30%; height: 55px; background: rgb(201, 50, 50); border: 1px solid rgba(0, 0, 0, 0.1)"*ngIf="this.isUserAdmin && employee.role == this.adminRoleId && employee.userId != this.currentAccount._id" class="btn btn-primary" (click)="updateEmployee(employee.proxyId, 'role', this.currentAccount._id)" type="button" value="Remove Admin" name="button">Remove<br>Admin</button>
+              <button style="width: 30%; height: 55px" *ngIf="this.isUserAdmin && employee.role != this.adminRoleId" class="btn btn-primary" (click)="updateEmployee(employee.proxyId, 'role', this.adminRoleId)" type="button" value="Make Admin" name="button">Make<br>Admin</button>
+              <button style="width: 30%; height: 55px; background: rgb(201, 50, 50); border: 1px solid rgba(0, 0, 0, 0.1)"*ngIf="this.isUserAdmin && employee.role == this.adminRoleId && !employeeIsYou(employee.userId)" class="btn btn-primary" (click)="removeAdmin(employee.proxyId, 'role', this.currentAccount._id, employee.userId)" type="button" value="Remove Admin" name="button">Remove<br>Admin</button>
             </div>
           </div>
 

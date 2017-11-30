@@ -521,7 +521,27 @@ export class CorporateProfileEditComponent implements OnInit {
     this.companyUserProxyService.updateCompanyUserProxies(proxyId, req).toPromise().then(() =>
       this.companyService.getCompanyByID(this.route.snapshot.params['id']).toPromise().then((result) => { this.currentAccount.userProfileProxies = result.userProfileProxies; this.refreshEmployees(); console.log('updated!')})
     );
+  }
 
+  removeAdmin(proxyId,key, value, userId){
+    var adminCount = 0
+    for (let employee of this.userProfiles) {
+      if (employee.role == this.adminRoleId) {
+        adminCount++
+      }
+    }
+    if (adminCount > 1 && !this.employeeIsYou(userId)){
+      this.updateEmployee(proxyId,key, value)
+    }
+  }
+
+  employeeIsYou(targetId){
+    var userId = this.auth.getLoggedInUser()
+    if (userId == targetId) {
+      return true
+    } else {
+      return false
+    }
   }
 
   refreshEmployees() {
