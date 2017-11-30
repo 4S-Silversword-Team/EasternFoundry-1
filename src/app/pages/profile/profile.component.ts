@@ -835,8 +835,10 @@ export class ProfileComponent implements OnInit {
     this.capaChartDatas = []
     if(this.occupations) {
       for (let index of this.occupations) {
-        this.capaChartLabels.push(index.title)
-        temp.push(+index.score)
+        if (index) {
+          this.capaChartLabels.push(index.title)
+          temp.push(+index.score)
+        }
       }
     }
     this.capaChartDatas.push({data: temp, label: 'Score'})

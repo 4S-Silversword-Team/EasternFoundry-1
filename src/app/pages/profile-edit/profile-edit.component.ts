@@ -325,20 +325,30 @@ export class ProfileEditComponent implements OnInit {
             if (this.currentUser.positionHistory[i].EndDate == null) {
               this.currentUser.positionHistory[i].EndDate = "Current"
             }
-            if (this.currentUser.positionHistory[i].agencyExperience[0]) {
-              if (this.currentUser.positionHistory[i].agencyExperience[0].offices[0]) {
-                if (this.currentUser.positionHistory[i].agencyExperience[0].offices[0].title == "") {
-                  this.currentUser.positionHistory[i].agencyExperience[0].offices.splice(0,1)
+            // if (this.currentUser.positionHistory[i].agencyExperience[0]) {
+            //   if (this.currentUser.positionHistory[i].agencyExperience[0].offices[0]) {
+            //     if (this.currentUser.positionHistory[i].agencyExperience[0].offices[0].title == "") {
+            //       this.currentUser.positionHistory[i].agencyExperience[0].offices.splice(0,1)
+            //     }
+            //   }
+            // }
+            //
+            // if (this.currentUser.positionHistory[i].agencyExperience[0]) {
+            //   if (this.currentUser.positionHistory[i].agencyExperience[0].main.title == "") {
+            //     this.currentUser.positionHistory[i].agencyExperience.splice(0,1)
+            //   }
+            // }
+            for (var x = this.currentUser.positionHistory[i].agencyExperience.length; i < this.currentUser.positionHistory[i].agencyExperience.length; x--) {
+              if (this.currentUser.positionHistory[i].agencyExperience[x].main.title.length < 1) {
+                this.currentUser.positionHistory[i].agencyExperience.splice(x, 1)
+              } else {
+                for (var y = this.currentUser.positionHistory[i].agencyExperience[x].offices.length; i < this.currentUser.positionHistory[i].agencyExperience[x].offices.length; x--) {
+                  if (this.currentUser.positionHistory[i].agencyExperience[x].offices[y].title.length < 1) {
+                    this.currentUser.positionHistory[i].agencyExperience[x].offices[y].splice(y, 1)
+                  }
                 }
               }
             }
-
-            if (this.currentUser.positionHistory[i].agencyExperience[0]) {
-              if (this.currentUser.positionHistory[i].agencyExperience[0].main.title == "") {
-                this.currentUser.positionHistory[i].agencyExperience.splice(0,1)
-              }
-            }
-
           }
           if (this.currentUser.education[0] == null){
             this.currentUser.education[0] = {
@@ -680,13 +690,15 @@ export class ProfileEditComponent implements OnInit {
       if (!job.PositionTitle || (!this.currentJobs[i] && !job.EndDate) || !job.StartDate || !job.Employer) {
         positionCheck = false
       } else {
-        for (let a of job.agencyExperience) {
-          if (!this.agencyValidCheck(a.main.title) || (a.main.isPM && a.main.pmScore > 3 && a.main.pmDescription.length < 300) || (a.main.isKO && a.main.koScore > 3 && a.main.koDescription.length < 300)) {
-            positionCheck = false
-          } else {
-            for (let o of a.offices)
-            if (!this.subagencyValidCheck(a.main.title, o.title) || (o.isPM && o.pmScore > 3 && o.pmDescription.length < 300) || (o.isKO && o.koScore > 3 && o.koDescription.length < 300)) {
+        if (job.employmentType < 2) {
+          for (let a of job.agencyExperience) {
+            if (!this.agencyValidCheck(a.main.title) || (a.main.isPM && a.main.pmScore > 3 && a.main.pmDescription.length < 300) || (a.main.isKO && a.main.koScore > 3 && a.main.koDescription.length < 300)) {
               positionCheck = false
+            } else {
+              for (let o of a.offices)
+                if (!this.subagencyValidCheck(a.main.title, o.title) || (o.isPM && o.pmScore > 3 && o.pmDescription.length < 300) || (o.isKO && o.koScore > 3 && o.koDescription.length < 300)) {
+                  positionCheck = false
+                }
             }
           }
         }
