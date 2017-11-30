@@ -24,6 +24,8 @@ export class AppComponent implements OnInit {
   bugCount: number = 0;
   myCompanies: any[] = [];
   myPastPerformances: any[] = [];
+  promiseFinished = false
+
   constructor(
     private auth: AuthService,
     private messageService: MessageService,
@@ -75,6 +77,8 @@ export class AppComponent implements OnInit {
             this.messageService.getUnreadBugReports(this.currentUser).toPromise().then((result) => {
               console.log('its checking');
               this.bugCount = result;
+              this.navRefresh();
+              this.promiseFinished = true
             });
           });
         });
@@ -84,11 +88,11 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.router.events.subscribe((evt) => {
-       if (!(evt instanceof NavigationEnd)) {
-         return;
-       }
-       window.scrollTo(0, 0);
-     });
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+      window.scrollTo(0, 0);
+    });
   }
 
   navLogOut() {
