@@ -56,13 +56,16 @@ export class AuthService {
     this.userService.getUserIdByEmail(body.email).toPromise().then((user) => {
       if (user.id) {
 
-      localStorage.setItem('uid', user.id)//this sets a current user just for submitting a valid email, this could introduce security issues we should be mindful of addressing.
-      this.current_user = user.id
-      console.log("CU", this.current_user)
-
       userId = user.id
       this.http.post(environment.apiRoot + "auth/login/" + userId , body, options).toPromise()
-      .then(res => {this.extractData(res); callback()} )
+      .then(res => {
+        localStorage.setItem('uid', user.id)//this sets a current user just for submitting a valid email, this could introduce security issues we should be mindful of addressing.
+        this.current_user = user.id
+        console.log("CU", this.current_user)
+
+        this.extractData(res);
+
+        callback()} )
       .catch(err => {this.handleErrorPromise(err); callback();});
     } else {
       callback();
@@ -110,7 +113,7 @@ export class AuthService {
     //   console.log("logged in return val is: ", returnVal)
     //   return returnVal
     // }
-    return (localStorage.getItem('token') != null)
+    return (localStorage.getItem('token') != null && localStorage.getItem('uid') != null)
   }
 
   getLoggedInUser() {

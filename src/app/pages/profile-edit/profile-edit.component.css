@@ -1,8 +1,12 @@
 /*styles for profile edit content only*/
 
+textarea {
+  resize: none;
+}
+
 .edit-panel {
-  margin-top: 10vh;
-  height: 60vh;
+  margin-top: 5vh;
+  height: 70vh;
   padding: 0px;
   background: rgba(253,253,255,1);
   border-right: 1px solid rgba(0,0,0,0.1);
@@ -21,8 +25,8 @@
 .edit-button-add {
   position: absolute;
   width: 150px;
-  bottom: -12.75vh;
-  left: 47.4%;
+  bottom: -50px;
+  left: 50%;
   transform: translateX(-50%);
 }
 
@@ -107,17 +111,19 @@
   padding-bottom: 2vh;
 }
 .job {
-  width: 95%;
+  width: 100%;
   float: left;
-  height: 39vh;
-  margin-top: 3vh;
+  height: calc(63vh - 35px);
+}
+.job-tab-bar {
+  height: 36px;
 }
 .job-interior {
-  height: 47.2vh;
+  height: calc(63vh - 66px);
+  margin-top: 36px;
   width: 100%;
   background: rgba(255, 255, 255, 0.6);
   border: 1px solid rgba(0, 0, 0, 0.4);
-  padding-bottom: 4px;
 }
 .job-side-tab-bar {
   width: 5%;
@@ -204,6 +210,10 @@
   width: calc(47.2vh / 5);
 }
 
+.agency-border {
+  border-top: 1px solid rgba(0,0,0,0.25);
+  margin-top: 10px;
+}
 
 .avatar {
   position: absolute;
@@ -231,16 +241,16 @@
 }
 
 .edit-tab-bar {
-  margin-top: 10vh;
-  height: 60vh;
+  margin-top: 5vh;
+  height: 70vh;
   width: 100%;
   background: rgba(223,223,225,1);
 }
 
 .edit-tab {
   cursor: pointer;
-  height: calc(60vh / 7);
-  line-height: calc(60vh / 7);
+  height: calc(70vh / 7);
+  line-height: calc(70vh / 7);
   border-bottom: 2px solid rgba(173,173,175,1);
   width: 100%;
   float: left;
@@ -253,8 +263,8 @@
 }
 .edit-tab-bottom {
   cursor: pointer;
-  height: calc(60vh / 7);
-  line-height: calc(60vh / 7);
+  height: calc(70vh / 7);
+  line-height: calc(70vh / 7);
   width: 100%;
   float: left;
   position: relative;
@@ -429,6 +439,36 @@ button {
   border-right: 8px solid rgb(175, 175, 175);
 }
 
+.arrow-right-2 {
+  top: 1vh;
+  right: -3px;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 12px solid rgb(75, 75, 75);
+}
+.arrow-right-2:hover {
+  border-left: 12px solid rgb(125, 125, 125);
+}
+.arrow-right-2:active {
+  border-left: 12px solid rgb(175, 175, 175);
+}
+
+
+.arrow-left-2 {
+  top: 1vh;
+  left: -3px;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-right: 12px solid rgb(75, 75, 75);
+}
+.arrow-left-2:hover {
+  border-right: 12px solid rgb(125, 125, 125);
+}
+.arrow-left-2:active {
+  border-right: 12px solid rgb(175, 175, 175);
+}
+
+
 .autocomplete-form {
   position: relative;
 }
@@ -488,6 +528,18 @@ button {
   border: 1px solid rgba(0, 0, 0, 0.4);
 }
 
+.job-type {
+  cursor: pointer;
+  font-weight: bold;
+  background: rgba(223,223,225,1);
+  border: 1px solid rgba(0,0,0,0.25);
+  text-align: center;
+}
+
+.job-type-active {
+  background: rgba(253,253,255,1);
+  border: 1px solid rgba(0,0,0,0.5);
+}
 
 .tiny-button-skills {
   position: absolute;
@@ -723,11 +775,11 @@ button {
 .skill-box {
   background: rgba(0,0,0,0.05);
   border: 1px solid rgba(0,0,0,0.25);
-  height: 46vh;
+  height: 56vh;
 }
 
 .tool-search-box {
-  height: 35.8vh;
+  height: 45.8vh;
   width: 100%;
   border:1px solid #ccc;
   background: rgba(0, 0, 0, 0.03);
@@ -749,7 +801,7 @@ button {
 .tool-list-box {
   position: relative;
   margin-top: 8px;
-  height: 39.5vh;
+  height: 49.5vh;
   width: 100%;
   border:1px solid #ccc;
   background: rgba(0, 0, 0, 0.03);
