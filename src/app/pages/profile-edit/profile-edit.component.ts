@@ -89,7 +89,7 @@ export class ProfileEditComponent implements OnInit {
   years: number[] = [];
   clearances: string[] = ['Confidential', 'Secret', 'Top Secret']
   activeTab: any = {
-    main: 5,
+    main: 0,
     job: 0,
     skills: 0,
   }
