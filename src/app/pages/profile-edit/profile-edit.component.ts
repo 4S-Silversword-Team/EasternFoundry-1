@@ -89,7 +89,7 @@ export class ProfileEditComponent implements OnInit {
   years: number[] = [];
   clearances: string[] = ['Confidential', 'Secret', 'Top Secret']
   activeTab: any = {
-    main: 0,
+    main: 1,
     job: 0,
     skills: 0,
   }
@@ -104,6 +104,8 @@ export class ProfileEditComponent implements OnInit {
     skills: false,
   }
   unfinishedAlertOpen = true
+  submittedTools = []
+  lastSearch: String = ''
 
   customTrackBy(index: number, obj: any): any {
     return  index;
@@ -875,6 +877,7 @@ export class ProfileEditComponent implements OnInit {
       return false
     }
     this.filteredToolsFromProfile = tools1
+    this.lastSearch = this.toolSearch
     this.filteredTools = this.allTools.filter(isGoodTool2)
     // for (let tool of this.filteredTools){
     //   for (let position of tool.positions){
@@ -902,6 +905,7 @@ export class ProfileEditComponent implements OnInit {
     newTool.userName = this.currentUser.firstName + ' ' + this.currentUser.lastName
     newTool.userId = this.currentUser._id
     newTool.toolName = this.toolSearch
+    this.submittedTools.push(this.toolSearch.toLowerCase())
     this.toolSubmissionService.createToolSubmission(newTool).toPromise();
     this.toolSubmitted = true;
 

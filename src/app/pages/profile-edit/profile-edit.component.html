@@ -127,13 +127,13 @@
         <p>Degrees</p>
       </div>
       <div class="scrollbar" style="width: 100%; height: calc(89vh - 181px); background: rgba(255,255,255,0.99); border: 1px solid rgba(0,0,0,0.5); overflow-y: auto;">
-        <div class="" style="position: relative; height: 24vh; width: 100%; float: left; background: rgba(0,0,0,0.05); padding-top: 1vh; padding-bottom: 1vh; margin-bottom: 1vh; border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05)" *ngFor='let degree of this.currentUser.education; let i = index'>
+        <div class="" style="position: relative; height: 224px; width: 100%; float: left; background: rgba(0,0,0,0.05); padding-top: 1vh; padding-bottom: 1vh; margin-bottom: 1vh; border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05)" *ngFor='let degree of this.currentUser.education; let i = index'>
           <div (click)='deleteDegree(i)' style="position: absolute; z-index: 4; right: 4px; top: 1px">
             <div class="">
               <img src="./assets/img/btn-close.png" alt="" class="close-x">
             </div>
           </div>
-          <div class="" style="position: absolute; float: left; top: 1vh; left: 0px; width: 50%; height: 22vh; padding: 1vh 2vw 1vh 2vw; border-right: 2px solid rgba(0,0,0,0.5)">
+          <div class="" style="position: absolute; float: left; top: 1vh; left: 0px; width: 50%; height: calc(222px - 2vh); padding: 1vh 2vw 1vh 2vw; border-right: 2px solid rgba(0,0,0,0.5)">
             <div class="left" style="width: 120px; line-height: 42px; float: left; padding-top: 4px;">
               <p class="">Type</p>
               <p class="">Concentration</p>
@@ -146,12 +146,12 @@
               </select>
               <input class="" style="width: 100%;" type="text" [(ngModel)] = 'degree.MajorProgramName' [ngClass]="{'empty-field': !(degree.MajorProgramName.length >= 1)}">
               <input class="" style="width: 100%;" type="text" [(ngModel)] = 'degree.School' [ngClass]="{'empty-field': !degree.School}">
-              <input class="" style="width: 100%;" type="text" [(ngModel)] = 'degree.AttendanceEndDate' [ngClass]="{'empty-field': !degree.AttendanceEndDate}">
+              <input class="" style="width: 100%;" type="date" [(ngModel)] = 'degree.AttendanceEndDate' [ngClass]="{'empty-field': !degree.AttendanceEndDate}">
             </div>
           </div>
-          <div class="" style="position: absolute; float: left; top: 3vh; right: 0px; width: 50%; height: 18vh; padding: 1vh 2vw 1vh 2vw;">
+          <div class="" style="position: absolute; float: left; top: 19px; right: 0px; width: 50%; height: calc(222px - 2vh); padding: 1vh 2vw 1vh 2vw;">
             <p>Description:</p>
-            <textarea name="" id="" rows="6" placeholder="" style="width: 100%" [(ngModel)] = 'degree.Comment'></textarea>
+            <textarea name="" id="" placeholder="" style="width: 100%; height: 140px" [(ngModel)] = 'degree.Comment'></textarea>
           </div>
         </div>
       </div>
@@ -531,23 +531,23 @@
     </div>
 
     <div class="skills" *ngIf='activeTab.main == 6'>
-      <div class="" *ngIf='activeTab.skills == 0'>
-        <p style="text-align: center">Use the left panel to search the skills database, and click one to add it to your list!</p>
-        <p style="text-align: center">Your skills are how we rate your capabilities, so the more you add, the more complete our image of you will be.</p>
-        <div class="col-xs-6 text-center skill-box" style="padding-top: 15px">
+      <div class="" style="height: calc(93vh - 142px);" *ngIf='activeTab.skills == 0'>
+        <p style="text-align: center; line-height: 16px;">Use the left panel to search the skills database, and click one to add it to your list!</p>
+        <p style="text-align: center; line-height: 16px;">Your skills are how we rate your capabilities, so the more you add, the more complete our image of you will be.</p>
+        <div class="col-xs-6 text-center skill-box" style="padding-top: 15px; border-right: none">
           <p>Skill Search</p>
           <input type="text" style="width: calc(100% - 65px)" [(ngModel)] = 'this.toolSearch' (keydown.enter)="updateToolList($event)">
           <button type="button" name="button" style="width: 60px;" (click)='updateToolList($event)'>Search</button>
-          <div class="tool-search-box">
+          <div class="tool-search-box scrollbar">
             <div class="" *ngIf='this.allTools.length < 1'>
               <p>We're still retrieving the tools. Wait a moment...</p>
             </div>
             <div class="" *ngIf='this.allTools.length > 0'>
-              <div class="no-tool-found" *ngIf='this.toolSearchLast.length >= 1 && this.filteredTools.length == 0 && this.filteredToolsFromProfile.length == 0 && !this.toolSubmitted' >
+              <div class="no-tool-found" *ngIf='this.toolSearchLast.length >= 1 && this.filteredTools.length == 0 && this.filteredToolsFromProfile.length == 0 && !this.submittedTools.includes(this.lastSearch.toLowerCase())' >
                 <p>No matches found. Submit {{this.toolSearchLast}} as a new tool?</p>
                 <button class="btn btn-primary btn-block" type="button" name="button" (click)='submitNewTool(this.toolSearch)'>Submit</button>
               </div>
-              <div class="no-tool-found" *ngIf='this.toolSearchLast.length >= 1 && this.filteredTools.length == 0 && this.toolSubmitted' >
+              <div class="no-tool-found" *ngIf='this.toolSearchLast.length >= 1 && this.filteredTools.length == 0 && this.submittedTools.includes(this.lastSearch.toLowerCase())' >
                 <p>{{this.toolSearchLast}} has been submitted. If it's approved we'll add it to the list!</p>
               </div>
               <div class="" *ngIf='this.toolSearchLast.length >= 1'>
@@ -564,13 +564,13 @@
                   </div>
                 </div>
               </div>
-              <div class="" *ngIf='this.toolSearchLast.length >= 1 && !this.toolSubmitted' >
+              <div class="" *ngIf='this.toolSearchLast.length >= 1 && !this.submittedTools.includes(this.lastSearch.toLowerCase())' >
                 <div class="no-tool-found" *ngIf='this.filteredTools.length > 0 || this.filteredToolsFromProfile.length > 0'>
                   <p>Can't find what you're looking for? Submit {{this.toolSearchLast}} as a new tool.</p>
                   <button class="btn btn-primary btn-block" type="button" name="button" (click)='submitNewTool(this.toolSearchLast)'>Submit</button>
                 </div>
               </div>
-              <div class="" *ngIf='this.toolSearchLast.length >= 1 && this.toolSubmitted' >
+              <div class="" *ngIf='this.toolSearchLast.length >= 1 && this.submittedTools.includes(this.lastSearch.toLowerCase())' >
                 <div class="no-tool-found" *ngIf='this.filteredTools.length > 0 || this.filteredToolsFromProfile.length > 0'>
                   <p>{{this.toolSearchLast}} has been submitted. If it's approved we'll add it to the list!</p>
                 </div>
@@ -578,7 +578,7 @@
             </div>
           </div>
         </div>
-        <div class="col-xs-6 text-center skill-box" style="padding-top: 15px">
+        <div class="col-xs-6 text-center skill-box" style="padding-top: 15px; border-left: none">
           <p>Your Skills</p>
           <div class="tool-list-box">
             <div class="">

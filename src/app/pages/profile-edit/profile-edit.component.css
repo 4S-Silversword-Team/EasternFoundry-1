@@ -723,10 +723,6 @@ button {
   border: 1px solid rgba(0,0,0,0.75);
 }
 
-
-
-/**/
-
 #user-job {
   padding-top: 15px;
 }
@@ -882,12 +878,12 @@ button {
 
 .skill-box {
   background: rgba(0,0,0,0.05);
-  border: 1px solid rgba(0,0,0,0.25);
-  height: 56vh;
+  border: 1px solid rgba(0,0,0,0.5);
+  height: calc(93vh - 174px);
 }
 
 .tool-search-box {
-  height: 45.8vh;
+  height: calc(93vh - 268px);
   width: 100%;
   border:1px solid #ccc;
   background: rgba(0, 0, 0, 0.03);
@@ -910,7 +906,7 @@ button {
   position: relative;
   margin-top: 8px;
   height: 49.5vh;
-  width: 100%;
+  height: calc(93vh - 234px);
   border:1px solid #ccc;
   background: rgba(0, 0, 0, 0.03);
   overflow:auto;

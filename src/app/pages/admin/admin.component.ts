@@ -16,6 +16,7 @@ import { ServiceService } from '../../services/service.service';
 import { PastperformanceService } from '../../services/pastperformance.service';
 import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
 import { CompanyPastperformanceProxyService } from '../../services/companypastperformanceproxy.service'
+import { UserPastPerformanceProxyService } from '../../services/userpastperformanceproxy.service'
 
 
 
@@ -37,6 +38,9 @@ export class AdminComponent implements OnInit {
   allUsers: any[] = [];
   allCompanies: any[] = [];
   allCompanyUserProxies: any[] = [];
+  allPPs: any[] = [];
+  allPPUserProxies: any[] = [];
+  allPPCompanyProxies: any[] = [];
   userToDelete: any = {
     on: false
   }
@@ -60,7 +64,7 @@ export class AdminComponent implements OnInit {
     private ppService: PastperformanceService,
     private companyUserProxyService: CompanyUserProxyService,
     private companyPastPerformanceProxyService: CompanyPastperformanceProxyService,
-
+    private userPastPerformanceProxyService: UserPastPerformanceProxyService,
     private auth: AuthService,
     private http: Http,
   ) {
@@ -69,13 +73,22 @@ export class AdminComponent implements OnInit {
       this.allUsers = res
       this.companyService.getCompanies().then(res => {
         this.allCompanies = res
-        this.companyUserProxyService.getCompanyUserProxies().then(res => {
-          this.allCompanyUserProxies = res
-          if (!auth.isLoggedIn()) {
-            this.router.navigateByUrl("/login")
-          } else {
-            this.getAdminStatus()
-          }
+        this.ppService.getPastPerformances().then(res => {
+          this.allPPs = res
+          this.companyUserProxyService.getCompanyUserProxies().then(res => {
+            this.allCompanyUserProxies = res
+            this.userPastPerformanceProxyService.getUserPPProxies().then(res => {
+              this.allPPUserProxies = res
+              this.companyPastPerformanceProxyService.getCompanyPPProxies().then(res => {
+                this.allPPCompanyProxies = res
+                if (!auth.isLoggedIn()) {
+                  this.router.navigateByUrl("/login")
+                } else {
+                  this.getAdminStatus()
+                }
+              })
+            })
+          })
         })
       })
     })
