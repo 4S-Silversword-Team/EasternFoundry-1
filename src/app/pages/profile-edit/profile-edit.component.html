@@ -2,8 +2,8 @@
   <div class="loader"></div>
   <!-- <p class="loading">Loading</p> -->
 </div>
-<div class="not-finished-alert" *ngIf='!this.currentUser.finished && this.promiseFinished'>Your profile has not yet been completed, complete the edit process to unlock your profile's full features.</div>
-<div class="container" *ngIf='this.promiseFinished'>
+<!-- <div class="not-finished-alert" *ngIf='!this.currentUser.finished && this.promiseFinished'>Your profile has not yet been completed, complete the edit process to unlock your profile's full features.</div> -->
+<div class="container" *ngIf='this.promiseFinished' style="padding-top: 0px">
   <div class="col-xs-2" style="margin: 0px; padding: 0px;">
     <div class="edit-tab-bar">
       <div class="edit-tab" [ngClass]="{'edit-tab-incomplete': !this.checkFields(0) || (!this.currentUser.finished && !finished.basic)}">
@@ -87,7 +87,7 @@
           </div>
           <div class="" style="width: calc(100% - 60px); float: left;">
             <input class="" style="width: 100%;" type="email" [(ngModel)] = 'this.currentUser.username' [ngClass]="{'empty-field': !this.currentUser.username}" disabled>
-            <input class="" style="width: 100%;" type="tel" maxlength="14" [(ngModel)] = 'this.currentUser.cell' (ngModelChange)="onPhoneChange(this.currentUser.cell)" (keydown.backspace)='onPhoneChange(this.currentUser.cell, true)' [ngClass]="{'empty-field': !this.currentUser.cell || this.currentUser.cell.length < 14}">
+            <input class="" style="width: 100%;" type="tel" maxlength="14" [(ngModel)] = 'this.currentUser.phone[0].Number' (ngModelChange)="onPhoneChange(this.currentUser.phone[0].Number)" (keydown.backspace)='onPhoneChange(this.currentUser.phone[0].Number, true)' [ngClass]="{'empty-field': !this.currentUser.phone[0].Number || this.currentUser.phone[0].Number.length < 14}">
             <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentUser.address.city' [ngClass]="{'empty-field': this.currentUser.address.city.length < 1}">
             <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentUser.address.state' [ngClass]="{'empty-field': !this.currentUser.address.state}">
             <input class="" style="width: 100%;" type="number" max="99999" maxlength="5" [(ngModel)] = 'this.currentUser.address.zip' [ngClass]="{'empty-field': !this.currentUser.address.zip}">
@@ -145,7 +145,8 @@
         <p>Certifications</p>
       </div>
       <div class="scrollbar" style="width: 100%; height: calc(59vh - 70px); background: rgba(255,255,255,0.99); border: 1px solid rgba(0,0,0,0.5); overflow-y: auto;">
-        <div class="" style="position: relative; height: 100px; width: 100%; float: left; background: rgba(0,0,0,0.05); padding-top: 4px; padding-left: 8px; margin-bottom: 1vh; border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05)" *ngFor='let certificate of this.currentUser.certification; let i = index'>
+        <h3 *ngIf="this.currentUser.certification.length < 1" style="text-align: center">Do you have any certifications? If so, click the <strong>Add Cert</strong> button below to add one. If not, click <strong>Next</strong> to continue.</h3>
+        <div class="certification-item" *ngFor='let certificate of this.currentUser.certification; let i = index'>
           <div class="left" style="width: 120px; line-height: 42px; float: left; padding-top: 4px;">
             <p class="">Name</p>
             <p class="">Date Earned</p>
@@ -183,12 +184,13 @@
         <p>Awards</p>
       </div>
       <div class="scrollbar" style="width: 100%; height: calc(59vh - 70px); background: rgba(255,255,255,0.99); border: 1px solid rgba(0,0,0,0.5); overflow-y: auto;">
-        <div class="" style="position: relative; height: 60px; width: 100%; float: left; background: rgba(0,0,0,0.05); padding-top: 4px; padding-left: 8px; margin-bottom: 1vh; border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05)" *ngFor='let award of this.currentUser.award; let i = index; trackBy:customTrackBy'>
+        <h3 *ngIf="this.currentUser.award.length < 1" style="text-align: center">Do you have any awards? If so, click the <strong>Add Award</strong> button below to add one. If not, click <strong>Next</strong> to continue.</h3>
+        <div class="award-item" *ngFor='let award of this.currentUser.award; let i = index; trackBy:customTrackBy'>
           <div class="left" style="width: 60px; line-height: 42px; float: left; padding-top: 4px;">
             <p class="">Award</p>
           </div>
           <div class="" style="width: calc(100% - 100px); float: left;">
-            <input class="" style="width: 100%" [(ngModel)] = 'this.currentUser.award[i]'[ngClass]="{'empty-field': !this.currentUser.award[i]}">
+            <input class="" style="width: 100%" [(ngModel)] = 'this.currentUser.award[i]' [ngClass]="{'empty-field': !this.currentUser.award[i]}">
           </div>
           <div (click)='deleteAward(i)' style="position: absolute; z-index: 4; right: 4px; top: 1px">
             <div class="">
@@ -204,7 +206,9 @@
         <p>Clearances</p>
       </div>
       <div class="scrollbar" style="width: 100%; height: calc(59vh - 70px); background: rgba(255,255,255,0.99); border: 1px solid rgba(0,0,0,0.5); overflow-y: auto;">
-        <div class="" style="position: relative; height: 144px; width: 100%; float: left; background: rgba(0,0,0,0.05); padding-top: 4px; padding-left: 8px; margin-bottom: 1vh; border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05)" *ngFor='let clearance of this.currentUser.clearance; let i = index'>
+        <h3 *ngIf="this.currentUser.clearance.length < 1" style="text-align: center">Do you have any clearances? If so, click the <strong>Add Clearance</strong> button below to add one. If not, click <strong>Next</strong> to continue.</h3>
+
+        <div class="clearance-item" *ngFor='let clearance of this.currentUser.clearance; let i = index'>
           <div class="left" style="width: 120px; line-height: 42px; float: left; padding-top: 4px;">
             <p class="">Clearance Type</p>
             <p class="">Awarded</p>
@@ -271,11 +275,11 @@
       </div> -->
       <div *ngFor="let job of this.currentUser.positionHistory; let i = index" class="">
         <div class="job" *ngIf='i == activeTab.job' style="position: relative;">
-          <!-- <div (click)='deleteJob(i)' style="position: absolute; z-index: 4; right: 4px; top: 1px">
+          <div (click)='deleteJob(i)' style="position: absolute; z-index: 4; right: 4px; top: 1px">
             <div class="">
               <img src="./assets/img/btn-close.png" alt="" class="close-x">
             </div>
-          </div> -->
+          </div>
           <div class="col-xs-12 job-tab-bar">
             <div class="arrow-left arrow-left-2" *ngIf="this.currentUser.positionHistory[activeTab.job-1]" (click)='activeTab.job = activeTab.job-1'></div>
             <div class="col-xs-4 job-tab" *ngIf="this.currentUser.positionHistory[activeTab.job-1]" (click) = 'activeTab.job = activeTab.job-1'>

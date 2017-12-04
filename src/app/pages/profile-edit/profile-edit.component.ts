@@ -212,8 +212,8 @@ export class ProfileEditComponent implements OnInit {
         if (!this.currentUser.award[0]) {
           this.currentUser.award.splice(0,1)
         }
-        if (this.currentUser.cell) {
-          this.onPhoneChange(this.currentUser.cell, false)
+        if (this.currentUser.phone[0].Number) {
+          this.onPhoneChange(this.currentUser.phone[0].Number, false)
         }
 
         var currentDate = month + ', ' + year.toString().slice(2,4)
@@ -656,8 +656,8 @@ export class ProfileEditComponent implements OnInit {
     if (!this.currentUser.firstName ||
        !this.currentUser.lastName ||
        !this.currentUser.username ||
-       !this.currentUser.cell ||
-       this.currentUser.cell.length < 14 ||
+       !this.currentUser.phone[0].Number ||
+       this.currentUser.phone[0].Number.length < 14 ||
        !this.currentUser.address.city ||
        !this.currentUser.address.state ||
         !this.currentUser.address.zip){
@@ -1206,7 +1206,7 @@ export class ProfileEditComponent implements OnInit {
       newVal = newVal.replace(/^(\d{0,3})(\d{0,3})(.*)/, '($1)-$2-$3');
     }
     // set the new value
-    this.currentUser.cell = newVal;
+    this.currentUser.phone[0].Number = newVal;
 
   }
 

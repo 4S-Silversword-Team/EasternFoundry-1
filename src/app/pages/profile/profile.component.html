@@ -58,7 +58,7 @@
           <div id="user-contact" class="col-xs-5 scrollbar" style="overflow-y: auto; height: 100%; padding-top: .1v; padding-bottom: .1v; border-right: 2px solid rgba(0,0,0,0.25);">
             <div class="" style="width: 100%;">
               <p class="basic-info-text-2">{{ this.currentUser.address.city }}, {{ this.currentUser.address.state }}</p>
-              <p class=" basic-info-text-2">{{ this.currentUser.cell }}</p>
+              <p class=" basic-info-text-2">{{ this.currentUser.phone[0].Number }}</p>
               <p class="basic-info-text-2">{{ this.currentUser.username }}</p>
             </div>
             <div style="width: 100%; margin-top: 20px;">
@@ -80,7 +80,7 @@
               <p class="basic-info-text-2 left">{{ p.PositionTitle }}</p>
               <p class="basic-info-text-2 left" style="margin-bottom: 20px;">{{ p.Description.slice(0,50) }}...</p>
             </div>
-            <!-- <div class="col-xs-12 basic-info-text" style="margin-top: 2px"><p class=" basic-info-text-2">{{ this.currentUser.cell }}</p></div>
+            <!-- <div class="col-xs-12 basic-info-text" style="margin-top: 2px"><p class=" basic-info-text-2">{{ this.currentUser.phone[0].Number }}</p></div>
             <div class="col-xs-12 basic-info-text-2" style="margin-top: -10px">
             <rating [(ngModel)]="this.currentUser.informationAccuracy" [max]="5" style="margin-left: 25%"></rating>
             <p class="noWrapScroll" style="margin-top: -25px; font-size: 12px; text-align: center">Updated {{ this.currentUser.lastUpdated}}</p>

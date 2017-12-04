@@ -5,8 +5,8 @@ textarea {
 }
 
 .edit-panel {
-  margin-top: 5vh;
-  height: 70vh;
+  height: calc(100vh - 115px);
+  margin: 0px;
   padding: 0px;
   background: rgba(253,253,255,1);
   border-right: 1px solid rgba(0,0,0,0.1);
@@ -68,7 +68,7 @@ textarea {
   border: 1px solid rgba(0,0,0,0.5);
   position: absolute;
   width: 150px;
-  bottom: -5vh;
+  bottom: -41px;
   right: 1.6vw;
   left: 50%;
   transform: translateX(-50%);
@@ -76,7 +76,7 @@ textarea {
 .edit-button-nope-2 {
   position: absolute;
   width: 150px;
-  bottom: -5vh;
+  bottom: -41px;
   right: 1.6vw;
   left: 50%;
   transform: translateX(-50%);
@@ -241,16 +241,16 @@ textarea {
 }
 
 .edit-tab-bar {
-  margin-top: 5vh;
-  height: 70vh;
+  height: calc(100vh - 115px);
+  margin: 0px;
   width: 100%;
   background: rgba(223,223,225,1);
 }
 
 .edit-tab {
   cursor: pointer;
-  height: calc(70vh / 7);
-  line-height: calc(70vh / 7);
+  height: calc(calc(100vh - 115px) / 7);
+  line-height: calc(calc(100vh - 115px) / 7);
   border-bottom: 2px solid rgba(173,173,175,1);
   width: 100%;
   float: left;
@@ -263,8 +263,8 @@ textarea {
 }
 .edit-tab-bottom {
   cursor: pointer;
-  height: calc(70vh / 7);
-  line-height: calc(70vh / 7);
+  height: calc(calc(100vh - 115px) / 7);
+  line-height: calc(calc(100vh - 115px) / 7);
   width: 100%;
   float: left;
   position: relative;
@@ -617,6 +617,45 @@ button {
 
 .button-row button {
   margin-top: 5px;
+}
+
+.certification-item {
+  position: relative;
+  height: 100px;
+  width: 100%;
+  float: left;
+  background: rgba(0,0,0,0.05);
+  padding-top: 4px;
+  padding-left: 8px;
+  margin-bottom: 1vh;
+  border-top: 1px solid rgba(0,0,0,0.05);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.award-item {
+  position: relative;
+  height: 60px;
+  width: 100%;
+  float: left;
+  background: rgba(0,0,0,0.05);
+  padding-top: 4px;
+  padding-left: 8px;
+  margin-bottom: 1vh;
+  border-top: 1px solid rgba(0,0,0,0.05);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.clearance-item {
+  position: relative;
+  height: 144px;
+  width: 100%;
+  float: left;
+  background: rgba(0,0,0,0.05);
+  padding-top: 4px;
+  padding-left: 8px;
+  margin-bottom: 1vh;
+  border-top: 1px solid rgba(0,0,0,0.05);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
 #user-job {

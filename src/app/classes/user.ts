@@ -14,14 +14,14 @@ export class User {
   gender: string
   workEligibility: [
     {
-      countryCode: string,
-      permanent: boolean
+      CountryCode: string,
+      Permanent: boolean
     }
     ]
   email: [
     {
-      address: string,
-      label: string
+      Address: string,
+      Label: string
     }
   ]
   address: {
@@ -31,8 +31,8 @@ export class User {
   }
   phone: [
     {
-      number: string,
-      label: string
+      Number: string,
+      Label: string
     }
   ]
   education: [
