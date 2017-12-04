@@ -103,6 +103,7 @@ export class ProfileEditComponent implements OnInit {
     career: false,
     skills: false,
   }
+  unfinishedAlertOpen = true
 
   customTrackBy(index: number, obj: any): any {
     return  index;
