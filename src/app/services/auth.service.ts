@@ -119,7 +119,7 @@ export class AuthService {
     var time = new Date()
     // console.log(time.getTime() / 1000)
     // console.log((time.getTime() / 1000) + 60*60*168 )
-    if ((time.getTime() / 1000) >= parseInt(localStorage.getItem('expTime')) || !localStorage.getTime('expTime')) {
+    if ((time.getTime() / 1000) >= parseInt(localStorage.getItem('expTime')) || !localStorage.getItem('expTime')) {
       this.doLogout()
     }
     return (localStorage.getItem('token') != null && localStorage.getItem('uid') != null)
