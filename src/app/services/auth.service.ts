@@ -59,6 +59,9 @@ export class AuthService {
       userId = user.id
       this.http.post(environment.apiRoot + "auth/login/" + userId , body, options).toPromise()
       .then(res => {
+        var time = new Date()
+        var expTime = '' + ((time.getTime() / 1000) + 60*60*168 )
+        localStorage.setItem('expTime', expTime)
         localStorage.setItem('uid', user.id)//this sets a current user just for submitting a valid email, this could introduce security issues we should be mindful of addressing.
         this.current_user = user.id
         console.log("CU", this.current_user)
@@ -113,6 +116,12 @@ export class AuthService {
     //   console.log("logged in return val is: ", returnVal)
     //   return returnVal
     // }
+    var time = new Date()
+    // console.log(time.getTime() / 1000)
+    // console.log((time.getTime() / 1000) + 60*60*168 )
+    if ((time.getTime() / 1000) >= parseInt(localStorage.getItem('expTime')) || !localStorage.getTime('expTime')) {
+      this.doLogout()
+    }
     return (localStorage.getItem('token') != null && localStorage.getItem('uid') != null)
   }
 
