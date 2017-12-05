@@ -110,6 +110,17 @@ textarea {
   padding-right: 1.6vw;
   padding-bottom: 2vh;
 }
+
+.edit-box-1 {
+  width: 100%;
+  height: calc(89vh - 181px);
+  background: rgba(255,255,255,0.99);
+  border-top: 1px solid rgba(0,0,0,0.5);
+  border-bottom: 1px solid rgba(0,0,0,0.5);
+  overflow-y: auto;
+}
+
+
 .job {
   width: 100%;
   float: left;
@@ -117,6 +128,8 @@ textarea {
 }
 .job-tab-bar {
   height: 36px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  margin-bottom: 4px;
 }
 .job-tab-text {
   width: 100%;
@@ -124,12 +137,70 @@ textarea {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.job-tab {
+  background: rgba(155, 155, 155, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-bottom: none;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: rgba(50, 50, 50, 0.5);
+  margin-top: 9px;
+  margin-bottom: -9px;
+  padding-bottom: 2px;
+  padding-top: 1px;
+  cursor: pointer;
+}
+
+.job-tab:hover {
+  background: rgba(200, 200, 200, 0.6);
+  color: rgba(50, 50, 50, 0.75);
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-bottom: none;
+}
+.job-tab-active {
+  background: rgba(253, 253, 255, 0.6);
+  color: rgba(50, 50, 50, 1);
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid rgba(253,253,255,1)!important;
+  margin-top: 0px;
+  padding-bottom: 6px;
+  padding-top: 6px;
+}
+.job-tab-active:hover {
+  background: rgba(255, 255, 255, 0.6);
+  color: rgba(50, 50, 50, 1);
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-bottom: none;
+}
+
+.job-tab-active:hover {
+  background: rgba(255, 255, 255, 0.6);
+  color: rgba(50, 50, 50, 1);
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-bottom: none;
+}
+
+.job-type {
+  cursor: pointer;
+  font-weight: bold;
+  background: rgba(223,223,225,1);
+  border: 1px solid rgba(0,0,0,0.25);
+  text-align: center;
+}
+
+.job-type-active {
+  background: rgba(253,253,255,1);
+  border: 1px solid rgba(0,0,0,0.5);
+}
+
 .job-interior {
-  height: calc(93vh - 178px);
-  margin-top: 36px;
+  height: calc(93vh - 182px);
+  margin-top: 40px;
   width: 100%;
   background: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-top: 1px solid rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
 }
 .job-side-tab-bar {
   width: 5%;
@@ -358,6 +429,14 @@ textarea {
   left: 2px;
   cursor: pointer;
 }
+.close-x-little {
+  width: 15px;
+  height: 15px;
+  opacity: .75;
+  top: 1px;
+  left: 2px;
+  cursor: pointer;
+}
 .close-x-sideways {
   width: 14px;
   height: 14px;
@@ -493,58 +572,6 @@ button {
 .text-container {
   background: rgba(0,0,0,0.05);
   padding-top: 38px;
-}
-
-.job-tab {
-  background: rgba(155, 155, 155, 0.6);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  text-align: center;
-  font-size: 16px;
-  font-weight: bold;
-  color: rgba(50, 50, 50, 0.5);
-  margin-top: 9px;
-  margin-bottom: -9px;
-  padding-bottom: 2px;
-  padding-top: 1px;
-  cursor: pointer;
-}
-
-.job-tab:hover {
-  background: rgba(200, 200, 200, 0.6);
-  color: rgba(50, 50, 50, 0.75);
-  border: 1px solid rgba(0, 0, 0, 0.4);
-}
-.job-tab-active {
-  background: rgba(255, 255, 255, 0.6);
-  color: rgba(50, 50, 50, 1);
-  border: 1px solid rgba(0, 0, 0, 0.4);
-  margin-top: 0px;
-  padding-bottom: 6px;
-  padding-top: 6px;
-}
-.job-tab-active:hover {
-  background: rgba(255, 255, 255, 0.6);
-  color: rgba(50, 50, 50, 1);
-  border: 1px solid rgba(0, 0, 0, 0.4);
-}
-
-.job-tab-active:hover {
-  background: rgba(255, 255, 255, 0.6);
-  color: rgba(50, 50, 50, 1);
-  border: 1px solid rgba(0, 0, 0, 0.4);
-}
-
-.job-type {
-  cursor: pointer;
-  font-weight: bold;
-  background: rgba(223,223,225,1);
-  border: 1px solid rgba(0,0,0,0.25);
-  text-align: center;
-}
-
-.job-type-active {
-  background: rgba(253,253,255,1);
-  border: 1px solid rgba(0,0,0,0.5);
 }
 
 .tiny-button-skills {

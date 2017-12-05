@@ -89,7 +89,7 @@ export class ProfileEditComponent implements OnInit {
   years: number[] = [];
   clearances: string[] = ['Confidential', 'Secret', 'Top Secret']
   activeTab: any = {
-    main: 1,
+    main: 0,
     job: 0,
     skills: 0,
   }
@@ -986,20 +986,20 @@ export class ProfileEditComponent implements OnInit {
   //   this.jobDeleteTab = true
   // }
   handleClick(event){
-    var clickedComponent = event.target;
-    var deleteJob = false;
-    do {
-      if (clickedComponent === (document.getElementById('delete-x'))) {
-        deleteJob = true;
-      }
-      clickedComponent = clickedComponent.parentNode;
-    } while (clickedComponent);
-    if(deleteJob){
-      this.jobDeleteTab = true
-    } else {
-      this.jobDeleteTab = false
-    }
-    // console.log(this.jobDeleteTab)
+  //   var clickedComponent = event.target;
+  //   var deleteJob = false;
+  //   do {
+  //     if (clickedComponent === (document.getElementById('delete-x'))) {
+  //       deleteJob = true;
+  //     }
+  //     clickedComponent = clickedComponent.parentNode;
+  //   } while (clickedComponent);
+  //   if(deleteJob){
+  //     this.jobDeleteTab = true
+  //   } else {
+  //     this.jobDeleteTab = false
+  //   }
+  //   // console.log(this.jobDeleteTab)
   }
 
   deleteJob(i) {
@@ -1008,6 +1008,11 @@ export class ProfileEditComponent implements OnInit {
       this.activeTab.job = this.activeTab.job-1
     }
     this.jobDeleteTab = false
+  }
+
+  deleteJobTab(){
+    this.jobDeleteTab = true
+    console.log(this.jobDeleteTab)
   }
 
 
