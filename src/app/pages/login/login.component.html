@@ -32,9 +32,9 @@
         <div class="col-md-4 col-sm-5 col-xs-6 tab" (click)='switchTab(0)' [ngClass]="{'tab-active': activeTab == 0}">
           Welcome
         </div>
-        <!-- <div class="col-md-4 col-sm-5 col-xs-6 tab" (click)='switchTab(1)' [ngClass]="{'tab-active': activeTab == 1}">
+        <div class="col-md-4 col-sm-5 col-xs-6 tab" (click)='switchTab(1)' [ngClass]="{'tab-active': activeTab == 1}">
           Known Issues
-        </div> -->
+        </div>
       </div>
       <div class="sidebar col-xs-12">
         <div class="" *ngIf='activeTab == 0'>
@@ -47,6 +47,10 @@
         </div>
         <div class="" *ngIf='activeTab == 1'>
           <h4>Known Issues</h4>
+          <ul>
+            <li>There's an authorization bug that can prevent users from saving changes to their profile or accessing their mailbox. If you encounter this, try logging out and back in.</li>
+            <li>Some pages may not scale properly for smaller or more zoomed in browser windows. If page elements are overlapping, try zooming out until everything is visible.</li>
+          </ul>
         </div>
       </div>
     </div>

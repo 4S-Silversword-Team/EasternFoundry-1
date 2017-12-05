@@ -828,14 +828,6 @@ button {
   font-size: 28px;
 }
 
-.div-title div {
-  width: calc(100% - 350px);
-  height: 3px;
-  margin-bottom: 8px;
-  background-color: #827e7c;
-  display: inline-block;
-}
-
 .capa-main {
   display: inline-block;
 }
@@ -904,9 +896,12 @@ button {
 }
 
 .skill-box {
-  background: rgba(0,0,0,0.05);
+  padding-top: 15px;
+  border-top: 1px solid rgba(0,0,0,0.4);
+  margin-top: 4px;
+  /*background: rgba(0,0,0,0.05);
   border: 1px solid rgba(0,0,0,0.5);
-  height: calc(93vh - 174px);
+  height: calc(93vh - 174px);*/
 }
 
 .tool-search-box {

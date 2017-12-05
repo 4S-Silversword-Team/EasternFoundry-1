@@ -106,6 +106,15 @@ export class ProfileEditComponent implements OnInit {
   unfinishedAlertOpen = true
   submittedTools = []
   lastSearch: String = ''
+  tutorialOn: any = {
+    basic: false,
+    education: false,
+    cert: false,
+    awards: false,
+    clear: false,
+    career: false,
+    skills: false,
+  }
 
   customTrackBy(index: number, obj: any): any {
     return  index;
