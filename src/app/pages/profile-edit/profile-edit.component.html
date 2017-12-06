@@ -77,24 +77,28 @@
           </div>
         </div>
       </div>
-      <div class="" style="position: absolute; height: calc(242px + 5vh); width: calc(100% - 180px); top: 2vh; right: 0px; float: left; background: none;">
-        <div class="" style="position: absolute; float: left; top: 0px; left: 0px; width: 50%; height: calc(202px + 5vh); padding: 2vh 2vw 2vh 2vw; border-right: 2px solid rgba(0,0,0,0.5)">
+      <div class="" style="position: absolute; height: calc(285px + 5vh); width: calc(100% - 180px); top: 2vh; right: 0px; float: left;">
+        <div class="" style="position: absolute; float: left; top: 0px; left: 0px; width: 100%; height: calc(327px + 5vh); padding: 2vh 2vw 2vh 2vw">
           <div class="left" style="width: 85px; line-height: 42px; float: left; padding-top: 4px;">
             <p class="">First Name</p>
             <p class="">Last Name</p>
-            <p class="">Title</p>
-            <p class="">Employer</p>
+            <p class="">Phone #</p>
+            <p class="">City</p>
+            <p class="">State</p>
+            <p class="">Zip</p>
           </div>
           <div class="" style="width: calc(100% - 85px); float: left;">
             <input class="" style="width: 100%;" type="text" placeholder="Your first name" [(ngModel)] = 'this.currentUser.firstName' [ngClass]="{'empty-field': !this.currentUser.firstName}">
             <input class="" style="width: 100%;" type="text" placeholder="Your last name" [(ngModel)] = 'this.currentUser.lastName' [ngClass]="{'empty-field': !this.currentUser.lastName}">
-            <input class="" style="width: 100%;" type="text" placeholder="Your current job title" [(ngModel)] = 'this.currentUser.positionHistory[0].PositionTitle' [ngClass]="{'empty-field': !this.currentUser.positionHistory[0].PositionTitle}">
-            <input class="" style="width: 100%;" type="text" placeholder="Your current employer" [(ngModel)] = 'this.currentUser.positionHistory[0].Employer' [ngClass]="{'empty-field': !this.currentUser.positionHistory[0].Employer}">
+            <input class="" style="width: 100%;" type="tel" maxlength="14" [(ngModel)] = 'this.currentUser.phone[0].Number' (ngModelChange)="onPhoneChange(this.currentUser.phone[0].Number)" (keydown.backspace)='onPhoneChange(this.currentUser.phone[0].Number, true)' [ngClass]="{'empty-field': !this.currentUser.phone[0].Number || this.currentUser.phone[0].Number.length < 14}">
+            <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentUser.address.city' [ngClass]="{'empty-field': this.currentUser.address.city.length < 1}">
+            <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentUser.address.state' [ngClass]="{'empty-field': !this.currentUser.address.state}">
+            <input class="" style="width: 100%;" type="number" max="99999" maxlength="5" [(ngModel)] = 'this.currentUser.address.zip' [ngClass]="{'empty-field': !this.currentUser.address.zip}">
           </div>
           <p class="left" style="width: calc(100% - 50px); line-height: 30px; float: left; padding-top: 6px;">Make your account publically viewable?</p>
           <input type="checkbox" style="width: 50px; float: left" class="" [(ngModel)] = 'this.currentUser.public'>
         </div>
-        <div class="" style="position: absolute; float: left; top: 0px; right: 0px; width: 50%; height: calc(202px + 5vh); padding: 2vh 2vw 2vh 2vw;">
+        <!-- <div class="" style="position: absolute; float: left; top: 0px; right: 0px; width: 50%; height: calc(202px + 5vh); padding: 2vh 2vw 2vh 2vw;">
           <div class="left" style="width: 60px; line-height: 42px; float: left; padding-top: 4px;">
             <p class="">Email</p>
             <p class="">Phone #</p>
@@ -109,17 +113,17 @@
             <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentUser.address.state' [ngClass]="{'empty-field': !this.currentUser.address.state}">
             <input class="" style="width: 100%;" type="number" max="99999" maxlength="5" [(ngModel)] = 'this.currentUser.address.zip' [ngClass]="{'empty-field': !this.currentUser.address.zip}">
           </div>
-        </div>
+        </div> -->
         <!-- <div class="" style="position: absolute; float: left; bottom: 0px; right: 10vw; height: 5vh; padding: .5vh .5vw .5vh .5vw;">
           <p class="left" style="width: 250px; line-height: 30px; float: left; padding-top: 6px;">Make your account publically viewable?</p>
           <input type="checkbox" style="width: 50px; float: left" class="" [(ngModel)] = 'this.currentUser.public'>
         </div> -->
       </div>
-      <div class="" style="position: absolute; width: 45vw; height: 20vh; bottom: 4.5vh; left: 1vw;">
+      <div class="" style="position: absolute; width: 100%; height: calc(84.5vh - 370px); bottom: 4.5vh; left: 1vw">
         <div class="div-title" style="height: 2vh;">
           <p>Interests</p>
         </div>
-        <textarea class="" style="width: 25vw; height: 18vh;" [(ngModel)] = 'this.currentUser.interest'></textarea>
+        <textarea class="" placeholder="Tell us a little about yourself." style="width: calc(90% - 150px); height: calc(82.5vh - 414px);" [(ngModel)] = 'this.currentUser.interest'></textarea>
       </div>
     </div>
     <div class="education" *ngIf='activeTab.main == 1' style="position: relative;">
@@ -130,7 +134,6 @@
           <div class="tutorial-box" *ngIf="this.tutorialOn.education" (mouseenter) ="this.tutorialOn.education = true"  (mouseleave) ="this.tutorialOn.education = false">
             <h5>Placeholder Tutorial Text</h5><br>
             <p>Actual Tutorials Coming Soon</p><br>
-            <p>(website's in beta, guys)</p>
           </div>
         </div>
       </div>
@@ -173,7 +176,6 @@
           <div class="tutorial-box" *ngIf="this.tutorialOn.education" (mouseenter) ="this.tutorialOn.education = true"  (mouseleave) ="this.tutorialOn.education = false">
             <h5>Placeholder Tutorial Text</h5><br>
             <p>Actual Tutorials Coming Soon</p><br>
-            <p>(website's in beta, guys)</p>
           </div>
         </div>
       </div>
@@ -220,7 +222,6 @@
           <div class="tutorial-box" *ngIf="this.tutorialOn.education" (mouseenter) ="this.tutorialOn.education = true"  (mouseleave) ="this.tutorialOn.education = false">
             <h5>Placeholder Tutorial Text</h5><br>
             <p>Actual Tutorials Coming Soon</p><br>
-            <p>(website's in beta, guys)</p>
           </div>
         </div>
       </div>
@@ -250,7 +251,6 @@
           <div class="tutorial-box" *ngIf="this.tutorialOn.education" (mouseenter) ="this.tutorialOn.education = true"  (mouseleave) ="this.tutorialOn.education = false">
             <h5>Placeholder Tutorial Text</h5><br>
             <p>Actual Tutorials Coming Soon</p><br>
-            <p>(website's in beta, guys)</p>
           </div>
         </div>
       </div>
@@ -557,7 +557,7 @@
           <p>Your skills are how we rate your capabilities, so the more you add, the more complete our image of you will be.</p>
         </div>
         <div class="col-xs-6 text-center skill-box">
-          <p><strong>Skill Search</strong></p>
+          <p style="font-size: 16px"><strong>Skill Search</strong></p>
           <input type="text" style="width: calc(100% - 65px)" [(ngModel)] = 'this.toolSearch' (keydown.enter)="updateToolList($event)">
           <button type="button" name="button" style="width: 60px;" (click)='updateToolList($event)'>Search</button>
           <div class="tool-search-box scrollbar">
@@ -601,7 +601,7 @@
           </div>
         </div>
         <div class="col-xs-6 text-center skill-box">
-          <p><strong>Your Skills</strong></p>
+          <p style="font-size: 16px"><strong>Your Skills</strong></p>
           <div class="tool-list-box scrollbar">
             <div class="">
               <div class="tool-list-item" *ngFor='let tool of this.currentUser.foundTools; let i = index; trackBy:customTrackBy'>

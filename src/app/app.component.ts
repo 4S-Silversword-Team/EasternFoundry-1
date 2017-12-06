@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   myCompanies: any[] = [];
   myPastPerformances: any[] = [];
   promiseFinished = false
+  id: string
 
   constructor(
     private auth: AuthService,
@@ -41,15 +42,15 @@ export class AppComponent implements OnInit {
       localStorage.removeItem('uid');
       this.currentUser = null;
     } else {
-      this.currentUser = localStorage.getItem('uid');
+      this.id = localStorage.getItem('uid')
       let user;
       this.userService.getUserbyID(localStorage.getItem('uid')).toPromise().then((result) => {
-        user = result;
-        this.messageService.getUnread(this.currentUser).toPromise().then((result) => {
+        this.currentUser = result;
+        this.messageService.getUnread(this.currentUser._id).toPromise().then((result) => {
           this.unreadCount = result;
           console.log(this.unreadCount + ' unread messages');
           const companyPromises = [];
-          for (const p of user.companyUserProxies) {
+          for (const p of this.currentUser.companyUserProxies) {
             if (p.role && p.role.title == 'admin') {
               companyPromises.push(this.messageService.getUnread(p.company._id).toPromise().then((result) => {
                 this.companies.push({
@@ -64,7 +65,7 @@ export class AppComponent implements OnInit {
               name: p.company.name,
             });
           }
-          for (const pp of user.pastPerformanceProxies) {
+          for (const pp of this.currentUser.pastPerformanceProxies) {
             this.myPastPerformances.push({
               id: pp.pastPerformance._id,
               name: pp.pastPerformance.title,
@@ -74,7 +75,7 @@ export class AppComponent implements OnInit {
             for (const c of this.companies){
               this.companyUnreadCount += c.count;
             }
-            this.messageService.getUnreadBugReports(this.currentUser).toPromise().then((result) => {
+            this.messageService.getUnreadBugReports(this.currentUser._id).toPromise().then((result) => {
               console.log('its checking');
               this.bugCount = result;
               this.navRefresh();
@@ -108,9 +109,6 @@ export class AppComponent implements OnInit {
       localStorage.removeItem('uid');
       this.currentUser = null;
     }
-    const myCallback = () => {
-      this.currentUser = localStorage.getItem('uid');
-    };
   }
 
   navRefresh() {
@@ -119,9 +117,6 @@ export class AppComponent implements OnInit {
       localStorage.removeItem('uid');
       this.currentUser = null;
     }
-    const myCallback = () => {
-      this.currentUser = localStorage.getItem('uid');
-    };
   }
 
 }

@@ -13,7 +13,8 @@
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
           <li class="active"><a href="search">Search</a></li>
-          <li><a href="user-profile/{{this.currentUser}}">Profile</a></li>
+          <li *ngIf='this.promiseFinished'><a href="user-profile/{{this.currentUser._id}}">{{this.currentUser.firstName}} {{this.currentUser.lastName}}</a></li>
+          <li *ngIf='!this.promiseFinished'><a href="user-profile/{{this.id}}">Profile</a></li>
           <li class="dropdown ">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Companies <span class="caret"></span></a>
             <ul class="dropdown-menu">
@@ -40,9 +41,14 @@
               Bug Reports [{{this.bugCount}}]
             </div>
           </a></li>
-          <li><a href="mailbox">
+          <li *ngIf='this.promiseFinished'><a href="mailbox">
             <div class="">
               Mail [{{this.unreadCount}}]
+            </div>
+          </a></li>
+          <li *ngIf='!this.promiseFinished'><a href="mailbox">
+            <div class="">
+              Mail
             </div>
           </a></li>
           <li><a href="bugreport">Report a Bug</a></li>
