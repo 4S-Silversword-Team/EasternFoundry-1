@@ -70,6 +70,8 @@ export class ProfileComponent implements OnInit {
   skillChart: any;
   serviceChart: any;
   serviceChartNames = [];
+  categoryChart: any;
+  categoryChartNames = [];
   yearsOfSchool: number = 0;
   yearsOfWork: number = 0;
   professionalPoints: number = 0;
@@ -359,10 +361,85 @@ export class ProfileComponent implements OnInit {
         chart: {
           type: 'pie',
           backgroundColor: 'rgba(0, 100, 200, 0.00)',
-          renderTo: "service_chart"
+          renderTo: "service_chart",
+        },
+        annotations: {
+          labelOptions: {
+            style: {
+              fontSize: '42px'
+            }
+          },
+          labels: {
+            overflow: 'elipses'
+          }
         },
         title: {
           text: 'Capabilities'
+        },
+        tooltip: {
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+          pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+              enabled: true,
+              format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+              style: {
+                  color: 'black'
+              }
+            }
+          }
+        },
+        series: [{
+          name: 'Focus',
+          colorByPoint: true,
+          data: serviceData,
+        }]
+      });
+
+      var govCount = 0
+      var contractorCount = 0
+      var commercialCount = 0
+      for (let job of this.currentUser.positionHistory) {
+        if (job.employmentType == 0) {
+          govCount++
+        } else if (job.employmentType == 1) {
+          contractorCount++
+        } else if (job.employmentType == 2) {
+          commercialCount++
+        }
+      }
+      var totalCount = govCount + contractorCount + commercialCount
+      var categoryData = []
+      if (govCount > 0) {
+        categoryData.push({
+          name: 'Government',
+          y: 360*(govCount / totalCount)
+        })
+      }
+      if (contractorCount > 0) {
+        categoryData.push({
+          name: 'Contractor',
+          y: 360*(contractorCount / totalCount)
+        },)
+      }
+      if (commercialCount > 0) {
+        categoryData.push({
+          name: 'Commercial',
+          y: 360*(commercialCount / totalCount)
+        })
+      }
+
+      this.categoryChart = new Chart({
+        chart: {
+          type: 'pie',
+          backgroundColor: 'rgba(0, 100, 200, 0.00)',
+          renderTo: "category_chart"
+        },
+        title: {
+          text: 'Categories'
         },
         tooltip: {
           pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -384,7 +461,7 @@ export class ProfileComponent implements OnInit {
         series: [{
           name: 'Focus',
           colorByPoint: true,
-          data: serviceData,
+          data: categoryData,
         }]
       });
 

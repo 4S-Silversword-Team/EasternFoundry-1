@@ -1,6 +1,8 @@
 /*styles for profile content only*/
 
 .top-bar {
+  width: 100%;
+  margin-top: 155px;
 }
 
 .interest {
@@ -9,8 +11,7 @@
 }
 
 .skill-tab-bar {
-  width: 90%;
-  margin-left: 5%;
+  width: 100%;
 }
 
 .skill-tab {
@@ -20,11 +21,14 @@
   background: rgb(223,223,225);
   color: rgba(0,0,0,.5);
   text-align: center;
-  font-size: 20px;
+  height: 25px;
+  line-height: 25px;
+  font-size: 18px;
   font-weight: bold;
   margin-bottom: 0px;
-  padding: 4px;
-  border: 1px solid rgba(0,0,0,0.05);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-right: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.4);
 }
 
 .skill-tab:hover {
@@ -36,7 +40,9 @@
   cursor: auto;
   color: rgba(0,0,0,1);
   background: rgba(253,253,255,1);
-  border: 1px solid rgba(0,0,0,0.5);
+  border-left: 1px solid rgba(0,0,0,0.4);
+  border-right: 1px solid rgba(0,0,0,0.4);
+  border-bottom: none;
 }
 .skill-tab-active:hover {
   background: rgba(253,253,255,1);
@@ -45,8 +51,8 @@
 
 
 .skills {
-  height: 100%;
-  padding-top: 2vh;
+  height: calc(100% - 38px);
+  padding-top: 1vh;
   overflow-y: auto;
 }
 .past-performances {
@@ -79,27 +85,35 @@
 
 .resume-link {
   color: rgb(75, 175, 225);
-  font-size: 22px;
+  font-size: 16px;
   font-family: 'Audiowide', cursive;
-  width: 180px;
-  text-align: center;
+  text-align: left;
 }
 
 .basic-info {
   padding: 0px;
-  height: calc(60vh - 130px);
+  height: 195px;
 }
 
-.basic-info-inner {
+.basic-info-top {
   position: absolute;
-  height: calc(60vh - 180px);
+  height: 150px;
+  padding-top: 15px;
   width: calc(100% - 180px);
+  top: 0px;
+  right: 0px;
+  float: left;
+}
+.basic-info-bottom {
+  margin-top: 0px;
+  height: calc(50vh - 215px);
+  width: 100%;
   bottom: 0px;
   right: 0px;
   float: left;
-  background: none;
+  padding-bottom: 1vh;
+  padding-top: 1vh;
 }
-
 
 .basic-info-header {
   color: rgb(75, 175, 225);
@@ -131,15 +145,15 @@
 }
 
 /*.basic-info-career-panel:hover {
-  transition: 0s;
-  background: rgba(0,0,0,0.05);
-  color: #4373c3;
+transition: 0s;
+background: rgba(0,0,0,0.05);
+color: #4373c3;
 }*/
 
 .profile-navbar-tab {
   cursor: pointer;
   float: left;
-  line-height: 60px;
+  line-height: 40px;
   position: relative;
   height: 100%;
   width: calc(100% / 5);
@@ -148,67 +162,64 @@
   font-weight: bold;
   color: rgba(0,0,0,0.5);
   margin: 0px;
-  border-right: 2px solid rgba(173,173,175,1);
-}
-
-.tab-right {
-  border-right: 0px solid black;
+  border-right: 1px solid rgba(0,0,0,0.1);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-top: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.4);
 }
 
 .profile-navbar-tab-active {
   color: rgba(0,0,0,1);
   background: rgba(253,253,255,1);
-  border: 1px solid rgba(0,0,0,0.1);
-  border-right: 2px solid rgba(173,173,175,1);
-}
-.profile-navbar-tab-active-left {
-  color: rgba(0,0,0,1);
-  background: rgba(253,253,255,1);
-  border-left: 1px solid rgba(0,0,0,0.1);
-  border-top: 1px solid rgba(0,0,0,0.1);
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-  border-right: 2px solid rgba(173,173,175,1);
-}
-.profile-navbar-tab-active-right {
-  color: rgba(0,0,0,1);
-  border: 1px solid rgba(0,0,0,0.1);
-  background: rgba(253,253,255,1);
+  border-right: 1px solid rgba(0,0,0,0.4);
+  border-left: 1px solid rgba(0,0,0,0.4);
+  border-top: 1px solid rgba(0,0,0,0.4);
+  border-bottom: none;
 }
 
 .profile-navbar-tab:hover {
   /*border: 1px solid rgba(0,0,0,0.01);*/
   color: rgba(0,0,0,0.6);
+  border-right: 1px solid rgba(0,0,0,0.15);
+  border-left: 1px solid rgba(0,0,0,0.15);
+  border-top: 1px solid rgba(0,0,0,0.15);
   background: rgba(253,253,255,0.35)
 }
 .profile-navbar-tab:active {
   /*border: 1px solid rgba(0,0,0,0.05);*/
   color: rgba(0,0,0,0.7);
+  border-right: 1px solid rgba(0,0,0,0.2);
+  border-left: 1px solid rgba(0,0,0,0.2);
+  border-top: 1px solid rgba(0,0,0,0.2);
   background: rgba(253,253,255,0.7)
 }
 .profile-navbar-tab-active:hover {
   color: rgba(0,0,0,1);
+  border-right: 1px solid rgba(0,0,0,0.4);
+  border-left: 1px solid rgba(0,0,0,0.4);
+  border-top: 1px solid rgba(0,0,0,0.4);
   background: rgba(253,253,255,1);
 }
-.profile-navbar-tab-active-left:hover {
+.profile-navbar-tab-active:active {
   color: rgba(0,0,0,1);
+  border-right: 1px solid rgba(0,0,0,0.4);
+  border-left: 1px solid rgba(0,0,0,0.4);
+  border-top: 1px solid rgba(0,0,0,0.4);
   background: rgba(253,253,255,1);
 }
-.profile-navbar-tab-active-right:hover {
-  color: rgba(0,0,0,1);
-  background: rgba(253,253,255,1);
-}
+
 .education-1 {
   float: left;
-  height: calc(51vh - 130px);
+  height: 50%;
   padding: 2vh 2vw 2vh 2vw;
   overflow-y: auto;
 }
 .education-1-tall {
-  height: calc(100vh - 130px)!important;
+  height: 100%!important;
 }
 .education-2 {
   float: left;
-  height: 49vh;
+  height: 50%;
   /*border-bottom: 1px solid red;*/
   padding: 2vh 2vw 2vh 2vw;
   overflow-y: auto;
@@ -272,7 +283,7 @@ textarea {
 }
 .experience {
   /*background: blue;*/
-  height: calc(96vh - 170px);
+  height: 100%;
   padding-top: 2vh;
   overflow-y: auto;
 }
@@ -338,122 +349,122 @@ textarea {
 }
 
 #user-job {
-    padding-top: 15px;
+  padding-top: 15px;
 }
 
 #user-photo-job p:hover {
-    color: #4070c0;
+  color: #4070c0;
 }
 
 #user-info-date {
-    line-height: 32px;
+  line-height: 32px;
 }
 
 #user-info-accuracy {
-    line-height: 65px;
+  line-height: 65px;
 }
 
 
 .div-title {
-    width: 100%;
-    display: inline-block;
+  width: 100%;
+  display: inline-block;
 }
 
 .div-title * {
-    display: inline;
+  display: inline;
 }
 
 .div-title img {
-    width: 100px;
-    height: 90px;
+  width: 100px;
+  height: 90px;
 }
 
 .div-title p {
-    font-size: 28px;
+  font-size: 28px;
 }
 
 .div-title div {
-    width: calc(100% - 320px);
-    height: 3px;
-    margin-bottom: 8px;
-    background-color: #827e7c;
-    display: inline-block;
+  width: calc(100% - 320px);
+  height: 3px;
+  margin-bottom: 8px;
+  background-color: #827e7c;
+  display: inline-block;
 }
 
 .capa-main {
-    display: inline-block;
+  display: inline-block;
 }
 
 .capa-pre {
-    height: 300px;
-    padding: 100px 10px 100px 10px;
-    border-right: 3px solid #827e7c;
-    text-align: center;
-    margin: auto;
+  height: 300px;
+  padding: 100px 10px 100px 10px;
+  border-right: 3px solid #827e7c;
+  text-align: center;
+  margin: auto;
 }
 
 .capa-pre p {
-    color: #313131;
-    font-size: 24px;
+  color: #313131;
+  font-size: 24px;
 }
 
 .capa-chart {
-    width: 300px;
-    height: 300px;
+  width: 300px;
+  height: 300px;
 }
 
 .capabilities .text-container {
-    min-height: 300px;
+  min-height: 300px;
 }
 
 .experience .div-title div{
-    width: calc(100% - 440px);
+  width: calc(100% - 440px);
 }
 
 .exp-main-title {
-    text-align: center;
-    font-size: 40px;
-    font-weight: bold;
-    color: #2070be;
+  text-align: center;
+  font-size: 40px;
+  font-weight: bold;
+  color: #2070be;
 }
 #exp-sub1-title {
-    text-align: center;
-    line-height: 255px;
-    font-size: 40px;
-    font-weight: bold;
-    color: #2070be;
+  text-align: center;
+  line-height: 255px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #2070be;
 }
 #exp-sub2-title {
-    text-align: center;
-    line-height: 255px;
-    font-size: 40px;
-    font-weight: bold;
-    color: #2070be;
+  text-align: center;
+  line-height: 255px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #2070be;
 }
 
 .career .div-title div{
-    width: calc(100% - 235px);
+  width: calc(100% - 235px);
 }
 
 .career {
 }
 
 .strength .div-title p{
-    color: #198fcf;
+  color: #198fcf;
 }
 
 .strength .div-title div{
-    background-color: #0e6daf;
-    width: calc(100% - 272px);
+  background-color: #0e6daf;
+  width: calc(100% - 272px);
 }
 
 app-availablebar {
-    width: 560px;
-    height: 20px;
-    margin: auto;
-    margin-top: 50px;
-    margin-bottom: 100px;
-    display: inherit;
+  width: 560px;
+  height: 20px;
+  margin: auto;
+  margin-top: 50px;
+  margin-bottom: 100px;
+  display: inherit;
 }
 
 .noWrapScroll {
@@ -470,9 +481,8 @@ app-availablebar {
     display: none
   }
   .pp-tab-small {
-    padding-top: 14px;
     font-size: 16px;
-    line-height: 16px;
+    line-height: 20px;
     display: block;
   }
 }
