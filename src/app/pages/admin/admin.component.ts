@@ -14,9 +14,9 @@ import { CompanyService } from '../../services/company.service';
 import { ProductService } from '../../services/product.service';
 import { ServiceService } from '../../services/service.service';
 import { PastperformanceService } from '../../services/pastperformance.service';
-import { CompanyUserProxyService } from '../../services/companyuserproxy.service'
-import { CompanyPastperformanceProxyService } from '../../services/companypastperformanceproxy.service'
-import { UserPastPerformanceProxyService } from '../../services/userpastperformanceproxy.service'
+import { CompanyUserProxyService } from '../../services/companyuserproxy.service';
+import { CompanyPastperformanceProxyService } from '../../services/companypastperformanceproxy.service';
+import { UserPastPerformanceProxyService } from '../../services/userpastperformanceproxy.service';
 
 
 
@@ -24,10 +24,11 @@ import { UserPastPerformanceProxyService } from '../../services/userpastperforma
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
-  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, AgencyService, CompanyUserProxyService, CompanyPastperformanceProxyService, CertService, ToolService]
+  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, AgencyService, CompanyUserProxyService, CompanyPastperformanceProxyService, UserPastPerformanceProxyService, CertService, ToolService]
 })
 export class AdminComponent implements OnInit {
 
+  userId: string
   users: User[] = [];
   toSort: any[] = [];
   sortedObjects: any[] = [];
@@ -113,31 +114,16 @@ export class AdminComponent implements OnInit {
     //     () => console.log(this.govtNames[0]) // complete
     // );
 
-    this.http.get('../../../assets/onet-tools.json')
-      .map((res: any) => res.json())
-      .subscribe(
-        (data: any) => {
-            this.toSort = data;
-        },
-        err => console.log(err), // error
-        () => console.log(this.toSort[0]) // complete
-    );
-
     // this.certService.getCerts().then(val => this.sortedObjects = val );
 
-    this.toolService.getTools().then(val => this.sortedObjects = val );
+    // this.toolService.getTools().then(val => this.sortedObjects = val );
 
     // this.userService.getUsers().then(val => this.users = val );
   }
 
   getAdminStatus() {
-    var userId = this.auth.getLoggedInUser()
-    this.userService.getUserbyID(userId).toPromise().then((user) =>{
-      var currentUserProxy = user.companyUserProxies.filter((proxy)=> {
-        return proxy.company
-      }).filter((proxy) => {
-        return proxy.company._id == this.route.snapshot.params['id']
-      })[0]
+    this.userId = this.auth.getLoggedInUser()
+    this.userService.getUserbyID(this.userId).toPromise().then((user) =>{
       if (user.power >= 4){
         this.isUserAdmin = true;
         console.log("you're good")
@@ -147,6 +133,22 @@ export class AdminComponent implements OnInit {
       }
     })
   }
+  deleteUserPrep(user, i) {
+    this.userToDelete.user = user
+    this.userToDelete.on = true
+    this.userToDelete.index = i
+  }
+
+  deleteUser(user, i){
+    this.userService.deleteUser(user._id).toPromise().then((res) => {
+      console.log("its dead")
+      this.userToDelete.on = false
+      this.userToDelete.user = null
+      this.userToDelete.index = null
+      this.allUsers.splice(i, 1)
+    })
+  }
+
 
   deleteCompanyPrep(company, i) {
     this.companyToDelete.company = company
@@ -188,65 +190,65 @@ export class AdminComponent implements OnInit {
 
 // SORT V3: this is just uploading the certs, it's really not as cool as the previous two.
 
-  sort() {
-    console.log('god help us.')
-      while (this.sortCounter < this.toSort.length) {
-        var matchFound = false
-        for (let i of this.sortedObjects) {
-          if (this.toSort[this.sortCounter].title == i.title) {
-            i.position.push(this.toSort[this.sortCounter].position[0])
-            var codeMatch = false
-            for (let c of i.code) {
-              if (c.substring(0,2) == this.toSort[this.sortCounter].code[0].substring(0,2)) {
-                codeMatch = true
-              }
-            }
-            if (!codeMatch) {
-              i.code.push(this.toSort[this.sortCounter].code[0])
-            }
-            matchFound = true
-          }
-        }
-        if (!matchFound) {
-          this.sortedObjects.push(this.toSort[this.sortCounter])
-        }
-        this.sortCounter++
-      }
+  // sort() {
+  //   console.log('god help us.')
+  //     while (this.sortCounter < this.toSort.length) {
+  //       var matchFound = false
+  //       for (let i of this.sortedObjects) {
+  //         if (this.toSort[this.sortCounter].title == i.title) {
+  //           i.position.push(this.toSort[this.sortCounter].position[0])
+  //           var codeMatch = false
+  //           for (let c of i.code) {
+  //             if (c.substring(0,2) == this.toSort[this.sortCounter].code[0].substring(0,2)) {
+  //               codeMatch = true
+  //             }
+  //           }
+  //           if (!codeMatch) {
+  //             i.code.push(this.toSort[this.sortCounter].code[0])
+  //           }
+  //           matchFound = true
+  //         }
+  //       }
+  //       if (!matchFound) {
+  //         this.sortedObjects.push(this.toSort[this.sortCounter])
+  //       }
+  //       this.sortCounter++
+  //     }
+  //
+  //     // console.log('DONE. We have sorted ' + this.sortedTools.length + ' so far.')
+  //     // for (let g of this.govtNames) {
+  //     //   var matchFound = false
+  //     //   for (let s of this.sortedObjects){
+  //     //     if (g.name.toLowerCase() == s.agency.toLowerCase()) {
+  //     //       matchFound = true
+  //     //     }
+  //     //   }
+  //     //   if (!matchFound) {
+  //     //     console.log('addin a new one!')
+  //     //     this.sortedObjects.push({
+  //     //       agency: g.name,
+  //     //       subagencies: [],
+  //     //       alternatives: g.alternatives
+  //     //     })
+  //     //   }
+  //     // }
+  //   console.log('DONE. We have sorted ' + this.sortedObjects.length + ' so far.')
+  // }
 
-      // console.log('DONE. We have sorted ' + this.sortedTools.length + ' so far.')
-      // for (let g of this.govtNames) {
-      //   var matchFound = false
-      //   for (let s of this.sortedObjects){
-      //     if (g.name.toLowerCase() == s.agency.toLowerCase()) {
-      //       matchFound = true
-      //     }
-      //   }
-      //   if (!matchFound) {
-      //     console.log('addin a new one!')
-      //     this.sortedObjects.push({
-      //       agency: g.name,
-      //       subagencies: [],
-      //       alternatives: g.alternatives
-      //     })
-      //   }
-      // }
-    console.log('DONE. We have sorted ' + this.sortedObjects.length + ' so far.')
-  }
-
-  uploadSortedObjects() {
-    if ((this.sortedObjects.length - this.uploadCounter) >= 4000 ){
-      for (var i = 0; i < 4000; i++) {
-        this.toolService.createTool(this.sortedObjects[this.uploadCounter]).toPromise();
-        this.uploadCounter++
-      }
-    } else {
-      while (this.uploadCounter < this.sortedObjects.length) {
-        this.toolService.createTool(this.sortedObjects[this.uploadCounter]).toPromise();
-        this.uploadCounter++
-      }
-    }
-    console.log('DONE. We have finished ' + this.uploadCounter + ' so far.')
-  }
+  // uploadSortedObjects() {
+  //   if ((this.sortedObjects.length - this.uploadCounter) >= 4000 ){
+  //     for (var i = 0; i < 4000; i++) {
+  //       this.toolService.createTool(this.sortedObjects[this.uploadCounter]).toPromise();
+  //       this.uploadCounter++
+  //     }
+  //   } else {
+  //     while (this.uploadCounter < this.sortedObjects.length) {
+  //       this.toolService.createTool(this.sortedObjects[this.uploadCounter]).toPromise();
+  //       this.uploadCounter++
+  //     }
+  //   }
+  //   console.log('DONE. We have finished ' + this.uploadCounter + ' so far.')
+  // }
 
   // addToolCode() {
   //   if ((this.sortedObjects.length - this.uploadCounter) >= 2000 ){

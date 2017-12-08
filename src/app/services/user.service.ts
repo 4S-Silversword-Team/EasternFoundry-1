@@ -50,6 +50,13 @@ export class UserService {
     return response;
   }
 
+  deleteUser(id: string): Observable<any> {
+    var response = this.authHttp.delete(environment.apiRoot + "profiles/" + id)
+      .map(response => <User> JSON.parse(JSON.stringify(response)));
+    return response;
+  }
+
+
   // createUser(id: string): Observable<User> {
   //
   // }

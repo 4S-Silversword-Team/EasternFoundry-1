@@ -4,6 +4,14 @@
 
 <div class='col-xs-12' style="position: ">
   <div class="col-xs-6" style="padding: 2px">
+    <div class="box-overlay" *ngIf='this.userToDelete.on'>
+      <div class="delete-box">
+        Are you SURE you want to delete {{this.userToDelete.user.firstName}} {{this.userToDelete.user.lastName}} ({{this.userToDelete.user.username}})?
+        <div class="delete-button-2" style="" (click)='deleteUser(this.userToDelete.user, this.userToDelete.index)'>
+          DELETE
+        </div>
+      </div>
+    </div>
     <div class="col-xs-12 search-results-box">
       <h3 style="text-align: center; margin-top: 10px; margin-bottom: 2px;">Users</h3>
       <!-- <input type="text" name="test" value="" class="col-xs-10" [(ngModel)]='searchTerms.name' (keyup.enter)="search()">
@@ -18,7 +26,7 @@
               <h4 style="text-align: center">No Results Found</h4>
             </div>
             <div class="" *ngIf='allUsers.length > 0'>
-              <div class="" *ngFor='let p of allUsers; let i = index'>
+              <div class="" *ngFor='let p of allUsers; let i = index' style="position: relative">
                 <div class="search-item">
                   <div class="search-item-not-expand col-xs-12">
                     <img class="search-item-avatar" src={{p.avatar}} alt="">
@@ -26,9 +34,9 @@
                     <div class="search-item-subheader">{{p.username}}</div>
                   </div>
                 </div>
-                <!-- <div class="delete-button" style="" (click)='deleteUser(p, i)'>
+                <div class="delete-button" style="" (click)='deleteUserPrep(p, i)' *ngIf="p._id != this.userId">
                   DELETE
-                </div> -->
+                </div>
               </div>
             </div>
           </div>
