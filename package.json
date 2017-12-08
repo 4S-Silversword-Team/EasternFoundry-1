@@ -44,6 +44,7 @@
     "angulartics2": "^4.0.2",
     "bootstrap": "^3.3.7",
     "chart.js": "^2.7.1",
+    "classlist.js": "^1.1.20150312",
     "cli": "^1.0.1",
     "codelyzer": "^2.0.1",
     "core-js": "^2.5.1",
@@ -75,6 +76,7 @@
     "ts-node": "^2.0.0",
     "tslint": "^4.5.1",
     "typescript": "^2.6.1",
+    "web-animations-js": "^2.3.1",
     "webpack": "^3.8.1",
     "zone.js": "^0.8.18"
   },
