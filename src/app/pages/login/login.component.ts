@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
   }
 
   logIn() {
+    this.authError = false
     this.auth.doLogin(this.email.toLowerCase(), this.password, (function() {
       //this.authError = !this.auth.isLoggedIn()
       if (!this.auth.isLoggedIn()) {

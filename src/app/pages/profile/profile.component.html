@@ -228,26 +228,22 @@
           <div id="team_chart"  style="max-width: 85%; margin: 0 auto; height:100%" [chart]='this.skillChart'></div>
         </div>
         <div class="skills col-xs-12" *ngIf='this.activeTab.skill == 1'>
-          <div class="product-tab-bar col-xs-10 col-xs-offset-1">
+          <div class="product-tab-bar" style="width: 100%;">
             <div class="product-tab col-xs-3" (click)='activeTab.service = activeTab.service-1' *ngIf='activeTab.service>0 && this.serviceChartNames[this.activeTab.service-1]'>
-              <div *ngIf='this.serviceChartNames[this.activeTab.service-1].length < 20'>{{this.serviceChartNames[this.activeTab.service-1]}}</div>
-              <div *ngIf='this.serviceChartNames[this.activeTab.service-1].length >= 20'>{{this.serviceChartNames[this.activeTab.service-1].substring(0,20)}}...</div>
+              <div class="skill-tab-text">{{this.serviceChartNames[this.activeTab.service-1]}}</div>
             </div>
             <div class="product-tab product-tab-active col-xs-6 col-xs-offset-3" *ngIf='activeTab.service<=0 && this.serviceChartNames[this.activeTab.service]'>
-              <div *ngIf='this.serviceChartNames[this.activeTab.service].length < 35'>{{this.serviceChartNames[this.activeTab.service]}}</div>
-              <div *ngIf='this.serviceChartNames[this.activeTab.service].length >= 35'>{{this.serviceChartNames[this.activeTab.service].substring(0,30)}}...</div>
+              <div class="skill-tab-text">{{this.serviceChartNames[this.activeTab.service]}}</div>
             </div>
             <div class="product-tab product-tab-active col-xs-6" *ngIf='activeTab.service>0 && this.serviceChartNames[this.activeTab.service]'>
-              <div *ngIf='this.serviceChartNames[this.activeTab.service].length < 35'>{{this.serviceChartNames[this.activeTab.service]}}</div>
-              <div *ngIf='this.serviceChartNames[this.activeTab.service].length >= 35'>{{this.serviceChartNames[this.activeTab.service].substring(0,35)}}...</div>
+              <div class="skill-tab-text">{{this.serviceChartNames[this.activeTab.service]}}</div>
             </div>
             <div class="product-tab col-xs-3" (click)='activeTab.service = activeTab.service+1' *ngIf='this.serviceChartNames[activeTab.service+1]'>
-              <div *ngIf='this.serviceChartNames[this.activeTab.service+1].length < 20'>{{this.serviceChartNames[this.activeTab.service+1]}}</div>
-              <div *ngIf='this.serviceChartNames[this.activeTab.service+1].length >= 20'>{{this.serviceChartNames[this.activeTab.service+1].substring(0,20)}}...</div>
+              <div class="skill-tab-text">{{this.serviceChartNames[this.activeTab.service+1]}}</div>
             </div>
           </div>
           <div class="services col-xs-12" *ngFor='let c of this.charts; let i = index'>
-            <div id="team_chart" style="margin: 0 auto; height: calc(97vh - 352px); width: 100%;" [chart]='c' *ngIf='i==activeTab.service'></div>
+            <div id="team_chart" style="margin: 0 auto; height: calc(98vh - 258px); width: 100%;" [chart]='c' *ngIf='i==activeTab.service'></div>
           </div>
         </div>
         <div class="skills col-xs-12" *ngIf='this.agencyExperience && this.activeTab.skill == 2'>

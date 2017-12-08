@@ -10,49 +10,8 @@
   height: 27vh;
 }
 
-.skill-tab-bar {
-  width: 100%;
-}
-
-.skill-tab {
-  cursor: pointer;
-  width: calc(100% / 3);
-  float: left;
-  background: rgb(223,223,225);
-  color: rgba(0,0,0,.5);
-  text-align: center;
-  height: 25px;
-  line-height: 25px;
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 0px;
-  border-left: 1px solid rgba(0,0,0,0.1);
-  border-right: 1px solid rgba(0,0,0,0.1);
-  border-bottom: 1px solid rgba(0,0,0,0.4);
-}
-
-.skill-tab:hover {
-  background: rgb(238,238,240);
-  border: 1px solid rgba(0,0,0,0.25);
-}
-
-.skill-tab-active {
-  cursor: auto;
-  color: rgba(0,0,0,1);
-  background: rgba(253,253,255,1);
-  border-left: 1px solid rgba(0,0,0,0.4);
-  border-right: 1px solid rgba(0,0,0,0.4);
-  border-bottom: none;
-}
-.skill-tab-active:hover {
-  background: rgba(253,253,255,1);
-  border: 1px solid rgba(0,0,0,0.5);
-}
-
-
 .skills {
   height: calc(100% - 38px);
-  padding-top: 1vh;
   overflow-y: auto;
 }
 .past-performances {
@@ -80,7 +39,7 @@
 }
 
 .services {
-  background: rgb(223,223,225);
+  background: rgb(253,253,255);
 }
 
 .resume-link {
@@ -315,14 +274,14 @@ textarea {
 }
 
 .product-tab-bar {
-  height: 40px;
+  height: 30px;
+  background: rgb(223,223,225);
 }
 
 .product-tab {
   cursor: pointer;
   height: 30px;
   line-height: 30px;
-  margin-top: 10px;
   font-size: 16px;
   text-align: center;
   border: 1px solid rgba(0,0,0,0.05);
@@ -331,21 +290,65 @@ textarea {
 .product-tab:hover{
   background: rgba(238,238,240,1);
   border: 1px solid rgba(0,0,0,0.25);
-
 }
 
 .product-tab-active {
   cursor: auto;
   margin-top: 0px;
-  height: 40px;
-  font-size: 20px;
-  line-height: 40px;
+  font-size: 16px;
+  font-weight: bold;
   color: rgba(0,0,0,1);
   background: rgba(253,253,255,1);
   border: 1px solid rgba(0,0,0,0.5);
 }
 .product-tab-active:hover {
   background: rgba(253,253,255,1);
+}
+
+.skill-tab-bar {
+  width: 100%;
+}
+
+.skill-tab {
+  cursor: pointer;
+  width: calc(100% / 3);
+  float: left;
+  background: rgb(223,223,225);
+  color: rgba(0,0,0,.5);
+  text-align: center;
+  height: 25px;
+  line-height: 25px;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 0px;
+  border-left: 1px solid rgba(0,0,0,0.1);
+  border-right: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.4);
+}
+
+.skill-tab:hover {
+  background: rgb(238,238,240);
+  border: 1px solid rgba(0,0,0,0.25);
+}
+
+.skill-tab-active {
+  cursor: auto;
+  color: rgba(0,0,0,1);
+  background: rgba(253,253,255,1);
+  border-left: 1px solid rgba(0,0,0,0.4);
+  border-right: 1px solid rgba(0,0,0,0.4);
+  border-bottom: none;
+}
+.skill-tab-active:hover {
+  background: rgba(253,253,255,1);
+  border: 1px solid rgba(0,0,0,0.5);
+}
+
+.skill-tab-text {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #user-job {

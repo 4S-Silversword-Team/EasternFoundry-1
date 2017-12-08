@@ -374,7 +374,7 @@ export class ProfileComponent implements OnInit {
           }
         },
         title: {
-          text: 'Capabilities'
+          text: 'Ability Profile'
         },
         tooltip: {
           pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -439,7 +439,7 @@ export class ProfileComponent implements OnInit {
           renderTo: "category_chart"
         },
         title: {
-          text: 'Categories'
+          text: 'Industry Profile'
         },
         tooltip: {
           pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -812,7 +812,8 @@ export class ProfileComponent implements OnInit {
         backgroundColor: 'rgba(0, 100, 200, 0.00)',
       },
       title: {
-        text: title
+        text: '',
+        floating: true
       },
       xAxis: {
         categories: xCategories,
