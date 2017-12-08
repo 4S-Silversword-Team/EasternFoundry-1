@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { User } from '../../classes/user';
+import { AppService } from '../../services/app.service';
 
 import { UserService } from '../../services/user.service';
 import { ToolService } from '../../services/tool.service';
@@ -24,7 +25,7 @@ import { UserPastPerformanceProxyService } from '../../services/userpastperforma
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
-  providers: [ ProductService, ServiceService, PastperformanceService, CompanyService, UserService, AgencyService, CompanyUserProxyService, CompanyPastperformanceProxyService, UserPastPerformanceProxyService, CertService, ToolService]
+  providers: [ AppService, ProductService, ServiceService, PastperformanceService, CompanyService, UserService, AgencyService, CompanyUserProxyService, CompanyPastperformanceProxyService, UserPastPerformanceProxyService, CertService, ToolService]
 })
 export class AdminComponent implements OnInit {
 
@@ -55,6 +56,7 @@ export class AdminComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private appService: AppService,
     private userService: UserService,
     private toolService: ToolService,
     private agencyService: AgencyService,
@@ -149,6 +151,18 @@ export class AdminComponent implements OnInit {
     })
   }
 
+  sendEmail(){
+    var mail = ({
+      senderEmail: 'federalfoundryforge@gmail.com',
+      recipientEmail: 'johnestes4@gmail.com',
+      subject: 'emails oh dang',
+      contactMessage: 'exciting right dude'
+    });
+
+    this.appService.sendEmail(mail).toPromise().then((res) => {
+      console.log('email sent i think! check!')
+    })
+  }
 
   deleteCompanyPrep(company, i) {
     this.companyToDelete.company = company

@@ -1,7 +1,8 @@
 <div class="container mt100" *ngIf='this.isUserAdmin'>
   <h1 style="text-align: center">this is the admin super page. the buttons here do crazy stuff.</h1>
   <h1 style="text-align: center">if you somehow got here please don't click anything and send a bug report to let me know my rad security failed</h1>
-
+  <p>heres a fun button you can click to test emails</p>
+  <button type="button" name="button" (click)='sendEmail()'>EMAILS</button>
 <div class='col-xs-12' style="position: ">
   <div class="col-xs-6" style="padding: 2px">
     <div class="box-overlay" *ngIf='this.userToDelete.on'>

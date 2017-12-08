@@ -23,6 +23,12 @@ export class AppService {
       this.authHttp = new AuthHttp(http)
     }
 
+    sendEmail(request: any){
+      var response = this.authHttp.post(environment.apiRoot + "sendMail/", request)
+        .map(response => <Product> JSON.parse(JSON.stringify(response)));
+      return response;
+    }
+
     getCompany(id: string): Observable<Company[]> {
       var response =  this.authHttp.get(environment.apiRoot + "/company/" + id)
       .map(response => <[Company]> response.json())

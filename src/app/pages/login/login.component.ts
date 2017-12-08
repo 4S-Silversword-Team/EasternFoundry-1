@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   activeTab: number = 0
   signedIn: boolean = false
   currentUser: string
-
+  forgotPassword = false
 
   constructor(
     private auth: AuthService,
