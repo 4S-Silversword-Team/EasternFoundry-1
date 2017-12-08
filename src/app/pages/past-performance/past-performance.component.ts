@@ -282,7 +282,7 @@ export class PastPerformanceComponent implements OnInit {
         console.log('pp companies', ppCompanyIds);
         // finally check if the two sets have anything in common.
         for (const companyId of ppCompanyIds){
-          if (relevantCompanyIds.includes(companyId)){
+          if (relevantCompanyIds.indexOf(companyId) >= 0){
             this.isUserAdmin = true;
             console.log('I\'m a pp admin');
           }

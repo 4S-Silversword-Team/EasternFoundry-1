@@ -239,7 +239,7 @@ export class SearchComponent implements OnInit {
         newCompany.nameMatch = false;
         let matchFound = false;
         if (this.searchTerms.name){
-          if (newCompany.name.toLowerCase().includes(this.searchTerms.name.toLowerCase())) {
+          if (newCompany.name.toLowerCase().indexOf(this.searchTerms.name.toLowerCase()) >= 0) {
             newCompany.nameMatch = true;
             matchFound = true;
           }
@@ -250,12 +250,12 @@ export class SearchComponent implements OnInit {
             if (p.userProfile){
               for (const j of p.userProfile.positionHistory) {
                 for (const a of j.agencyExperience) {
-                  if (a.main.title.toLowerCase().includes(this.searchTerms.agency.toLowerCase())) {
+                  if (a.main.title.toLowerCase().indexOf(this.searchTerms.agency.toLowerCase()) >= 0) {
                     if (!this.searchTerms.subagency) {
                       matchFound = true;
                     }
                     let agencyFound = false;
-                    if (!agenciesDone.includes(a.main.title)){
+                    if (agenciesDone.indexOf(a.main.title) < 0){
                       for (const ra of newCompany.relevantAgencies) {
                         if (ra.name.toLowerCase() == a.main.title.toLowerCase()){
                           agencyFound = true;
@@ -285,10 +285,10 @@ export class SearchComponent implements OnInit {
                     if (a.offices[0]) {
                       if (a.offices[0].title.length > 0) {
                         for (const s of a.offices) {
-                          if (s.title.toLowerCase().includes(this.searchTerms.subagency.toLowerCase())) {
+                          if (s.title.toLowerCase().indexOf(this.searchTerms.subagency.toLowerCase()) >= 0) {
                             matchFound = true;
                             let agencyFound = false;
-                            if (!subagenciesDone.includes(s.title)){
+                            if (subagenciesDone.indexOf(s.title) >= 0){
                               for (const rs of newCompany.relevantSubagencies) {
                                 if (rs.name.toLowerCase() == s.title.toLowerCase()){
                                   agencyFound = true;
@@ -321,10 +321,10 @@ export class SearchComponent implements OnInit {
               if (p.userProfile.foundTools) {
                 const newPerson = p.userProfile;
                 for (const t of newPerson.foundTools) {
-                  if (t.title.toLowerCase().includes(this.searchTerms.skill.toLowerCase())) {
+                  if (t.title.toLowerCase().indexOf(this.searchTerms.skill.toLowerCase()) >= 0) {
                     matchFound = true;
                     let skillFound = false;
-                    if (!skillsDone.includes(t.title)){
+                    if (skillsDone.indexOf(t.title) < 0){
                       for (const s of newCompany.relevantSkills) {
                         if (s.name.toLowerCase() == t.title.toLowerCase()){
                           skillFound = true;
@@ -374,7 +374,7 @@ export class SearchComponent implements OnInit {
                 }
                 for (const tool of toolsToPush) {
                   const toolsDone = [];
-                  if (tool.title.toLowerCase().includes(this.searchTerms.position.toLowerCase())) {
+                  if (tool.title.toLowerCase().indexOf(this.searchTerms.position.toLowerCase()) >= 0) {
                     for (const o of p.userProfile.occupations) {
                       if (tool.title == o.title) {
                         tool.score += (o.score / 5);
@@ -382,7 +382,7 @@ export class SearchComponent implements OnInit {
                     }
                     if (tool.score > 50) {
                       let agencyFound = false;
-                      if (!toolsDone.includes(tool.title)){
+                      if (toolsDone.indexOf(tool.title) < 0){
                         for (const rp of newCompany.relevantPositions) {
                           if (rp.name.toLowerCase() === tool.title.toLowerCase()){
                             agencyFound = true;
@@ -423,9 +423,9 @@ export class SearchComponent implements OnInit {
                 }
                 for (const cert of certsToPush) {
                   const certsDone = [];
-                  if (cert.toLowerCase().includes(this.searchTerms.cert.toLowerCase())) {
+                  if (cert.toLowerCase().indexOf(this.searchTerms.cert.toLowerCase()) >= 0) {
                     let certFound = false;
-                    if (!certsDone.includes(cert)){
+                    if (certsDone.indexOf(cert) < 0){
                       for (const c of newCompany.relevantCerts) {
                         if (c.name.toLowerCase() === cert.toLowerCase()){
                           certFound = true;
@@ -492,7 +492,7 @@ export class SearchComponent implements OnInit {
         if (this.searchTerms.agency) {
           for (const j of newPerson.positionHistory){
             for (const a of j.agencyExperience) {
-              if (a.main.title.toLowerCase().includes(this.searchTerms.agency.toLowerCase())) {
+              if (a.main.title.toLowerCase().indexOf(this.searchTerms.agency.toLowerCase()) >= 0) {
                 if (!this.searchTerms.subagency) {
                   matchFound = true;
                 }
@@ -506,10 +506,10 @@ export class SearchComponent implements OnInit {
           for (const j of newPerson.positionHistory){
             for (const a of j.agencyExperience) {
               for (const s of a.offices) {
-                if (s.title.toLowerCase().includes(this.searchTerms.subagency.toLowerCase())) {
+                if (s.title.toLowerCase().indexOf(this.searchTerms.subagency.toLowerCase()) >= 0) {
                   matchFound = true;
                   let agencyFound = false;
-                  if (!subagenciesDone.includes(s.title)){
+                  if (subagenciesDone.indexOf(s.title) < 0){
                     for (const rs of newPerson.relevantSubagencies) {
                       if (rs.toLowerCase() == s.title.toLowerCase()){
                         agencyFound = true;
@@ -523,7 +523,7 @@ export class SearchComponent implements OnInit {
                   }
                 }
               }
-              if (a.main.title.toLowerCase().includes(this.searchTerms.agency.toLowerCase())) {
+              if (a.main.title.toLowerCase().indexOf(this.searchTerms.agency.toLowerCase()) >= 0) {
                 matchFound = true;
                 newPerson.relevantAgencies.push(a.main.title);
               }
@@ -533,7 +533,7 @@ export class SearchComponent implements OnInit {
         if (this.searchTerms.skill) {
           if (newPerson.foundTools){
             for (const t of newPerson.foundTools) {
-              if (t.title.toLowerCase().includes(this.searchTerms.skill.toLowerCase())) {
+              if (t.title.toLowerCase().indexOf(this.searchTerms.skill.toLowerCase()) >= 0) {
                 matchFound = true;
                 newPerson.relevantSkills.push(t.title);
               }
@@ -570,7 +570,7 @@ export class SearchComponent implements OnInit {
               };
               newOccupation.title = o.title;
               newOccupation.score = o.score;
-              if (newOccupation.title.toLowerCase().includes(this.searchTerms.position.toLowerCase())) {
+              if (newOccupation.title.toLowerCase().indexOf(this.searchTerms.position.toLowerCase()) >= 0) {
                 newPerson.relevantPositions.push(newOccupation);
               }
             }
@@ -582,7 +582,7 @@ export class SearchComponent implements OnInit {
                 }
               }
               if (tool.score > 50) {
-                if (tool.title.toLowerCase().includes(this.searchTerms.position.toLowerCase())) {
+                if (tool.title.toLowerCase().indexOf(this.searchTerms.position.toLowerCase()) >= 0) {
                   newPerson.relevantPositions.push(tool);
                 }
               }
@@ -593,8 +593,8 @@ export class SearchComponent implements OnInit {
           if (newPerson.certification) {
             for (const cert of newPerson.certification) {
               let matchFound = false;
-              if (cert.CertificationName.toLowerCase().includes(this.searchTerms.cert.toLowerCase())) {
-                if (!newPerson.relevantCerts.includes(cert.CertificationName)){
+              if (cert.CertificationName.toLowerCase().indexOf(this.searchTerms.cert.toLowerCase()) >= 0) {
+                if (newPerson.relevantCerts.indexOf(cert.CertificationName) < 0){
                   matchFound = true;
                   newPerson.relevantCerts.push(cert.CertificationName);
                 }
@@ -651,7 +651,7 @@ export class SearchComponent implements OnInit {
         let matchFound = false;
         if (this.searchTerms.name) {
           if (newPP.title) {
-            if (newPP.title.toLowerCase().includes(this.searchTerms.name.toLowerCase())) {
+            if (newPP.title.toLowerCase().indexOf(this.searchTerms.name.toLowerCase()) >= 0) {
               matchFound = true;
               newPP.nameMatch = true;
             }

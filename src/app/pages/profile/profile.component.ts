@@ -755,7 +755,7 @@ export class ProfileComponent implements OnInit {
               if (s.title == c.category) {
                 match = true;
                 var occupationMatch = false
-                if (!s.occupations.includes(o)){
+                if (s.occupations.indexOf(o) < 0){
                   s.occupations.push(o)
                 }
               }

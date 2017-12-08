@@ -577,9 +577,9 @@ export class CorporateProfileEditComponent implements OnInit {
     }
     this.userService.getUsers().then(res => {
       this.userProfilesAll = res.filter((user) => {
-        return !this.userProfiles.map(function(employee) {
+        return this.userProfiles.map(function(employee) {
           return employee.userId;
-        }).includes(user._id)
+        }).indexOf(user._id) < 0
       })
     })
     this.checkCompanyAdminCount()
@@ -588,7 +588,7 @@ export class CorporateProfileEditComponent implements OnInit {
   checkIfEmployee(): boolean{
     return this.userProfiles.map((profile) => {
       return profile.userId
-    }).includes(this.auth.getLoggedInUser())
+    }).indexOf(this.auth.getLoggedInUser()) >= 0
   }
 
   search() {
@@ -598,7 +598,7 @@ export class CorporateProfileEditComponent implements OnInit {
       for (let person of this.userProfilesAll) {
         if (person.public) {
           var name: string = person.firstName + ' ' + person.lastName
-          if (name.toLowerCase().includes(this.searchTerms.name.toLowerCase())) {
+          if (name.toLowerCase().indexOf(this.searchTerms.name.toLowerCase()) >= 0) {
             var alreadyThere = false
             for (let employee of this.userProfiles) {
               if (employee.username == person.username){
@@ -621,7 +621,7 @@ export class CorporateProfileEditComponent implements OnInit {
   invited(person){
     var name = person.firstName + ' ' + person.lastName
     console.log(name)
-    return this.invitationSent.includes(name)
+    return this.invitationSent.indexOf(name) >= 0
   }
 
   addProduct() {

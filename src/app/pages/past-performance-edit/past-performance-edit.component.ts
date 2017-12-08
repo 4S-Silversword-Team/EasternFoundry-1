@@ -175,7 +175,7 @@ export class PastPerformanceEditComponent implements OnInit {
         allCompanyEmployees.push(userProfileProxy.userProfile);
       }
       this.allCompanyEmployees = allCompanyEmployees.filter((employee) => {
-        return !this.currentPastPerformance.userProfileProxies.map((userProxy) => userProxy.user._id).includes(employee._id);
+        return this.currentPastPerformance.userProfileProxies.map((userProxy) => userProxy.user._id).indexOf(employee._id) < 0;
       });
     })(); });
   }
@@ -186,15 +186,15 @@ export class PastPerformanceEditComponent implements OnInit {
         allUserCompanies.push(companyProxy.company);
       }
       this.allUserCompanies = allUserCompanies.filter((company) => {
-        return !this.currentPastPerformance.companyProxies.map((companyProxy) => companyProxy.company._id).includes(company._id);
+        return this.currentPastPerformance.companyProxies.map((companyProxy) => companyProxy.company._id).indexOf(company._id) < 0;
       });
     })(); });
   }
   this.userService.getUsers().then(res => {
     this.userProfilesAll = res.filter((user) => {
-      return !this.userProfiles.map(function(employee) {
+      return this.userProfiles.map(function(employee) {
         return employee.userId;
-      }).includes(user._id);
+      }).indexOf(user._id) < 0;
     });
   });
 }
@@ -244,7 +244,7 @@ export class PastPerformanceEditComponent implements OnInit {
         console.log('pp companies', ppCompanyIds);
         // finally check if the two sets have anything in common.
         for (const companyId of ppCompanyIds){
-          if (relevantCompanyIds.includes(companyId)){
+          if (relevantCompanyIds.indexOf(companyId) >= 0){
             this.isUserAdmin = true;
             console.log('I\'m a pp admin');
           }
@@ -371,7 +371,7 @@ export class PastPerformanceEditComponent implements OnInit {
       for (const person of this.userProfilesAll) {
         if (person.public) {
           const name: string = person.firstName + ' ' + person.lastName;
-          if (name.toLowerCase().includes(this.searchTerms.name.toLowerCase())) {
+          if (name.toLowerCase().indexOf(this.searchTerms.name.toLowerCase()) >= 0) {
             let alreadyThere = false;
             for (const employee of this.userProfiles) {
               if (employee.username === person.username) {

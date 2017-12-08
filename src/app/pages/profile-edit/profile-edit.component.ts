@@ -386,13 +386,13 @@ export class ProfileEditComponent implements OnInit {
             if (d.DegreeType[0]){
               if (d.DegreeType[0].Name) {
                 var degreeName = d.DegreeType[0].Name.toLowerCase()
-                if (degreeName.includes('associate') || degreeName == "ass.") {
+                if (degreeName.indexOf('associate') >= 0 || degreeName == "ass.") {
                   d.DegreeType[0].Name = "Associate"
-                } else if (degreeName.includes('bachelor') || degreeName == 'ba' || degreeName == 'b.a.') {
+                } else if (degreeName.indexOf('bachelor') >= 0 || degreeName == 'ba' || degreeName == 'b.a.') {
                   d.DegreeType[0].Name = "Bachelor's"
-                } else if (degreeName.includes('master')) {
+                } else if (degreeName.indexOf('master') >= 0) {
                   d.DegreeType[0].Name = "Master's"
-                } else if (degreeName.includes('doctor') || degreeName == "phd" || degreeName == 'ph.d.') {
+                } else if (degreeName.indexOf('doctor') >= 0 || degreeName == "phd" || degreeName == 'ph.d.') {
                   d.DegreeType[0].Name = "Ph.D."
                 } else {
                   d.DegreeType[0].Name = 'Other'
@@ -845,8 +845,8 @@ export class ProfileEditComponent implements OnInit {
     for (let tool of this.currentUser.foundTools) {
       toolNames.push(tool.title.toLowerCase())
     }
-    if (tool.title.toLowerCase().includes(this.toolSearchLast.toLowerCase())) {
-      if (!toolNames.includes(tool.title.toLowerCase())) {
+    if (tool.title.toLowerCase().indexOf(this.toolSearchLast.toLowerCase()) >= 0) {
+      if (toolNames.indexOf(tool.title.toLowerCase()) < 0) {
         this.validNames.push(tool.title.toLowerCase())
         return true
       }
@@ -860,7 +860,7 @@ export class ProfileEditComponent implements OnInit {
     var toolSearch = this.toolSearch
     var foundTools = this.currentUser.foundTools
     function isGoodTool(tool) {
-      if (tool.title.toLowerCase().includes(toolSearch.toLowerCase())) {
+      if (tool.title.toLowerCase().indexOf(toolSearch.toLowerCase()) >= 0) {
         for (let t of foundTools) {
           if (t.title.toLowerCase() == tool.title.toLowerCase()) {
             return false
@@ -872,8 +872,8 @@ export class ProfileEditComponent implements OnInit {
     }
     var tools1 = this.currentUser.tools.filter(isGoodTool)
     function isGoodTool2(tool) {
-      if (tool.title.toLowerCase().includes(toolSearch.toLowerCase())) {
-        if (foundTools.includes(tool)) {
+      if (tool.title.toLowerCase().indexOf(toolSearch.toLowerCase()) >= 0) {
+        if (foundTools.indexOf(tool) >= 0) {
           return false
         }
         for (let t of tools1) {

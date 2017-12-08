@@ -245,7 +245,7 @@ export class MessageComponent implements OnInit {
       this.filteredUsers = []
       for (let i of this.allUsers){
         var name = i.firstName + ' ' + i.lastName
-        if (name.toLowerCase().includes(search.toLowerCase())){
+        if (name.toLowerCase().indexOf(search.toLowerCase()) >= 0){
           this.filteredUsers.push(i)
         }
       }

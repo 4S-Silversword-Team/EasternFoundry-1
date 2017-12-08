@@ -565,11 +565,11 @@
               <p>We're still retrieving the tools. Wait a moment...</p>
             </div>
             <div class="" *ngIf='this.allTools.length > 0'>
-              <div class="no-tool-found" *ngIf='this.toolSearchLast.length >= 1 && this.filteredTools.length == 0 && this.filteredToolsFromProfile.length == 0 && !this.submittedTools.includes(this.lastSearch.toLowerCase())' >
+              <div class="no-tool-found" *ngIf='this.toolSearchLast.length >= 1 && this.filteredTools.length == 0 && this.filteredToolsFromProfile.length == 0 && this.submittedTools.indexOf(this.lastSearch.toLowerCase()) < 0' >
                 <p>No matches found. Submit {{this.toolSearchLast}} as a new tool?</p>
                 <button class="btn btn-primary btn-block" type="button" name="button" (click)='submitNewTool(this.toolSearch)'>Submit</button>
               </div>
-              <div class="no-tool-found" *ngIf='this.toolSearchLast.length >= 1 && this.filteredTools.length == 0 && this.submittedTools.includes(this.lastSearch.toLowerCase())' >
+              <div class="no-tool-found" *ngIf='this.toolSearchLast.length >= 1 && this.filteredTools.length == 0 && this.submittedTools.indexOf(this.lastSearch.toLowerCase()) >= 0' >
                 <p>{{this.toolSearchLast}} has been submitted. If it's approved we'll add it to the list!</p>
               </div>
               <div class="" *ngIf='this.toolSearchLast.length >= 1'>
@@ -586,13 +586,13 @@
                   </div>
                 </div>
               </div>
-              <div class="" *ngIf='this.toolSearchLast.length >= 1 && !this.submittedTools.includes(this.lastSearch.toLowerCase())' >
+              <div class="" *ngIf='this.toolSearchLast.length >= 1 && this.submittedTools.indexOf(this.lastSearch.toLowerCase()) < 0' >
                 <div class="no-tool-found" *ngIf='this.filteredTools.length > 0 || this.filteredToolsFromProfile.length > 0'>
                   <p>Can't find what you're looking for? Submit {{this.toolSearchLast}} as a new tool.</p>
                   <button class="btn btn-primary btn-block" type="button" name="button" (click)='submitNewTool(this.toolSearchLast)'>Submit</button>
                 </div>
               </div>
-              <div class="" *ngIf='this.toolSearchLast.length >= 1 && this.submittedTools.includes(this.lastSearch.toLowerCase())' >
+              <div class="" *ngIf='this.toolSearchLast.length >= 1 && this.submittedTools.indexOf(this.lastSearch.toLowerCase()) >= 0' >
                 <div class="no-tool-found" *ngIf='this.filteredTools.length > 0 || this.filteredToolsFromProfile.length > 0'>
                   <p>{{this.toolSearchLast}} has been submitted. If it's approved we'll add it to the list!</p>
                 </div>
