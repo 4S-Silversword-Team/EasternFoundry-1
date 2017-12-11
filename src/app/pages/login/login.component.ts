@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   currentUser: string
   forgotPassword = false
   passwordReset = false
-  passwordSent = true
+  passwordSent = false
   passwordToken: any
   tokenInvalid = false
   password2: string = ''
