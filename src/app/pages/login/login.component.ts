@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
   currentUser: string
   forgotPassword = false
   passwordReset = false
+  passwordSent = true
   passwordToken: any
   tokenInvalid = false
   password2: string = ''
@@ -72,6 +73,10 @@ export class LoginComponent implements OnInit {
     this.activeTab = t
   }
 
+  invalidEmail() {
+    return (this.email.length > 0 && !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)))
+  }
+
   logIn() {
     this.authError = false
     this.auth.doLogin(this.email.toLowerCase(), this.password, (function() {
@@ -103,8 +108,8 @@ export class LoginComponent implements OnInit {
         hash: resetHash
       }
       this.resetTokenService.createResetToken(token).toPromise().then((res) => {
-        // var resetLink = "http://13.58.193.226:4200/password-reset/" + user._id + "/" + resetHash
-        var resetLink = "http://localhost:4200/password-reset/" + resetHash
+        var resetLink = "http://13.58.193.226:4200/password-reset/" + resetHash
+        // var resetLink = "http://localhost:4200/password-reset/" + resetHash
         var mail = ({
           senderEmail: 'federalfoundryforge@gmail.com',
           recipientEmail: this.email,
@@ -115,6 +120,7 @@ export class LoginComponent implements OnInit {
 
         this.appService.sendEmail(mail).toPromise().then((res) => {
           console.log('email sent i think! check!')
+          this.passwordSent = true
         })
       })
     })
