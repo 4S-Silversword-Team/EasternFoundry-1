@@ -37,6 +37,13 @@ export class UserService {
     return response;
   }
 
+  updatePw(id: string, request: any) {
+    var response = this.authHttp.postNoJson(environment.apiRoot + "auth/resetPw/" + id, request)
+      .map(response => { console.log("non json response", response); return response.json()});
+    return response;
+  }
+
+
   getUserIdByEmail(email: string){
     var response = this.authHttp.get(environment.apiRoot + "profiles/email/" + email)
       .map(response => response.json())
@@ -55,6 +62,7 @@ export class UserService {
       .map(response => <User> JSON.parse(JSON.stringify(response)));
     return response;
   }
+
 
 
   // createUser(id: string): Observable<User> {
