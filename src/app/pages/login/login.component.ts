@@ -136,7 +136,7 @@ export class LoginComponent implements OnInit {
       console.log('I THINK IT DID THE PASSWORD CHANGE')
       this.resetTokenService.deleteResetToken(this.passwordToken._id).toPromise().then((res) => {
         console.log('I THINK THE TOKEN IS GONE, NOW LETS SEND YOU AWAYYYYY')
-        this.router.navigateByUrl("/login/")
+        this.router.navigateByUrl("/")
       })
     })
   }
