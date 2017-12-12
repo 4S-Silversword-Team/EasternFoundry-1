@@ -15,12 +15,6 @@ p {
     padding: 0;
 }
 
-.edit-box {
-  position: absolute;
-  right: 0px;
-  top: 30px;
-}
-
 .profile-navbar {
   font-family: 'Audiowide', cursive;
   width: 100%;
@@ -33,8 +27,8 @@ p {
 }
 
 .page {
-  height: calc(100vh - 70px);
-  overflow-y: hidden;
+  height: calc(100vh - 71px);
+  overflow: hidden;
 }
 
 .tutorial-circle {
@@ -103,17 +97,8 @@ p {
   display: none;
 }
 
-.edit-tab-bar {
-  margin-top: 10vh;
-  height: 60vh;
-  width: 100%;
-  background: rgba(223,223,225,1);
-}
-
 .edit-tab {
   cursor: pointer;
-  height: calc(60vh / 7);
-  line-height: calc(60vh / 7);
   border-bottom: 2px solid rgba(173,173,175,1);
   width: 100%;
   float: left;
@@ -126,8 +111,6 @@ p {
 }
 .edit-tab-bottom {
   cursor: pointer;
-  height: calc(60vh / 7);
-  line-height: calc(60vh / 7);
   width: 100%;
   float: left;
   position: relative;
@@ -189,31 +172,18 @@ p {
 .edit-tab-incomplete {
   background: rgba(223,103,105,1);
 }
+.edit-tab-inactive {
+  display: none;
+}
 
 .edit-panel {
-  margin-top: 10vh;
-  height: 60vh;
+  height: calc(100vh - 115px);
+  margin: 0px;
   padding: 0px;
   background: rgba(253,253,255,1);
   border-right: 1px solid rgba(0,0,0,0.1);
   border-top: 1px solid rgba(0,0,0,0.1);
   border-bottom: 1px solid rgba(0,0,0,0.1);
-}
-
-.sub-box {
-  padding-top: 2vh;
-  padding-left: 1.6vw;
-  padding-right: 1.6vw;
-  padding-bottom: 2vh;
-}
-
-.sub-box-inner {
-  position: relative;
-  width: 100%;
-  height: calc(45.5vh - 40px);
-  background: rgba(255,255,255,0.99);
-  border: 1px solid rgba(0,0,0,0.5);
-  overflow-y: auto;
 }
 
 .edit-button {
@@ -224,7 +194,30 @@ p {
   font-weight: bold;
   color: rgba(0,0,0,0.75);
 }
-
+.edit-button:hover {
+  background: rgba(183,183,185,1);
+  border: 1px solid rgba(0,0,0,0.1);
+}
+.edit-button-add {
+  position: absolute;
+  width: 150px;
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.edit-button-add-2 {
+  position: absolute;
+  width: 150px;
+  bottom: 3vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.edit-button-next {
+  position: absolute;
+  width: 150px;
+  bottom: 3vh;
+  right: 1.6vw;
+}
 .edit-button-nope {
   background: rgba(203,0,0,1);
   border-radius: 0px;
@@ -233,38 +226,54 @@ p {
   font-weight: bold;
   color: rgba(0,0,0,0.75);
 }
-.edit-button-save {
-  background: rgba(0,203,0,1);
-  border: 1px solid rgba(0,0,0,0.5);
-  position: absolute;
-  width: 150px;
-  bottom: -5vh;
-  right: 1.6vw;
-  left: 50%;
-  transform: translateX(-50%);
-}
 .edit-button-nope-2 {
   position: absolute;
   width: 150px;
-  bottom: -5vh;
+  bottom: -41px;
   right: 1.6vw;
   left: 50%;
   transform: translateX(-50%);
 }
-
-.edit-button-next {
-  position: absolute;
-  width: 150px;
-  bottom: 3vh;
-  right: 1.6vw;
-}
-
 .edit-button-prev {
   position: absolute;
   width: 150px;
   bottom: 3vh;
   left: 1.6vw;
 }
+.edit-button-save {
+  background: rgba(0,203,0,1);
+  border: 1px solid rgba(0,0,0,0.5);
+  position: absolute;
+  width: 150px;
+  bottom: -41px;
+  right: 1.6vw;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.edit-tab-bar {
+  height: calc(100vh - 115px);
+  margin: 0px;
+  width: 100%;
+  background: rgba(223,223,225,1);
+}
+.sub-box {
+  padding-top: 2vh;
+  padding-left: 1.6vw;
+  padding-right: 1.6vw;
+  padding-bottom: 2vh;
+}
+
+.sub-box-inner {
+  position: relative;
+  width: 100%;
+  height: calc(92vh - 241px);
+  background: rgba(255,255,255,0.99);
+  border: 1px solid rgba(0,0,0,0.5);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 
 
 .link {

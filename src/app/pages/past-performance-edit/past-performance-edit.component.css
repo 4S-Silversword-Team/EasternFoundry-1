@@ -85,6 +85,14 @@ input[type="checkbox"]{
     display: inline-block;
 }
 
+.edit-tab {
+  height: calc((100vh - 115px) / 3);
+  line-height: calc((100vh - 115px) / 3);
+}
+.edit-tab-bottom {
+  height: calc((100vh - 115px) / 3);
+  line-height: calc((100vh - 115px) / 3);
+}
 
 .avatar {
   position: absolute;

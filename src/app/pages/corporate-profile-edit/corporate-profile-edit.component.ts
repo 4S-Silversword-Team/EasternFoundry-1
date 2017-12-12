@@ -77,14 +77,46 @@ export class CorporateProfileEditComponent implements OnInit {
     product: 0,
   }
   invitationSent: string[] = []
-
   allAgencies: any[] = []
-
   currentDate: string =  (new Date().getMonth()+1) + '-' + new Date().getDate() + '-' + new Date().getFullYear()
   tomorrow: string
-
   lastStartDate: string;
   lastEndDate: string;
+  productDeleteTab: boolean = false
+  vehicles = [
+    "eFAST",
+    "NETCENTS II",
+    "The Consolidated Schedule (00CORP)",
+    "Alliant",
+    "One Acquisition Solution for Integrated Services (OASIS)",
+    "Publication Media (Schedule 76)",
+    "8(a) Streamlined Technology Acquisition Resources for Services (STARS)",
+    "Alliant Small Business",
+    "Temporary Administrative and Professional Staffing (TAPS) (Schedule 736)",
+    "Mission Oriented Business Integrated Services",
+    "Professional Engineering Services (PES) (Schedule 871)",
+    "Human Resources & Equal Employment Opportunity Services (HR) (Schedule 738 X)",
+    "Facilities Maintenance and Management (03FAC)",
+    "Financial and Business Solutions (FABS)",
+    "The Office Imaging and Document Solution (Schedule 36)",
+    "Transportation, Delivery and Relocation Services (Schedule 48)",
+    "Information Technology Schedule 70 (IT-70)",
+    "Joint Improvised Explosive Device Defeat Organization (JIEDDO)",
+    "ENCORE II Information Technology Support",
+    "CMS Enterprise System Development (ESD) IDIQ",
+    "CMS Virtual Data Center (VDC)",
+    "Chief Information Officer - Solutions and Partners 3 (CIO-SP3)",
+    "FirstSource II: IT Commodities and Value-Added Reseller Services",
+    "Enterprise Acquisition Gateway for Leading-Edge Solutions II (EAGLE II)",
+    "SeaPort Multiple Award Contract",
+    "Solutions for Enterprise Wide Procurement (SEWP) IV",
+    "Worldwide Protective Services-2 (WPS)",
+    "Total Information Processing Support Services 4 (TIPSS-4)",
+    "Transformation Twenty-One Total Technology NG (T4)",
+    "Service-Disabled, Veteran-Owned Small Business (VETS)",
+    "Rapid Response Third Generation (R2-3G)",
+    "Networx",
+  ]
 
   promiseFinished: boolean = false;
   public elementRef
@@ -650,17 +682,30 @@ export class CorporateProfileEditComponent implements OnInit {
     this.productTabs.push(0)
   }
 
+  // deleteProduct(i) {
+  //   var toDelete = this.products[i]
+  //   var toDeleteId = 0
+  //   this.products.splice(i, 1);
+  //   for (var x = 0; x < this.currentAccount.product.length; x++) {
+  //     if (toDelete._id == this.currentAccount.product[x]) {
+  //       this.currentAccount.product.splice(x,1)
+  //     }
+  //   }
+  // }
   deleteProduct(i) {
-    console.log('?')
-    var toDelete = this.products[i]
-    var toDeleteId = 0
     this.products.splice(i, 1);
-    for (var x = 0; x < this.currentAccount.product.length; x++) {
-      if (toDelete._id == this.currentAccount.product[x]) {
-        this.currentAccount.product.splice(x,1)
-      }
+    this.productDeleteTab = false
+    while (!this.currentUser.positionHistory[this.activeTab.product] && this.activeTab.product > 0){
+      this.activeTab.product = this.activeTab.product-1
     }
   }
+
+  deleteProductTab(){
+    this.productDeleteTab = true
+    console.log(this.productDeleteTab)
+  }
+
+
 
   addService() {
     this.services.push(
@@ -714,6 +759,9 @@ export class CorporateProfileEditComponent implements OnInit {
         quantity: 0
       }
     )
+  }
+  autocompleListFormatter (data: any) {
+    return data;
   }
 
   deleteVehicle(vehicle, i) {
