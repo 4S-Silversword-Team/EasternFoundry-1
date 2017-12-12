@@ -207,17 +207,19 @@ textarea {
   /*background: blue;*/
   border-right: 2px solid rgba(0,0,0,0.5);
   float: left;
-  height: 100%;
+  position: relative;
+  height: calc(45.5vh - 127px);
   width: 50%;
   padding: 2vh 2vw 2vh 0vw;
   overflow-y: auto;
 }
 .education-right {
   float: left;
-  overflow-y: auto;
-  height: 100%;
+  position: relative;
+  height: calc(45.5vh - 127px);
   width: 50%;
   padding: 2vh 0vw 2vh 2vw;
+  overflow-y: auto;
 }
 .education-header {
   color: rgb(75, 175, 225);

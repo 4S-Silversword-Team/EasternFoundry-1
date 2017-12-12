@@ -4,6 +4,7 @@ import { Title } from '@angular/platform-browser';
 
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
+import { Chart } from 'angular-highcharts';
 
 import { User } from '../../classes/user'
 
@@ -36,6 +37,11 @@ export class ProfileResumeComponent implements OnInit {
       years: number,
     }[]
   }[] = []
+  serviceChart: any;
+  categoryChart: any;
+  occupations: any[] = []
+  categories: any[] = []
+  allCategories: any[] = []
 
   constructor(
     private userService: UserService,
@@ -52,7 +58,17 @@ export class ProfileResumeComponent implements OnInit {
     this.userService.getUserbyID(this.route.snapshot.params['id']).toPromise().then((result) => {
       this.currentUser = result;
       this.titleService.setTitle(this.currentUser.firstName + ' ' + this.currentUser.lastName + "'s Resume - Federal Foundry Forge")
+      this.http.get('../../../assets/occupations.json')
+      .map((res: any) => res.json())
+      .subscribe(
+        (data: any) => {
+          this.allCategories = data;
+        },
+        err => console.log(err), // error
+        () => myCallback() // complete
+      );
 
+      var myCallback = () => {
       var toolsToPush = []
       for (let tool of this.currentUser.foundTools) {
         var matchFound = false
@@ -87,6 +103,165 @@ export class ProfileResumeComponent implements OnInit {
       if (this.jobTitle.slice(-1) == 's'){
         this.jobTitle = this.jobTitle.substring(0, this.jobTitle.length-1)
       }
+      for (let t of toolsToPush) {
+        var newName
+        var newCode
+        for (let i of this.allCategories) {
+          if (t.title == i.title){
+            newName = i.category
+            newCode = i.code.substring(0,2)
+          }
+        }
+        var newCategory = {
+          code: newCode,
+          name: newName,
+          score: 5
+        }
+        var match = false
+        for (let c of this.categories) {
+          if (newCategory.name == c.name) {
+            match = true
+            c.score = Math.round(c.score + (t.score / 5))
+          }
+        }
+        if (!match){
+          this.categories.push(newCategory)
+        }
+      }
+      var serviceData = []
+      var catPointsTotal = 0
+      for (let c of this.categories) {
+        catPointsTotal += c.score
+      }
+      for (let c of this.categories) {
+        var percent = 360*(c.score/catPointsTotal)
+        serviceData.push({
+          name: c.name,
+          y: percent
+        })
+      }
+      var govCount = 0
+      var contractorCount = 0
+      var commercialCount = 0
+      for (let job of this.currentUser.positionHistory) {
+        if (job.employmentType == 0) {
+          govCount++
+        } else if (job.employmentType == 1) {
+          contractorCount++
+        } else if (job.employmentType == 2) {
+          commercialCount++
+        }
+      }
+      var totalCount = govCount + contractorCount + commercialCount
+      var categoryData = []
+      if (govCount > 0) {
+        categoryData.push({
+          name: 'Government',
+          y: 360*(govCount / totalCount)
+        })
+      }
+      if (contractorCount > 0) {
+        categoryData.push({
+          name: 'Contractor',
+          y: 360*(contractorCount / totalCount)
+        },)
+      }
+      if (commercialCount > 0) {
+        categoryData.push({
+          name: 'Commercial',
+          y: 360*(commercialCount / totalCount)
+        })
+      }
+
+      this.serviceChart = new Chart({
+        chart: {
+          type: 'pie',
+          backgroundColor: 'rgba(0, 100, 200, 0.00)',
+          renderTo: "service_chart",
+        },
+        annotations: {
+          labelOptions: {
+            style: {
+              fontSize: '42px'
+            }
+          },
+          labels: {
+            overflow: 'elipses'
+          }
+        },
+        credits: {
+          enabled: false
+        },
+        title: {
+          text: null
+        },
+        tooltip: {
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+          pie: {
+            size: '100%',
+            allowPointSelect: false,
+            cursor: 'pointer',
+            dataLabels: {
+              enabled: true,
+              connectorPadding: 0,
+              connectorWidth: 1,
+              crop: true,
+              distance: 5,
+              format: '<b>{point.name}</b>',
+              style: {
+                  color: 'black'
+              }
+            }
+          }
+        },
+        series: [{
+          name: 'Focus',
+          colorByPoint: true,
+          data: serviceData,
+        }]
+      });
+      this.categoryChart = new Chart({
+        chart: {
+          type: 'pie',
+          backgroundColor: 'rgba(0, 100, 200, 0.00)',
+          renderTo: "category_chart"
+        },
+        credits: {
+          enabled: false
+        },
+        title: {
+          text: null
+        },
+        tooltip: {
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+
+        plotOptions: {
+          pie: {
+            size: '100%',
+            allowPointSelect: false,
+            cursor: 'pointer',
+            dataLabels: {
+              enabled: true,
+              connectorPadding: 0,
+              connectorWidth: 1,
+              crop: false,
+              distance: -2,
+              format: '<b>{point.name}</b>',
+              style: {
+                  color: 'black'
+              }
+            }
+          }
+        },
+        series: [{
+          name: 'Focus',
+          colorByPoint: true,
+          data: categoryData,
+        }]
+      });
 
       for (let p of this.currentUser.positionHistory) {
         for (let a of p.agencyExperience) {
@@ -171,6 +346,7 @@ export class ProfileResumeComponent implements OnInit {
       }
       console.log(this.agencyExperience)
       this.promiseFinished = true;
+    }
     });
   }
 

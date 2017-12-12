@@ -4,18 +4,51 @@
   padding: 10px;
 }
 
+p {
+  font-size: 16px;
+}
+h3 {
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.header p {
+  font-size: 20px;
+  /*font-weight: bold;*/
+  text-align: center;
+}
+/*
 .resume-name {
   font-size: 42px;
   text-align: center;
 }
 .resume-title {
-  font-size: 30px;
+  font-size: 18px;
+  font-weight: bold;
   text-align: center;
+}*/
+
+.summary-bar {
+  width: 100%;
+  position: relative;
+  float: left;
+  min-height: 200px;
+  border-top: 2px solid rgba(10,10,10,1);
+  border-bottom: 2px solid rgba(10,10,10,1);
 }
 
-.contact-bar {
-  width: 100%;
+.summary-title {
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: bold;
+  text-decoration: underline;
 }
+
+.description {
+  width: 100%;
+
+}
+
 .contact {
   float: left;
   width: calc(100% / 3);
