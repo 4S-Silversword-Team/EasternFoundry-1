@@ -417,6 +417,12 @@ export class CorporateProfileEditComponent implements OnInit {
     ){
       profilePass = true
     }
+    for (let v of this.currentAccount.vehicles) {
+      if (v.vehicleType.length < 1) {
+        profilePass = false
+        break
+      }
+    }
 
     var productsPass = true
     for (let p of this.products) {

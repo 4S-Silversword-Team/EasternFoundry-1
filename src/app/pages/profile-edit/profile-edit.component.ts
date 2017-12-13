@@ -469,24 +469,27 @@ export class ProfileEditComponent implements OnInit {
     var yearsOfWork = 0
     var yearsOfSchool = 0
     for (let j of this.currentUser.positionHistory) {
-      if (j.EndDate !== "Current") {
-        var endYear = +j.EndDate.slice(0, 4)
-        var startYear = +j.StartDate.slice(0, 4)
-      } else {
-        var endYear = new Date().getFullYear()
-        var startYear = +j.StartDate.slice(0, 4)
-      }
-      yearsOfWork += (endYear - startYear)
+      if (j.EndDate && j.StartDate) {
+        if (j.EndDate !== "Current") {
+          if (j.EndDate) {}
+          var endYear = +j.EndDate.slice(0, 4)
+          var startYear = +j.StartDate.slice(0, 4)
+        } else {
+          var endYear = new Date().getFullYear()
+          var startYear = +j.StartDate.slice(0, 4)
+        }
+        yearsOfWork += (endYear - startYear)
 
-      if (j.EndDate !== "Current") {
-        var endMonth = +(((+j.EndDate.slice(5, 7))/12).toFixed(2))
-        var startMonth = +(((+j.StartDate.slice(5, 7))/12).toFixed(2))
-      } else {
-        var endMonth = new Date().getMonth()
-        var endMonth = +((+endMonth/12).toFixed(2))
-        var startMonth = +(((+j.StartDate.slice(5, 7))/12).toFixed(2))
-      }
-      yearsOfWork += (endMonth - startMonth)
+        if (j.EndDate !== "Current") {
+          var endMonth = +(((+j.EndDate.slice(5, 7))/12).toFixed(2))
+          var startMonth = +(((+j.StartDate.slice(5, 7))/12).toFixed(2))
+        } else {
+          var endMonth = new Date().getMonth()
+          var endMonth = +((+endMonth/12).toFixed(2))
+          var startMonth = +(((+j.StartDate.slice(5, 7))/12).toFixed(2))
+        }
+        yearsOfWork += (endMonth - startMonth)
+      }        
     }
     for (let d of this.currentUser.education) {
       for (let t of this.degreeType) {

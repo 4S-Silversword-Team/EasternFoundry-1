@@ -44,7 +44,7 @@
             </div>
           </div>
         </div>
-        <div class="" style="position: absolute; height: calc(355px + 5vh); width: calc(100% - 180px); top: 2vh; right: 0px; padding: 2vh 2vw 2vh 2vw; float: left;">
+        <div class="scrollbar" style="position: absolute; height: calc(96vh - 165px); width: calc(100% - 180px); top: 2vh; right: 0px; padding: 2vh 2vw 2vh 2vw; float: left; overflow-y: auto">
           <div class="left" style="width: 115px; line-height: 42px; float: left; padding-top: 4px;">
             <p class="">Company Name</p>
             <p class="">Email</p>
@@ -63,16 +63,21 @@
             <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentAccount.city' [ngClass]="{'empty-field': this.currentAccount.city.length < 1}">
             <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentAccount.state' [ngClass]="{'empty-field': !this.currentAccount.state}">
             <input class="" style="width: 100%;" type="number" max="99999" maxlength="5" [(ngModel)] = 'this.currentAccount.zip' [ngClass]="{'empty-field': !this.currentAccount.zip}">
-            <button type="button" name="button" (click)='addVehicle()'>+</button>
-            <div class="scrollbar"  style="width: 100%; margin-top: 8px; min-height: 34px; max-height: 210px; overflow-y: auto; border: 1px solid rgba(0,0,0,0.2)">
-              <div class="" *ngFor="let vehicle of this.currentAccount.vehicles">
-                <!-- <div class="autocomplete-form" style="width: 100%; margin: 0px; height: 36px;">
+            <div class="scrollbar"  style="width: 100%; margin-top: 8px; min-height: 38px; max-height: 210px; overflow-y: auto; border: 1px solid rgba(0,0,0,0.2); z-index: 99; float: left; position: relative;">
+              <div class="" *ngFor="let vehicle of this.currentAccount.vehicles; let i = index" style="width: 100%; height: 38px; float: left;">
+                <!-- <div class="autocomplete-form" style="width: 99%; margin: 0px; height: 36px;">
                   <input ngui-auto-complete class="" style="width: 100%; margin: 0px" placeholder="" [(ngModel)] = 'vehicle.vehicleType' [source]='this.vehicles' [list-formatter]="autocompleListFormatter" select-value-of='agency' auto-select-first-item='true'>
                 </div> -->
-                <select class="" style="width: 100%; margin: 0px; height: 34px;" name="" [(ngModel)] = 'vehicle.vehicleType'>
+                <!-- <input type="text" name="" value=""> -->
+                <select class="" style="width: calc(100% - 24px); margin: 0px; height: 34px; float: left;" name="" [(ngModel)] = 'vehicle.vehicleType' [ngClass]="{'empty-field': vehicle.vehicleType.length < 1}">
                   <option *ngFor='let v of this.vehicles' [value]='v'>{{v}}</option>
                 </select>
+                <div (click)='this.currentAccount.vehicles.splice(i, 1)' style="position: absolute; right: 2px; width: 24px; height: 34px; cursor: pointer">
+                  <img src="./assets/img/btn-close.png" alt="" class="search-item-x" style="width: 20px; height: 20px; margin-top: 6px; margin-left: 2px; cursor: pointer">
+                </div>
+                <!-- <button type="button" name="button" style="width: 34px; height: 34px; line-height: 34px; font-size: 34px;">X</button> -->
               </div>
+              <button class="edit-button" type="button" name="button" (click)='addVehicle()' style="position: relative; margin-left: calc(100% - 45px); margin-top: 2px; width: 35px; line-height: 30px; font-size: 40px; padding-left: 0px; padding-right: 0px; padding-top: 0px; padding-bottom: 5px;">+</button>
             </div>
           </div>
           <p class="left" style="width: calc(100% - 42px); line-height: 30px; float: left; padding-top: 6px;">Make your company publically viewable?</p>

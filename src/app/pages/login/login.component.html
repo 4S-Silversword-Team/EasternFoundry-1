@@ -101,9 +101,11 @@
         <div class="" *ngIf='activeTab == 0'>
           <h4>Welcome to the Federal Foundry Forge.</h4>
           <p>This site is in beta. You'll probably run into some issues along the way.</p><br>
-          <p>If you do, we'd appreciate it if you used the <strong>Report a Bug</strong> button in the upper right to send us a note.</p><br>
-          <p>If you don't already have an account, click the <strong>Sign Up</strong> button in the upper right to register.</p>
-          <p>Then you can begin creating and joining companies, past performances, and more.</p><br>
+          <p>If you do, we'd appreciate it if you used the <strong><a href="bugreport" target="_blank">Report a Bug</a></strong> button in the upper right to send us a note.</p><br>
+          <div class="" *ngIf="!signedIn">
+            <p>If you don't already have an account, click the <strong><a href="user-profile-create">Sign Up</a></strong> button in the upper right to register.</p>
+            <p>Then you can begin creating and joining companies, past performances, and more.</p><br>
+          </div>
           <p>Thank you for being a part of the Forge project. Stay tuned - it'll only get bigger and better.</p><br>
         </div>
         <div class="" *ngIf='activeTab == 1'>
