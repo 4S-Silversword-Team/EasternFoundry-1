@@ -354,31 +354,31 @@ export class ProfileEditComponent implements OnInit {
             }
           }
           if (this.currentUser.education[0] == null){
-            this.currentUser.education[0] = {
-              School: '',
-              ReferenceLocation: {
-                CountryCode: '',
-                CountrySubDivisionCode: '',
-                CityName: ''
-              },
-              EducationLevel: [
-                {
-                  Name: ''
-                }
-              ],
-              AttendanceStatusCode: '',
-              AttendanceEndDate: '',
-              EducationScore: [''],
-              DegreeType: [
-                {
-                  Name: ''
-                }
-              ],
-              DegreeDate: '',
-              MajorProgramName: [''],
-              MinorProgramName: [''],
-              Comment: ''
-            }
+            // this.currentUser.education[0] = {
+            //   School: '',
+            //   ReferenceLocation: {
+            //     CountryCode: '',
+            //     CountrySubDivisionCode: '',
+            //     CityName: ''
+            //   },
+            //   EducationLevel: [
+            //     {
+            //       Name: ''
+            //     }
+            //   ],
+            //   AttendanceStatusCode: '',
+            //   AttendanceEndDate: '',
+            //   EducationScore: [''],
+            //   DegreeType: [
+            //     {
+            //       Name: ''
+            //     }
+            //   ],
+            //   DegreeDate: '',
+            //   MajorProgramName: [''],
+            //   MinorProgramName: [''],
+            //   Comment: ''
+            // }
           }
           if (this.currentUser.education[0].DegreeType[0] == null) {
             this.currentUser.education[0].DegreeType.push({Name: ''})
@@ -401,7 +401,7 @@ export class ProfileEditComponent implements OnInit {
                 }
               }
             } else {
-              d.DegreeType[0] = {Name: ''}
+              d.DegreeType[0] = {Name: 'Other'}
             }
           }
 

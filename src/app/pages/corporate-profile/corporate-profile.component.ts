@@ -402,6 +402,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
           // }
           var serviceData = []
           var catPointsTotal = 0
+          this.categories = this.categories.slice(0,5)
           for (let c of this.categories) {
             catPointsTotal += c.score
           }
@@ -420,7 +421,9 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
               other.y = other.y + percent
             }
           }
-          serviceData.push(other)
+          if (other.y > 0) {
+            serviceData.push(other)
+          }
 
           this.serviceChart = new Chart({
             chart: {

@@ -346,6 +346,7 @@ export class ProfileComponent implements OnInit {
       }
       var serviceData = []
       var catPointsTotal = 0
+      this.categories = this.categories.slice(0,5)
       for (let c of this.categories) {
         catPointsTotal += c.score
       }
