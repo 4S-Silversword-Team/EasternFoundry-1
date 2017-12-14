@@ -142,7 +142,7 @@ export class ProfileCreateComponent implements OnInit {
                     recipientEmail: this.userParam.username,
                     subject: 'Verify Your Email Address',
                     contactMessage: "To fully activate your Federal Foundry Forge account, you'll need to confirm your email address. \n \n Use the following link to verify: \n \n " + verifyLink,
-                    contactHTML: "<p>To fully activate your Federal Foundry Forge account, you'll need to confirm your email address. \n \n <a href='" + verifyLink + "'>Verify Your Email</a>.</p>"
+                    contactHTML: "<p>To fully activate your Federal Foundry Forge account, you'll need to confirm your email address.</p><br> <a href='" + verifyLink + "'>Verify Your Email</a>"
                   });
 
                   this.appService.sendEmail(mail).toPromise().then((res) => {

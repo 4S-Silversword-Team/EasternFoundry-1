@@ -1,6 +1,7 @@
 import {Http} from '@angular/http';
 
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -35,6 +36,7 @@ export class ProfileEditComponent implements OnInit {
   @ViewChild('fileInput') fileInput;
 
   currentUser: User = new User()
+  uneditedUser: User = new User()
   newSkill: string = ''
   expColors: string[] = ['rgb(0,178,255)', 'rgb(69,199,255)', 'rgb(138,220,255)', 'rgb(198,241,255)' ];
   toolChartDatas: any[] = []
@@ -409,6 +411,7 @@ export class ProfileEditComponent implements OnInit {
             this.allAgencies = val
             this.certService.getCerts().then(v => {
               this.allCerts = v
+              this.uneditedUser = this.currentUser
               this.promiseFinished = true;
               window.scrollTo(0, 0)
             })
@@ -421,6 +424,16 @@ export class ProfileEditComponent implements OnInit {
 
   ngOnInit() {
   }
+
+//   canDeactivate(): Observable<boolean> | boolean {
+//   // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
+//   if (!this.currentUser || this.uneditedUser === this.currentUser) {
+//     return true;
+//   }
+//   // Otherwise ask the user with the dialog service and return its
+//   // observable which resolves to true or false when the user decides
+//   return this.dialogService.confirm('Discard changes?');
+// }
 
   switchTab(newTab) {
     if (!this.currentUser.finished) {
@@ -462,6 +475,10 @@ export class ProfileEditComponent implements OnInit {
           this.finished.skill = true
         }
     }
+    // if (this.currentUser !== this.uneditedUser) {
+    //   console.log('midway update!')
+    // }
+    this.updateProfile(this.currentUser)
     this.activeTab.main = this.activeTab.main+1
   }
 
@@ -489,7 +506,7 @@ export class ProfileEditComponent implements OnInit {
           var startMonth = +(((+j.StartDate.slice(5, 7))/12).toFixed(2))
         }
         yearsOfWork += (endMonth - startMonth)
-      }        
+      }
     }
     for (let d of this.currentUser.education) {
       for (let t of this.degreeType) {
@@ -931,7 +948,7 @@ export class ProfileEditComponent implements OnInit {
   }
 
   addJob() {
-    this.currentUser.positionHistory.push(
+    this.currentUser.positionHistory.unshift(
       {
         Year: this.currentYear(),
         Employer: '',
@@ -1233,7 +1250,7 @@ export class ProfileEditComponent implements OnInit {
   }
 
 
-  updateProfile(model, noNav?: boolean) {
+  updateProfile(model, end?: boolean) {
 
     for (let cert of model.certification) {
       var matchFound = false
@@ -1325,11 +1342,13 @@ export class ProfileEditComponent implements OnInit {
     }
     // Mongo cannot update a model if _id field is present in the data provided for the update, so we delete it
     delete model['_id']
-    model.finished = true;
-    this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => {console.log(result); this.currentUser = result});
-    if(!noNav) {
+    if(end) {
+      model.finished = true;
+      this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => {console.log(result); this.currentUser = result});
       window.scrollTo(0, 0);
       this.router.navigate(['user-profile', this.route.snapshot.params['id']]);
+    } else {
+      this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => {console.log(result); this.currentUser = result; this.uneditedUser = result});
     }
   }
 

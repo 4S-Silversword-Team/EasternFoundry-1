@@ -285,21 +285,25 @@
         <div class="job" *ngIf='i == activeTab.job' style="position: relative;">
           <div class="col-xs-12 job-tab-bar">
             <div class="arrow-left arrow-left-2" *ngIf="this.currentUser.positionHistory[activeTab.job-1]" (click)='activeTab.job = activeTab.job-1'></div>
-            <div class="col-xs-3 job-tab" *ngIf="this.currentUser.positionHistory[activeTab.job-1]" (click) = 'activeTab.job = activeTab.job-1'>
-              <p class="job-tab-text">{{this.currentUser.positionHistory[activeTab.job-1].Employer}}</p>
+            <div class="col-xs-3 job-tab" *ngIf="this.currentUser.positionHistory[activeTab.job-1]" (click) = 'activeTab.job = activeTab.job-1' [ngClass]="{'job-tab-invalid': !checkJob(this.currentUser.positionHistory[activeTab.job-1], activeTab.job-1)}">
+              <p class="job-tab-text" *ngIf="this.currentUser.positionHistory[activeTab.job-1].Employer">{{this.currentUser.positionHistory[activeTab.job-1].Employer}}</p>
+              <p class="job-tab-text" *ngIf="!this.currentUser.positionHistory[activeTab.job-1].Employer">New Job</p>
             </div>
-            <div class="col-xs-3" *ngIf="!this.currentUser.positionHistory[activeTab.job-1]">
+            <div class="col-xs-1 col-xs-offset-2 job-tab" *ngIf="!this.currentUser.positionHistory[activeTab.job-1]" (click)='addJob()'>
+              <p class="job-tab-text">+</p>
             </div>
-            <div class="col-xs-6 job-tab job-tab-active">
+            <div class="col-xs-6 job-tab job-tab-active" [ngClass]="{'job-tab-invalid': !checkJob(this.currentUser.positionHistory[activeTab.job], activeTab.job)}">
               <div (click)='this.deleteJobTab()' style="position: absolute; z-index: 4; right: 2px; top: -4px">
                 <div class="">
                   <img src="./assets/img/btn-close.png" alt="" class="close-x-little">
                 </div>
               </div>
-              <p class="job-tab-text">{{this.currentUser.positionHistory[activeTab.job].Employer}}</p>
+              <p class="job-tab-text" *ngIf="this.currentUser.positionHistory[activeTab.job].Employer">{{this.currentUser.positionHistory[activeTab.job].Employer}}</p>
+              <p class="job-tab-text" *ngIf="!this.currentUser.positionHistory[activeTab.job].Employer">New Job</p>
             </div>
-            <div class="col-xs-3 job-tab" *ngIf="this.currentUser.positionHistory[activeTab.job+1]" (click) = 'activeTab.job = activeTab.job+1'>
-              <p class="job-tab-text">{{this.currentUser.positionHistory[activeTab.job+1].Employer}}</p>
+            <div class="col-xs-3 job-tab" *ngIf="this.currentUser.positionHistory[activeTab.job+1]" (click) = 'activeTab.job = activeTab.job+1' [ngClass]="{'job-tab-invalid': !checkJob(this.currentUser.positionHistory[activeTab.job+1], activeTab.job+1)}">
+              <p class="job-tab-text" *ngIf="this.currentUser.positionHistory[activeTab.job+1].Employer">{{this.currentUser.positionHistory[activeTab.job+1].Employer}}</p>
+              <p class="job-tab-text" *ngIf="!this.currentUser.positionHistory[activeTab.job+1].Employer">New Job</p>
             </div>
             <div class="col-xs-3" *ngIf="!this.currentUser.positionHistory[activeTab.job+1]">
             </div>
@@ -644,7 +648,7 @@
     <button class="edit-button edit-button-next" type="button" name="button" (click)='activeTab.skills = 1' *ngIf="checkFields(activeTab.main) && activeTab.main==6 && activeTab.skills == 0">Next</button>
     <button class="edit-button-nope edit-button-next" type="button" name="button" style="" *ngIf=!checkFields(activeTab.main)>Incomplete</button>
     <div class="" *ngIf='this.currentUser.finished || (activeTab.main==6 && activeTab.skills==1)'>
-      <button class="edit-button edit-button-save" type="button" name="button" (click)='updateProfile(this.currentUser)' *ngIf="checkFields(9) && this.allTools.length > 0">Save</button>
+      <button class="edit-button edit-button-save" type="button" name="button" (click)='updateProfile(this.currentUser, true)' *ngIf="checkFields(9) && this.allTools.length > 0">Save</button>
       <button class="edit-button-nope edit-button-nope-2" type="button" name="button" style="" *ngIf='!checkFields(9) && this.allTools.length > 0'>Incomplete</button>
       <button class="edit-button-nope edit-button-nope-2" type="button" name="button" style="" *ngIf='this.allTools.length < 1'>Please Wait...</button>
     </div>
