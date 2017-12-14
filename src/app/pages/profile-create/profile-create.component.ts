@@ -6,6 +6,9 @@ import { Location } from '@angular/common';
 import { User } from '../../classes/user';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
+import { TokenService } from '../../services/token.service';
+import { AppService } from '../../services/app.service';
+
 import {AppComponent} from '../../app.component'
 
 declare var $: any;
@@ -14,7 +17,7 @@ declare var $: any;
   selector: 'app-profile-create',
   templateUrl: './profile-create.component.html',
   styleUrls: ['./profile-create.component.css'],
-  providers: [ UserService, AuthService ],
+  providers: [ UserService, AuthService, TokenService, AppService],
 })
 
 // @Directive({
@@ -45,6 +48,8 @@ export class ProfileCreateComponent implements OnInit {
     private auth: AuthService,
     private nav: AppComponent,
     private userService: UserService,
+    private tokenService: TokenService,
+    private appService: AppService,
     private route: ActivatedRoute,
     private router: Router,
     public location: Location,
@@ -117,33 +122,47 @@ export class ProfileCreateComponent implements OnInit {
               var res: any = result
               // this.router.navigate(['login/new']);
               var authError = false
-              this.auth.doLogin(this.userParam.username.toLowerCase(), this.userParam.password, (function() {
-                //this.authError = !this.auth.isLoggedIn()
-                if (!this.auth.isLoggedIn()) {
-                  var authError = true
-                } else {
-                  if (!authError){
-                    //this.currentUser = this.auth.current_user  //TODO: find out why this doesn't work
-                    // var mail = ({
-                    //   senderEmail: 'federalfoundryforge@gmail.com',
-                    //   recipientEmail: this.email,
-                    //   subject: 'Verify Your Email Address',
-                    //   contactMessage: "To activate your Federal Foundry Forge account, you'll need to confirm your email address. \n \n Use the following link to verify: \n \n ",
-                    //   contactHTML: "<p>To activate your Federal Foundry Forge account, you'll need to confirm your email address. \n \n Use the following link to verify: <a href='" + resetLink + "'>click here to assign a new password</a>. If not, you can ignore this message.</p>"
-                    // });
-                    //
-                    // this.appService.sendEmail(mail).toPromise().then((res) => {
-                    //   console.log('email sent i think! check!')
-                    //   this.passwordSent = true
-                    // })
-
-                    var currentUser = localStorage.getItem('uid')
-                    this.nav.navRefresh();
-                    console.log(currentUser)
-                    this.router.navigateByUrl("/user-profile-edit/" + currentUser)
-                  }
+              var time = new Date()
+              var expTime = '' + ((time.getTime() / 1000) + 60*60*24 )
+              var hash = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+              this.userService.getUserIdByEmail(this.userParam.username).toPromise().then((res) => {
+                var user = res
+                var token = {
+                  userId: user.id,
+                  userEmail: this.userParam.username,
+                  expTime: expTime,
+                  hash: hash,
+                  reset: false
                 }
-              }).bind(this))
+                this.tokenService.createToken(token).toPromise().then((res) => {
+                  var verifyLink = "http://13.58.193.226:4200/verify/" + hash
+                  // var resetLink = "http://localhost:4200/password-reset/" + resetHash
+                  var mail = ({
+                    senderEmail: 'federalfoundryforge@gmail.com',
+                    recipientEmail: this.userParam.username,
+                    subject: 'Verify Your Email Address',
+                    contactMessage: "To fully activate your Federal Foundry Forge account, you'll need to confirm your email address. \n \n Use the following link to verify: \n \n " + verifyLink,
+                    contactHTML: "<p>To fully activate your Federal Foundry Forge account, you'll need to confirm your email address. \n \n <a href='" + verifyLink + "'>Verify Your Email</a>.</p>"
+                  });
+
+                  this.appService.sendEmail(mail).toPromise().then((res) => {
+                    console.log('email sent i think! check!')
+                    this.auth.doLogin(this.userParam.username.toLowerCase(), this.userParam.password, (function() {
+                      //this.authError = !this.auth.isLoggedIn()
+                      if (!this.auth.isLoggedIn()) {
+                        var authError = true
+                      } else {
+                        if (!authError){
+                          var currentUser = localStorage.getItem('uid')
+                          this.nav.navRefresh();
+                          console.log(currentUser)
+                          this.router.navigateByUrl("/user-profile-edit/" + currentUser)
+                        }
+                      }
+                    }).bind(this))
+                  })
+                })
+              })
             });
           }
         }

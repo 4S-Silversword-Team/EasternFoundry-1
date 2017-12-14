@@ -42,13 +42,17 @@ export class LoginComponent implements OnInit {
         this.passwordReset = true
         this.tokenService.getTokenByHash(this.route.snapshot.params['hash']).toPromise().then((res) => {
           this.passwordToken = res
-          var time = new Date()
-          if (+(time.getTime() / 1000) <= +this.passwordToken.expTime) {
-            console.log('i think this will work')
+          if (this.passwordToken.reset) {
+            var time = new Date()
+            if (+(time.getTime() / 1000) <= +this.passwordToken.expTime) {
+              console.log('i think this will work')
+            } else {
+              this.tokenInvalid = true
+            }
+            this.promiseFinished = true
           } else {
             this.tokenInvalid = true
           }
-          this.promiseFinished = true
         }).catch(err => {
           this.tokenInvalid = true
           this.promiseFinished = true
@@ -105,7 +109,8 @@ export class LoginComponent implements OnInit {
         userId: user.id,
         userEmail: this.email,
         expTime: expTime,
-        hash: resetHash
+        hash: resetHash,
+        reset: true
       }
       this.tokenService.createToken(token).toPromise().then((res) => {
         var resetLink = "http://13.58.193.226:4200/password-reset/" + resetHash
