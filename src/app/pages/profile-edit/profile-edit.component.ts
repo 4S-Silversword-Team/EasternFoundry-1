@@ -478,7 +478,9 @@ export class ProfileEditComponent implements OnInit {
     // if (this.currentUser !== this.uneditedUser) {
     //   console.log('midway update!')
     // }
-    this.updateProfile(this.currentUser)
+    if (!this.currentUser.finished) {
+      this.updateProfile(this.currentUser)
+    }
     this.activeTab.main = this.activeTab.main+1
   }
 
