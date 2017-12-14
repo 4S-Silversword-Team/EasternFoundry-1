@@ -14,6 +14,7 @@ import { NoContentComponent } from './pages/no-content/no-content.component';
 import { MyPastPerformancesComponent } from './pages/my-pastperformances/my-pastperformances.component'
 import { SearchComponent } from './pages/search/search.component'
 import { MessageComponent } from './pages/message/message.component'
+import { VerifyComponent } from './pages/verify/verify.component'
 import { AdminComponent } from './pages/admin/admin.component'
 
 
@@ -23,6 +24,7 @@ export const ROUTES: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'login/new', component: LoginComponent},
   { path: 'password-reset/:hash', component: LoginComponent},
+  { path: 'verify/:hash', component: VerifyComponent},
   { path: 'companies', component: CompaniesComponent},
   { path: 'my-companies', component: CompaniesComponent},
   { path: 'my-pastperformances', component: MyPastPerformancesComponent},

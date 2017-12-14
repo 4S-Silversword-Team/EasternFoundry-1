@@ -1,0 +1,50 @@
+<div class="container loader-container" *ngIf='this.registerInProcess && !this.paramsError'>
+  <div class="loader-box">
+    <div class="loader"></div>
+    <h2>We're working on your account.</h2>
+    <!--<h2>It might take a minute. Please don't navigate away from this page.</h2>-->
+    <h3>If it takes more than two minutes, the backend has likely crashed. Try again in a few minutes.</h3>
+    <!--<h2 *ngIf="this.registerFailed">Okay...this has taken too long. The backend has probably crashed.</h2>-->
+    <!--<h2 *ngIf="this.registerFailed">NOW you can navigate away. Try again later, and we'll hopefully have it fixed.</h2>-->
+  </div>
+  <!-- <p class="loading">Loading</p> -->
+</div>
+<div class="form-container">
+  <h2>Register</h2>
+  <div class="alert alert-danger" [class.hidden] = '!this.paramsError'>
+    <strong>Warning!</strong> {{this.paramsError}}.
+  </div>
+  <form method="post" encType="multipart/form-data">
+    <div class="form-group">
+      <label for="username">Email</label>
+      <input type="text" name="username" id="username" class="form-control" [(ngModel)]='this.userParam.username' required />
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" class="form-control" [(ngModel)]='this.userParam.password' required [ngClass]="{'empty-field': this.userParam.password.length > 0 && this.userParam.password.length < 6}"/>
+    </div>
+    <div class="form-group">
+      <label for="password">Re-Enter Password</label>
+      <input type="password" name="password" id="password" class="form-control" [(ngModel)]='this.password2' required [ngClass]="{'empty-field': this.userParam.password.length > 0 && this.userParam.password != this.password2}"/>
+    </div>
+    <p *ngIf="invalidEmail()" class="password-text" style="color: red">Invalid email</p>
+    <p *ngIf="this.email.inUse" class="password-text" style="color: red">{{this.email.address}} already in use</p>
+    <div class="" *ngIf="this.userParam.password.length > 0 ">
+      <p *ngIf="this.userParam.password != this.password2" class="password-text" style="color: red">Passwords don't match</p>
+      <p *ngIf="this.userParam.password == this.password2" class="password-text" style="color: green">Passwords match</p>
+      <p *ngIf="this.userParam.password.length < 6" class="password-text" style="color: red">Password must be at least 6 characters</p>
+    </div>
+    <br>
+    <div class="form-group">
+      <label>Resume</label>
+      <p>We recommend a .DOC or .DOCX file format. We support .PDF, but the parsing may not be as accurate.</p>
+      <!--<input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".pdf,.doc,.docx">-->
+      <input type="file" #fileInput placeholder="Upload file" accept=".doc,.docx,.pdf">
+    </div>
+    <div class="form-group">
+      <!--<button type="submit" class="btn btn-primary" (click)="registerUser(this.userParam)">Register</button>-->
+      <button type="submit" class="btn btn-primary" (click)="registerUser()">Register</button>
+      <a href="/login" class="btn btn-link">Cancel</a>
+    </div>
+  </form>
+</div>

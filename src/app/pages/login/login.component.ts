@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
-import { ResetTokenService } from '../../services/resettoken.service';
+import { TokenService } from '../../services/token.service';
 import { Router, ActivatedRoute, Params } from '@angular/router'
 import {AppComponent} from '../../app.component'
 import { AppService } from '../../services/app.service';
@@ -10,7 +10,7 @@ import { AppService } from '../../services/app.service';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [AuthService, UserService, AppService, ResetTokenService]
+  providers: [AuthService, UserService, AppService, TokenService]
 })
 export class LoginComponent implements OnInit {
 
@@ -33,14 +33,14 @@ export class LoginComponent implements OnInit {
     private auth: AuthService,
     private userService: UserService,
     private appService: AppService,
-    private resetTokenService: ResetTokenService,
+    private tokenService: TokenService,
     private route: ActivatedRoute,
     private router: Router,
     private nav: AppComponent
   ) {
       if (this.router.url.startsWith('/password-reset')) {
         this.passwordReset = true
-        this.resetTokenService.getResetTokenByHash(this.route.snapshot.params['hash']).toPromise().then((res) => {
+        this.tokenService.getTokenByHash(this.route.snapshot.params['hash']).toPromise().then((res) => {
           this.passwordToken = res
           var time = new Date()
           if (+(time.getTime() / 1000) <= +this.passwordToken.expTime) {
@@ -107,7 +107,7 @@ export class LoginComponent implements OnInit {
         expTime: expTime,
         hash: resetHash
       }
-      this.resetTokenService.createResetToken(token).toPromise().then((res) => {
+      this.tokenService.createToken(token).toPromise().then((res) => {
         var resetLink = "http://13.58.193.226:4200/password-reset/" + resetHash
         // var resetLink = "http://localhost:4200/password-reset/" + resetHash
         var mail = ({
@@ -134,7 +134,7 @@ export class LoginComponent implements OnInit {
     }
     this.userService.updatePw(token.userId, pass).toPromise().then((res) => {
       console.log('I THINK IT DID THE PASSWORD CHANGE')
-      this.resetTokenService.deleteResetToken(this.passwordToken._id).toPromise().then((res) => {
+      this.tokenService.deleteToken(this.passwordToken._id).toPromise().then((res) => {
         console.log('I THINK THE TOKEN IS GONE, NOW LETS SEND YOU AWAYYYYY')
         this.router.navigateByUrl("/")
       })

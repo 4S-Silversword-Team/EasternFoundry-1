@@ -21,6 +21,7 @@ import { MyPastPerformancesComponent } from './pages/my-pastperformances/my-past
 import { SearchComponent } from './pages/search/search.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { MessageComponent } from './pages/message/message.component';
+import { VerifyComponent } from './pages/verify/verify.component';
 
 import { ComponentNameComponent } from './component-name/component-name.component';
 
@@ -69,7 +70,8 @@ import { Angulartics2Clicky } from 'angulartics2/clicky';
     AvailablebarComponent, SelectorComponent, CompaniesComponent, CorporateProfileEditComponent, MyPastPerformancesComponent,
     SearchComponent,
     ComponentNameComponent,
-    MessageComponent
+    MessageComponent,
+    VerifyComponent
   ],
   imports: [
     NgbModule.forRoot(),

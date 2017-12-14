@@ -236,6 +236,7 @@ export class User {
   resumeText: string
   public: boolean
   finished: boolean
+  verified: boolean
   power: number
   companyUserProxies: [
     any

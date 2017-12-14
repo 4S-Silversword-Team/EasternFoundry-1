@@ -124,10 +124,23 @@ export class ProfileCreateComponent implements OnInit {
                 } else {
                   if (!authError){
                     //this.currentUser = this.auth.current_user  //TODO: find out why this doesn't work
+                    // var mail = ({
+                    //   senderEmail: 'federalfoundryforge@gmail.com',
+                    //   recipientEmail: this.email,
+                    //   subject: 'Verify Your Email Address',
+                    //   contactMessage: "To activate your Federal Foundry Forge account, you'll need to confirm your email address. \n \n Use the following link to verify: \n \n ",
+                    //   contactHTML: "<p>To activate your Federal Foundry Forge account, you'll need to confirm your email address. \n \n Use the following link to verify: <a href='" + resetLink + "'>click here to assign a new password</a>. If not, you can ignore this message.</p>"
+                    // });
+                    //
+                    // this.appService.sendEmail(mail).toPromise().then((res) => {
+                    //   console.log('email sent i think! check!')
+                    //   this.passwordSent = true
+                    // })
+
                     var currentUser = localStorage.getItem('uid')
                     this.nav.navRefresh();
                     console.log(currentUser)
-                    this.router.navigateByUrl("/user-profile/" + currentUser)
+                    this.router.navigateByUrl("/user-profile-edit/" + currentUser)
                   }
                 }
               }).bind(this))
