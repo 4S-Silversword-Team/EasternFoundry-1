@@ -38,6 +38,7 @@ export class Company {
         }
     ]
     public: boolean
+    videoUrl: string
     userProfileProxies : [
     any
     ]

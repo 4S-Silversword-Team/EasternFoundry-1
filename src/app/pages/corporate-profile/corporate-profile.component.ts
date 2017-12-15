@@ -414,6 +414,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
             y: 0,
           }
           for (let c of this.categories) {
+            var found = false
             var percent = 360*(c.score/catPointsTotal)
             if (((c.score/catPointsTotal)*100) >= 2){
               serviceData.push({

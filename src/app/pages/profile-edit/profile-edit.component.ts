@@ -829,7 +829,7 @@ export class ProfileEditComponent implements OnInit {
       this.s3Service.postPhoto(formData).toPromise().then(result => {
         console.log("Photo upload success",result);
         this.currentUser.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/userPhotos/"+uid+"_"+(i+1).toString()
-        this.updateProfile(this.currentUser, true);
+        this.updateProfile(this.currentUser);
         this.s3Service.deletePhoto("/userPhotos/"+uid+"_"+(i).toString()).toPromise().then( res => console.log("Old photo deleted " + res))
       }).catch((reason) =>console.log("reason ", reason));
     }
