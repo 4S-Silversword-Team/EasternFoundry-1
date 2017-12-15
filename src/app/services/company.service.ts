@@ -96,6 +96,7 @@ export class CompanyService {
         quantity: 30
       }
     ]
+    temp.vehicles.splice(0,1)
     temp.schedule = [
       {
         date: 'Dec, 2016',

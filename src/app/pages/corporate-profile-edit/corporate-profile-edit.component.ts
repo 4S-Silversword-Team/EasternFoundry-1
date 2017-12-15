@@ -301,13 +301,14 @@ export class CorporateProfileEditComponent implements OnInit {
       let formData = new FormData();
       let file = fileBrowser.files[0]
       console.log(file)
+      var photoId = this.currentAccount._id
       formData.append("bucket", environment.bucketName);
       formData.append("key", "companyPhotos/"+this.currentAccount._id+"_0");
       formData.append("file", file);
       this.s3Service.postPhoto(formData).toPromise().then(result => {
         console.log("Photo upload success",result);
         this.currentAccount.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/companyPhotos/"+this.currentAccount._id+"_0"
-        this.updateCompany(this.currentAccount, true);
+        // this.updateCompany(this.currentAccount, true);
       }).catch((reason) =>console.log("reason ", reason));
     }
   }
@@ -329,7 +330,7 @@ export class CorporateProfileEditComponent implements OnInit {
       this.s3Service.postPhoto(formData).toPromise().then(result => {
         console.log("Photo upload success",result);
         this.currentAccount.avatar = "http://s3.amazonaws.com/" + environment.bucketName + "/companyPhotos/"+uid+"_"+(i+1).toString()
-        this.updateCompany(this.currentAccount, true);
+        // this.updateCompany(this.currentAccount, true);
         this.s3Service.deletePhoto("/companyPhotos/"+uid+"_"+(i).toString()).toPromise().then( res => console.log("Old photo deleted " + res))
       }).catch((reason) =>console.log("reason ", reason));
     }
@@ -878,12 +879,16 @@ export class CorporateProfileEditComponent implements OnInit {
       this.companyService.createCompany(model).toPromise().then(newCompany => {
         var companyId = JSON.parse(newCompany._body)._id
         console.log(companyId)
-
-        //TODO handle if no admin in role collection in Db
-        this.roleService.getRoleByTitle("admin").toPromise().then((admin) => {
-          console.log("adminresult",admin)
-          this.addUserWithRole(companyId, userId, admin._id);
-        })
+        this.currentAccount._id = companyId
+        this.uploadPhoto()
+        model.avatar = this.currentAccount.avatar
+        this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then((result) => {
+          //TODO handle if no admin in role collection in Db
+          this.roleService.getRoleByTitle("admin").toPromise().then((admin) => {
+            console.log("adminresult",admin)
+            this.addUserWithRole(companyId, userId, admin._id);
+          })
+       });
 
       });
     } else {

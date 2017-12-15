@@ -35,11 +35,11 @@
             <div class="" style="position: absolute; top: 180px">
               <div *ngIf="!this.currentAccount.avatar || this.currentAccount.avatar.startsWith('..')" class="left">
                 <input type="file" #fileInput accept=".jpg,.png" style="width:90%; margin-left: 5%"/>
-                <button class="btn btn-primary" style="width: 90%; margin-left: 5%;" (click)="uploadPhoto()">Upload Avatar</button>
+                <button class="btn btn-primary" style="width: 90%; margin-left: 5%;" (click)="uploadPhoto()" *ngIf="!this.creatingNew">Upload Avatar</button>
               </div>
               <div *ngIf="this.currentAccount.avatar && !this.currentAccount.avatar.startsWith('..')" class="left">
                 <input type="file" #fileInput accept=".jpg,.png" style="width:90%; margin-left: 5%"/>
-                <button class="btn btn-primary" style="width: 90%; margin-left: 5%;" (click)="editPhoto()">Replace Avatar</button>
+                <button class="btn btn-primary" style="width: 90%; margin-left: 5%;" (click)="editPhoto()" *ngIf="!this.creatingNew">Replace Avatar</button>
               </div>
             </div>
           </div>
