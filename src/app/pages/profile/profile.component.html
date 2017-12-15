@@ -9,7 +9,7 @@
   <div class="edit-box">
     <div *ngIf="this.isActiveProfile" class="btn-edit" (click) = 'editProfile()'>Edit</div>
   </div>
-    <!-- <div class="container top-bar">
+    <!-- <div class="container profile-top-bar">
     <div class="profile-navbar">
     <div class="profile-navbar-tab" (click)='switchTab(0)' [ngClass]="{'profile-navbar-tab-active-left': this.activeTab.main == 0}">
     Profile
@@ -34,7 +34,6 @@
   <div *ngIf="this.isActiveProfile" class="btn-edit" (click) = 'editProfile()'>Edit</div>
   </div>
   </div> -->
-  <!-- PROFILE TAB -->
   <div class="container">
     <div class="basic-info col-xs-12">
       <div class="" style="height: 150px; width: 180px; position: relative; float: left;">
@@ -58,7 +57,7 @@
           </div>
         </div>
       </div>
-      <div class="top-bar">
+      <div class="profile-top-bar">
         <div class="profile-navbar">
           <div class="profile-navbar-tab" (click)='switchTab(0)' [ngClass]="{'profile-navbar-tab-active': this.activeTab.main == 0}">
             Profile
@@ -80,11 +79,12 @@
           </div>
         </div>
       </div>
-      <div class="" style="width: 100%; height: 8px; border-bottom: 1px solid rgba(0,0,0,0.4)" *ngIf='this.activeTab.main != 3'>
+      <div class="" style="width: 100%; height: 8px; border-bottom: 1px solid rgba(0,0,0,0.4)">
       </div>
     </div>
   </div>
-  <div class="" style="width: 100%; height: calc(99vh - 254px)">
+  <div class="" style="width: 100%; margin-top: 8px; height: calc(99vh - 254px);">
+    <!-- PROFILE TAB -->
     <div class="container" *ngIf='this.activeTab.main == 0'>
       <div class="basic-info-bottom">
         <div id="user-contact" class="col-xs-5 scrollbar" style="overflow-y: auto; height: 100%; padding-top: .1v; padding-bottom: .1v; border-right: 2px solid rgba(0,0,0,0.25);">
@@ -119,7 +119,7 @@
           </div> -->
         </div>
       </div>
-      <div class="col-xs-12" style="background: rgba(223,223,225,1); height: 50vh; border-bottom: 0px solid black">
+      <div class="col-xs-12" style="background: rgba(223,223,225,1); height: calc(55vh - 127px); border-bottom: 0px solid black">
         <div class="col-xs-6" id="service_chart"  style="height: 40vh; margin: 0 auto" [chart]="serviceChart"></div>
         <div class="col-xs-6" id="category_chart"  style="height: 40vh; margin: 0 auto" [chart]="categoryChart"></div>
       </div>

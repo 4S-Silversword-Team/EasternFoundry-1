@@ -1,113 +1,5 @@
-
-.top-bar {
-
-}
-
-.basic-info {
-  padding: 0px;
-  height: calc(50vh - 130px);
-}
-.basic-info-inner {
-  position: absolute;
-  height: calc(50vh - 180px);
-  width: calc(100% - 180px);
-  bottom: 0px;
-  right: 0px;
-  float: left;
-  background: none;
-}
-
-.basic-info-header {
-  color: rgb(75, 175, 225);
-  font-size: 40px;
-  font-family: 'Audiowide', cursive;
-  margin-bottom: -7px;
-}
-
-.basic-info-sub {
-  font-size: 18px;
-  padding-top: 0px;
-}
-.basic-info-sub-2 {
-  font-size: 18px;
-  font-style: italic;
-  padding-top: 1px;
-}
-
-.basic-info-text {
-  float: left;
-  position: relative;
-  font-size: 12px;
-}
-
-.basic-info-text-2 {
-  width: 100%;
-  font-size: 14px;
-  line-height: 20px;
-}
-
-.basic-info-text img{
-  height: 38px;
-  margin-right: 3px;
-  /*margin-top: -5px;*/
-}
-
 .profile-navbar-tab {
-  cursor: pointer;
-  float: left;
-  line-height: 60px;
-  position: relative;
-  height: 100%;
   width: calc(100% / 5);
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
-  color: rgba(0,0,0,0.5);
-  margin: 0px;
-  border-right: 2px solid rgba(173,173,175,1);
-}
-
-.profile-navbar-tab-active {
-  color: rgba(0,0,0,1);
-  background: rgba(253,253,255,1);
-  border: 1px solid rgba(0,0,0,0.1);
-  border-right: 2px solid rgba(173,173,175,1);
-}
-.profile-navbar-tab-active-left {
-  color: rgba(0,0,0,1);
-  background: rgba(253,253,255,1);
-  border-left: 1px solid rgba(0,0,0,0.1);
-  border-top: 1px solid rgba(0,0,0,0.1);
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-  border-right: 2px solid rgba(173,173,175,1);
-}
-.profile-navbar-tab-active-right {
-  color: rgba(0,0,0,1);
-  background: rgba(253,253,255,1);
-  border: 1px solid rgba(0,0,0,0.1);
-}
-
-.profile-navbar-tab:hover {
-  /*border: 1px solid rgba(0,0,0,0.01);*/
-  color: rgba(0,0,0,0.6);
-  background: rgba(253,253,255,0.35)
-}
-.profile-navbar-tab:active {
-  /*border: 1px solid rgba(0,0,0,0.05);*/
-  color: rgba(0,0,0,0.7);
-  background: rgba(253,253,255,0.7)
-}
-.profile-navbar-tab-active:hover {
-  color: rgba(0,0,0,1);
-  background: rgba(253,253,255,1);
-}
-.profile-navbar-tab-active-left:hover {
-  color: rgba(0,0,0,1);
-  background: rgba(253,253,255,1);
-}
-.profile-navbar-tab-active-right:hover {
-  color: rgba(0,0,0,1);
-  background: rgba(253,253,255,1);
 }
 
 .employee-panel {
@@ -161,12 +53,12 @@
 .leadership {
   /*background: blue;*/
   padding-top: 0px;
-  height: calc(45vh - 130px);
+  height: calc(44vh - 127px);
   overflow: hidden;
 }
 
 .leadership-inner {
-  height: calc(44vh - 179px);
+  height: calc(44vh - 187px);
   background: rgba(0,0,0,0.02);
   overflow-y: auto;
   border: 1px solid rgba(0,100,200, 0.9);
@@ -183,7 +75,7 @@
 }
 
 .employees-inner {
-  height: calc(54vh - 49px);
+  height: calc(45vh - 127px);
   background: rgba(0,0,0,0.02);
   overflow-y: auto;
   border: 1px solid rgba(0,100,200, 0.9);
@@ -477,18 +369,6 @@ textarea {
   padding-top: 12px;
 }
 
-.basic-info .div-title p{
-  margin-top: -5px;
-  width: 250px;
-  overflow: visible;
-  white-space: nowrap;
-}
-
-.basic-info .div-title div{
-  width: 100%;
-  margin-bottom: 30px;
-}
-
 .avatar {
   position: absolute;
   width: 150px;
@@ -556,20 +436,6 @@ textarea {
   height: auto;
 }
 
-.basic-info .main>div{
-    width: calc(50% - 90px);
-    padding-left: 30px;
-    padding-right: 30px;
-    border-left: 3px solid #757575;
-}
-
-.basic-info .main p{
-    width: calc(100% - 70px);
-}
-
-.basic-info .two-p{
-    width: calc(50% - 30px)!important;
-}
 
 .leadership .div-title p{
     width: 200px;

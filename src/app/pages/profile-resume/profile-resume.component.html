@@ -10,11 +10,27 @@
     <div id="resume-box">
       <div class="header" style="margin-bottom: 5px;">
         <p>{{this.currentUser.firstName}} {{this.currentUser.lastName}}</p>
-        <p>{{this.jobTitle}}</p>
-        <p>{{this.currentUser.phone[0].Number}}, {{this.currentUser.username}}, {{this.currentUser.address.city}}, {{this.currentUser.address.state}}</p>
+        <div class="" style="width: 100%; height: 20px; position: relative;">
+          <input type="text" name="" [(ngModel)]="this.jobTitle">
+        </div>
+        <p>{{this.contactString}}</p>
       </div>
       <div class="summary-bar" style="padding-top: 4px;">
-        <div class="col-xs-7">
+        <div class="col-xs-12" *ngIf="!this.currentUser.interest">
+          <div class="col-xs-6" style="position: relative; overflow: visible">
+            <div class="summary-title" style="text-align: center">
+              Sector Summary
+            </div>
+            <div class="" id="category_chart"  style="min-height: 184px; margin: 0 auto" [chart]="categoryChart"></div>
+          </div>
+          <div class="col-xs-6" style="position: relative; overflow: visible">
+            <div class="summary-title" style="text-align: center">
+              Skill Summary
+            </div>
+            <div class="" id="service_chart"  style="min-height: 184px; margin: 0 auto" [chart]="serviceChart"></div>
+          </div>
+        </div>
+        <div class="col-xs-7" *ngIf="this.currentUser.interest">
           <div class="col-xs-6" style="position: relative; overflow: visible">
             <div class="summary-title">
               Sector Summary
@@ -28,7 +44,7 @@
             <div class="" id="service_chart"  style="min-height: 184px; margin: 0 auto" [chart]="serviceChart"></div>
           </div>
         </div>
-        <div class="col-xs-5">
+        <div class="col-xs-5" *ngIf="this.currentUser.interest">
           <div class="summary-title">
             Professional Summary
           </div>
@@ -49,8 +65,6 @@
           <ul>
             <li *ngFor='let clearance of this.currentUser.clearance'>
               <p>{{clearance.clearanceType}}</p>
-              <p>Awarded {{clearance.awarded}}</p>
-              <p>Expires {{clearance.expiration}}</p>
             </li>
           </ul>
         </div>
@@ -59,12 +73,11 @@
           <ul>
             <li *ngFor='let agency of this.agencyExperience'>
               <p>{{agency.title}}</p>
-              <p>{{agency.years}} years</p>
-              <p *ngIf='agency.offices.length > 0'>OFFICES:</p>
+              <!-- <p>{{agency.years}} years</p> -->
               <ul *ngIf='agency.offices.length > 0'>
                 <li *ngFor='let office of agency.offices'>
                   <p>{{office.title}}</p>
-                  <p>{{office.years}} years</p>
+                  <!-- <p>{{office.years}} years</p> -->
                 </li>
               </ul>
             </li>
@@ -88,7 +101,7 @@
           <ul>
             <li *ngFor='let cert of this.currentUser.certification'>
               <p>{{cert.CertificationName}}</p>
-              <p>Earned {{cert.DateEarned}}</p>
+              <!-- <p>Earned {{cert.DateEarned}}</p> -->
             </li>
           </ul>
         </div>

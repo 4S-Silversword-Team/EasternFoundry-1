@@ -296,6 +296,8 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   showTeam() {
     var numPeop = 0
     var occupations = []
+    var serviceData = []
+    var catPointsTotal = 0
     for(const i of this.currentAccount.userProfileProxies){
       numPeop++;
       var member = i.userProfile;
@@ -400,8 +402,9 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
           // for (let o of this.occupations) {
           //   console.log(o.title + ' ' + o.score)
           // }
-          var serviceData = []
-          var catPointsTotal = 0
+          this.categories.sort(function(a,b){
+            return parseFloat(b.score) - parseFloat(a.score);
+          })
           this.categories = this.categories.slice(0,5)
           for (let c of this.categories) {
             catPointsTotal += c.score
@@ -424,41 +427,41 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
           if (other.y > 0) {
             serviceData.push(other)
           }
-
-          this.serviceChart = new Chart({
-            chart: {
-              type: 'pie',
-              backgroundColor: 'rgba(0, 100, 200, 0.00)',
-              renderTo: "service_chart"
-            },
-            title: {
-              text: 'Capabilities'
-            },
-            tooltip: {
-              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-
-            plotOptions: {
-              pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                  enabled: true,
-                  format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                  style: {
-                    color: 'black'
-                  }
-                }
-              }
-            },
-            series: [{
-              name: 'Focus',
-              colorByPoint: true,
-              data: serviceData,
-            }]
-          });
       }
     }
+    this.serviceChart = new Chart({
+      chart: {
+        type: 'pie',
+        backgroundColor: 'rgba(0, 100, 200, 0.00)',
+        renderTo: "service_chart"
+      },
+      title: {
+        text: 'Capabilities'
+      },
+      tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: true,
+            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+            style: {
+              color: 'black'
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Focus',
+        colorByPoint: true,
+        data: serviceData,
+      }]
+    });
+    sortedOccupations = sortedOccupations.slice(0,5)
     for (let s of sortedOccupations){
       this.serviceChartNames.push(s.title)
       // console.log(s.title + " - " + s.occupations.length)

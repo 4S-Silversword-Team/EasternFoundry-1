@@ -42,6 +42,7 @@ export class ProfileResumeComponent implements OnInit {
   occupations: any[] = []
   categories: any[] = []
   allCategories: any[] = []
+  contactString : string = ''
 
   constructor(
     private userService: UserService,
@@ -69,6 +70,17 @@ export class ProfileResumeComponent implements OnInit {
       );
 
       var myCallback = () => {
+      if (this.currentUser.phone[0].Number) {
+        this.contactString += (this.currentUser.phone[0].Number + ', ')
+      }
+      this.contactString += this.currentUser.username
+      if (this.currentUser.address.city) {
+        this.contactString += (', ' + this.currentUser.address.city)
+      }
+      if (this.currentUser.address.state) {
+        this.contactString += (', ' + this.currentUser.address.state)
+      }
+
       var toolsToPush = []
       for (let tool of this.currentUser.foundTools) {
         var matchFound = false
@@ -130,6 +142,10 @@ export class ProfileResumeComponent implements OnInit {
       }
       var serviceData = []
       var catPointsTotal = 0
+      this.categories.sort(function(a,b){
+        return parseFloat(b.score) - parseFloat(a.score);
+      })
+      this.categories = this.categories.slice(0,5)
       for (let c of this.categories) {
         catPointsTotal += c.score
       }
