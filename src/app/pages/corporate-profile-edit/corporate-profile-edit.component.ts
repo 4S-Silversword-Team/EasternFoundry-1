@@ -882,7 +882,7 @@ export class CorporateProfileEditComponent implements OnInit {
         this.currentAccount._id = companyId
         this.uploadPhoto()
         model.avatar = this.currentAccount.avatar
-        this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then((result) => {
+        this.companyService.updateCompany(companyId, model).toPromise().then((result) => {
           //TODO handle if no admin in role collection in Db
           this.roleService.getRoleByTitle("admin").toPromise().then((admin) => {
             console.log("adminresult",admin)
