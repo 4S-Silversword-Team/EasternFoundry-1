@@ -293,9 +293,6 @@
     <!-- PAST PERFORMANCES TAB -->
     <div class="container" *ngIf='activeTab.main==4'>
       <div class="performance col-xs-12 clear" >
-        <div class="div-title col-xs-12">
-          <p>Past Performances</p>
-        </div>
         <div class="past-performance-inner scrollbar">
           <div *ngIf="pastperformances.length < 1">No past performance to show</div>
           <div class="" *ngFor='let pp of this.pastperformances; let i = index'>

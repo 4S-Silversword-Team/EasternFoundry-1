@@ -11,7 +11,7 @@
 }
 .past-performances {
   margin-top: 2vh;
-  height: calc(98vh - 130px);
+  height: calc(99vh - 254px);
   padding-top: 2vh;
   overflow-y: auto;
   background: rgb(223,223,225);

@@ -179,7 +179,7 @@
 
 .past-performance-inner {
   position: relative;
-  height: calc(100vh - 250px);
+  height: calc(99vh - 304px);
   background: rgba(0,0,0,0.02);
   overflow-y: auto;
   overflow-x: hidden;
@@ -191,7 +191,7 @@
 }
 
 .performance {
-  height: calc(100vh - 130px);
+  height: calc(99vh - 254px);
 }
 
 .box .div-title {
