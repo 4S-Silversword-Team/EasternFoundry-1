@@ -939,7 +939,6 @@ export class CorporateProfileEditComponent implements OnInit {
         Promise.all(servicePromises).then(services=>{
           this.companyService.updateCompany(this.route.snapshot.params['id'], model).toPromise().then((result) => {
             if (!noNav) {
-              window.scrollTo(0, 0);
               this.router.navigate(['corporate-profile', this.route.snapshot.params['id']]);
             }
          });
