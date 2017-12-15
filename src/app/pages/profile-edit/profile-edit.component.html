@@ -376,8 +376,8 @@
                 <p class="" *ngIf = 'job.employmentType == 0'>Agency</p>
               </div>
               <div class="" style="width: calc(100% - 100px); float: left;">
-                <input class="" style="width: 100%" [(ngModel)] = 'job.Employer' *ngIf='job.employmentType > 0'>
-                <div class="autocomplete-form" style="width: 100%" *ngIf = 'job.employmentType == 0' [ngClass]="{'empty-field': !job.Employer}">
+                <input class="" style="width: 100%" [(ngModel)] = 'job.Employer' *ngIf='job.employmentType > 0' [ngClass]="{'empty-field': !job.Employer}">
+                <div class="autocomplete-form" style="width: 100%" *ngIf = 'job.employmentType == 0'>
                   <input ngui-auto-complete class="" style="width: 100%" placeholder="Must match an existing agency" [(ngModel)] = 'job.agencyExperience[0].main.title' [source]='this.allAgencies' [list-formatter]="autocompleListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': agencyValidCheck(job.agencyExperience[0].main.title) == false}">
                 </div>
               </div>
