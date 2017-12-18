@@ -373,6 +373,14 @@ export class CorporateProfileEditComponent implements OnInit {
     })
   }
 
+  togglePublic(user) {
+    // console.log(user)
+    this.userService.toggleUserPublic(user.userId).toPromise().then((res) => {
+      user.public = res
+      console.log(user.public)
+    })
+  }
+
   changeCustomerTab(index, product, num) {
     var customersDefense = []
     var customersCommercial = []
@@ -608,6 +616,7 @@ export class CorporateProfileEditComponent implements OnInit {
           "endDate": newEndDate,
           "avatar": i.userProfile.avatar,
           "stillAffiliated": i.stillAffiliated,
+          "public": i.userProfile.public,
           "role": i.role,
           "leader": i.leader,
           "delete": false

@@ -314,10 +314,19 @@ export class MessageComponent implements OnInit {
         timestamp: t,
       }
       this.messageService.createMessage(response).toPromise().then((result) => {
-        console.log('accepted')
-        this.deleteMessage(message, this.activeMessageIndex)
-        this.closeMessage()
-        this.router.navigate(['corporate-profile', company.id]);
+        if (this.currentUser.public) {
+          this.userService.toggleUserPublic(this.currentUser._id).toPromise().then((res) => {
+            console.log('accepted')
+            this.deleteMessage(message, this.activeMessageIndex)
+            this.closeMessage()
+            this.router.navigate(['corporate-profile', company.id]);
+          })
+        } else {
+          console.log('accepted')
+          this.deleteMessage(message, this.activeMessageIndex)
+          this.closeMessage()
+          this.router.navigate(['corporate-profile', company.id]);
+        }
       });
     });
   }
@@ -395,9 +404,19 @@ export class MessageComponent implements OnInit {
         timestamp: t,
       }
       this.messageService.createMessage(response).toPromise().then((result) => {
-        console.log('accepted')
-        this.deleteMessage(message, this.activeMessageIndex)
-        this.closeMessage()
+        this.userService.getUserbyID(person.id).toPromise().then((res) => {
+          if (res.public) {
+            this.userService.toggleUserPublic(this.currentUser._id).toPromise().then((res) => {
+              console.log('accepted')
+              this.deleteMessage(message, this.activeMessageIndex)
+              this.closeMessage()
+            })
+          } else {
+            console.log('accepted')
+            this.deleteMessage(message, this.activeMessageIndex)
+            this.closeMessage()
+          }
+        })
       });
     });
   }

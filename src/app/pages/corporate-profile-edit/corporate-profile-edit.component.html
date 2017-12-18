@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="col-xs-10 edit-panel">
-      <div class="profile" style="" *ngIf='activeTab.main == 0'>
+      <div class="" style="" *ngIf='activeTab.main == 0'>
         <div class="" style="position: relative; height: 360px; width: 180px;">
           <div class="" style="height: 180px; width: 180px; position: relative; float: left;">
             <div class="left avatar">
@@ -44,7 +44,7 @@
             </div>
           </div>
         </div>
-        <div class="scrollbar" style="position: absolute; height: calc(96vh - 165px); width: calc(100% - 180px); top: 2vh; right: 0px; padding: 2vh 2vw 2vh 2vw; float: left; overflow-y: auto">
+        <div class="scrollbar" style="position: absolute; height: calc(96vh - 165px); width: calc(100% - 180px); top: 2vh; right: 0px; padding: 2vh 2vw 2vh 2vw; float: left; overflow-y: auto;">
           <div class="left" style="width: 115px; line-height: 42px; float: left; padding-top: 4px;">
             <p class="">Company Name</p>
             <p class="">Email</p>
@@ -53,9 +53,11 @@
             <p class="">City</p>
             <p class="">State</p>
             <p class="">Zip</p>
-            <p class="">Contract Vehicles</p>
+            <p class="">Video URL</p>
+            <p class="" style="z-index: 99">Contract Vehicles</p>
+            <button class="edit-button" type="button" name="button" (click)='addVehicle()' style="z-index: 99; position: relative; margin-left: calc(100% - 45px); margin-top: 2px; width: 35px; line-height: 30px; font-size: 40px; padding-left: 0px; padding-right: 0px; padding-top: 0px; padding-bottom: 5px;">+</button>
           </div>
-          <div class="" style="width: calc(100% - 115px); float: left;">
+          <div class="" style="width: calc(100% - 115px); float: left; position: relative;">
             <input class="" style="width: 100%;" type="text" placeholder="The company's name" [(ngModel)] = 'this.currentAccount.name' [ngClass]="{'empty-field': !this.currentAccount.name}">
             <input class="" style="width: 100%;" type="text" placeholder="The company's email address" [(ngModel)] = 'this.currentAccount.email' [ngClass]="{'empty-field': !this.currentAccount.email}">
             <input class="" style="width: 100%;" type="tel" maxlength="14" placeholder="The company's phone number" [(ngModel)] = 'this.currentAccount.contactNumber' (ngModelChange)="onPhoneChange(this.currentAccount.contactNumber)" (keydown.backspace)='onPhoneChange(this.currentAccount.contactNumber, true)' [ngClass]="{'empty-field': !this.currentAccount.contactNumber || this.currentAccount.contactNumber.length < 14}">
@@ -63,25 +65,24 @@
             <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentAccount.city' [ngClass]="{'empty-field': this.currentAccount.city.length < 1}">
             <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentAccount.state' [ngClass]="{'empty-field': !this.currentAccount.state}">
             <input class="" style="width: 100%;" type="number" max="99999" maxlength="5" [(ngModel)] = 'this.currentAccount.zip' [ngClass]="{'empty-field': !this.currentAccount.zip}">
-            <div class="scrollbar"  style="width: 100%; margin-top: 8px; min-height: 38px; max-height: 210px; overflow-y: auto; border: 1px solid rgba(0,0,0,0.2); z-index: 99; float: left; position: relative;">
-              <div class="" *ngFor="let vehicle of this.currentAccount.vehicles; let i = index" style="width: 100%; height: 38px; float: left;">
-                <!-- <div class="autocomplete-form" style="width: 99%; margin: 0px; height: 36px;">
-                  <input ngui-auto-complete class="" style="width: 100%; margin: 0px" placeholder="" [(ngModel)] = 'vehicle.vehicleType' [source]='this.vehicles' [list-formatter]="autocompleListFormatter" select-value-of='agency' auto-select-first-item='true'>
-                </div> -->
-                <!-- <input type="text" name="" value=""> -->
-                <select class="" style="width: calc(100% - 24px); margin: 0px; height: 34px; float: left;" name="" [(ngModel)] = 'vehicle.vehicleType' [ngClass]="{'empty-field': vehicle.vehicleType.length < 1}">
-                  <option *ngFor='let v of this.vehicles' [value]='v'>{{v}}</option>
-                </select>
-                <div (click)='this.currentAccount.vehicles.splice(i, 1)' style="position: absolute; right: 2px; width: 24px; height: 34px; cursor: pointer">
-                  <img src="./assets/img/btn-close.png" alt="" class="search-item-x" style="width: 20px; height: 20px; margin-top: 6px; margin-left: 2px; cursor: pointer">
+            <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentAccount.videoUrl' placeholder="Put a Youtube URL for a video about your company here and we'll embed it on your page.">
+            <div class="scrollbar"  style="width: 100%; margin-top: 8px; min-height: 39px; max-height: 210px; overflow-y: auto; border: 1px solid rgba(0,0,0,0.2); z-index: 99; float: left; position: relative; margin-bottom: 1px;">
+              <div class="" style="width: 100%; height: 100%; background: green;">
+                <div class="" *ngFor="let vehicle of this.currentAccount.vehicles; let i = index" style="width: 100%; height: 38px; float: left; position: relative;">
+                  <select class="" style="width: calc(100% - 24px); margin: 0px; height: 34px; float: left;" name="" [(ngModel)] = 'vehicle.vehicleType' [ngClass]="{'empty-field': vehicle.vehicleType.length < 1}">
+                    <option *ngFor='let v of this.vehicles' [value]='v'>{{v}}</option>
+                  </select>
+                  <div (click)='this.currentAccount.vehicles.splice(i, 1)' style="position: absolute; right: 2px; width: 24px; height: 34px; cursor: pointer">
+                    <img src="./assets/img/btn-close.png" alt="" class="search-item-x" style="width: 20px; height: 20px; margin-top: 6px; margin-left: 2px; cursor: pointer">
+                  </div>
                 </div>
-                <!-- <button type="button" name="button" style="width: 34px; height: 34px; line-height: 34px; font-size: 34px;">X</button> -->
               </div>
-              <button class="edit-button" type="button" name="button" (click)='addVehicle()' style="position: relative; margin-left: calc(100% - 45px); margin-top: 2px; width: 35px; line-height: 30px; font-size: 40px; padding-left: 0px; padding-right: 0px; padding-top: 0px; padding-bottom: 5px;">+</button>
             </div>
           </div>
-          <p class="left" style="width: calc(100% - 42px); line-height: 30px; float: left; padding-top: 6px;">Make your company publically viewable?</p>
-          <input type="checkbox" style="height: 42px; width: 42px; margin: 0px; float: left;" class="" [(ngModel)] = 'this.currentAccount.public'>
+          <div class="" style="width: 100%; height: 42px; position: relative; float: left; z-index: 99">
+            <p class="left" style="position: relative; width: calc(100% - 42px); line-height: 30px; float: left; padding-top: 6px;">Make your company publically viewable?</p>
+            <input type="checkbox" style="position: relative; height: 42px; width: 42px; margin: 0px; float: left;" class="" [(ngModel)] = 'this.currentAccount.public'>
+          </div>
         </div>
         <div class="" style="position: absolute; width: 100%; height: calc(84.5vh - 410px); bottom: 4.5vh; left: 1vw">
           <div class="" *ngIf='this.creatingNew'>
@@ -140,33 +141,37 @@
               <div (click)='employee.delete = true'>
                 <img src="./assets/img/btn-close.png" alt="" class="search-item-x">
               </div>
-              <div class="col-xs-8" style="width: 60%; margin-right: -5px">
-                <div class="col-xs-6" style="margin-top: 15px">
+              <div class="col-xs-8" style="width: 45%; margin-right: -5px; float: left">
+                <div class="" style="width: calc(100% - 150px); margin-top: 15px; float: left">
                   <div class="col-xs-12">{{employee.name}}</div>
                   <div class="col-xs-12" style="margin-top: 20px">{{employee.username}}</div>
                 </div>
-                <div class="col-xs-5">
-                  <input style="width: 110%; min-width: 150px" type="date" [(ngModel)]="employee.startDate" (blur)="(this.type='text'); updateEmployeeDate(employee, employee.proxyId,'startDate',employee.startDate)" (focus)="this.lastStartDate = employee.startDate" [ngClass]="{'empty-field': !employee.startDate}">
-                  <input style="width: 110%; min-width: 150px" type="date" [(ngModel)]="employee.endDate" (blur)="updateEmployeeDate(employee, employee.proxyId,'endDate',employee.endDate)" (focus)="this.lastEndDate = employee.endDate" *ngIf='!employee.stillAffiliated' [ngClass]="{'empty-field': (!employee.stillAffiliated && !employee.endDate)}">
+                <div class="" style="width: 150px; margin-top: 15px; float: left">
+                  <p>Start Date</p>
+                  <input style="width: 150px; margin-top: 15px;" type="date" [(ngModel)]="employee.startDate" (blur)="(this.type='text'); updateEmployeeDate(employee, employee.proxyId,'startDate',employee.startDate)" (focus)="this.lastStartDate = employee.startDate" [ngClass]="{'empty-field': !employee.startDate}">
+                  <!-- <input style="width: 110%; min-width: 150px" type="date" [(ngModel)]="employee.endDate" (blur)="updateEmployeeDate(employee, employee.proxyId,'endDate',employee.endDate)" (focus)="this.lastEndDate = employee.endDate" *ngIf='!employee.stillAffiliated' [ngClass]="{'empty-field': (!employee.stillAffiliated && !employee.endDate)}"> -->
                 </div>
               </div>
-              <div class="col-xs-4" style="margin-top: 15px; width: 40%; margin-left: -15px">
-                <div style="width: 70%">
+              <div class="col-xs-4" style="margin-top: 15px; width: 55%; margin-left: -15px">
+                <div style="width: 50%">
                   <div class="col-xs-12">
                     <div class="col-xs-9">
                       Leader?
                     </div>
                     <input class="col-xs-3" type="checkbox" (change)="updateEmployee(employee.proxyId,'leader',employee.leader)" [(ngModel)]="employee.leader" />
                   </div>
-                  <div class="col-xs-12">
+                  <!-- <div class="col-xs-12">
                     <div class="col-xs-9">
                       Still Affiliated?
                     </div>
                     <input class="col-xs-3" type="checkbox" (change)="updateEmployee(employee.proxyId,'stillAffiliated',employee.stillAffiliated)" [(ngModel)]="employee.stillAffiliated" />
-                  </div>
+                  </div> -->
                 </div>
-                <button style="width: 30%; height: 55px" *ngIf="this.isUserAdmin && employee.role != this.adminRoleId" class="btn btn-primary" (click)="updateEmployee(employee.proxyId, 'role', this.adminRoleId)" type="button" value="Make Admin" name="button">Make<br>Admin</button>
-                <button style="width: 30%; height: 55px; background: rgb(201, 50, 50); border: 1px solid rgba(0, 0, 0, 0.1)"*ngIf="this.isUserAdmin && employee.role == this.adminRoleId && !employeeIsYou(employee.userId)" class="btn btn-primary" (click)="removeAdmin(employee.proxyId, 'role', this.currentAccount._id, employee.userId)" type="button" value="Remove Admin" name="button">Remove<br>Admin</button>
+                <p></p>
+                <button style="width: 25%; height: 55px; float: left" *ngIf="this.isUserAdmin && employee.role != this.adminRoleId" class="btn btn-primary" (click)="updateEmployee(employee.proxyId, 'role', this.adminRoleId)" type="button" value="Make Admin" name="button">Make<br>Admin</button>
+                <button style="width: 25%; height: 55px; background: rgb(201, 50, 50); border: 1px solid rgba(0, 0, 0, 0.1); float: left" *ngIf="this.isUserAdmin && employee.role == this.adminRoleId && !employeeIsYou(employee.userId)" class="btn btn-primary" (click)="removeAdmin(employee.proxyId, 'role', this.currentAccount._id, employee.userId)" type="button" value="Remove Admin" name="button">Remove<br>Admin</button>
+                <button *ngIf="!employee.public" style="width: 25%; height: 55px; background: green; border: 1px solid rgba(0,0,0,0.5); float: left" class="btn btn-primary" (click)="this.togglePublic(employee)" type="button" value="TOGGLE PUBLIC" name="button">Private</button>
+                <button *ngIf="employee.public" style="width: 25%; height: 55px; background: red; border: 1px solid rgba(0,0,0,0.5); float: left" class="btn btn-primary" (click)="this.togglePublic(employee)" type="button" value="TOGGLE PUBLIC" name="button">Public</button>
               </div>
             </div>
           </div>

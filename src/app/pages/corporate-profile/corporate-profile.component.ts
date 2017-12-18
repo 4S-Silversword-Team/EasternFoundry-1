@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import {Pipe, PipeTransform, Component, OnInit, AfterViewInit } from '@angular/core';
 import {Http} from '@angular/http';
 
 import { User } from '../../classes/user';
@@ -12,6 +12,7 @@ import { Location } from '@angular/common';
 
 import { Chart } from 'angular-highcharts';
 import { Title } from '@angular/platform-browser';
+import {BrowserModule, DomSanitizer} from '@angular/platform-browser'
 
 
 import { UserService } from '../../services/user.service';
@@ -27,6 +28,13 @@ declare var $: any;
 declare var Swiper: any;
 // var renderChart: boolean;
 // renderChart = false;
+@Pipe({ name: 'safe' })
+export class SafePipe implements PipeTransform {
+  constructor(private sanitizer: DomSanitizer) {}
+  transform(url) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+}
 @Component({
   selector: 'app-corporate-profile',
   providers: [UserService, ProductService, ServiceService, PastperformanceService, CompanyService, AuthService, RoleService, MessageService],
@@ -71,6 +79,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   categories: any[] = []
   serviceChart: any;
   serviceChartNames: any[] = []
+  videoUrl: any
 
   constructor(
     private route: ActivatedRoute,
@@ -86,7 +95,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     private messageService: MessageService,
     private http: Http,
     private titleService: Title,
-
+    private sanitizer: DomSanitizer,
   ) {
     // console.log("testing1");
     // console.log(this);
@@ -113,6 +122,15 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
       }
       const myCallback2 = () => {
         console.log("In myCallback2")
+        if (this.currentAccount.videoUrl) {
+          var url = this.currentAccount.videoUrl.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+          var url2 = undefined !== url[2]?url[2].split(/[^0-9a-z_\-]/i)[0]:url[0];
+          if (url2 != undefined) {
+            this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl("https://www.youtube.com/embed/" + url2)
+          } else {
+            this.videoUrl = url2
+          }
+        }
         for (const i of this.users) {
           for (const j of i.certification) {
             this.CQAC.certs.push({
@@ -413,22 +431,22 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
             name: 'Other',
             y: 0,
           }
-          for (let c of this.categories) {
-            var found = false
-            var percent = 360*(c.score/catPointsTotal)
-            if (((c.score/catPointsTotal)*100) >= 2){
-              serviceData.push({
-                name: c.name,
-                y: percent
-              })
-            } else {
-              other.y = other.y + percent
-            }
-          }
-          if (other.y > 0) {
-            serviceData.push(other)
-          }
       }
+    }
+    for (let c of this.categories) {
+      var found = false
+      var percent = 360*(c.score/catPointsTotal)
+      if (((c.score/catPointsTotal)*100) >= 2){
+        serviceData.push({
+          name: c.name,
+          y: percent
+        })
+      } else {
+        other.y = other.y + percent
+      }
+    }
+    if (other.y > 0) {
+      serviceData.push(other)
     }
     this.serviceChart = new Chart({
       chart: {

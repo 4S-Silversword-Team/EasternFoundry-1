@@ -57,6 +57,12 @@ export class UserService {
     return response;
   }
 
+  toggleUserPublic(id: string): Observable<User> {
+    var response = this.authHttp.get(environment.apiRoot + "profiles/" + id + "/public")
+      .map(response => <User> response.json());
+    return response;
+  }
+
   deleteUser(id: string): Observable<any> {
     var response = this.authHttp.delete(environment.apiRoot + "profiles/" + id)
       .map(response => <User> JSON.parse(JSON.stringify(response)));
