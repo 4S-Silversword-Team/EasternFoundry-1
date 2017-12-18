@@ -160,7 +160,8 @@
 }
 
 .product {
-  height: calc(99.5 - 170px);
+  height: calc(98.5vh - 294px);
+  overflow-y: auto;
   width: 100%;
 }
 
