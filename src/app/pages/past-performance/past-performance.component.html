@@ -89,32 +89,21 @@
     <!-- TEAM TAB -->
     <div class="container" *ngIf='this.activeTab.main == 1'>
       <div class="team col-xs-12 clear">
-        <div class="div-title col-xs-12" style="margin-top: 0px;">
-          <p>Produced By</p>
-        </div>
         <div class="" *ngIf="this.currentPastPerformance.companyProxies">
-          <div class="col-xs-12 left" *ngIf="this.currentPastPerformance.companyProxies[0].company" style="height: 35vh; position: relative;">
+          <div class="col-xs-12 left" *ngIf="this.currentPastPerformance.companyProxies[0].company" style="height: 180px; position: relative;">
             <div class="" style="height: 180px; width: 180px; position: relative; float: left;">
               <div class="left avatar">
                 <img src='{{ this.currentPastPerformance.companyProxies[0].company.avatar }}' class="avatar-img">
               </div>
             </div>
-            <div class="" style="position: absolute; height: 32vh; width: calc(100% - 180px); bottom: 0px; right: 0px; float: left; background: none;">
-              <div class="" style="width: 100%; height: 32vh; padding-top: .9vh; float: left; padding-bottom: 2vh; padding-top: 2vh;">
-                <a href="corporate-profile/{{this.currentPastPerformance.companyProxies[0].company._id}}">
-                  <div class="col-xs-12 basic-info-header" style="padding-top: 6px">
-                    <p style="white-space: nowrap">{{ this.currentPastPerformance.companyProxies[0].company.name }}</p>
-                  </div>
-                </a>
-                <div class="col-xs-12 basic-info-sub" style="padding-top: 6px">
-                  <p>{{this.currentPastPerformance.client.name}}</p>
+            <div class="" style="position: absolute; height: 180px; width: calc(100% - 180px); padding-top: 40px; bottom: 0px; right: 0px; float: left; background: none;">
+              <a href="corporate-profile/{{this.currentPastPerformance.companyProxies[0].company._id}}">
+                <div class="col-xs-12 basic-info-header" style="padding-top: 6px">
+                  <p style="white-space: nowrap">{{ this.currentPastPerformance.companyProxies[0].company.name }}</p>
                 </div>
-                <div class="col-xs-12 basic-info-sub" style="padding-top: 6px">
-                  <p>{{this.currentPastPerformance.companyProxies[0].company.city}}, {{this.currentPastPerformance.companyProxies[0].company.state}}</p>
-                </div>
-                <div class="col-xs-12 basic-info-sub" style="padding-top: 6px">
-                  <p>{{this.percentAffiliated}}% still affiliated</p>
-                </div>
+              </a>
+              <div class="col-xs-12 basic-info-sub" style="padding-top: 6px">
+                <p>{{this.percentAffiliated}}% still affiliated</p>
               </div>
             </div>
           </div>
@@ -179,19 +168,19 @@
       </div>
     </div>
     <div class="container scrollbar" *ngIf='this.activeTab.main == 2'>
-      <div class="text-container scrollbar" style="height: 25vh; width: 100%; float: left; margin-top: 2vh">
+      <div class="text-container scrollbar" style="height: calc(29vh - 74px); width: 100%; float: left; margin-top: 1vh">
         <p class="col-xs-12 fs-16 lh-20">Synopsis</p>
         <textarea class="scrollbar" readonly>{{ currentPastPerformance.synopsis }}</textarea>
       </div>
-      <div class="text-container scrollbar" style="height: calc(44vh - 130px); width: calc(50% - 1vw); float: left; margin-right: 1vw;">
+      <div class="text-container scrollbar" style="height: calc(32.5vh - 73px); width: calc(50% - 0.5vw); float: left; margin-right: 0.5vw;">
         <p class="col-xs-12 fs-16 lh-20">Technical Challenge, approach and outcome</p>
         <textarea class="scrollbar" readonly>{{ currentPastPerformance.technical }}</textarea>
       </div>
-      <div class="text-container scrollbar" style="height: calc(44vh - 130px); width: calc(50% - 1vw); float: left; margin-left: 1vw;">
+      <div class="text-container scrollbar" style="height: calc(32.5vh - 73px); width: calc(50% - 0.5vw); float: left; margin-left: 0.5vw;">
         <p class="col-xs-12 fs-16 lh-20">Management Challenge, approach and outcome</p>
         <textarea class="scrollbar" readonly>{{ currentPastPerformance.management }}</textarea>
       </div>
-      <div class="text-container scrollbar" style="height: 25vh; margin-bottom: 0px;; width: 100%; float: left;">
+      <div class="text-container scrollbar" style="height: calc(29vh - 74px); margin-bottom: 0px; width: 100%; float: left;">
         <p class="col-xs-12 fs-16 lh-20">Other</p>
         <textarea class="scrollbar" readonly>{{ currentPastPerformance.other }}</textarea>
       </div>

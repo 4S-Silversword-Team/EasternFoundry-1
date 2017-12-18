@@ -4,7 +4,7 @@
 
 .team {
   padding: 0px;
-  height: calc(45vh - 129px);
+  height: 180px;
 }
 
 textarea {
@@ -65,12 +65,12 @@ textarea {
 .employees {
   padding-top: 0px;
   background: rgba(223,223,225,1);
-  height: 55vh;
+  height: calc(99vh - 434px);
   overflow: hidden;
 }
 
 .employees-inner {
-  height: 44vh;
+  height: calc(99vh - 524px);
   background: rgba(255,255,255,0.2);
   overflow-y: auto;
   border: 1px solid rgba(0,100,200, 0.9);
