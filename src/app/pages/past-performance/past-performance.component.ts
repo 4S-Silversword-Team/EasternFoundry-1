@@ -188,6 +188,10 @@ export class PastPerformanceComponent implements OnInit {
           name: 'Other',
           y: 0,
         };
+        this.categories.sort(function(a,b){
+          return parseFloat(b.score) - parseFloat(a.score);
+        })
+        this.categories = this.categories.slice(0,5)
         for (const c of this.categories) {
           const percent = 360 * (c.score / catPointsTotal);
           if (((c.score / catPointsTotal) * 100) >= 1){
@@ -199,7 +203,9 @@ export class PastPerformanceComponent implements OnInit {
             other.y = other.y + percent;
           }
         }
-        serviceData.push(other);
+        if (other.y > 0) {
+          serviceData.push(other)
+        }
 
         this.serviceChart = new Chart({
           chart: {
@@ -208,7 +214,7 @@ export class PastPerformanceComponent implements OnInit {
               renderTo: 'service_chart'
           },
           title: {
-              text: 'Capabilities'
+              text: 'Ability Profile'
           },
           tooltip: {
               pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'

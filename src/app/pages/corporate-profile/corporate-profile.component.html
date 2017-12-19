@@ -58,7 +58,8 @@
     <div class="basic-info-bottom">
       <div class="col-xs-6 scrollbar" style="overflow-y: auto; height: 100%; padding-top: .1v; padding-bottom: .1v; border-right: 2px solid rgba(0,0,0,0.25);">
         <div class="" style="width: 100%;">
-          <p class="basic-info-text-2">{{this.currentAccount.userProfileProxies.length}} Employees</p><br>
+          <p class="basic-info-text-2"> A company with {{this.currentAccount.userProfileProxies.length}} Employees</p><br>
+          <p style="font-weight: bold">Past Performances:</p>
           <div *ngFor='let pp of this.pastperformances; let i = index'>
             <p class="basic-info-text-2">{{pp.title}}</p>
             <p class="basic-info-text-2">{{pp.startDate}} -  {{pp.endDate}}</p>
@@ -67,6 +68,7 @@
             <div class="right">
             </div> -->
           </div><br>
+          <p style="font-weight: bold">Product:</p>
           <div *ngFor='let p of this.products; let i = index'>
             <p class="basic-info-text-2">{{p.name}}</p>
             <!-- <div class="left">
@@ -83,17 +85,18 @@
       </div>
     </div>
     <div class="col-xs-12" style="background: rgba(223,223,225,1); height: calc(55vh - 127px); border-bottom: 0px solid black">
-      <div id="service_chart"  style="height: 40vh; margin: 0 auto" [chart]="serviceChart"></div>
+      <div class="col-xs-12" id="service_chart"  style="height: calc(55vh - 127px); margin: 0 auto" [chart]="serviceChart"></div>
+      <!-- <div class="col-xs-6" id="category_chart"  style="height: calc(55vh - 127px); margin: 0 auto" [chart]="categoryChart"></div> -->
     </div>
   </div>
   <!-- EMPLOYEES TAB -->
   <div class="container" *ngIf='activeTab.main==1'>
     <div class="leadership col-xs-12" style="">
-      <div class="col-xs-12 div-title" style="text-align: center; margin-top: 0.5vh; margin-bottom: 0.5vh;">
+      <div class="col-xs-12" style="font-size: 24px; line-height: 24px; text-align: center; margin-top: 0.5vh; margin-bottom: 0.5vh;">
         <p class="">Leadership</p>
       </div>
       <div *ngIf="users[0]" class="leadership-inner scrollbar">
-        <div class="col-xs-12 col-md-6" style="padding: 2px" *ngFor='let index of users'>
+        <div class="col-xs-12 col-md-6" style="padding: 2px" *ngFor='let index of leaders'>
           <div class="leader-panel col-xs-12">
             <div class="left leader-avatar-small">
               <img src='{{ index.avatar }}' class="leader-avatar-img-small">
@@ -111,39 +114,44 @@
       </div>
       <div class="leadership-inner" *ngIf="!users[0]">No leadership to show</div>
     </div>
-    <div class="employees col-xs-12 clear" [ngClass]="{'employees-shrunk': !this.userIsEmployee}">
-      <div class="col-xs-12 div-title" style="text-align: center; margin-top: 0.5vh; margin-bottom: 0.5vh;">
+    <div class="employees col-xs-12 clear">
+      <div class="col-xs-12" style="font-size: 24px; line-height: 24px; text-align: center; margin-top: 0.5vh; margin-bottom: 0.5vh;">
         <p class="">Employees</p>
       </div>
       <div class="employees-inner scrollbar" [ngClass]="{'employees-inner-shrunk': !this.userIsEmployee}">
-        <div class="" *ngIf='this.currentAccount.userProfileProxies'>
-          <div class="col-xs-12 col-md-6 left" style="padding: 2px" *ngFor='let index of this.currentAccount.userProfileProxies'>
-            <div class="employee-panel col-xs-12" *ngIf="index.userProfile">
+        <div class="" *ngIf='this.users'>
+          <div class="col-xs-12 col-md-6 left" style="padding: 2px" *ngFor='let index of this.users'>
+            <div class="employee-panel col-xs-12" *ngIf="index.public || userIsEmployee">
               <div class="left avatar-small">
-                <img src='{{ index.userProfile.avatar }}' class="avatar-img-small">
+                <img src='{{ index.avatar }}' class="avatar-img-small">
               </div>
-              <p class="">{{ index.userProfile.firstName + ' ' + index.userProfile.lastName}}</p>
-              <p *ngIf="index.userProfile.positionHistory[0]" class="">{{ index.userProfile.positionHistory[0].PositionTitle }}</p>
-              <p class="">{{ index.userProfile.username }}</p>
-              <a href="/user-profile/{{index.userProfile._id}}">
+              <p class="">{{ index.firstName + ' ' + index.lastName}}</p>
+              <p *ngIf="index.positionHistory[0]" class="">{{ index.positionHistory[0].PositionTitle }}</p>
+              <p class="">{{ index.username }}</p>
+              <a href="/user-profile/{{index._id}}">
                 <button class="employee-link">
                   More<br>Info
                 </button>
               </a>
             </div>
           </div>
+          <div class="col-xs-12 col-md-6 left" style="padding: 2px" *ngIf="privateEmployees > 0 && !userIsEmployee">
+            <div class="employee-panel col-xs-12" >
+              <p>{{privateEmployees}} Private Employees</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="" *ngIf="!this.currentAccount.userProfileProxies" class="main clear">
+      <div class="" *ngIf="!this.users" class="main clear">
          No employees to show
       </div>
-      <div class="" *ngIf="this.currentAccount.userProfileProxies">
-        <div *ngIf="!this.currentAccount.userProfileProxies[0]" class="main clear">No employees to show</div>
+      <div class="" *ngIf="this.users">
+        <div *ngIf="!this.users[0]" class="main clear">No employees to show</div>
       </div>
-    </div>
-    <div class="" style="width: 100%; height: 60px; float: left; position: relative;">
-      <button class="edit-button edit-button-join" type="button" name="button" (click)='requestToJoin()' *ngIf="!this.inviteSent">Request to Join</button>
-      <button class="edit-button edit-button-join" type="button" name="button" *ngIf="this.inviteSent">Request Sent!</button>
+      <div class="" style="width: 100%; height: 60px; float: left; position: relative;">
+        <button class="edit-button edit-button-join" type="button" name="button" (click)='requestToJoin()' *ngIf="!this.inviteSent">Request to Join</button>
+        <button class="edit-button edit-button-join" type="button" name="button" *ngIf="this.inviteSent">Request Sent!</button>
+      </div>
     </div>
   </div>
 

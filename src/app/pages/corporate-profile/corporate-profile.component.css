@@ -53,12 +53,12 @@
 .leadership {
   /*background: blue;*/
   padding-top: 0px;
-  height: calc(44vh - 127px);
+  height: calc(41vh - 127px);
   overflow: hidden;
 }
 
 .leadership-inner {
-  height: calc(44vh - 187px);
+  height: calc(39.5vh - 151px);
   background: rgba(0,0,0,0.02);
   overflow-y: auto;
   border: 1px solid rgba(0,100,200, 0.9);
@@ -67,21 +67,18 @@
 .employees {
   background: rgba(223,223,225,1);
   padding-top: 0px;
-  height: 55vh;
+  height: calc(58vh - 127px);
   overflow: hidden;
-}
-.employees-shrunk {
-  height: calc(55vh - 60px);
 }
 
 .employees-inner {
-  height: calc(45vh - 127px);
+  height: calc(57vh - 164px);
   background: rgba(0,0,0,0.02);
   overflow-y: auto;
   border: 1px solid rgba(0,100,200, 0.9);
 }
 .employees-inner-shrunk {
-  height: calc(54vh - 109px);
+  height: calc(57vh - 211px);
 }
 .edit-button-join {
   position: absolute;

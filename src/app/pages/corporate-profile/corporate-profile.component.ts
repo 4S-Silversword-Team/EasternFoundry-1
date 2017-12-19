@@ -48,6 +48,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   inviteSent: boolean = false
 
   users: User[] = [];
+  leaders: User[] = [];
   products: Product[] = [];
   services: Service[] = [];
   pastperformances: PastPerformance[] = [];
@@ -69,7 +70,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     service: 0,
     pp: 0,
   }
-
+  privateEmployees: number = 0
   productTab: number = 0;
   productCustomerTab: number = 0;
   serviceTab: number = 0;
@@ -79,6 +80,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   categories: any[] = []
   serviceChart: any;
   serviceChartNames: any[] = []
+  categoryChart: any;
   videoUrl: any
 
   constructor(
@@ -131,17 +133,17 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
             this.videoUrl = url2
           }
         }
-        for (const i of this.users) {
-          for (const j of i.certification) {
+        for (const i of this.currentAccount.userProfileProxies) {
+          for (const j of i.userProfile.certification) {
             this.CQAC.certs.push({
               CertificationName: j.CertificationName,
               DateEarned: j.DateEarned
             });
           }
-          for (const j of i.award) {
+          for (const j of i.userProfile.award) {
             this.CQAC.awards.push(j);
           }
-          for (const j of i.clearance) {
+          for (const j of i.userProfile.clearance) {
             this.CQAC.clearances.push({
               clearanceType: j.clearanceType,
               awarded: j.awarded,
@@ -158,7 +160,12 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
         for (let proxy of this.currentAccount.userProfileProxies){
           //if leader: push into users
           if (proxy.leader){
+            this.leaders.push(proxy.userProfile)
+          } else {
             this.users.push(proxy.userProfile)
+            if (!proxy.userProfile.public) {
+              this.privateEmployees++
+            }
           }
           if (proxy.userProfile._id) {
             if (proxy.userProfile._id == this.auth.getLoggedInUser()) {
@@ -455,7 +462,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
         renderTo: "service_chart"
       },
       title: {
-        text: 'Capabilities'
+        text: 'Ability Profile'
       },
       tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -480,6 +487,74 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
         data: serviceData,
       }]
     });
+    var govCount = 0
+    var contractorCount = 0
+    var commercialCount = 0
+    for (let u of this.currentAccount.userProfileProxies) {
+      for (let job of u.userProfile.positionHistory) {
+        if (job.employmentType == 0) {
+          govCount++
+        } else if (job.employmentType == 1) {
+          contractorCount++
+        } else if (job.employmentType == 2) {
+          commercialCount++
+        }
+      }
+    }
+    var totalCount = govCount + contractorCount + commercialCount
+    var categoryData = []
+    if (govCount > 0) {
+      categoryData.push({
+        name: 'Government',
+        y: 360*(govCount / totalCount)
+      })
+    }
+    if (contractorCount > 0) {
+      categoryData.push({
+        name: 'Contractor',
+        y: 360*(contractorCount / totalCount)
+      },)
+    }
+    if (commercialCount > 0) {
+      categoryData.push({
+        name: 'Commercial',
+        y: 360*(commercialCount / totalCount)
+      })
+    }
+
+    this.categoryChart = new Chart({
+      chart: {
+        type: 'pie',
+        backgroundColor: 'rgba(0, 100, 200, 0.00)',
+        renderTo: "category_chart"
+      },
+      title: {
+        text: 'Industry Profile'
+      },
+      tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: true,
+            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+            style: {
+                color: 'black'
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Focus',
+        colorByPoint: true,
+        data: categoryData,
+      }]
+    });
+
     sortedOccupations = sortedOccupations.slice(0,5)
     for (let s of sortedOccupations){
       this.serviceChartNames.push(s.title)

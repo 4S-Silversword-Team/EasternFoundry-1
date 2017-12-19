@@ -596,72 +596,29 @@ export class ProfileComponent implements OnInit {
         }
         this.agencyChart = new Chart({
           chart: {
-            type: 'bar',
+            type: 'column',
             backgroundColor: 'rgba(0, 100, 200, 0.00)',
-            renderTo: "team_chart"
           },
           title: {
             text: 'Agency Experience'
           },
-          xAxis: [{
+          xAxis: {
             categories: agencyNames,
             options : {
-              endOnTick: false
+              endOnTick: true
             },
-          }],
-          yAxis: [{ // Primary yAxis
-            min:0,
-            tickInterval: 1,
-            endOnTick: false,
-            alignTicks: false,
-            labels: {
-              format: '{value}',
-              style: {
-                color: '#434348'
-              },
-            },
-            title: {
-              text: 'Years Experience',
-              style: {
-                color: '#434348'
-              }
-            }
           },
-          {
-           // Secondary yAxis
-            tickInterval: 1,
+          yAxis: {
             min:0,
+            tickInterval: 1,
             endOnTick: false,
             alignTicks: false,
             title: {
-              text: '',
-              style: {
-                  color: '#7cb5ec'
+              text: 'Years Experience'
             }
-            },
-            labels: {
-              step: 1,
-              format: '{value:.0f}',
-              style: {
-                color: '#7cb5ec'
-              }
-            },
-            opposite: true
-          }],
-          tooltip: {
-            shared: true
           },
           series: [{
-            name: 'Times Worked With',
-            type: 'column',
-            yAxis: 1,
-            data: peop,
-            tooltip: {
-              valueSuffix: ' times'
-            }
-          }, {
-            name: 'Years',
-            type: 'column',
+            name: 'Experience: ',
             data: prof,
             tooltip: {
               valueSuffix: ' years'
