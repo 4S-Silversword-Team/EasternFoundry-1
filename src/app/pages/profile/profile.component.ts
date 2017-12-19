@@ -632,7 +632,7 @@ export class ProfileComponent implements OnInit {
           }
         },
         series: [{
-          name: 'Experience: ',
+          name: 'Experience',
           data: prof,
           tooltip: {
             valueSuffix: ' years'

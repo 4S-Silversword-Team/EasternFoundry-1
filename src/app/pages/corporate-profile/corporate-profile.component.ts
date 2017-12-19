@@ -81,6 +81,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
   serviceChart: any;
   serviceChartNames: any[] = []
   categoryChart: any;
+  agencyChart: any;
   videoUrl: any
 
   constructor(
@@ -158,7 +159,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
       if (this.currentAccount.userProfileProxies) {
         //loop through user proxies
         for (let proxy of this.currentAccount.userProfileProxies){
-          //if leader: push into users
+          //if leader: push into leaders
           if (proxy.leader){
             this.leaders.push(proxy.userProfile)
           } else {
@@ -487,73 +488,110 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
         data: serviceData,
       }]
     });
-    var govCount = 0
-    var contractorCount = 0
-    var commercialCount = 0
+    var govData = []
     for (let u of this.currentAccount.userProfileProxies) {
       for (let job of u.userProfile.positionHistory) {
-        if (job.employmentType == 0) {
-          govCount++
-        } else if (job.employmentType == 1) {
-          contractorCount++
-        } else if (job.employmentType == 2) {
-          commercialCount++
-        }
-      }
-    }
-    var totalCount = govCount + contractorCount + commercialCount
-    var categoryData = []
-    if (govCount > 0) {
-      categoryData.push({
-        name: 'Government',
-        y: 360*(govCount / totalCount)
-      })
-    }
-    if (contractorCount > 0) {
-      categoryData.push({
-        name: 'Contractor',
-        y: 360*(contractorCount / totalCount)
-      },)
-    }
-    if (commercialCount > 0) {
-      categoryData.push({
-        name: 'Commercial',
-        y: 360*(commercialCount / totalCount)
-      })
-    }
-
-    this.categoryChart = new Chart({
-      chart: {
-        type: 'pie',
-        backgroundColor: 'rgba(0, 100, 200, 0.00)',
-        renderTo: "category_chart"
-      },
-      title: {
-        text: 'Industry Profile'
-      },
-      tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-      },
-
-      plotOptions: {
-        pie: {
-          allowPointSelect: true,
-          cursor: 'pointer',
-          dataLabels: {
-            enabled: true,
-            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-            style: {
-                color: 'black'
+        if (job.StartDate && job.EndDate) {
+          job.Year = +job.StartDate.slice(0, 4);
+          var endYear = 0
+          if (job.EndDate.slice(0, 4) == "Curr") {
+            endYear = new Date().getFullYear()
+          } else {
+            endYear = +job.EndDate.slice(0, 4)
+          }
+          for (let agency of job.agencyExperience) {
+            var newAgency: any = agency
+            if (newAgency.main.title) {
+              newAgency.years = (endYear - job.Year)
+              newAgency.subagencies = []
+              if (newAgency.years == 0) {
+                newAgency.years = 1
+              }
+              var nameMatch = false
+              for (let i of govData) {
+                if (newAgency.main.title == i.title) {
+                  // console.log('merging ' + newAgency.main.title + ' & ' + i.main.title)
+                  nameMatch = true;
+                  i.years += newAgency.years
+                  i.people++
+                }
+              }
+              if (!nameMatch) {
+                govData.push({
+                  title: newAgency.main.title,
+                  years: newAgency.years,
+                  people: 1
+                })
+              }
             }
           }
         }
-      },
-      series: [{
-        name: 'Focus',
-        colorByPoint: true,
-        data: categoryData,
-      }]
-    });
+      }
+    }
+
+        govData.sort(function(a,b){
+          return parseFloat(b.years) - parseFloat(a.years);
+        })
+        govData = govData.slice(0,5)
+
+          var data_prof = new Map();
+          var data_peop = new Map();
+          var data_prof_sub = new Map();
+          var data_peop_sub = new Map();
+          var agencyNames = []
+          var prof = [];
+          var peop = [];
+          for (var j = 0; j < govData.length; j++) {
+            console.log(govData[j].years)
+            if (data_prof.has(govData[j].title)) {
+              data_prof.set(govData[j].title, data_prof.get(govData[j].title) + (govData[j].years * govData[j].people));
+              data_peop.set(govData[j].title, data_peop.get(govData[j].title) + govData[j].people);
+            }
+            if (!data_prof.has(govData[j].title)) {
+              data_prof.set(govData[j].title, (govData[j].years * govData[j].people));
+              data_peop.set(govData[j].title, govData[j].people);
+              agencyNames.push(govData[j].title);
+            }
+          }
+          for(var k = 0; k < agencyNames.length; k++){
+            data_prof.set( agencyNames[k], ( data_prof.get( agencyNames[k] )/data_peop.get( agencyNames[k] ) ) );
+            prof[k] = data_prof.get( agencyNames[k] );
+            peop[k] = data_peop.get( agencyNames[k] );
+          }
+          this.agencyChart = new Chart({
+            chart: {
+              type: 'column',
+              backgroundColor: 'rgba(0, 100, 200, 0.00)',
+            },
+            title: {
+              text: 'Combined Agency Experience'
+            },
+            xAxis: {
+              categories: agencyNames,
+              options : {
+                endOnTick: true
+              },
+            },
+            yAxis: {
+              min:0,
+              tickInterval: 1,
+              endOnTick: false,
+              alignTicks: false,
+              title: {
+                text: 'Combined Years Experience'
+              }
+            },
+            series: [{
+              name: 'Combined Experience',
+              data: prof,
+              tooltip: {
+                valueSuffix: ' years'
+              }
+            }],
+            legend: {
+              enabled: false,
+            }
+          });
 
     sortedOccupations = sortedOccupations.slice(0,5)
     for (let s of sortedOccupations){
