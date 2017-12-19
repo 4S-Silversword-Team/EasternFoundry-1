@@ -301,7 +301,7 @@ export class MessageComponent implements OnInit {
           avatar: company.avatar,
         }],
         subject: 'Invitation Accepted!',
-        content: this.currentUser.firstName + " " + this.currentUser.lastName + ' accepted your invitation and has joined ' + company.name + '!',
+        content: this.currentUser.firstName + " " + this.currentUser.lastName + ' accepted your invitation and has joined ' + company.name + '! \n \n Their user profile has been automatically set to private. If you want to make them public, you can do so from your company edit page.',
         isInvitation: false,
         invitation: {
           fromUser: false,
@@ -391,7 +391,7 @@ export class MessageComponent implements OnInit {
           avatar: person.avatar,
         }],
         subject: 'Request Accepted!',
-        content: this.currentCompany.name + ' has accepted your request to join!',
+        content: this.currentCompany.name + ' has accepted your request to join! \n \n Your user profile has been automatically set to private and will no longer be searchable.',
         isInvitation: false,
         invitation: {
           fromUser: false,

@@ -226,7 +226,7 @@ export class CorporateProfileEditComponent implements OnInit {
         avatar: person.avatar,
       }],
       subject: 'Invitiation To Join ' + this.currentAccount.name,
-      content: this.currentAccount.name + ' has invited you to join their company. Would you like to accept?',
+      content: this.currentAccount.name + " has invited you to join their company. If you accept, you'll be added to their employee list, and your profile will automatically be made private and hidden from searches. \n \n Would you like to accept?",
       isInvitation: true,
       invitation: {
         fromUser: false,
