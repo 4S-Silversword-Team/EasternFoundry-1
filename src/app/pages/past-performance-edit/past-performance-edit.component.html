@@ -71,7 +71,7 @@
               <div class="" style="width: calc(100% - 115px); float: left;">
                 <div class="" style="width: 100%" *ngIf='this.currentPastPerformance.client.gov'>
                   <div class="autocomplete-form" style="width: 100%">
-                    <input ngui-auto-complete class="" style="width: 100%" placeholder="Must match an existing agency" [(ngModel)] = 'this.currentPastPerformance.client.name' [source]='this.allAgencies' [list-formatter]="agencyListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': !agencyValidCheck(this.currentPastPerformance.client.name)}">
+                    <input ngui-auto-complete class="" style="width: 100%" placeholder="Must match an existing agency" [(ngModel)] = 'this.currentPastPerformance.client.name' [source]='this.allAgencies' [list-formatter]="agencyListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true'>
                   </div>
                 </div>
                 <div class="" style="width: 100%;" *ngIf='!this.currentPastPerformance.client.gov'><input type="text" style="width: 100%;" placeholder="Client" style="width: 100%" class="right" [(ngModel)] = "this.currentPastPerformance.client.name" [ngClass]="{'empty-field': !this.currentPastPerformance.client.name}"></div>

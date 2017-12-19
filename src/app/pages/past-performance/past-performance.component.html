@@ -153,9 +153,13 @@
                 </div>
               </div>
             </div>
-            <div class="employee-panel col-xs-12 col-md-6 left" *ngIf='activeTab.employees == 0 && privateCount > 0'>
-              <p class="" *ngIf='privateCount == 1'>{{ privateCount }} Private Employee</p>
-              <p class="" *ngIf='privateCount > 1'>{{ privateCount }} Private Employees</p>
+            <div class="employee-panel col-xs-12 col-md-6 left" *ngIf='activeTab.employees == 0 && privateCount.affiliated > 0'>
+              <p class="" *ngIf='privateCount.affiliated == 1'>{{ privateCount.affiliated }} Private Employee</p>
+              <p class="" *ngIf='privateCount.affiliated > 1'>{{ privateCount.affiliated }} Private Employees</p>
+            </div>
+            <div class="employee-panel col-xs-12 col-md-6 left" *ngIf='activeTab.employees == 1 && privateCount.notAffiliated > 0'>
+              <p class="" *ngIf='privateCount.notAffiliated == 1'>{{ privateCount.notAffiliated }} Private Employee</p>
+              <p class="" *ngIf='privateCount.notAffiliated > 1'>{{ privateCount.notAffiliated }} Private Employees</p>
             </div>
           </div>
         </div>

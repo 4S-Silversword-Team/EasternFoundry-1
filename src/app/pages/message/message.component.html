@@ -14,8 +14,8 @@
 </div>
 <div class="page" *ngIf='this.promiseFinished && !this.bugReport'>
   <div class="container top-bar">
-    <p style="font-size: 16px; text-align: center">The mailbox is still early and under construction - use with care!</p>
-    <br>
+    <!-- <p style="font-size: 16px; text-align: center">The mailbox is still early and under construction - use with care!</p> -->
+    <!-- <br> -->
     <div class="message-navbar" *ngIf='this.currentUser.power <= 3 || !this.currentUser.power'>
       <div class="message-navbar-tab" (click)='switchTab(0)' [ngClass]="{'message-navbar-tab-active-left': this.activeTab.main == 0}">
         Inbox

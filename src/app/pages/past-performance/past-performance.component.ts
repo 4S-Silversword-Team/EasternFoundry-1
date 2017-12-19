@@ -43,7 +43,10 @@ export class PastPerformanceComponent implements OnInit {
     employees: 0,
   };
   promiseFinished: boolean = false;
-  privateCount: number = 0;
+  privateCount = {
+    affiliated: 0,
+    notAffiliated: 0
+  }
   affiliatedCount: number = 0;
   percentAffiliated: number = 0;
   occupations: any[] = [];
@@ -82,13 +85,14 @@ export class PastPerformanceComponent implements OnInit {
 
       const companyPromises = [];
       for (const u of this.currentPastPerformance.userProfileProxies) {
+        u.stillAffiliated = false
         for (const c of u.user.companyUserProxies) {
           companyPromises.push(this.companyUserProxyService.getCompanyUserProxiesByID(c).toPromise().then(res => {
             const proxy: any = res;
             if (proxy) {
-              if (proxy.company._id === this.currentPastPerformance.companyProxies[0].company._id){
+              if (proxy.company._id === this.currentPastPerformance.companyProxies[0].company._id) {
                 // console.log(u.user.firstName + ' went from ' + u.stillAffiliated + ' to ' + proxy.stillAffiliated)
-                u.stillAffiliated = proxy.stillAffiliated;
+                u.stillAffiliated = true;
               }
             }
           }));
@@ -108,7 +112,11 @@ export class PastPerformanceComponent implements OnInit {
           if (i.stillAffiliated){
             this.affiliatedCount++;
             if (!i.user.public) {
-              this.privateCount++;
+              this.privateCount.affiliated++;
+            }
+          } else {
+            if (!i.user.public) {
+              this.privateCount.notAffiliated++;
             }
           }
         }
