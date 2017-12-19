@@ -28,7 +28,7 @@
 }
 
 .search-results-box {
-  height: 90vh;
+  height: calc(99vh - 51px);
   background: rgba(223,223,225,1);
   overflow-x: hidden;
   overflow-y: auto;
@@ -40,8 +40,7 @@
   height: 90%;
   width: 90%;
   left: 5%;
-  border-radius: 2px;
-  border: 2px solid rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.05);
   overflow-x: hidden;
 }
 
@@ -68,7 +67,7 @@
 }
 
 .search-terms-box {
-  height: 90vh;
+  height: calc(99vh - 51px);
   background: rgba(223,223,225,1);
   overflow-y: auto;
 }

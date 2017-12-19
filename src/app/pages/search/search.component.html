@@ -103,6 +103,7 @@
                   <div class="search-item-subheader" *ngIf='p.relevantSkills.length > 0'>Skilled at {{p.relevantSkills[0]}}</div>
                   <div class="search-item-subheader" *ngIf='p.relevantPositions.length > 0'>Rated {{p.relevantPositions[0].score}} as {{p.relevantPositions[0].title}}</div>
                   <div class="search-item-subheader" *ngIf='p.relevantCerts.length > 0'>Certified as {{p.relevantCerts[0]}}</div>
+                  <div class="search-item-subheader" *ngIf='p.relevantClearances.length > 0'>{{p.relevantClearances[0]}} Clearance</div>
                   <div class="search-item-link col-xs-12" style="margin-bottom: -5px">
                     <a href="user-profile/{{p._id}}">Visit {{p.firstName}} {{p.lastName}}</a>
                   </div>
@@ -184,66 +185,72 @@
   </div>
   <div class="col-xs-4 col-xs-offset-0 col-lg-4 col-lg-offset-1 search-terms-box">
     <h3 style="text-align: center">Search Terms</h3>
-    <div class="col-xs-12" style="width: 100%; text-align: right">
-      <div class="col-xs-12">
-        <p class="col-xs-7 checkbox-text">Company</p>
-        <div class="col-xs-5">
-          <input type="checkbox" name="" value="" style="margin: 0 auto" class="col-xs-12" [(ngModel)]='searchTerms.company' (ngModelChange)='updateAnalyticsString()'>
+    <div class="scrollbar" style="height: calc(99vh - 171px); border: 1px solid rgba(0,0,0,0.05); width: 100%; overflow-y: auto;">
+      <div class="col-xs-12" style="width: 100%; text-align: right">
+        <div class="col-xs-12">
+          <p class="col-xs-7 checkbox-text">Company</p>
+          <div class="col-xs-5">
+            <input type="checkbox" name="" value="" style="margin: 0 auto" class="col-xs-12" [(ngModel)]='searchTerms.company' (ngModelChange)='updateAnalyticsString()'>
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <p class="col-xs-7 checkbox-text">Person</p>
+          <div class="col-xs-5">
+            <input type="checkbox" name="" value="" style="margin: 0 auto" class="col-xs-12" [(ngModel)]='searchTerms.person' (ngModelChange)='updateAnalyticsString()'>
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <p class="col-xs-7 checkbox-text">Performance</p>
+          <div class="col-xs-5">
+            <input type="checkbox" name="" value="" style="margin: 0 auto" class="col-xs-12" [(ngModel)]='searchTerms.pastPerformance' (ngModelChange)='updateAnalyticsString()'>
+          </div>
         </div>
       </div>
-      <div class="col-xs-12">
-        <p class="col-xs-7 checkbox-text">Person</p>
-        <div class="col-xs-5">
-          <input type="checkbox" name="" value="" style="margin: 0 auto" class="col-xs-12" [(ngModel)]='searchTerms.person' (ngModelChange)='updateAnalyticsString()'>
+      <div class="col-xs-12" style="margin-bottom: 10px; margin-top: 5px;">
+        <p style="text-align: center" >Name</p>
+        <!-- <p style="text-align: center" class="search-term-desc">Find a specific company/performance</p> -->
+        <input type="text" name="test" value="" class="col-xs-12"  [(ngModel)]='searchTerms.name' (ngModelChange)='updateAnalyticsString()'>
+      </div>
+      <div class="col-xs-12" style="margin-bottom: 10px">
+        <p style="text-align: center" >Agency</p>
+        <!-- <p style="text-align: center" class="search-term-desc">Find people with experience at an agency</p> -->
+        <div class="autocomplete-form">
+          <input ngui-auto-complete class="col-xs-12" [(ngModel)] = 'searchTerms.agency' [source]='this.agencies' [list-formatter]="autocompleListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' (ngModelChange)='clearSubagency(); updateAnalyticsString()' [ngClass]="{'empty-field': agencyValidCheck(searchTerms.agency) == false}">
         </div>
       </div>
-      <div class="col-xs-12">
-        <p class="col-xs-7 checkbox-text">Performance</p>
-        <div class="col-xs-5">
-          <input type="checkbox" name="" value="" style="margin: 0 auto" class="col-xs-12" [(ngModel)]='searchTerms.pastPerformance' (ngModelChange)='updateAnalyticsString()'>
+      <div class="col-xs-12" style="margin-bottom: 10px">
+        <p style="text-align: center" >Subagency</p>
+        <!-- <p style="text-align: center" class="search-term-desc">Find people with experience at a subagency</p> -->
+        <div class="autocomplete-form">
+          <input ngui-auto-complete class="col-xs-12" [(ngModel)] = 'searchTerms.subagency' [source]='findSubAgencies(searchTerms.agency)'  auto-select-first-item='true' (ngModelChange)='updateAnalyticsString()' [ngClass]="{'empty-field': subagencyValidCheck(searchTerms.agency, searchTerms.subagency) == false}">
         </div>
       </div>
-    </div>
-    <div class="col-xs-12" style="margin-bottom: 5px; margin-top: 5px;">
-      <p style="text-align: center" >Name</p>
-      <p style="text-align: center" class="search-term-desc">Find a specific company/performance</p>
-      <input type="text" name="test" value="" class="col-xs-12"  [(ngModel)]='searchTerms.name' (ngModelChange)='updateAnalyticsString()'>
-    </div>
-    <div class="col-xs-12" style="margin-bottom: 5px">
-      <p style="text-align: center" >Agency</p>
-      <p style="text-align: center" class="search-term-desc">Find people with experience at an agency</p>
-      <div class="autocomplete-form">
-        <input ngui-auto-complete class="col-xs-12" [(ngModel)] = 'searchTerms.agency' [source]='this.agencies' [list-formatter]="autocompleListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' (ngModelChange)='clearSubagency(); updateAnalyticsString()' [ngClass]="{'empty-field': agencyValidCheck(searchTerms.agency) == false}">
+      <div class="col-xs-12" style="margin-bottom: 10px">
+        <p style="text-align: center" >Skill</p>
+        <!-- <p style="text-align: center" class="search-term-desc">Find people with experience in a certain skills</p> -->
+        <input type="text" name="test" value="" class="col-xs-12"  [(ngModel)]='searchTerms.skill' (ngModelChange)='updateAnalyticsString()'>
       </div>
-    </div>
-    <div class="col-xs-12" style="margin-bottom: 5px">
-      <p style="text-align: center" >Subagency</p>
-      <p style="text-align: center" class="search-term-desc">Find people with experience at a subagency</p>
-      <div class="autocomplete-form">
-        <input ngui-auto-complete class="col-xs-12" [(ngModel)] = 'searchTerms.subagency' [source]='findSubAgencies(searchTerms.agency)'  auto-select-first-item='true' (ngModelChange)='updateAnalyticsString()' [ngClass]="{'empty-field': subagencyValidCheck(searchTerms.agency, searchTerms.subagency) == false}">
+      <div class="col-xs-12" style="margin-bottom: 10px">
+        <p style="text-align: center" >Position</p>
+        <!-- <p style="text-align: center" class="search-term-desc">Find people highly rated for a specific position</p> -->
+        <input type="text" name="test" value="" class="col-xs-12" [(ngModel)]='searchTerms.position' (ngModelChange)='updateAnalyticsString()'>
       </div>
-    </div>
-
-    <div class="col-xs-12" style="margin-bottom: 5px">
-      <p style="text-align: center" >Skill</p>
-      <p style="text-align: center" class="search-term-desc">Find people with experience in a certain skills</p>
-      <input type="text" name="test" value="" class="col-xs-12"  [(ngModel)]='searchTerms.skill' (ngModelChange)='updateAnalyticsString()'>
-    </div>
-    <div class="col-xs-12" style="margin-bottom: 15px">
-      <p style="text-align: center" >Position</p>
-      <p style="text-align: center" class="search-term-desc">Find people highly rated for a specific position</p>
-      <input type="text" name="test" value="" class="col-xs-12" [(ngModel)]='searchTerms.position' (ngModelChange)='updateAnalyticsString()'>
-    </div>
-    <div class="col-xs-12" style="margin-bottom: 15px">
-      <p style="text-align: center" >Certification</p>
-      <p style="text-align: center" class="search-term-desc">Find people with a specific certification</p>
-      <input type="text" name="test" value="" class="col-xs-12" [(ngModel)]='searchTerms.cert' (ngModelChange)='updateAnalyticsString()'>
-    </div>
-    <div class="col-xs-12">
+      <div class="col-xs-12" style="margin-bottom: 10px">
+        <p style="text-align: center" >Certification</p>
+        <!-- <p style="text-align: center" class="search-term-desc">Find people with a specific certification</p> -->
+        <input type="text" name="test" value="" class="col-xs-12" [(ngModel)]='searchTerms.cert' (ngModelChange)='updateAnalyticsString()'>
+      </div>
+      <div class="col-xs-12" style="margin-bottom: 5px">
+        <p style="text-align: center" >Clearance</p>
+        <!-- <p style="text-align: center" class="search-term-desc">Find people with a specific clearance</p> -->
+        <input type="text" name="test" value="" class="col-xs-12" [(ngModel)]='searchTerms.clearance' (ngModelChange)='updateAnalyticsString()'>
+      </div>
       <div class="col-xs-12">
-        <p class="col-xs-7 checkbox-text" style="text-align: right">Freelancer</p>
-        <div class="col-xs-5">
-          <input type="checkbox" name="" value="" style="margin: 0 auto" class="col-xs-12" [(ngModel)]='searchTerms.freelancer'>
+        <div class="col-xs-12">
+          <p class="col-xs-7 checkbox-text" style="text-align: right">Freelancer</p>
+          <div class="col-xs-5">
+            <input type="checkbox" name="" value="" style="margin: 0 auto" class="col-xs-12" [(ngModel)]='searchTerms.freelancer'>
+          </div>
         </div>
       </div>
     </div>

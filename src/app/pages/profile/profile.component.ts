@@ -82,6 +82,7 @@ export class ProfileComponent implements OnInit {
   }
   pastPerformances: any[] = [];
   allCategories: any[]
+  topClearance: string
 
   constructor(
     private userService: UserService,
@@ -127,351 +128,364 @@ export class ProfileComponent implements OnInit {
       };
 
       if (this.currentUser.finished) {
-      for (let job of this.currentUser.positionHistory) {
-        if (job.EndDate) {
-          if (job.EndDate === "Current") {
-            this.currentJob = job
-          } else {
-            if (this.currentJob == null) {
+        for (let c of this.currentUser.clearance) {
+          if (c.clearanceType == 'Top Secret') {
+            this.topClearance = 'Top Secret'
+          } else if (c.clearanceType == 'Secret') {
+            if (this.topClearance != 'Top Secret') {
+              this.topClearance = 'Secret'
+            }
+          } else if (c.clearanceType == 'Confidential') {
+            if (this.topClearance != 'Top Secret' && this.topClearance != 'Secret') {
+              this.topClearance = 'Confidential'
+            }
+          }
+        }
+        for (let job of this.currentUser.positionHistory) {
+          if (job.EndDate) {
+            if (job.EndDate === "Current") {
               this.currentJob = job
-            } else if (this.currentJob.endDate != "Current"){
-              var jobYear = +job.EndDate.slice(0, 4);
-              var currentYear = +this.currentJob.EndDate.slice(0, 4);
-              if (jobYear > currentYear) {
+            } else {
+              if (this.currentJob == null) {
                 this.currentJob = job
-              } else if (jobYear == currentYear) {
-                var jobMonth = +job.EndDate.slice(5, 2);
-                var currentMonth = +this.currentJob.EndDate.slice(5, 2);
-                if (jobMonth > currentMonth) {
+              } else if (this.currentJob.endDate != "Current"){
+                var jobYear = +job.EndDate.slice(0, 4);
+                var currentYear = +this.currentJob.EndDate.slice(0, 4);
+                if (jobYear > currentYear) {
                   this.currentJob = job
+                } else if (jobYear == currentYear) {
+                  var jobMonth = +job.EndDate.slice(5, 2);
+                  var currentMonth = +this.currentJob.EndDate.slice(5, 2);
+                  if (jobMonth > currentMonth) {
+                    this.currentJob = job
+                  }
                 }
               }
             }
-          }
-          for (let exp of job.agencyExperience) {
-            for (let data of exp.main.data) {
-              let color = 4
-              color = Math.floor(color)
-              this.expColors[exp.main.title] = this.expColors[index++]
+            for (let exp of job.agencyExperience) {
+              for (let data of exp.main.data) {
+                let color = 4
+                color = Math.floor(color)
+                this.expColors[exp.main.title] = this.expColors[index++]
+              }
             }
           }
         }
-      }
 
-      let temp: number[] = []
-      if(this.currentUser.abilities) {
-        for (let index of this.currentUser.abilities) {
-          this.capaChartLabels.push(index[0])
-          temp.push(+index[1])
+        let temp: number[] = []
+        if(this.currentUser.abilities) {
+          for (let index of this.currentUser.abilities) {
+            this.capaChartLabels.push(index[0])
+            temp.push(+index[1])
+          }
         }
-      }
 
-      var date = new Date(),
-          locale = "en-us",
-          month = date.toLocaleString(locale, { month: "long" }).slice(0,3);
-      var year = new Date().getFullYear()
-      //if one of your jobs is tagged as "current", it assumes you're unavailable and vice versa
-      var avail = true
-      if (this.currentUser.positionHistory){
-        for (let pos of this.currentUser.positionHistory) {
-          if (pos.EndDate) {
-            if (pos.EndDate.toLowerCase() == "current"){
-              avail = false
+        var date = new Date(),
+        locale = "en-us",
+        month = date.toLocaleString(locale, { month: "long" }).slice(0,3);
+        var year = new Date().getFullYear()
+        //if one of your jobs is tagged as "current", it assumes you're unavailable and vice versa
+        var avail = true
+        if (this.currentUser.positionHistory){
+          for (let pos of this.currentUser.positionHistory) {
+            if (pos.EndDate) {
+              if (pos.EndDate.toLowerCase() == "current"){
+                avail = false
+              }
             }
           }
         }
-      }
 
-      var currentDate = month + ', ' + year.toString().slice(2,4)
-      while (this.currentUser.availability.length > 1 && this.currentUser.availability[0].date != currentDate) {
-        this.currentUser.availability.splice(0,1)
-      }
-      if (this.currentUser.availability[0]) {
-        if (this.currentUser.availability[0].date != currentDate) {
+        var currentDate = month + ', ' + year.toString().slice(2,4)
+        while (this.currentUser.availability.length > 1 && this.currentUser.availability[0].date != currentDate) {
           this.currentUser.availability.splice(0,1)
+        }
+        if (this.currentUser.availability[0]) {
+          if (this.currentUser.availability[0].date != currentDate) {
+            this.currentUser.availability.splice(0,1)
+            this.currentUser.availability.push({
+              date: currentDate,
+              available: avail
+            })
+          }
+        }
+        while (this.currentUser.availability.length > 0 && this.currentUser.availability.length < 7){
+          var nextNum = this.months.indexOf(this.currentUser.availability[this.currentUser.availability.length - 1].date.slice(0,3)) + 1
+          if (nextNum >= this.months.length) {
+            nextNum = 0
+            year = year + 1
+          }
           this.currentUser.availability.push({
-            date: currentDate,
+            date: this.months[nextNum] + ', ' + year.toString().slice(2,4),
             available: avail
           })
         }
-      }
-      while (this.currentUser.availability.length > 0 && this.currentUser.availability.length < 7){
-        var nextNum = this.months.indexOf(this.currentUser.availability[this.currentUser.availability.length - 1].date.slice(0,3)) + 1
-        if (nextNum >= this.months.length) {
-          nextNum = 0
-          year = year + 1
+        for (let index of this.currentUser.availability) {
+          this.availabilityData.dates.push(index.date)
+          this.availabilityData.values.push(index.available)
         }
-        this.currentUser.availability.push({
-          date: this.months[nextNum] + ', ' + year.toString().slice(2,4),
-          available: avail
-        })
-      }
-      for (let index of this.currentUser.availability) {
-        this.availabilityData.dates.push(index.date)
-        this.availabilityData.values.push(index.available)
-      }
-      this.capaChartDatas.push({data: temp, label: 'Strength'})
+        this.capaChartDatas.push({data: temp, label: 'Strength'})
 
-      for (let job of this.currentUser.positionHistory) {
-        job.Year = +job.StartDate.slice(0, 4);
-        var endYear = 0
-        if (job.EndDate.slice(0, 4) == "Curr") {
-          endYear = new Date().getFullYear()
-        } else {
-          endYear = +job.EndDate.slice(0, 4)
-        }
-        for (let agency of job.agencyExperience) {
-          var newAgency: any = agency
-          newAgency.years = (endYear - job.Year)
-          newAgency.jobs = 1
-          newAgency.subagencies = []
-          if (newAgency.years == 0) {
-            newAgency.years = 1
+        for (let job of this.currentUser.positionHistory) {
+          job.Year = +job.StartDate.slice(0, 4);
+          var endYear = 0
+          if (job.EndDate.slice(0, 4) == "Curr") {
+            endYear = new Date().getFullYear()
+          } else {
+            endYear = +job.EndDate.slice(0, 4)
           }
-
-          for (let s of agency.offices) {
-            var newSubagency: any = s
-            newSubagency.years = newAgency.years
-            newSubagency.jobs = 1
-            if (newSubagency.years == 0) {
-              newSubagency.years = 1
+          for (let agency of job.agencyExperience) {
+            var newAgency: any = agency
+            newAgency.years = (endYear - job.Year)
+            newAgency.jobs = 1
+            newAgency.subagencies = []
+            if (newAgency.years == 0) {
+              newAgency.years = 1
             }
+
+            for (let s of agency.offices) {
+              var newSubagency: any = s
+              newSubagency.years = newAgency.years
+              newSubagency.jobs = 1
+              if (newSubagency.years == 0) {
+                newSubagency.years = 1
+              }
+              var nameMatch = false
+              for (let i of newAgency.subagencies) {
+                if (newSubagency.title == i.title) {
+                  nameMatch = true;
+                  i.years += newSubagency.years
+                  i.jobs++
+                }
+              }
+              if (nameMatch == false && newSubagency.title.length > 0) {
+                if (newAgency.subagencies[0] == null) {
+                  newAgency.subagencies[0] = newSubagency
+                  this.subagencyCountForChart++
+                } else {
+                  newAgency.subagencies.push(newSubagency)
+                  this.subagencyCountForChart++
+                }
+              }
+            }
+
             var nameMatch = false
-            for (let i of newAgency.subagencies) {
-              if (newSubagency.title == i.title) {
+            for (let i of this.agencyExperience) {
+              if (newAgency.main.title == i.main.title) {
+                // console.log('merging ' + newAgency.main.title + ' & ' + i.main.title)
                 nameMatch = true;
-                i.years += newSubagency.years
+                i.years += newAgency.years
                 i.jobs++
               }
             }
-            if (nameMatch == false && newSubagency.title.length > 0) {
-              if (newAgency.subagencies[0] == null) {
-                newAgency.subagencies[0] = newSubagency
-                this.subagencyCountForChart++
+
+            if (nameMatch == false && job.agencyExperience[0].main.title.length > 0) {
+              if (this.agencyExperience[0] == null) {
+                // console.log('setting first one as ' + newAgency.main.title)
+                this.agencyExperience[0] = newAgency
               } else {
-                newAgency.subagencies.push(newSubagency)
-                this.subagencyCountForChart++
+                // console.log('pushing in ' + newAgency.main.title)
+                this.agencyExperience.push(newAgency)
               }
             }
           }
+        }
 
-          var nameMatch = false
-          for (let i of this.agencyExperience) {
-            if (newAgency.main.title == i.main.title) {
-              // console.log('merging ' + newAgency.main.title + ' & ' + i.main.title)
-              nameMatch = true;
-              i.years += newAgency.years
-              i.jobs++
+        var toolsToPush = []
+        for (let tool of this.currentUser.foundTools) {
+          var matchFound = false
+          for (let position of tool.position) {
+            for (let toolDone of toolsToPush) {
+              if (position == toolDone.title) {
+                toolDone.score += 7
+                matchFound = true
+              }
             }
-          }
-
-          if (nameMatch == false && job.agencyExperience[0].main.title.length > 0) {
-            if (this.agencyExperience[0] == null) {
-              // console.log('setting first one as ' + newAgency.main.title)
-              this.agencyExperience[0] = newAgency
-            } else {
-              // console.log('pushing in ' + newAgency.main.title)
-              this.agencyExperience.push(newAgency)
+            if (!matchFound) {
+              var newPosition = {
+                title: position,
+                score: 7
+              }
+              toolsToPush.push(newPosition)
             }
           }
         }
-      }
-
-      var toolsToPush = []
-      for (let tool of this.currentUser.foundTools) {
-        var matchFound = false
-        for (let position of tool.position) {
-          for (let toolDone of toolsToPush) {
-            if (position == toolDone.title) {
-              toolDone.score += 7
-              matchFound = true
-            }
-          }
-          if (!matchFound) {
-            var newPosition = {
-              title: position,
-              score: 7
-            }
-            toolsToPush.push(newPosition)
-          }
-        }
-      }
-      if (toolsToPush.length < 2) {
-        for (let o of this.currentUser.occupations) {
-          var newOccupation = {
-            title: o.title,
-            score: o.score
-          }
-          this.occupations.push(newOccupation)
-        }
-      } else {
-        for (let tool of toolsToPush) {
+        if (toolsToPush.length < 2) {
           for (let o of this.currentUser.occupations) {
-            if (tool.title == o.title) {
-              tool.score += (o.score / 5)
+            var newOccupation = {
+              title: o.title,
+              score: o.score
+            }
+            this.occupations.push(newOccupation)
+          }
+        } else {
+          for (let tool of toolsToPush) {
+            for (let o of this.currentUser.occupations) {
+              if (tool.title == o.title) {
+                tool.score += (o.score / 5)
+              }
             }
           }
+          toolsToPush.sort(function(a,b){
+            return parseFloat(b.score) - parseFloat(a.score);
+          })
+          for (var i = 0; i < 10; i++) {
+            this.occupations.push(toolsToPush[i])
+          }
         }
-        toolsToPush.sort(function(a,b){
+        for (let t of toolsToPush) {
+          var newName
+          var newCode
+          for (let i of this.allCategories) {
+            if (t.title == i.title){
+              newName = i.category
+              newCode = i.code.substring(0,2)
+            }
+          }
+          var newCategory = {
+            code: newCode,
+            name: newName,
+            score: 5
+          }
+          var match = false
+          for (let c of this.categories) {
+            if (newCategory.name == c.name) {
+              match = true
+              c.score = Math.round(c.score + (t.score / 5))
+            }
+          }
+          if (!match){
+            this.categories.push(newCategory)
+          }
+        }
+        var serviceData = []
+        var catPointsTotal = 0
+        this.categories.sort(function(a,b){
           return parseFloat(b.score) - parseFloat(a.score);
         })
-        for (var i = 0; i < 10; i++) {
-          this.occupations.push(toolsToPush[i])
-        }
-      }
-      for (let t of toolsToPush) {
-        var newName
-        var newCode
-        for (let i of this.allCategories) {
-          if (t.title == i.title){
-            newName = i.category
-            newCode = i.code.substring(0,2)
-          }
-        }
-        var newCategory = {
-          code: newCode,
-          name: newName,
-          score: 5
-        }
-        var match = false
+        this.categories = this.categories.slice(0,5)
         for (let c of this.categories) {
-          if (newCategory.name == c.name) {
-            match = true
-            c.score = Math.round(c.score + (t.score / 5))
-          }
+          catPointsTotal += c.score
         }
-        if (!match){
-          this.categories.push(newCategory)
+        for (let c of this.categories) {
+          var percent = 360*(c.score/catPointsTotal)
+          serviceData.push({
+            name: c.name,
+            y: percent
+          })
         }
-      }
-      var serviceData = []
-      var catPointsTotal = 0
-      this.categories.sort(function(a,b){
-        return parseFloat(b.score) - parseFloat(a.score);
-      })
-      this.categories = this.categories.slice(0,5)
-      for (let c of this.categories) {
-        catPointsTotal += c.score
-      }
-      for (let c of this.categories) {
-        var percent = 360*(c.score/catPointsTotal)
-        serviceData.push({
-          name: c.name,
-          y: percent
-        })
-      }
 
-      this.serviceChart = new Chart({
-        chart: {
-          type: 'pie',
-          backgroundColor: 'rgba(0, 100, 200, 0.00)',
-          renderTo: "service_chart",
-        },
-        annotations: {
-          labelOptions: {
-            style: {
-              fontSize: '42px'
+        this.serviceChart = new Chart({
+          chart: {
+            type: 'pie',
+            backgroundColor: 'rgba(0, 100, 200, 0.00)',
+            renderTo: "service_chart",
+          },
+          annotations: {
+            labelOptions: {
+              style: {
+                fontSize: '42px'
+              }
+            },
+            labels: {
+              overflow: 'elipses'
             }
           },
-          labels: {
-            overflow: 'elipses'
-          }
-        },
-        title: {
-          text: 'Ability Profile'
-        },
-        tooltip: {
-          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        plotOptions: {
-          pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-              enabled: true,
-              format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-              style: {
+          title: {
+            text: 'Ability Profile'
+          },
+          tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+          },
+          plotOptions: {
+            pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
                   color: 'black'
+                }
               }
             }
-          }
-        },
-        series: [{
-          name: 'Focus',
-          colorByPoint: true,
-          data: serviceData,
-        }]
-      });
+          },
+          series: [{
+            name: 'Focus',
+            colorByPoint: true,
+            data: serviceData,
+          }]
+        });
 
-      var govCount = 0
-      var contractorCount = 0
-      var commercialCount = 0
-      for (let job of this.currentUser.positionHistory) {
-        if (job.employmentType == 0) {
-          govCount++
-        } else if (job.employmentType == 1) {
-          contractorCount++
-        } else if (job.employmentType == 2) {
-          commercialCount++
+        var govCount = 0
+        var contractorCount = 0
+        var commercialCount = 0
+        for (let job of this.currentUser.positionHistory) {
+          if (job.employmentType == 0) {
+            govCount++
+          } else if (job.employmentType == 1) {
+            contractorCount++
+          } else if (job.employmentType == 2) {
+            commercialCount++
+          }
         }
-      }
-      var totalCount = govCount + contractorCount + commercialCount
-      var categoryData = []
-      if (govCount > 0) {
-        categoryData.push({
-          name: 'Government',
-          y: 360*(govCount / totalCount)
-        })
-      }
-      if (contractorCount > 0) {
-        categoryData.push({
-          name: 'Contractor',
-          y: 360*(contractorCount / totalCount)
-        },)
-      }
-      if (commercialCount > 0) {
-        categoryData.push({
-          name: 'Commercial',
-          y: 360*(commercialCount / totalCount)
-        })
-      }
+        var totalCount = govCount + contractorCount + commercialCount
+        var categoryData = []
+        if (govCount > 0) {
+          categoryData.push({
+            name: 'Government',
+            y: 360*(govCount / totalCount)
+          })
+        }
+        if (contractorCount > 0) {
+          categoryData.push({
+            name: 'Contractor',
+            y: 360*(contractorCount / totalCount)
+          },)
+        }
+        if (commercialCount > 0) {
+          categoryData.push({
+            name: 'Commercial',
+            y: 360*(commercialCount / totalCount)
+          })
+        }
 
-      this.categoryChart = new Chart({
-        chart: {
-          type: 'pie',
-          backgroundColor: 'rgba(0, 100, 200, 0.00)',
-          renderTo: "category_chart"
-        },
-        title: {
-          text: 'Industry Profile'
-        },
-        tooltip: {
-          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
+        this.categoryChart = new Chart({
+          chart: {
+            type: 'pie',
+            backgroundColor: 'rgba(0, 100, 200, 0.00)',
+            renderTo: "category_chart"
+          },
+          title: {
+            text: 'Industry Profile'
+          },
+          tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+          },
 
-        plotOptions: {
-          pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-              enabled: true,
-              format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-              style: {
+          plotOptions: {
+            pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
                   color: 'black'
+                }
               }
             }
-          }
-        },
-        series: [{
-          name: 'Focus',
-          colorByPoint: true,
-          data: categoryData,
-        }]
-      });
+          },
+          series: [{
+            name: 'Focus',
+            colorByPoint: true,
+            data: categoryData,
+          }]
+        });
 
-      //right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
-      //i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
-      if (typeof this.currentUser.disabled === "string") {
+        //right now when a user is created the json assigns the string value "true" or "false" to booleans instead of the actual true or false.
+        //i can't figure out how to fix that in the backend so now it just gets cleaned up when it hits the frontend
+        if (typeof this.currentUser.disabled === "string") {
         this.currentUser.disabled = stringToBool(this.currentUser.disabled)
       }
       for (var i = 0; i < this.currentUser.positionHistory.length; i++) {
@@ -557,406 +571,406 @@ export class ProfileComponent implements OnInit {
 
       // here is some CHART CALCULATION!
 
-        var data_prof = new Map();
-        var data_peop = new Map();
-        var data_prof_sub = new Map();
-        var data_peop_sub = new Map();
-        var agencyNames = []
-        var subagencyNames = []
-        var prof = [];
-        var peop = [];
-        for (var j = 0; j < this.agencyExperience.length; j++) {
-          if (data_prof.has(this.agencyExperience[j].main.title)) {
-            data_prof.set(this.agencyExperience[j].main.title, data_prof.get(this.agencyExperience[j].main.title) + (this.agencyExperience[j].years * this.agencyExperience[j].jobs));
-            data_peop.set(this.agencyExperience[j].main.title, data_peop.get(this.agencyExperience[j].main.title) + this.agencyExperience[j].jobs);
-          }
-          if (!data_prof.has(this.agencyExperience[j].main.title)) {
-            data_prof.set(this.agencyExperience[j].main.title, (this.agencyExperience[j].years * this.agencyExperience[j].jobs));
-            data_peop.set(this.agencyExperience[j].main.title, this.agencyExperience[j].jobs);
-            agencyNames.push(this.agencyExperience[j].main.title);
-          }
-
-          for (var x = 0; x < this.agencyExperience[j].subagencies.length; x++) {
-            if (data_prof_sub.has(this.agencyExperience[j].subagencies[x].title)) {
-              data_prof_sub.set(this.agencyExperience[j].subagencies[x].title, data_prof.get(this.agencyExperience[j].subagencies[x].title) + (this.agencyExperience[j].subagencies[x].years * this.agencyExperience[j].subagencies[x].jobs));
-              data_peop_sub.set(this.agencyExperience[j].subagencies[x].title, data_peop.get(this.agencyExperience[j].subagencies[x].title) + this.agencyExperience[j].subagencies[x].jobs);
-            }
-            if (!data_prof_sub.has(this.agencyExperience[j].subagencies[x].title)) {
-              data_prof_sub.set(this.agencyExperience[j].subagencies[x].title, (this.agencyExperience[j].subagencies[x].years * this.agencyExperience[j].subagencies[x].jobs));
-              data_peop_sub.set(this.agencyExperience[j].subagencies[x].title, this.agencyExperience[j].subagencies[x].jobs);
-              subagencyNames.push(this.agencyExperience[j].subagencies[x].title);
-            }
-          }
+      var data_prof = new Map();
+      var data_peop = new Map();
+      var data_prof_sub = new Map();
+      var data_peop_sub = new Map();
+      var agencyNames = []
+      var subagencyNames = []
+      var prof = [];
+      var peop = [];
+      for (var j = 0; j < this.agencyExperience.length; j++) {
+        if (data_prof.has(this.agencyExperience[j].main.title)) {
+          data_prof.set(this.agencyExperience[j].main.title, data_prof.get(this.agencyExperience[j].main.title) + (this.agencyExperience[j].years * this.agencyExperience[j].jobs));
+          data_peop.set(this.agencyExperience[j].main.title, data_peop.get(this.agencyExperience[j].main.title) + this.agencyExperience[j].jobs);
+        }
+        if (!data_prof.has(this.agencyExperience[j].main.title)) {
+          data_prof.set(this.agencyExperience[j].main.title, (this.agencyExperience[j].years * this.agencyExperience[j].jobs));
+          data_peop.set(this.agencyExperience[j].main.title, this.agencyExperience[j].jobs);
+          agencyNames.push(this.agencyExperience[j].main.title);
         }
 
-        for(var k = 0; k < agencyNames.length; k++){
-          data_prof.set( agencyNames[k], ( data_prof.get( agencyNames[k] )/data_peop.get( agencyNames[k] ) ) );
-          prof[k] = data_prof.get( agencyNames[k] );
-          peop[k] = data_peop.get( agencyNames[k] );
+        for (var x = 0; x < this.agencyExperience[j].subagencies.length; x++) {
+          if (data_prof_sub.has(this.agencyExperience[j].subagencies[x].title)) {
+            data_prof_sub.set(this.agencyExperience[j].subagencies[x].title, data_prof.get(this.agencyExperience[j].subagencies[x].title) + (this.agencyExperience[j].subagencies[x].years * this.agencyExperience[j].subagencies[x].jobs));
+            data_peop_sub.set(this.agencyExperience[j].subagencies[x].title, data_peop.get(this.agencyExperience[j].subagencies[x].title) + this.agencyExperience[j].subagencies[x].jobs);
+          }
+          if (!data_prof_sub.has(this.agencyExperience[j].subagencies[x].title)) {
+            data_prof_sub.set(this.agencyExperience[j].subagencies[x].title, (this.agencyExperience[j].subagencies[x].years * this.agencyExperience[j].subagencies[x].jobs));
+            data_peop_sub.set(this.agencyExperience[j].subagencies[x].title, this.agencyExperience[j].subagencies[x].jobs);
+            subagencyNames.push(this.agencyExperience[j].subagencies[x].title);
+          }
         }
-        this.agencyChart = new Chart({
-          chart: {
-            type: 'column',
-            backgroundColor: 'rgba(0, 100, 200, 0.00)',
+      }
+
+      for(var k = 0; k < agencyNames.length; k++){
+        data_prof.set( agencyNames[k], ( data_prof.get( agencyNames[k] )/data_peop.get( agencyNames[k] ) ) );
+        prof[k] = data_prof.get( agencyNames[k] );
+        peop[k] = data_peop.get( agencyNames[k] );
+      }
+      this.agencyChart = new Chart({
+        chart: {
+          type: 'column',
+          backgroundColor: 'rgba(0, 100, 200, 0.00)',
+        },
+        title: {
+          text: 'Agency Experience'
+        },
+        xAxis: {
+          categories: agencyNames,
+          options : {
+            endOnTick: true
           },
+        },
+        yAxis: {
+          min:0,
+          tickInterval: 1,
+          endOnTick: false,
+          alignTicks: false,
           title: {
-            text: 'Agency Experience'
-          },
-          xAxis: {
-            categories: agencyNames,
-            options : {
-              endOnTick: true
-            },
-          },
-          yAxis: {
-            min:0,
-            tickInterval: 1,
-            endOnTick: false,
-            alignTicks: false,
-            title: {
-              text: 'Years Experience'
-            }
-          },
-          series: [{
-            name: 'Experience: ',
-            data: prof,
-            tooltip: {
-              valueSuffix: ' years'
-            }
-          }]
-        });
+            text: 'Years Experience'
+          }
+        },
+        series: [{
+          name: 'Experience: ',
+          data: prof,
+          tooltip: {
+            valueSuffix: ' years'
+          }
+        }]
+      });
 
-        this.showTeam()
-        this.calculateSkillChart()
-        this.calculateCapaChart()
-        this.pastPerformances = this.currentUser.pastPerformanceProxies.map(proxy => proxy.pastPerformance)
-        this.promiseFinished = true;
-      } else {
-        this.promiseFinished = true;
-      }
+      this.showTeam()
+      this.calculateSkillChart()
+      this.calculateCapaChart()
+      this.pastPerformances = this.currentUser.pastPerformanceProxies.map(proxy => proxy.pastPerformance)
+      this.promiseFinished = true;
+    } else {
+      this.promiseFinished = true;
     }
   }
+}
 
-  ngOnInit() {
+ngOnInit() {
+}
+
+hotkeys(event){
+  // console.log(event.keyCode);
+  if (this.activeTab.main == 3) {
+  if (event.keyCode == 37 && this.activeTab.skill == 1 && this.activeTab.service > 0){
+    this.activeTab.service--
+  } else if (event.keyCode == 39 && this.activeTab.skill == 1 && this.serviceChartNames[this.activeTab.service+1]){
+    this.activeTab.service++
   }
+}
+}
 
-  hotkeys(event){
-    // console.log(event.keyCode);
-    if (this.activeTab.main == 3) {
-      if (event.keyCode == 37 && this.activeTab.skill == 1 && this.activeTab.service > 0){
-        this.activeTab.service--
-      } else if (event.keyCode == 39 && this.activeTab.skill == 1 && this.serviceChartNames[this.activeTab.service+1]){
-        this.activeTab.service++
-      }
-    }
-  }
+switchTab(newTab) {
+  // if (this.activeTab.main == newTab) {
+  //   this.activeTab.main = 7
+  // } else {
+  // }
+  this.activeTab.main = newTab
+}
 
-  switchTab(newTab) {
-    // if (this.activeTab.main == newTab) {
-    //   this.activeTab.main = 7
-    // } else {
-    // }
-    this.activeTab.main = newTab
-  }
-
-  showTeam() {
-    var occupations = []
-    var toolsToPush = []
-    for (let tool of this.currentUser.foundTools) {
-      var matchFound = false
-      for (let position of tool.position) {
-        for (let toolDone of toolsToPush) {
-          if (position == toolDone.title) {
-            toolDone.score += 5
-            matchFound = true
-          }
-        }
-        if (!matchFound) {
-          var newPosition = {
-            title: '',
-            score: 0
-          }
-          newPosition.title = position
-          newPosition.score = 5
-          toolsToPush.push(newPosition)
+showTeam() {
+  var occupations = []
+  var toolsToPush = []
+  for (let tool of this.currentUser.foundTools) {
+    var matchFound = false
+    for (let position of tool.position) {
+      for (let toolDone of toolsToPush) {
+        if (position == toolDone.title) {
+          toolDone.score += 5
+          matchFound = true
         }
       }
-    }
-    if (toolsToPush.length < 2) {
-      for (let o of this.currentUser.occupations) {
-        var newOccupation = {
+      if (!matchFound) {
+        var newPosition = {
           title: '',
           score: 0
         }
-        newOccupation.title = o.title
-        newOccupation.score = o.score
-        occupations.push(newOccupation)
-
-      }
-    } else {
-      for (let tool of toolsToPush) {
-        for (let o of this.currentUser.occupations) {
-          if (tool.title == o.title) {
-            tool.score += (o.score / 5)
-          }
-        }
-        occupations.push(tool)
+        newPosition.title = position
+        newPosition.score = 5
+        toolsToPush.push(newPosition)
       }
     }
-    occupations.sort(function(a,b){
-      return parseFloat(b.score) - parseFloat(a.score);
-    })
-    var sortedOccupations: any[] = []
-    for (let o of occupations){
-      for (let c of this.allCategories) {
-        if (o.title == c.title) {
-          if (o.score > 10) {
-            var match = false
-            for (let s of sortedOccupations) {
-              if (s.title == c.category) {
-                match = true;
-                var occupationMatch = false
-                if (s.occupations.indexOf(o) < 0){
-                  s.occupations.push(o)
-                }
+  }
+  if (toolsToPush.length < 2) {
+    for (let o of this.currentUser.occupations) {
+      var newOccupation = {
+        title: '',
+        score: 0
+      }
+      newOccupation.title = o.title
+      newOccupation.score = o.score
+      occupations.push(newOccupation)
+
+    }
+  } else {
+    for (let tool of toolsToPush) {
+      for (let o of this.currentUser.occupations) {
+        if (tool.title == o.title) {
+          tool.score += (o.score / 5)
+        }
+      }
+      occupations.push(tool)
+    }
+  }
+  occupations.sort(function(a,b){
+    return parseFloat(b.score) - parseFloat(a.score);
+  })
+  var sortedOccupations: any[] = []
+  for (let o of occupations){
+    for (let c of this.allCategories) {
+      if (o.title == c.title) {
+        if (o.score > 10) {
+          var match = false
+          for (let s of sortedOccupations) {
+            if (s.title == c.category) {
+              match = true;
+              var occupationMatch = false
+              if (s.occupations.indexOf(o) < 0){
+                s.occupations.push(o)
               }
             }
-            if (!match) {
-              sortedOccupations.push({
-                title: c.category,
-                occupations: [o]
-              })
-            }
+          }
+          if (!match) {
+            sortedOccupations.push({
+              title: c.category,
+              occupations: [o]
+            })
           }
         }
       }
-    }
-    for (let s of sortedOccupations){
-      this.serviceChartNames.push(s.title)
-      // console.log(s.title + " - " + s.occupations.length)
-      var data_prof = new Map();
-      var data_peop = new Map();
-      var skill = [];
-      var prof = [];
-      var peop = [];
-      for (var j = 0; j < 10; j++) {
-        // console.log(j + ' - ' + occupations[j].title)
-        if (j < s.occupations.length && s.occupations[j].title){
-          if (data_prof.has(s.occupations[j].title)) {
-            // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
-            // we'll see if it clears up when all the profiles in the database have full data on them
-            data_prof.set(s.occupations[j].title, data_prof.get(s.occupations[j].title) + s.occupations[j].score);
-            data_peop.set(s.occupations[j].title, data_peop.get(s.occupations[j].title) + 1);
-          }
-          if (!data_prof.has(occupations[j].title)) {
-            data_prof.set(s.occupations[j].title, s.occupations[j].score);
-            data_peop.set(s.occupations[j].title, 1);
-            skill.push(s.occupations[j].title);
-          }
-        }
-      }
-    for(var k = 0; k < 10; k++){
-      if (k < s.occupations.length && skill[k]) {
-        data_prof.set( skill[k], ( data_prof.get( skill[k] )/data_peop.get( skill[k] ) ) );
-        prof[k] = data_prof.get( skill[k] );
-        peop[k] = data_peop.get( skill[k] );
-      }
-    }
-    this.charts.push(this.generateChart(s.title, skill, peop, prof))
     }
   }
+  for (let s of sortedOccupations){
+    this.serviceChartNames.push(s.title)
+    // console.log(s.title + " - " + s.occupations.length)
+    var data_prof = new Map();
+    var data_peop = new Map();
+    var skill = [];
+    var prof = [];
+    var peop = [];
+    for (var j = 0; j < 10; j++) {
+      // console.log(j + ' - ' + occupations[j].title)
+      if (j < s.occupations.length && s.occupations[j].title){
+      if (data_prof.has(s.occupations[j].title)) {
+        // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
+        // we'll see if it clears up when all the profiles in the database have full data on them
+        data_prof.set(s.occupations[j].title, data_prof.get(s.occupations[j].title) + s.occupations[j].score);
+        data_peop.set(s.occupations[j].title, data_peop.get(s.occupations[j].title) + 1);
+      }
+      if (!data_prof.has(occupations[j].title)) {
+        data_prof.set(s.occupations[j].title, s.occupations[j].score);
+        data_peop.set(s.occupations[j].title, 1);
+        skill.push(s.occupations[j].title);
+      }
+    }
+  }
+  for(var k = 0; k < 10; k++){
+    if (k < s.occupations.length && skill[k]) {
+      data_prof.set( skill[k], ( data_prof.get( skill[k] )/data_peop.get( skill[k] ) ) );
+      prof[k] = data_prof.get( skill[k] );
+      peop[k] = data_peop.get( skill[k] );
+    }
+  }
+  this.charts.push(this.generateChart(s.title, skill, peop, prof))
+}
+}
 
-  generateChart(title, xCategories, series1, series2){
-    var chart = new Chart({
-      chart: {
-        type: 'column',
-        backgroundColor: 'rgba(0, 100, 200, 0.00)',
+generateChart(title, xCategories, series1, series2){
+  var chart = new Chart({
+    chart: {
+      type: 'column',
+      backgroundColor: 'rgba(0, 100, 200, 0.00)',
+    },
+    title: {
+      text: '',
+      floating: true
+    },
+    xAxis: {
+      categories: xCategories,
+      options : {
+        endOnTick: true
       },
+    },
+    yAxis: {
+      max:100,
+      min:0,
+      tickInterval: 1,
+      endOnTick: false,
+      alignTicks: false,
       title: {
-        text: '',
-        floating: true
-      },
-      xAxis: {
-        categories: xCategories,
-        options : {
-          endOnTick: true
-        },
-      },
-      yAxis: {
-        max:100,
-        min:0,
-        tickInterval: 1,
-        endOnTick: false,
-        alignTicks: false,
-        title: {
-          text: 'Score'
-        }
-      },
-      series: [{
-        name: 'Score',
-        data: series2,
-        tooltip: {
-          valueSuffix: ' points'
-        }
-      }]
-    })
-    return chart
-  }
-
-
-  calculateSkillChart(){
-      var data_prof = new Map();
-      var data_peop = new Map();
-      var skill = [];
-      var prof = [];
-      var peop = [];
-      var tools = this.currentUser.foundTools
-      // var tools = this.currentUser.foundTools.sort(function(a,b){
-      //   return b.score - a.score;
-      // })
-
-      for (var j = 0; j < tools.length; j++) {
-        // console.log(j + ' - ' + occupations[j].title)
-        if (tools[j].title){
-          if (data_prof.has(tools[j].title)) {
-            // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
-            // we'll see if it clears up when all the profiles in the database have full data on them
-            data_prof.set(tools[j].title, data_prof.get(tools[j].title) + tools[j].score);
-          }
-          if (!data_prof.has(tools[j].title)) {
-            data_prof.set(tools[j].title, tools[j].score);
-            skill.push(tools[j].title);
-          }
-        }
+        text: 'Score'
       }
-    for(var k = 0; k < tools.length; k++){
-      if (skill[k]) {
-        data_prof.set( skill[k], ( data_prof.get( skill[k] )) );
-        prof[k] = data_prof.get( skill[k] );
+    },
+    series: [{
+      name: 'Score',
+      data: series2,
+      tooltip: {
+        valueSuffix: ' points'
       }
+    }]
+  })
+  return chart
+}
+
+
+calculateSkillChart(){
+  var data_prof = new Map();
+  var data_peop = new Map();
+  var skill = [];
+  var prof = [];
+  var peop = [];
+  var tools = this.currentUser.foundTools
+  // var tools = this.currentUser.foundTools.sort(function(a,b){
+  //   return b.score - a.score;
+  // })
+
+  for (var j = 0; j < tools.length; j++) {
+    // console.log(j + ' - ' + occupations[j].title)
+    if (tools[j].title){
+    if (data_prof.has(tools[j].title)) {
+      // NOTE: the graphs that come out of this are kind of wonky. it may just be bad data from old user profiles.
+      // we'll see if it clears up when all the profiles in the database have full data on them
+      data_prof.set(tools[j].title, data_prof.get(tools[j].title) + tools[j].score);
     }
-    this.skillChart = new Chart({
-      chart: {
-        type: 'column',
-        backgroundColor: 'rgba(0, 100, 200, 0.00)',
-      },
-      title: {
-        text: "Tools"
-      },
-      xAxis: {
-        categories: skill,
-        options : {
-          endOnTick: true
-        },
-      },
-      yAxis: {
-        min:0,
-        tickInterval: 1,
-        endOnTick: false,
-        alignTicks: false,
-        title: {
-          text: 'Score'
-        }
-      },
-      series: [{
-        name: 'Score',
-        data: prof,
-        tooltip: {
-          valueSuffix: ' points'
-        }
-      }]
-    })
+    if (!data_prof.has(tools[j].title)) {
+      data_prof.set(tools[j].title, tools[j].score);
+      skill.push(tools[j].title);
+    }
   }
+}
+for(var k = 0; k < tools.length; k++){
+  if (skill[k]) {
+    data_prof.set( skill[k], ( data_prof.get( skill[k] )) );
+    prof[k] = data_prof.get( skill[k] );
+  }
+}
+this.skillChart = new Chart({
+  chart: {
+    type: 'column',
+    backgroundColor: 'rgba(0, 100, 200, 0.00)',
+  },
+  title: {
+    text: "Tools"
+  },
+  xAxis: {
+    categories: skill,
+    options : {
+      endOnTick: true
+    },
+  },
+  yAxis: {
+    min:0,
+    tickInterval: 1,
+    endOnTick: false,
+    alignTicks: false,
+    title: {
+      text: 'Score'
+    }
+  },
+  series: [{
+    name: 'Score',
+    data: prof,
+    tooltip: {
+      valueSuffix: ' points'
+    }
+  }]
+})
+}
 
-  calculateCapaChart() {
-    var temp: number[] = []
-    this.capaChartLabels = []
-    this.capaChartDatas = []
-    if(this.occupations) {
-      for (let index of this.occupations) {
-        if (index) {
-          this.capaChartLabels.push(index.title)
-          temp.push(+index.score)
-        }
+calculateCapaChart() {
+  var temp: number[] = []
+  this.capaChartLabels = []
+  this.capaChartDatas = []
+  if(this.occupations) {
+    for (let index of this.occupations) {
+      if (index) {
+        this.capaChartLabels.push(index.title)
+        temp.push(+index.score)
       }
     }
-    this.capaChartDatas.push({data: temp, label: 'Score'})
   }
+  this.capaChartDatas.push({data: temp, label: 'Score'})
+}
 
-  getCapaChartValues(occupations): number[] {
-    let temp: number[] = []
-    for (let index of occupations) {
-      temp.push(index.score)
-    }
-    return temp
+getCapaChartValues(occupations): number[] {
+  let temp: number[] = []
+  for (let index of occupations) {
+    temp.push(index.score)
   }
+  return temp
+}
 
 
-  getCapaChartColor(score: number): string {
-    let temp: string
-    var color: number = score/100*155
-    color = Math.floor(color)
-    temp = 'rgb(' + color.toString() + ',' + color.toString() + ',' + color.toString() + ')'
-    return temp
+getCapaChartColor(score: number): string {
+  let temp: string
+  var color: number = score/100*155
+  color = Math.floor(color)
+  temp = 'rgb(' + color.toString() + ',' + color.toString() + ',' + color.toString() + ')'
+  return temp
+}
+
+expMainValues(tempUser: User, jobNum, agencyNum): number[] {
+  let temp: number[] = []
+  for (let data of this.agencyExperience[agencyNum].main.data) {
+    temp.push(data.score * 10)
   }
+  return temp
+}
 
-  expMainValues(tempUser: User, jobNum, agencyNum): number[] {
-    let temp: number[] = []
-    for (let data of this.agencyExperience[agencyNum].main.data) {
-      temp.push(data.score * 10)
-    }
-    return temp
+expSub1Values(tempUser: User, jobNum, agencyNum, officeNum): number[] {
+  let temp: number[] = []
+  for (let data of this.currentUser.positionHistory[jobNum].agencyExperience[agencyNum].offices[officeNum].data) {
+    temp.push(data.score)
   }
+  return temp
+}
 
-  expSub1Values(tempUser: User, jobNum, agencyNum, officeNum): number[] {
-    let temp: number[] = []
-    for (let data of this.currentUser.positionHistory[jobNum].agencyExperience[agencyNum].offices[officeNum].data) {
-      temp.push(data.score)
-    }
-    return temp
-  }
-
-  expSub2Values(tempUser: User): number[] {
-    let temp: number[] = []
-    for (let job of this.currentUser.positionHistory) {
-      for (let exp of job.agencyExperience) {
-        for (let office of exp.offices) {
-          for (let data of office.data) {
-            temp.push(data.score)
-          }
+expSub2Values(tempUser: User): number[] {
+  let temp: number[] = []
+  for (let job of this.currentUser.positionHistory) {
+    for (let exp of job.agencyExperience) {
+      for (let office of exp.offices) {
+        for (let data of office.data) {
+          temp.push(data.score)
         }
       }
     }
-    return temp
   }
+  return temp
+}
 
-  getServiceChartData(): number[] {
-    const temp: number[] = [];
-    for (const i of this.categories) {
-      temp.push(i.score);
-    }
-    return temp;
+getServiceChartData(): number[] {
+  const temp: number[] = [];
+  for (const i of this.categories) {
+    temp.push(i.score);
   }
+  return temp;
+}
 
-  getServiceChartLabel(): string[] {
-    const temp: string[] = [];
-    for (const i of this.categories) {
-      temp.push(i.name);
-    }
-    return temp;
+getServiceChartLabel(): string[] {
+  const temp: string[] = [];
+  for (const i of this.categories) {
+    temp.push(i.name);
   }
+  return temp;
+}
 
-  currentYear() {
-    let year = new Date().getFullYear()
-    return year
-  }
+currentYear() {
+  let year = new Date().getFullYear()
+  return year
+}
 
-  back() {
-    this.location.back()
-  }
+back() {
+  this.location.back()
+}
 
-  editProfile() {
-    this.router.navigate(['user-profile-edit', this.currentUser['_id']]);
-  }
+editProfile() {
+  this.router.navigate(['user-profile-edit', this.currentUser['_id']]);
+}
 
 }

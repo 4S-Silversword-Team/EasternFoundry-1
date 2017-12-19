@@ -95,8 +95,10 @@
             <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentUser.address.state' [ngClass]="{'empty-field': !this.currentUser.address.state}">
             <input class="" style="width: 100%;" type="number" max="99999" maxlength="5" [(ngModel)] = 'this.currentUser.address.zip' [ngClass]="{'empty-field': !this.currentUser.address.zip}">
           </div>
-          <p class="left" style="width: calc(100% - 42px); line-height: 30px; float: left; padding-top: 6px;">Make your account publically viewable?</p>
-          <input type="checkbox" style="height: 42px; width: 42px; margin: 0px; float: left;" class="" [(ngModel)] = 'this.currentUser.public'>
+          <div class="" *ngIf="this.currentUser.companyUserProxies.length < 1">
+            <p class="left" style="width: calc(100% - 42px); line-height: 30px; float: left; padding-top: 6px;">Make your account publically viewable?</p>
+            <input type="checkbox" style="height: 42px; width: 42px; margin: 0px; float: left;" class="" [(ngModel)] = 'this.currentUser.public'>
+          </div>
         </div>
         <!-- <div class="" style="position: absolute; float: left; top: 0px; right: 0px; width: 50%; height: calc(202px + 5vh); padding: 2vh 2vw 2vh 2vw;">
           <div class="left" style="width: 60px; line-height: 42px; float: left; padding-top: 4px;">

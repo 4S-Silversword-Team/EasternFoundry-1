@@ -39,6 +39,7 @@ export class SearchComponent implements OnInit {
     skill: '',
     position: '',
     cert: '',
+    clearance: '',
     freelancer: false
   };
   searchResults = {
@@ -186,7 +187,7 @@ export class SearchComponent implements OnInit {
 
   searchReady(){
     if (this.searchTerms.company || this.searchTerms.person || this.searchTerms.pastPerformance) {
-      if (this.searchTerms.name || this.searchTerms.agency || this.searchTerms.skill || this.searchTerms.position || this.searchTerms.cert) {
+      if (this.searchTerms.name || this.searchTerms.agency || this.searchTerms.skill || this.searchTerms.position || this.searchTerms.cert || this.searchTerms.clearance) {
         return true;
       }
     }
@@ -236,6 +237,7 @@ export class SearchComponent implements OnInit {
         newCompany.relevantSkills = [];
         newCompany.relevantPositions = [];
         newCompany.relevantCerts = [];
+        newCompany.relevantClearances = [];
         newCompany.nameMatch = false;
         let matchFound = false;
         if (this.searchTerms.name){
@@ -447,6 +449,48 @@ export class SearchComponent implements OnInit {
             }
           }
         }
+        if (this.searchTerms.clearance) {
+          const clearanceToPush = [];
+          for (const p of newCompany.userProfileProxies) {
+            if (p.userProfile) {
+              if (p.userProfile.clearance) {
+                for (const clearance of p.userProfile.clearance) {
+                  let matchFound = false;
+                  for (const clearDone of clearanceToPush) {
+                    if (clearance.clearanceType === clearDone) {
+                      matchFound = true;
+                    }
+                  }
+                  if (!matchFound) {
+                    clearanceToPush.push(clearance.clearanceType);
+                  }
+                }
+                for (const clearance of clearanceToPush) {
+                  const clearDone = [];
+                  if (clearance.toLowerCase().indexOf(this.searchTerms.clearance.toLowerCase()) >= 0) {
+                    let certFound = false;
+                    if (clearDone.indexOf(clearance) < 0){
+                      for (const c of newCompany.relevantClearances) {
+                        if (c.name.toLowerCase() === clearance.toLowerCase()){
+                          certFound = true;
+                          c.count++;
+                          clearDone.push(clearance);
+                        }
+                      }
+                      if (!certFound) {
+                        newCompany.relevantClearances.push({
+                          name: clearance,
+                          count: 1
+                        });
+                        clearDone.push(clearance);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
         if (matchFound){
           let resultValid = true;
 
@@ -466,6 +510,9 @@ export class SearchComponent implements OnInit {
             resultValid = false;
           }
           if (this.searchTerms.cert && newCompany.relevantCerts.length < 1) {
+            resultValid = false;
+          }
+          if (this.searchTerms.clearance && newCompany.relevantClearances.length < 1) {
             resultValid = false;
           }
           if (resultValid){
@@ -489,6 +536,7 @@ export class SearchComponent implements OnInit {
         newPerson.relevantSkills = [];
         newPerson.relevantPositions = [];
         newPerson.relevantCerts = [];
+        newPerson.relevantClearances = [];
         if (this.searchTerms.agency) {
           for (const j of newPerson.positionHistory){
             for (const a of j.agencyExperience) {
@@ -543,15 +591,15 @@ export class SearchComponent implements OnInit {
         if (this.searchTerms.position) {
           const toolsToPush = [];
           for (const tool of newPerson.foundTools) {
-            let matchFound = false;
+            let posFound = false;
             for (const position of tool.position) {
               for (const toolDone of toolsToPush) {
                 if (position == toolDone.title) {
                   toolDone.score += 5;
-                  matchFound = true;
+                  posFound = true;
                 }
               }
-              if (!matchFound) {
+              if (!posFound) {
                 const newPosition = {
                   title: '',
                   score: 0
@@ -592,11 +640,24 @@ export class SearchComponent implements OnInit {
         if (this.searchTerms.cert) {
           if (newPerson.certification) {
             for (const cert of newPerson.certification) {
-              let matchFound = false;
-              if (cert.CertificationName.toLowerCase().indexOf(this.searchTerms.cert.toLowerCase()) >= 0) {
-                if (newPerson.relevantCerts.indexOf(cert.CertificationName) < 0){
+              if (cert.CertificationName) {
+                if (cert.CertificationName.toLowerCase().indexOf(this.searchTerms.cert.toLowerCase()) >= 0) {
+                  if (newPerson.relevantCerts.indexOf(cert.CertificationName) < 0){
+                    matchFound = true;
+                    newPerson.relevantCerts.push(cert.CertificationName);
+                  }
+                }
+              }
+            }
+          }
+        }
+        if (this.searchTerms.clearance) {
+          if (newPerson.clearance) {
+            for (const clearance of newPerson.clearance) {
+              if (clearance.clearanceType.toLowerCase().indexOf(this.searchTerms.clearance.toLowerCase()) >= 0) {
+                if (newPerson.relevantClearances.indexOf(clearance.clearanceType) < 0){
                   matchFound = true;
-                  newPerson.relevantCerts.push(cert.CertificationName);
+                  newPerson.relevantClearances.push(clearance.clearanceType);
                 }
               }
             }
@@ -629,9 +690,13 @@ export class SearchComponent implements OnInit {
           if (this.searchTerms.cert && newPerson.relevantCerts.length < 1) {
             resultValid = false;
           }
+          if (this.searchTerms.clearance && newPerson.relevantClearances.length < 1) {
+            resultValid = false;
+          }
           if (this.searchTerms.freelancer && newPerson.currentCompany) {
             resultValid = false;
           }
+          console.log(resultValid)
           if (resultValid){
             if (person.public) {
               newPerson.expand = false;
@@ -688,6 +753,7 @@ export class SearchComponent implements OnInit {
       }
     }
     console.log(this.analyticsString)
+    console.log(this.searchResults.people.length)
     this.searchRunning = false;
   }
 

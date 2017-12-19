@@ -44,15 +44,15 @@
       <div class="basic-info-top">
         <div class="" style="width: 100%; height: 150px;">
           <div class="col-xs-12 basic-info-header">
-            <p>{{ this.currentUser.firstName }} {{this.currentUser.lastName}}</p>
+            <p>{{this.currentUser.firstName}} {{this.currentUser.lastName}}</p>
           </div>
           <div class="col-xs-12 basic-info-sub" *ngIf='this.currentJob'>
-            <p>{{this.currentJob.PositionTitle}}</p>
+            <p>{{this.currentJob.PositionTitle}}, {{this.currentJob.Employer}}</p>
           </div>
-          <div class="col-xs-12 basic-info-sub-2" *ngIf='this.currentJob'>
-            <p>{{this.currentJob.Employer}}</p>
+          <div class="col-xs-12 basic-info-sub-2" *ngIf='this.topClearance'>
+            <p>{{this.topClearance}} Clearance</p>
           </div>
-          <div class="col-xs-12 basic-info-sub-2 audiowide">
+          <div class="col-xs-12 basic-info-sub audiowide">
             <a href="user-profile/{{this.currentUser._id}}/resume">See {{ this.currentUser.firstName }} {{this.currentUser.lastName}}'s Resume</a>
           </div>
         </div>
