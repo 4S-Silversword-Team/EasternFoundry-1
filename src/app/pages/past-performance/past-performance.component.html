@@ -125,7 +125,7 @@
           <div class="" *ngIf='this.currentPastPerformance.userProfileProxies'>
             <div class="" *ngFor='let index of this.currentPastPerformance.userProfileProxies'>
               <div class="" *ngIf='index.user'>
-                <div class="employee-panel col-xs-12 col-md-6 left" *ngIf='activeTab.employees == 0 && index.stillAffiliated && index.user.public'>
+                <div class="employee-panel col-xs-12 col-md-6 left" *ngIf='activeTab.employees == 0 && index.stillAffiliated && (index.user.public || this.userIsMember)'>
                   <div class="left avatar-small">
                     <img src='{{ index.user.avatar }}' class="avatar-img-small">
                   </div>
@@ -138,7 +138,7 @@
                     </button>
                   </a>
                 </div>
-                <div class="employee-panel col-xs-12 col-md-6 left" *ngIf='activeTab.employees == 1 && !index.stillAffiliated && index.user.public'>
+                <div class="employee-panel col-xs-12 col-md-6 left" *ngIf='activeTab.employees == 1 && !index.stillAffiliated && (index.user.public || this.userIsMember)'>
                   <div class="left avatar-small">
                     <img src='{{ index.user.avatar }}' class="avatar-img-small">
                   </div>
@@ -153,11 +153,11 @@
                 </div>
               </div>
             </div>
-            <div class="employee-panel col-xs-12 col-md-6 left" *ngIf='activeTab.employees == 0 && privateCount.affiliated > 0'>
+            <div class="employee-panel col-xs-12 col-md-6 left" *ngIf='activeTab.employees == 0 && privateCount.affiliated > 0 && !this.userIsMember'>
               <p class="" *ngIf='privateCount.affiliated == 1'>{{ privateCount.affiliated }} Private Employee</p>
               <p class="" *ngIf='privateCount.affiliated > 1'>{{ privateCount.affiliated }} Private Employees</p>
             </div>
-            <div class="employee-panel col-xs-12 col-md-6 left" *ngIf='activeTab.employees == 1 && privateCount.notAffiliated > 0'>
+            <div class="employee-panel col-xs-12 col-md-6 left" *ngIf='activeTab.employees == 1 && privateCount.notAffiliated > 0 && !this.userIsMember'>
               <p class="" *ngIf='privateCount.notAffiliated == 1'>{{ privateCount.notAffiliated }} Private Employee</p>
               <p class="" *ngIf='privateCount.notAffiliated > 1'>{{ privateCount.notAffiliated }} Private Employees</p>
             </div>

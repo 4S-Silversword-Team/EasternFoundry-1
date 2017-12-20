@@ -26,7 +26,7 @@ export class PastPerformanceComponent implements OnInit {
 
   currentPastPerformance: PastPerformance = new PastPerformance();
   isUserAdmin: boolean = false;
-
+  userIsMember: boolean = false
   public performanceTitle: string = '';
   public agencyType: string[] = ['Pro', 'Amature'];
   public officeType: string[] = ['Pro', 'Amature'];
@@ -96,6 +96,10 @@ export class PastPerformanceComponent implements OnInit {
               }
             }
           }));
+        }
+        if (u.user._id == this.auth.getLoggedInUser()) {
+          this.userIsMember = true
+          console.log(this.userIsMember)
         }
       }
       Promise.all(companyPromises).then(res => {
