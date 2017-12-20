@@ -409,12 +409,18 @@ export class ProfileEditComponent implements OnInit {
           this.calculateSkillChart();
           this.agencyService.getAgencies().then(val => {
             this.allAgencies = val
-            this.certService.getCerts().then(v => {
-              this.allCerts = v
+
+            this.http.get('../../../assets/certs.json')
+          .map((res: any) => res.json())
+          .subscribe(
+            (data: any) => {
+              this.allCerts = data;
               this.uneditedUser = this.currentUser
               this.promiseFinished = true;
               window.scrollTo(0, 0)
-            })
+            },
+            err => console.log(err), // error
+          ); 
           });
         });
       }
