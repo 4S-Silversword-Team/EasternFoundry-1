@@ -52,6 +52,9 @@ export class AdminComponent implements OnInit {
   companyUserProxyToDelete: any = {
     on: false
   }
+  ppUserProxyToDelete: any = {
+    on: false
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -188,6 +191,20 @@ export class AdminComponent implements OnInit {
       console.log("its dead")
       this.companyUserProxyToDelete.on = false
       this.allCompanyUserProxies.splice(i, 1)
+    })
+  }
+
+  deletePPUserProxyPrep(proxy, i) {
+    this.ppUserProxyToDelete.proxy = proxy
+    this.ppUserProxyToDelete.on = true
+    this.ppUserProxyToDelete.index = i
+  }
+
+  deletePPUserProxy(proxy, i){
+    this.userPastPerformanceProxyService.deleteUserPPProxy(proxy._id).then((res) => {
+      console.log("its dead")
+      this.ppUserProxyToDelete.on = false
+      this.allPPUserProxies.splice(i, 1)
     })
   }
 

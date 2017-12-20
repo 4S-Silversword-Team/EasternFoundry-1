@@ -158,23 +158,23 @@
             <div class="" *ngIf='this.noResults'>
               <h4 style="text-align: center">No Results Found</h4>
             </div>
-            <div class="" *ngIf='allCompanyUserProxies.length > 0'>
-              <div class="" *ngFor='let c of allCompanyUserProxies; let i = index' style="position: relative">
+            <div class="" *ngIf='allPPUserProxies.length > 0'>
+              <div class="" *ngFor='let pp of allPPUserProxies; let i = index' style="position: relative">
                 <div class="search-item">
                   <div class="search-item-not-expand col-xs-12">
-                    <div class="search-item-header" *ngIf='!c.company'>
+                    <div class="search-item-header" *ngIf='!pp.pastPerformance'>
                       NO COMPANY
                     </div>
-                    <div class="search-item-header" *ngIf='!c.userProfile'>
+                    <div class="search-item-header" *ngIf='!pp.user'>
                       NO PERSON
                     </div>
-                    <div class="" *ngIf='c.company && c.userProfile'>
-                      <div class="search-item-header">{{c.company.name}}</div>
-                      <div class="search-item-subheader">{{c.userProfile.firstName}} {{c.userProfile.lastName}}</div>
+                    <div class="" *ngIf='pp.pastPerformance && pp.user'>
+                      <div class="search-item-header">{{pp.pastPerformance.title}}</div>
+                      <div class="search-item-subheader">{{pp.user.firstName}} {{pp.user.lastName}}</div>
                     </div>
                   </div>
                 </div>
-                <div class="delete-button" style="" (click)='deleteCompanyUserProxyPrep(c, i)'>
+                <div class="delete-button" style="" (click)='deletePPUserProxyPrep(pp, i)'>
                   DELETE
                 </div>
               </div>

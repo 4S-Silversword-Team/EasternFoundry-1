@@ -83,11 +83,11 @@
             <p class="left" style="position: relative; width: calc(100% - 42px); line-height: 30px; float: left; padding-top: 6px;">Make your company publically viewable?</p>
             <input type="checkbox" style="position: relative; height: 42px; width: 42px; margin: 0px; float: left;" class="" [(ngModel)] = 'this.currentAccount.public'>
           </div>
-        </div>
-        <div class="" style="position: absolute; width: 100%; height: calc(84.5vh - 410px); bottom: 4.5vh; left: 1vw">
-          <div class="" *ngIf='this.creatingNew'>
-            <p>Your new company will be initialized with you as an admin.</p>
-            <p>After its creation, you can go back in to editing to add more employees or products.</p>
+          <div class="" style="position: relative; width: 100%; float: left; margin-top: 25px;">
+            <div class="" *ngIf='this.creatingNew'>
+              <p>Your new company will be initialized with you as an admin.</p>
+              <p>After its creation, you can go back in to editing to add more employees or products.</p>
+            </div>
           </div>
         </div>
       </div>
