@@ -177,7 +177,8 @@
 
 .past-performance-inner {
   position: relative;
-  height: calc(99vh - 304px);
+  margin-top: 12px;
+  height: calc(99vh - 278px);
   background: rgba(0,0,0,0.02);
   overflow-y: auto;
   overflow-x: hidden;
