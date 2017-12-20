@@ -22,7 +22,7 @@
               <li><a href="corporate-profile-create">Create New Company</a></li>
             </ul>
           </li>
-          <li class="dropdown ">
+          <li class="dropdown " *ngIf="this.myPastPerformances.length > 0">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Past Performances <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li *ngFor="let pp of this.myPastPerformances"><a href="past-performance/{{pp.id}}">{{pp.name}}</a></li>

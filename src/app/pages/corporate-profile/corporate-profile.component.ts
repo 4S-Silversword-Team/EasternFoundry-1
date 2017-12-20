@@ -14,7 +14,6 @@ import { Chart } from 'angular-highcharts';
 import { Title } from '@angular/platform-browser';
 import {BrowserModule, DomSanitizer} from '@angular/platform-browser'
 
-
 import { UserService } from '../../services/user.service';
 import { CompanyService } from '../../services/company.service';
 import { ProductService } from '../../services/product.service';
@@ -542,7 +541,6 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
           var prof = [];
           var peop = [];
           for (var j = 0; j < govData.length; j++) {
-            console.log(govData[j].years)
             if (data_prof.has(govData[j].title)) {
               data_prof.set(govData[j].title, data_prof.get(govData[j].title) + (govData[j].years * govData[j].people));
               data_peop.set(govData[j].title, data_peop.get(govData[j].title) + govData[j].people);
@@ -627,7 +625,6 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     }
     this.charts.push(this.generateChart(s.title, skill, numPeop, peop, prof))
     }
-
   }
 
   generateChart(title, xCategories, yMax, series1, series2){
