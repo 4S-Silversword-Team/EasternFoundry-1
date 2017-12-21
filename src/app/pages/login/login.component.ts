@@ -91,7 +91,7 @@ export class LoginComponent implements OnInit {
         if (!this.authError){
           //this.currentUser = this.auth.current_user  //TODO: find out why this doesn't work
           this.currentUser = localStorage.getItem('uid')
-          this.nav.navRefresh();
+          this.nav.navInitialize();
           console.log(this.currentUser)
           this.router.navigateByUrl("/user-profile/" + this.currentUser)
         }

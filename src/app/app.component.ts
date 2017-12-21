@@ -36,7 +36,11 @@ export class AppComponent implements OnInit {
     private titleService: Title,
   ){
     console.log('Navbar checkin login status');
-    this.signedIn = auth.isLoggedIn();
+    this.navInitialize()
+  }
+
+  navInitialize(){
+    this.signedIn = this.auth.isLoggedIn();
     if (!this.signedIn) {
       localStorage.removeItem('token');
       localStorage.removeItem('uid');
