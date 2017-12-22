@@ -26,14 +26,7 @@ import { MessageService } from '../../services/message.service'
 declare var $: any;
 declare var Swiper: any;
 // var renderChart: boolean;
-// renderChart = false;
-@Pipe({ name: 'safe' })
-export class SafePipe implements PipeTransform {
-  constructor(private sanitizer: DomSanitizer) {}
-  transform(url) {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  }
-}
+// renderChart = false
 @Component({
   selector: 'app-corporate-profile',
   providers: [UserService, ProductService, ServiceService, PastperformanceService, CompanyService, AuthService, RoleService, MessageService],
