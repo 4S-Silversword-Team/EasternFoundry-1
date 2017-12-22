@@ -375,14 +375,14 @@ textarea {
 }
 
 .score-panel-outer {
-  height: 50.2vh;
+  height: calc(99vh - 261px);
   background: rgba(255,255,255,0.55);
   border: 1px solid rgba(0,0,0,0.25);
   padding: 2px;
 }
 
 .score-panel {
-  height: calc(100% - 90px);
+  height: calc(100% - 10px);
   background: rgba(0,0,0,0.02);
   border: 1px solid rgba(0,0,0,0.2);
   overflow-y: auto;
