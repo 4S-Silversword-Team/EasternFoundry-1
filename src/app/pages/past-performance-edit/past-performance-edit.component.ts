@@ -152,7 +152,7 @@ export class PastPerformanceEditComponent implements OnInit {
         'companyId': i.company._id,
         'proxyId': i._id,
         'startDate': i.startDate.slice(0, 10),
-        'endDate': i.endDate.slice(0, 10),
+        // 'endDate': i.endDate.slice(0, 10),
         'activeContract': i.activeContract
       });
     }

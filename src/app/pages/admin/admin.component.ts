@@ -49,6 +49,9 @@ export class AdminComponent implements OnInit {
   companyToDelete: any = {
     on: false
   }
+  pastPerformanceToDelete: any = {
+    on: false
+  }
   companyUserProxyToDelete: any = {
     on: false
   }
@@ -183,6 +186,19 @@ export class AdminComponent implements OnInit {
     })
   }
 
+  deletePastPerformancePrep(pastPerformance, i) {
+    this.pastPerformanceToDelete.pastPerformance = pastPerformance
+    this.pastPerformanceToDelete.on = true
+    this.pastPerformanceToDelete.index = i
+  }
+  deletePastPerformance(pp, i){
+    this.ppService.deletePastPerformance(pp._id).toPromise().then((res) => {
+      console.log("its dead")
+      this.pastPerformanceToDelete.on = false
+      this.allPPs.splice(i, 1)
+    })
+  }
+
   deleteCompanyUserProxyPrep(proxy, i) {
     this.companyUserProxyToDelete.proxy = proxy
     this.companyUserProxyToDelete.on = true
@@ -210,7 +226,7 @@ export class AdminComponent implements OnInit {
       this.allPPUserProxies.splice(i, 1)
     })
   }
-  
+
   deletePPCompanyProxyPrep(proxy, i) {
     this.ppCompanyProxyToDelete.proxy = proxy
     this.ppCompanyProxyToDelete.on = true

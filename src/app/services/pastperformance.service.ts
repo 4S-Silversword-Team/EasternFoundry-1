@@ -42,6 +42,13 @@ export class PastperformanceService {
     return response;
   }
 
+  deletePastPerformance(id: string): Observable<any> {
+    var response = this.authHttp.delete(environment.apiRoot + "PastPerformance/" + id)
+      .map(response => <PastPerformance> JSON.parse(JSON.stringify(response)));
+    return response;
+  }
+
+
   // getPastPerformancebyID(id: string): PastPerformance {
   //   let temp: PastPerformance = new PastPerformance()
   //   temp.id = '1'
