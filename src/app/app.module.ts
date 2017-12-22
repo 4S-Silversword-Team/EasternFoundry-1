@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -26,10 +27,10 @@ import { VerifyComponent } from './pages/verify/verify.component';
 import { ComponentNameComponent } from './component-name/component-name.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { RatingModule } from 'ng2-bootstrap/rating';
-import { CarouselModule } from 'ng2-bootstrap/carousel';
-import { BsDropdownModule } from 'ng2-bootstrap/dropdown';
-import { ButtonsModule } from 'ng2-bootstrap/buttons';
+import { RatingModule } from 'ngx-bootstrap/rating';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { ChartsModule } from 'ng2-charts';
 import { SelectModule } from 'ng2-select';
 
@@ -75,19 +76,20 @@ import { Angulartics2Clicky } from 'angulartics2/clicky';
   ],
   imports: [
     NgbModule.forRoot(),
-    RatingModule.forRoot(),
     CarouselModule.forRoot(),
+    RatingModule.forRoot(),
     BsDropdownModule.forRoot(),
     ButtonsModule.forRoot(),
     SelectModule,
     ChartsModule,
     BrowserModule,
     FormsModule,
+    HttpModule,
     HttpClientModule,
     NguiAutoCompleteModule,
+    TextareaAutosizeModule,
     RouterModule.forRoot(ROUTES, {useHash: false}),
     ChartModule,
-    TextareaAutosizeModule,
     Angulartics2Module.forRoot([Angulartics2Clicky]),
   ],
   providers: [],
