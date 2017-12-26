@@ -630,7 +630,17 @@
         </div>
       </div>
       <div class="" *ngIf='activeTab.skills == 1'>
-        <h4 style="text-align: center; margin-top: 2px;">Assign your Professional Points to your best skills!</h4>
+        <h4 style="text-align: center; margin-top: 2px;">Assign your Professional Points to your best skills!
+          <div class="" style="position: relative; float: left; height: 100%; width: 50px;">
+            <div class="tutorial-circle" (mouseenter) ="this.tutorialOn.skills = true"  (mouseleave) ="this.tutorialOn.skills = false">?</div>
+            <div class="tutorial-box" *ngIf="this.tutorialOn.skills" (mouseenter) ="this.tutorialOn.skills = true"  (mouseleave) ="this.tutorialOn.skills = false">
+              <h5>Professional Points</h5>
+              <p>Your Professional Points are calculated based on your job experience, education, and certifications.</p><br>
+              <p>Use your points to rate your proficiency in your skills.</p>
+            </div>
+          </div>
+        </h4>
+
         <h3 style="text-align: center; margin-top: 2px;">{{this.availablePoints}}/{{this.professionalPoints}} Points Remaining</h3>
         <div class="col-xs-6 score-panel-outer">
           <div class="score-panel scrollbar">

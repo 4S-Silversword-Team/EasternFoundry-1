@@ -73,7 +73,7 @@ export class CorporateProfileEditComponent implements OnInit {
   noResults = false
   productTabs = [0]
   activeTab = {
-    main: 0,
+    main: 2,
     product: 0,
   }
   invitationSent: string[] = []
@@ -83,6 +83,18 @@ export class CorporateProfileEditComponent implements OnInit {
   lastStartDate: string;
   lastEndDate: string;
   productDeleteTab: boolean = false
+  tutorialOn: any = {
+    basic: false,
+    employees: false,
+    products: false,
+    features: false,
+    problems: false,
+    stories: false,
+  }
+  problemCategories = [
+    "Cyber",
+    "Planning"
+  ]
   vehicles = [
     "eFAST",
     "NETCENTS II",
@@ -208,6 +220,25 @@ export class CorporateProfileEditComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  productFeatureScoreChange(product) {
+    var totalPoints = 0
+    var totalReached = false
+    for (let feature of product.feature) {
+      if (feature.score > 0 && !totalReached) {
+        if (totalPoints < 100) {
+          if (totalPoints + feature.score > 100) {
+            console.log("???????")
+            feature.score = 100 - totalPoints
+            totalPoints += feature.score
+            totalReached = true
+          } else if (totalPoints + feature.score <= 100) {
+            totalPoints += feature.score
+          }
+        }
+      }
+    }
   }
 
   invite(person, i){
@@ -709,9 +740,20 @@ export class CorporateProfileEditComponent implements OnInit {
   //   }
   // }
   deleteProduct(i) {
-    this.products.splice(i, 1);
     this.productDeleteTab = false
-    while (!this.currentUser.positionHistory[this.activeTab.product] && this.activeTab.product > 0){
+    var productToDelete
+    for (var x = 0; x < this.currentAccount.product.length; x++) {
+      console.log(this.currentAccount.product[x] + " - " + this.products[this.activeTab.product]._id)
+      if (this.currentAccount.product[x] == this.products[this.activeTab.product]._id) {
+        productToDelete = x
+      }
+    }
+    if (productToDelete != undefined) {
+      console.log("!!!!!")
+      this.currentAccount.product.splice(productToDelete, 1)
+    }
+    this.products.splice(i, 1);
+    while (!this.products[this.activeTab.product] && this.activeTab.product > 0){
       this.activeTab.product = this.activeTab.product-1
     }
   }
@@ -761,7 +803,7 @@ export class CorporateProfileEditComponent implements OnInit {
   }
 
   addFeature(service){
-    service.feature.push({title: '', score: 0})
+    service.feature.push({title: '', problem: {category: '', description: ''}, story: [], score: 0})
   }
 
   deleteFeature(service, i) {

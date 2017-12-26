@@ -264,7 +264,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="" style="position: relative; float: left; top: 2px; right: 0px; width: 55%; height: 76px; padding: 0vh 2vw 2vh 2vw;">
+                <div class="" style="position: relative; float: left; top: 2px; right: 0px; width: 55%; height: 76px; padding: 0vh 2vw 2vh 2vw">
                   <div class="left" style="width: 85px; line-height: 42px; float: left; padding-top: 4px;">
                     <p class="">More Info</p>
                     <p class="">Video Demo</p>
@@ -274,24 +274,20 @@
                     <input class="" style="width: 100%;" type="text" placeholder="URL to Video demo." [(ngModel)]="product.viewDemoLink">
                   </div>
                 </div>
-
-                <div class="col-xs-12" style="">
+                <div class="col-xs-12" style="height: calc(44vh - 166px);">
                   <div class="" style="width: 49%; float: left; margin-right: 1%;">
-                    <p class="" style="width: 100%;">Product Description</p>
-                    <textarea class="" style="height: 100px; width: 100%; border: 1px solid rgba(0,0,0,0.25)" [(ngModel)]='product.description'></textarea>
+                    <p class="" style="width: 100%; line-height: 20px;">Product Description</p>
+                    <textarea class="" style="height: 200px; width: 100%; border: 1px solid rgba(0,0,0,0.25); height: calc(44vh - 186px);" [(ngModel)]='product.description'></textarea>
                   </div>
                   <div class="" style="width: 49%; float: left; margin-left: 1%;">
-                    <p class="" style="width: 100%;">Agencies using it today</p>
-                    <div class="col-xs-4 customer-tab" (click)='changeCustomerTab(prodIndex, product, 0)' [ngClass]="{'customer-tab-active': productTabs[prodIndex] == 0}">
-                      Defense
+                    <p class="" style="width: 100%; line-height: 20px;">Agencies using it today</p>
+                    <div class="col-xs-6 customer-tab" (click)='changeCustomerTab(prodIndex, product, 0)' [ngClass]="{'customer-tab-active': productTabs[prodIndex] == 0}">
+                      Government
                     </div>
-                    <div class="col-xs-4 customer-tab"  (click)='changeCustomerTab(prodIndex, product, 1)' [ngClass]="{'customer-tab-active': productTabs[prodIndex] == 1}">
+                    <div class="col-xs-6 customer-tab"  (click)='changeCustomerTab(prodIndex, product, 1)' [ngClass]="{'customer-tab-active': productTabs[prodIndex] == 1}">
                       Commercial
                     </div>
-                    <div class="col-xs-4 customer-tab"  (click)='changeCustomerTab(prodIndex, product, 2)' [ngClass]="{'customer-tab-active': productTabs[prodIndex] == 2}">
-                      Civilian
-                    </div>
-                    <div class="product-customers scrollbar" style="">
+                    <div class="product-customers scrollbar"  style="height: calc(44vh - 206px);">
                       <div class="" *ngIf='this.productTabs[prodIndex] == 0'>
                         <div class="col-xs-12" *ngFor='let customer of product.customers.defense; let i = index' style="color: black">
                           <input ngui-auto-complete class="col-xs-12" placeholder="Defense Customer" [(ngModel)] = 'customer.name' [source]='this.allAgencies' [list-formatter]="agencyListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': agencyValidCheck(customer.name) == false}">
@@ -315,43 +311,95 @@
                       </div>
                     </div>
                   </div>
-
-                  <div class="col-xs-12 col-sm-6">
-
-
-                  </div>
                 </div>
-                <div class="col-xs-12 mt30">
+                <div class="col-xs-12" style="padding-top: 1px; height: 31px; margin-bottom: 5px;">
                   <div class="col-xs-12 col-md-4">
-                    <p class="left">Will you customize the product?</p>
+                    <p class="left" style="line-height: 28px;">Will you customize the product?</p>
                     <input class="right" type="checkbox" [(ngModel)]="product.customization" />
                   </div>
-                  <div class="col-xs-12 col-md-4">
+                  <div class="col-xs-12 col-md-4" style="line-height: 28px;">
                     <p class="left">Do you provide training?</p>
                     <input class="right" type="checkbox" [(ngModel)]="product.training" />
                   </div>
-                  <div class="col-xs-12 col-md-4">
+                  <div class="col-xs-12 col-md-4" style="line-height: 28px;">
                     <p class="left">Do you provide maintenance?</p>
                     <input class="right" type="checkbox" [(ngModel)]="product.maintenance" />
                   </div>
                 </div>
                 <div class="col-xs-12">
-                  <p>Features:</p>
-                  <p *ngIf='product.feature.length > 0'>Describe your feature and assign it a score</p>
-                  <p *ngIf='product.feature.length > 0'>(more in-depth feature scoring will come in a future update)</p>
-                  <div class="col-xs-12" *ngFor='let feature of product.feature; let i = index' style="background: rgba(255,255,255,0.2); border: 1px solid rgba(0,0,0,0.1); margin-top: 1px; margin-bottom: 1px">
-                    <div class="col-xs-12" style="margin-bottom: -5px; margin-top: -5px;">
-                      <div class="col-xs-12 col-sm-7 srow info-input">
-                        <p class="left col-xs-2">Title</p>
-                        <input class="right col-xs-10" [(ngModel)]='feature.name' [ngClass]="{'empty-field': !feature.name}">
-                      </div>
-                      <div class="col-xs-12 col-sm-5 srow info-input">
-                        <p class="left col-xs-2">Score</p>
-                        <input class="right col-xs-10" [(ngModel)]='feature.score' [ngClass]="{'empty-field': !feature.score}">
-                      </div>
-                      <button class="tiny-button-skills" (click)="deleteFeature(product, i)"><div class="tiny-button-text">x</div></button>
+                  <div class="" style="text-align: center; line-height: 20px; float: left;">Features</div>
+                  <div class="" style="float: left; position: relative; height: 15px; width: 20px; margin-top: 4px;">
+                    <div class="tutorial-circle" (mouseenter) ="this.tutorialOn.stories = true"  (mouseleave) ="this.tutorialOn.stories = false">?</div>
+                    <div class="tutorial-box" *ngIf="this.tutorialOn.stories" (mouseenter) ="this.tutorialOn.stories = true"  (mouseleave) ="this.tutorialOn.stories = false">
+                      <h5>User Stories</h5>
+                      <p>Think about the thought process of a user trying to use this feature. Who are they, what is their problem, and what do they need to fix it?</p><br>
+                      <p>Think in very general, non-technical terms.</p>
                     </div>
                   </div>
+                </div>
+                <div class="col-xs-12 scrollbar" style="border: 1px solid rgba(0,0,0,0.01); overflow-y: auto; height: calc(51vh - 186px)">
+                  <div class="col-xs-12" *ngFor='let feature of product.feature; let i = index' style="position: relative; background: rgba(255,255,255,0.2); border: 1px solid rgba(0,0,0,0.1); margin-top: 1px; margin-bottom: 1px; padding-top: 5px; padding-bottom: 5px;">
+                    <button class="tiny-button-skills" (click)="deleteFeature(product, i)"><div class="tiny-button-text">x</div></button>
+                    <div class="" style="width: 100%">
+                      <div class="srow" style="width: calc(100% - 158px); float: left; padding-right: 4px;">
+                        <p class="" style="width: 55px; float: left;">Feature</p>
+                        <input class="" style="width: calc(100% - 55px); float: left; padding-left: 4px;" [(ngModel)]='feature.name' [ngClass]="{'empty-field': !feature.name}">
+                      </div>
+                      <div class="srow" style="width: 143px; float: left">
+                        <p class="" style="width: 43px; float: left;">Score</p>
+                        <input class="" style="width: calc(100% - 43px); float: left;" type="number" [(ngModel)]='feature.score' (ngModelChange)="productFeatureScoreChange(product)">
+                      </div>
+                    </div>
+                    <div class="" style="width: 100%;">
+                      <div class="" style="width: 100%; float: left;">
+                        <div class="" style="text-align: center; float: left;">What <strong>Problem</strong> does this feature solve?</div>
+                        <div class="" style="float: left; position: relative; height: 15px; width: 20px; margin-top: 4px;">
+                          <div class="tutorial-circle" (mouseenter) ="this.tutorialOn.problems = true"  (mouseleave) ="this.tutorialOn.problems = false">?</div>
+                          <div class="tutorial-box" *ngIf="this.tutorialOn.problems" (mouseenter) ="this.tutorialOn.problems = true"  (mouseleave) ="this.tutorialOn.problems = false">
+                            <h5>Problems & Solutions</h5>
+                            <p>Pick a general category for the problem this feature is meant to solve and then give us more details.</p><br>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="srow" style="width: 50%; float: left; padding-right: 4px;">
+                        <p class="" style="width: 57px; float: left;">Type</p>
+                        <select class="" style="width: calc(100% - 57px); float: left;" name="" [(ngModel)] = 'feature.problem.category' [ngClass]="{'empty-field': feature.problem.category.length < 1}">
+                          <option *ngFor='let v of this.problemCategories' [value]='v'>{{v}}</option>
+                        </select>
+                      </div>
+                      <div class="srow" style="width: 50%; float: left; padding-left: 4px;">
+                        <p class="" style="width: 57px; float: left;">Details</p>
+                        <input class="" style="width: calc(100% - 57px); float: left;" type="text" [(ngModel)]='feature.problem.description' [ngClass]="{'empty-field': !feature.problem.description}">
+                      </div>
+                    </div>
+                    <div class="" style="width: 100%;">
+                      <div class="" style="width: 100%; float: left;">
+                        <div class="" style="text-align: center; float: left;">Tell us a <strong>User Story</strong> of this feature.</div>
+                        <div class="" style="float: left; position: relative; height: 15px; width: 20px; margin-top: 4px;">
+                          <div class="tutorial-circle" (mouseenter) ="this.tutorialOn.stories = true"  (mouseleave) ="this.tutorialOn.stories = false">?</div>
+                          <div class="tutorial-box" *ngIf="this.tutorialOn.stories" (mouseenter) ="this.tutorialOn.stories = true"  (mouseleave) ="this.tutorialOn.stories = false">
+                            <h5>User Stories</h5>
+                            <p>Think about the thought process of a user trying to use this feature. Who are they, what is their problem, and what do they need to fix it?</p><br>
+                            <p>Think in very general, non-technical terms.</p>
+                          </div>
+                        </div>
+                      </div>
+                        <div class="" style="width: 100%; float: left;">
+                          <div class="" style="float: left; line-height: 47px;">
+                            As a
+                          </div>
+                          <input class="" style="width: 160px; height: 32px; float: left; margin-left: 6px; margin-right: 2px;" type="text" [(ngModel)]='feature.story[0]'>
+                          <div class="" style="float: left; line-height: 47px; height: 47px">
+                            , I have a
+                          </div>
+                          <input class="" style="width: 160px; height: 32px; float: left; margin-left: 6px; margin-right: 2px;" type="text" [(ngModel)]='feature.story[0]'>
+                          <div class="" style="float: left; line-height: 47px;; height: 47px">
+                            , which can be solved by
+                          </div>
+                          <input class="" style="width: 160px; height: 32px; float: left; margin-left: 6px; margin-right: 2px;" type="text" [(ngModel)]='feature.story[0]'>
+                          </div>
+                      </div>
+                    </div>
                   <div class="col-xs-6 col-xs-offset-3 text-center">
                     <button class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4" (click)="addFeature(product)">Add Feature</button>
                   </div>

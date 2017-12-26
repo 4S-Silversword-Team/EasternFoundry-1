@@ -34,146 +34,17 @@ export class ProductService {
     return response;
   }
 
-  getSampleProduct(id: string): Product {
-    let temp: Product = new Product()
-    temp._id = '1'
-    temp.name = 'product 1'
-    temp.feature = [
-      {
-        name: 'feature 1',
-        score: 10
-      },{
-        name: 'feature 2',
-        score: 20
-      },{
-        name: 'feature 3',
-        score: 30
-      },{
-        name: 'feature 4',
-        score: 18
-      },{
-        name: 'feature 5',
-        score: 60
-      }
-    ]
-    temp.description = 'the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog  the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog'
-    temp.moreInfoLink = ''
-    temp.viewDemoLink = ''
-    temp.customization = true
-    temp.training = false
-    temp.maintenance = true
-    temp.customers = {
-      defense: [
-        {
-          avatar: './assets/img/customer1.png',
-          name: 'customer 1'
-        },{
-          avatar: './assets/img/customer2.png',
-          name: 'customer 2'
-        },{
-          avatar: './assets/img/customer3.png',
-          name: 'customer 3'
-        },{
-          avatar: './assets/img/customer4.png',
-          name: 'customer 4'
-        }
-      ],
-      civilian: [
-        {
-          avatar: './assets/img/customer5.png',
-          name: 'customer 1'
-        },{
-          avatar: './assets/img/customer2.png',
-          name: 'customer 2'
-        },{
-          avatar: './assets/img/customer3.png',
-          name: 'customer 3'
-        }
-      ],
-      commercial : [
-        {
-          avatar: './assets/img/customer6.png',
-          name: 'customer 1'
-        },{
-          avatar: './assets/img/customer2.png',
-          name: 'customer 2'
-        }
-      ]
-    }
-    if(id == '2') {
-      temp._id = '2'
-      temp.name = 'product 2'
-      temp.feature = [
-        {
-          name: 'feature 1',
-          score: 10
-        },{
-          name: 'feature 2',
-          score: 20
-        },{
-          name: 'feature 3',
-          score: 30
-        },{
-          name: 'feature 4',
-          score: 18
-        },{
-          name: 'feature 5',
-          score: 60
-        },{
-          name: 'feature 6',
-          score: 10
-        },{
-          name: 'feature 7',
-          score: 20
-        },{
-          name: 'feature 8',
-          score: 30
-        },{
-          name: 'feature 9',
-          score: 18
-        },{
-          name: 'feature 10',
-          score: 60
-        }
-      ]
-      temp.description = 'Second the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog the quick brown fox jumps over lazy dog'
-      temp.customers = {
-        defense: [
-          {
-            avatar: './assets/img/customer2.png',
-            name: 'customer 1'
-          },{
-            avatar: './assets/img/customer6.png',
-            name: 'customer 2'
-          },{
-            avatar: './assets/img/customer4.png',
-            name: 'customer 3'
-          },{
-            avatar: './assets/img/customer5.png',
-            name: 'customer 4'
-          }
-        ],
-        civilian: [
-          {
-            avatar: './assets/img/customer5.png',
-            name: 'customer 1'
-          },{
-            avatar: './assets/img/customer2.png',
-            name: 'customer 2'
-          }
-        ],
-        commercial : [
-          {
-            avatar: './assets/img/customer6.png',
-            name: 'customer 1'
-          },{
-            avatar: './assets/img/customer2.png',
-            name: 'customer 2'
-          }
-        ]
-      }
-    }
-    return temp
+  getProducts(): Promise<Product[]> {
+    var response = this.authHttp.get(environment.apiRoot + "products/" )
+    .map(response => <[Product]> response.json())
+    var productPromise: Promise<[Product]> = response.toPromise();
+    return productPromise
+  }
+
+  deleteProduct(id: string): Observable<any> {
+    var response = this.authHttp.delete(environment.apiRoot + "products/" + id)
+      .map(response => <Product> JSON.parse(JSON.stringify(response)));
+    return response;
   }
 
 }

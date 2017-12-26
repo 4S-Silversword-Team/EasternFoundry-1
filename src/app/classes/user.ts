@@ -17,7 +17,7 @@ export class User {
       CountryCode: string,
       Permanent: boolean
     }
-    ]
+  ]
   email: [
     {
       Address: string,

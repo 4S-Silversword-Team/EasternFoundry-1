@@ -43,6 +43,7 @@ export class AdminComponent implements OnInit {
   allPPs: any[] = [];
   allPPUserProxies: any[] = [];
   allPPCompanyProxies: any[] = [];
+  allProducts: any[] = [];
   userToDelete: any = {
     on: false
   }
@@ -59,6 +60,9 @@ export class AdminComponent implements OnInit {
     on: false
   }
   ppCompanyProxyToDelete: any = {
+    on: false
+  }
+  productToDelete: any = {
     on: false
   }
 
@@ -93,11 +97,14 @@ export class AdminComponent implements OnInit {
               this.allPPUserProxies = res
               this.companyPastPerformanceProxyService.getCompanyPPProxies().then(res => {
                 this.allPPCompanyProxies = res
-                if (!auth.isLoggedIn()) {
-                  this.router.navigateByUrl("/login")
-                } else {
-                  this.getAdminStatus()
-                }
+                this.productService.getProducts().then(res => {
+                  this.allProducts = res
+                  if (!auth.isLoggedIn()) {
+                    this.router.navigateByUrl("/login")
+                  } else {
+                    this.getAdminStatus()
+                  }
+                })
               })
             })
           })
@@ -233,13 +240,21 @@ export class AdminComponent implements OnInit {
     this.ppCompanyProxyToDelete.index = i
   }
 
-  deletePPCompanyProxy(proxy, i){
-    this.companyPastPerformanceProxyService.deleteCompanyPPProxy(proxy._id).then((res) => {
+  deleteProductPrep(product, i) {
+    this.productToDelete.product = product
+    this.productToDelete.on = true
+    this.productToDelete.index = i
+  }
+
+  deleteProduct(product, i){
+    console.log('???')
+    this.productService.deleteProduct(product._id).toPromise().then((res) => {
       console.log("its dead")
-      this.ppCompanyProxyToDelete.on = false
-      this.allPPCompanyProxies.splice(i, 1)
+      this.productToDelete.on = false
+      this.allProducts.splice(i, 1)
     })
   }
+
 
   ngOnInit() {
   }
