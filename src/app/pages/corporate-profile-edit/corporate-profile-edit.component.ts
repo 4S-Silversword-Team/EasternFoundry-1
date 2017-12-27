@@ -62,7 +62,7 @@ export class CorporateProfileEditComponent implements OnInit {
   adminRoleId: string;
   fieldsFilled: boolean = false;
   currentUser: User = new User();
-
+  totalPoints = 0
   searchTerms = {
     name: ''
   };
@@ -182,7 +182,10 @@ export class CorporateProfileEditComponent implements OnInit {
       if (this.currentAccount.product){
       for (const i of this.currentAccount.product) {
         var productId = i.toString()
-        productService.getProductbyID(productId).toPromise().then(res => {this.products.push(res)});
+        productService.getProductbyID(productId).toPromise().then(res => {
+          this.productFeatureScoreChange(res)
+          this.products.push(res)
+        });
       }
       }
       if (this.currentAccount.service){
@@ -247,6 +250,7 @@ export class CorporateProfileEditComponent implements OnInit {
         }
       }
     }
+    this.totalPoints = totalPoints
   }
 
   invite(person, i){
