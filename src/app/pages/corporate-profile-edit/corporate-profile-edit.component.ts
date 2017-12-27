@@ -485,7 +485,7 @@ export class CorporateProfileEditComponent implements OnInit {
           }
         }
         for (let f of p.feature) {
-          if (!f.name || !f.score) {
+          if (!f.name) {
             productsPass = false
           }
         }
@@ -506,7 +506,6 @@ export class CorporateProfileEditComponent implements OnInit {
     this.activeTab.main = newTab
   }
 
-
   checkCompanyAdminCount() {
     let employeeRoleIds = this.currentAccount.userProfileProxies.map((proxy) => proxy.role);
     this.roleService.getRoleByTitle("admin").toPromise().then((role) => {
@@ -516,7 +515,6 @@ export class CorporateProfileEditComponent implements OnInit {
       }
     })
   }
-
 
   addEmployee(employeeId, searchResultIndex) {
     if (!this.isUserAdmin){return;}

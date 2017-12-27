@@ -274,10 +274,10 @@
                     <input class="" style="width: 100%;" type="text" placeholder="URL to Video demo." [(ngModel)]="product.viewDemoLink">
                   </div>
                 </div>
-                <div class="col-xs-12" style="height: calc(44vh - 166px);">
+                <div class="col-xs-12" style="height: calc(39vh - 166px);">
                   <div class="" style="width: 49%; float: left; margin-right: 1%;">
                     <p class="" style="width: 100%; line-height: 20px;">Product Description</p>
-                    <textarea class="" style="height: 200px; width: 100%; border: 1px solid rgba(0,0,0,0.25); height: calc(44vh - 186px);" [(ngModel)]='product.description'></textarea>
+                    <textarea class="" style="height: 200px; width: 100%; border: 1px solid rgba(0,0,0,0.25); height: calc(39vh - 186px);" [(ngModel)]='product.description'></textarea>
                   </div>
                   <div class="" style="width: 49%; float: left; margin-left: 1%;">
                     <p class="" style="width: 100%; line-height: 20px;">Agencies using it today</p>
@@ -287,41 +287,38 @@
                     <div class="col-xs-6 customer-tab"  (click)='changeCustomerTab(prodIndex, product, 1)' [ngClass]="{'customer-tab-active': productTabs[prodIndex] == 1}">
                       Commercial
                     </div>
-                    <div class="product-customers scrollbar"  style="height: calc(44vh - 206px);">
+                    <div class="product-customers scrollbar"  style="height: calc(39vh - 206px);">
                       <div class="" *ngIf='this.productTabs[prodIndex] == 0'>
-                        <div class="col-xs-12" *ngFor='let customer of product.customers.defense; let i = index' style="color: black">
-                          <input ngui-auto-complete class="col-xs-12" placeholder="Defense Customer" [(ngModel)] = 'customer.name' [source]='this.allAgencies' [list-formatter]="agencyListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': agencyValidCheck(customer.name) == false}">
+                        <div class="col-xs-12" *ngFor='let customer of product.customers.defense; let i = index' style="color: black; float: left;">
+                          <input ngui-auto-complete class="col-xs-12" placeholder="Government Customer" [(ngModel)] = 'customer.name' [source]='this.allAgencies' [list-formatter]="agencyListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': agencyValidCheck(customer.name) == false}">
                           <button class="tiny-button-skills" (click)="deleteCustomerDefense(product, i)"><div class="tiny-button-text">x</div></button>
                         </div>
-                        <button type="button"class="col-xs-4 col-xs-offset-4" name="button" (click)='addCustomerDefense(product)' style="margin-top: 5px">Add Another</button>
+                        <div class="" style="width: 100%; position: relative; float: left;">
+                          <button type="button" class="edit-button" name="button" (click)='addCustomerDefense(product)' style="position: absolute; left: 50%; transform: translate(-50%); margin-top: 5px; width: 135px;">Add Another</button>
+                        </div>
                       </div>
                       <div class="" *ngIf='this.productTabs[prodIndex] == 1'>
                         <div class="col-xs-12" *ngFor='let customer of product.customers.commercial' style="color: black">
                           <input class="col-xs-12" placeholder="Commercial Customer" [(ngModel)]='customer.name' [ngClass]="{'empty-field': !customer.name}">
                           <button class="tiny-button-skills" (click)="deleteCustomerCommercial(product, i)"><div class="tiny-button-text">x</div></button>
                         </div>
-                        <button type="button"class="col-xs-4 col-xs-offset-4" name="button" (click)='addCustomerCommercial(product)' style="margin-top: 5px">Add Another</button>
-                      </div>
-                      <div class="" *ngIf='this.productTabs[prodIndex] == 2'>
-                        <div class="col-xs-12" *ngFor='let customer of product.customers.civilian' style="color: black">
-                          <input class="col-xs-12" placeholder="Civilian Customer" [(ngModel)]='customer.name' [ngClass]="{'empty-field': !customer.name}">
-                          <button class="tiny-button-skills" (click)="deleteCustomerCivilian(product, i)"><div class="tiny-button-text">x</div></button>
+                        <div class="" style="width: 100%; position: relative; float: left;">
+                          <button type="button" class="edit-button" name="button" (click)='addCustomerCommercial(product)' style="position: absolute; left: 50%; transform: translate(-50%); margin-top: 5px; width: 135px;">Add Another</button>
                         </div>
-                        <button type="button"class="col-xs-4 col-xs-offset-4" name="button" (click)='addCustomerCivilian(product)' style="margin-top: 5px">Add Another</button>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="col-xs-12" style="padding-top: 1px; height: 31px; margin-bottom: 5px;">
-                  <div class="col-xs-12 col-md-4">
+                  <div class="col-xs-4">
                     <p class="left" style="line-height: 28px;">Will you customize the product?</p>
                     <input class="right" type="checkbox" [(ngModel)]="product.customization" />
                   </div>
-                  <div class="col-xs-12 col-md-4" style="line-height: 28px;">
+                  <div class="col-xs-4" style="line-height: 28px;">
                     <p class="left">Do you provide training?</p>
                     <input class="right" type="checkbox" [(ngModel)]="product.training" />
                   </div>
-                  <div class="col-xs-12 col-md-4" style="line-height: 28px;">
+                  <div class="col-xs-4" style="line-height: 28px;">
                     <p class="left">Do you provide maintenance?</p>
                     <input class="right" type="checkbox" [(ngModel)]="product.maintenance" />
                   </div>
@@ -329,15 +326,15 @@
                 <div class="col-xs-12">
                   <div class="" style="text-align: center; line-height: 20px; float: left;">Features</div>
                   <div class="" style="float: left; position: relative; height: 15px; width: 20px; margin-top: 4px;">
-                    <div class="tutorial-circle" (mouseenter) ="this.tutorialOn.stories = true"  (mouseleave) ="this.tutorialOn.stories = false">?</div>
-                    <div class="tutorial-box" *ngIf="this.tutorialOn.stories" (mouseenter) ="this.tutorialOn.stories = true"  (mouseleave) ="this.tutorialOn.stories = false">
-                      <h5>User Stories</h5>
-                      <p>Think about the thought process of a user trying to use this feature. Who are they, what is their problem, and what do they need to fix it?</p><br>
-                      <p>Think in very general, non-technical terms.</p>
+                    <div class="tutorial-circle" (mouseenter) ="this.tutorialOn.features = true"  (mouseleave) ="this.tutorialOn.features = false">?</div>
+                    <div class="tutorial-box" *ngIf="this.tutorialOn.features" (mouseenter) ="this.tutorialOn.features = true"  (mouseleave) ="this.tutorialOn.features = false" style="width: 400px; height: 200px;">
+                      <h5>Features</h5>
+                      <p>Tell us about the features of this product, and what problems they solve for your users.</p><br>
+                      <p>You can then assign a score to your feature. Your project has a total of 100 points to use for scoring, so keep that in mind.</p>
                     </div>
                   </div>
                 </div>
-                <div class="col-xs-12 scrollbar" style="border: 1px solid rgba(0,0,0,0.01); overflow-y: auto; height: calc(51vh - 186px)">
+                <div class="col-xs-12 scrollbar" style="border: 1px solid rgba(0,0,0,0.01); overflow-y: auto; height: calc(56vh - 186px)">
                   <div class="col-xs-12" *ngFor='let feature of product.feature; let i = index' style="position: relative; background: rgba(255,255,255,0.2); border: 1px solid rgba(0,0,0,0.1); margin-top: 1px; margin-bottom: 1px; padding-top: 5px; padding-bottom: 5px;">
                     <button class="tiny-button-skills" (click)="deleteFeature(product, i)"><div class="tiny-button-text">x</div></button>
                     <div class="" style="width: 100%">
@@ -363,13 +360,13 @@
                       </div>
                       <div class="srow" style="width: 50%; float: left; padding-right: 4px;">
                         <p class="" style="width: 57px; float: left;">Type</p>
-                        <select class="" style="width: calc(100% - 57px); float: left;" name="" [(ngModel)] = 'feature.problem.category' [ngClass]="{'empty-field': feature.problem.category.length < 1}">
+                        <select class="" style="width: calc(100% - 57px); float: left;" name="" [(ngModel)] = 'feature.problem.category'>
                           <option *ngFor='let v of this.problemCategories' [value]='v'>{{v}}</option>
                         </select>
                       </div>
                       <div class="srow" style="width: 50%; float: left; padding-left: 4px;">
                         <p class="" style="width: 57px; float: left;">Details</p>
-                        <input class="" style="width: calc(100% - 57px); float: left;" type="text" [(ngModel)]='feature.problem.description' [ngClass]="{'empty-field': !feature.problem.description}">
+                        <input class="" style="width: calc(100% - 57px); float: left;" type="text" [(ngModel)]='feature.problem.description'>
                       </div>
                     </div>
                     <div class="" style="width: 100%;">
@@ -401,7 +398,7 @@
                       </div>
                     </div>
                   <div class="col-xs-6 col-xs-offset-3 text-center">
-                    <button class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4" (click)="addFeature(product)">Add Feature</button>
+                    <button class="edit-button" (click)="addFeature(product)" style="width: 125px;">Add Feature</button>
                   </div>
                 </div>
               </div>
