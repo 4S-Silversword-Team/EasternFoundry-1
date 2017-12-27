@@ -73,7 +73,7 @@ export class CorporateProfileEditComponent implements OnInit {
   noResults = false
   productTabs = [0]
   activeTab = {
-    main: 2,
+    main: 0,
     product: 0,
   }
   invitationSent: string[] = []
@@ -93,7 +93,15 @@ export class CorporateProfileEditComponent implements OnInit {
   }
   problemCategories = [
     "Cyber",
-    "Planning"
+    "Planning",
+    "HR",
+    "Finance",
+    "Risk",
+    "Advertising",
+    "Security",
+    "Commerce",
+    "Optimization",
+    "Other"
   ]
   vehicles = [
     "eFAST",

@@ -57,7 +57,7 @@ export class PastPerformanceEditComponent implements OnInit {
   };
   searchOpen: boolean = false;
   noResults = false;
-
+  ckeditorContent = `<p>My HTML</p>`;
   activeTab = {
     main: 0,
   };

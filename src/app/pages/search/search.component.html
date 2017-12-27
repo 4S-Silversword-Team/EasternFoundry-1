@@ -231,19 +231,27 @@
         <input type="text" name="test" value="" class="col-xs-12"  [(ngModel)]='searchTerms.skill' (ngModelChange)='updateAnalyticsString()'>
       </div>
       <div class="col-xs-12" style="margin-bottom: 10px">
+        <p style="text-align: center" >Certification</p>
+        <!-- <p style="text-align: center" class="search-term-desc">Find people with a specific certification</p> -->
+        <div class="autocomplete-form" style="width: 100%">
+          <input ngui-auto-complete class="" style="width: 100%" [(ngModel)]='searchTerms.cert' [source]='this.certs' [list-formatter]="certListFormatter" display-property-name='name' select-value-of='name' auto-select-first-item='true' (ngModelChange)='updateAnalyticsString()'>
+        </div>
+        <!-- <input type="text" name="test" value="" class="col-xs-12" [(ngModel)]='searchTerms.cert' (ngModelChange)='updateAnalyticsString()'> -->
+      </div>
+      <div class="col-xs-12" style="margin-bottom: 10px">
         <p style="text-align: center" >Position</p>
         <!-- <p style="text-align: center" class="search-term-desc">Find people highly rated for a specific position</p> -->
         <input type="text" name="test" value="" class="col-xs-12" [(ngModel)]='searchTerms.position' (ngModelChange)='updateAnalyticsString()'>
       </div>
-      <div class="col-xs-12" style="margin-bottom: 10px">
-        <p style="text-align: center" >Certification</p>
-        <!-- <p style="text-align: center" class="search-term-desc">Find people with a specific certification</p> -->
-        <input type="text" name="test" value="" class="col-xs-12" [(ngModel)]='searchTerms.cert' (ngModelChange)='updateAnalyticsString()'>
-      </div>
       <div class="col-xs-12" style="margin-bottom: 5px">
         <p style="text-align: center" >Clearance</p>
         <!-- <p style="text-align: center" class="search-term-desc">Find people with a specific clearance</p> -->
-        <input type="text" name="test" value="" class="col-xs-12" [(ngModel)]='searchTerms.clearance' (ngModelChange)='updateAnalyticsString()'>
+        <select class="col-xs-12" type="text" [(ngModel)] = 'searchTerms.clearance' (ngModelChange)='updateAnalyticsString()'>
+          <option value=""></option>
+          <option value="Confidential">Confidential</option>
+          <option value="Secret">Secret</option>
+          <option value="Top Secret">Top Secret</option>
+        </select>
       </div>
       <div class="col-xs-12">
         <div class="col-xs-12">

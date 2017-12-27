@@ -113,7 +113,7 @@ export class LoginComponent implements OnInit {
         reset: true
       }
       this.tokenService.createToken(token).toPromise().then((res) => {
-        var resetLink = "http://13.58.193.226:4200/password-reset/" + resetHash
+        var resetLink = "http://forge.federal-foundry.com/password-reset/" + resetHash
         // var resetLink = "http://localhost:4200/password-reset/" + resetHash
         var mail = ({
           senderEmail: 'federalfoundryforge@gmail.com',

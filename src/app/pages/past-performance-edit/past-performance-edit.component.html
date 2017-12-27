@@ -52,31 +52,56 @@
             </div>
           </div>
         </div>
-        <div class="" style="position: absolute; height: 35vh; width: calc(100% - 180px); top: 2vh; right: 0px; float: left; background: none;">
+        <div class="scrollbar" style="position: absolute; height: calc(94vh - 151px); width: calc(100% - 180px); top: 2vh; right: 0px; float: left; background: none; overflow-y: auto">
           <div class="" style="position: absolute; float: left; top: 0px; left: 0px; width: 100%; height: 42px; padding: 2vh 2vw 2vh 2vw;">
             <div class="left" style="width: 115px; line-height: 42px; float: left; padding-top: 4px;">
               <p class="">Performance Title</p>
+              <p class="">Contractor Type</p>
             </div>
             <div class="" style="width: calc(100% - 115px); float: left;">
               <input class="" style="width: 100%;" type="text" placeholder="" [(ngModel)] = 'this.currentPastPerformance.title' [ngClass]="{'empty-field': !this.currentPastPerformance.title}">
             </div>
+            <div class="" style="width: 100%; padding-top: 47px;">
+              <input type="radio" name="type" [value]="'Prime'" [(ngModel)]="this.currentPastPerformance.contractType" style="float: left;">
+              <div class="" style="float: left; line-height: 40px; margin-right: 12px; padding-left: 2px;">
+                Prime
+              </div>
+              <input type="radio" name="type" [value]="'Sub'" [(ngModel)]="this.currentPastPerformance.contractType" style="float: left;">
+              <div class="" style="float: left; line-height: 40px; padding-left: 2px;">
+                Sub
+              </div>
+            </div>
           </div>
-          <div class="" style="position: absolute; float: left; top: calc(2vh + 42px); left: 0px; width: 55%; height: 244px; margin-top: 8px; padding: 0vh 2vw 2vh 2vw; border-right: 2px solid rgba(0,0,0,0.5);">
+          <div class="" style="position: absolute; float: left; top: calc(2vh + 84px); left: 0px; width: 100%; height: 467px; margin-top: 8px; padding: 0vh 2vw 2vh 2vw;">
             <div class="" style="margin-top: -8px">
               <div class="left" style="width: 115px; line-height: 42px; float: left; padding-top: 4px;">
-                <p class="">Client Name</p>
                 <p class="">Govt Client</p>
+                <p class="">Client Name</p>
                 <p class="">Topic</p>
+                <p class="">Start Date</p>
+                <p class="">End Date</p>
+                <p class="">Functional Area</p>
+                <p class="">Location (Zip)</p>
+                <p class="">Value of Work</p>
+                <p class="">FTE</p>
               </div>
               <div class="" style="width: calc(100% - 115px); float: left;">
-                <div class="" style="width: 100%" *ngIf='this.currentPastPerformance.client.gov'>
+                <input class="" style="height: 42px; margin: 0px;" type="checkbox" [(ngModel)]="this.currentPastPerformance.client.gov" />
+                <div class="" style="width: 100%; margin-top: -5px; margin-bottom: 9px;" *ngIf='this.currentPastPerformance.client.gov'>
                   <div class="autocomplete-form" style="width: 100%">
-                    <input ngui-auto-complete class="" style="width: 100%" placeholder="Must match an existing agency" [(ngModel)] = 'this.currentPastPerformance.client.name' [source]='this.allAgencies' [list-formatter]="agencyListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true'>
+                    <input ngui-auto-complete class="" style="width: 100%" placeholder="Client" [(ngModel)] = 'this.currentPastPerformance.client.name' [source]='this.allAgencies' [list-formatter]="agencyListFormatter" display-property-name='agency' select-value-of='agency' auto-select-first-item='true' [ngClass]="{'empty-field': !this.currentPastPerformance.client.name}">
                   </div>
                 </div>
-                <div class="" style="width: 100%;" *ngIf='!this.currentPastPerformance.client.gov'><input type="text" style="width: 100%;" placeholder="Client" style="width: 100%" class="right" [(ngModel)] = "this.currentPastPerformance.client.name" [ngClass]="{'empty-field': !this.currentPastPerformance.client.name}"></div>
-                <input class="" style="height: 42px;" type="checkbox" [(ngModel)]="this.currentPastPerformance.client.gov" />
+                <div class="" style="width: 100%; margin-top: -5px; margin-bottom: 9px;" *ngIf='!this.currentPastPerformance.client.gov'>
+                  <input type="text" class="" style="width: 100%;" placeholder="Client" [(ngModel)] = "this.currentPastPerformance.client.name" [ngClass]="{'empty-field': !this.currentPastPerformance.client.name}">
+                </div>
                 <input class="" style="width: 100%; margin-top: -1px;" type="text" placeholder="The topic of the performance" [(ngModel)] = 'this.currentPastPerformance.topic' [ngClass]="{'empty-field': !this.currentPastPerformance.topic}">
+                <input [(ngModel)]="this.currentPastPerformance.startDate" type='date' style="width: 100%" class="" [ngClass]="{'empty-field': !this.currentPastPerformance.startDate}">
+                <input [(ngModel)]="this.currentPastPerformance.endDate" type='date' style="width: 100%" class="" [ngClass]="{'empty-field': !this.currentPastPerformance.endDate}">
+                <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentPastPerformance.area' [ngClass]="{'empty-field': !this.currentPastPerformance.area}">
+                <input class="" style="width: 100%;" type="number" max="99999" maxlength="5" [(ngModel)] = 'this.currentPastPerformance.location' [ngClass]="{'empty-field': !this.currentPastPerformance.location}">
+                <input class="" style="width: 100%;" type="number"  [(ngModel)] = 'this.currentPastPerformance.value' [ngClass]="{'empty-field': !this.currentPastPerformance.value}">
+                <input class="" style="width: 100%;" type="number"  [(ngModel)] = 'this.currentPastPerformance.fte' [ngClass]="{'empty-field': !this.currentPastPerformance.fte}">
               </div>
               <div class="" style="position: absolute; float: left; bottom: 1px; right: calc(2vw - 6px); height: 93px; width: 100%;">
                 <p class="left" style="width: calc(100% - 60px); line-height: 42px; float: left; padding-top: 6px; text-align: right; padding-right: 2px;">Cleared?</p>
@@ -84,24 +109,6 @@
                 <p class="left" style="width: calc(100% - 60px); line-height: 42px; float: left; padding-top: 6px; text-align: right; padding-right: 2px;">Publically viewable?</p>
                 <input type="checkbox" style="width: 42px; height: 42px; float: left" class="" [(ngModel)] = 'this.currentPastPerformance.public'>
               </div>
-            </div>
-          </div>
-          <div class="" style="position: absolute; float: left; top: 42px; right: 0px; width: 45%; height: 244px; padding: 2vh 2vw 2vh 2vw;">
-            <div class="left" style="width: 110px; line-height: 42px; float: left; padding-top: 4px;">
-              <p class="">Start Date</p>
-              <p class="">End Date</p>
-              <p class="">Functional Area</p>
-              <p class="">Location (Zip)</p>
-              <p class="">Value of Work</p>
-              <p class="">FTE</p>
-            </div>
-            <div class="" style="width: calc(100% - 110px); float: left;">
-              <input [(ngModel)]="this.currentPastPerformance.startDate" type='date' style="width: 100%" class="" [ngClass]="{'empty-field': !this.currentPastPerformance.startDate}">
-              <input [(ngModel)]="this.currentPastPerformance.endDate" type='date' style="width: 100%" class="" [ngClass]="{'empty-field': !this.currentPastPerformance.endDate}">
-              <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentPastPerformance.area' [ngClass]="{'empty-field': !this.currentPastPerformance.area}">
-              <input class="" style="width: 100%;" type="number" max="99999" maxlength="5" [(ngModel)] = 'this.currentPastPerformance.location' [ngClass]="{'empty-field': !this.currentPastPerformance.location}">
-              <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentPastPerformance.value' [ngClass]="{'empty-field': !this.currentPastPerformance.value}">
-              <input class="" style="width: 100%;" type="number"  [(ngModel)] = 'this.currentPastPerformance.fte' [ngClass]="{'empty-field': !this.currentPastPerformance.fte}">
             </div>
           </div>
         </div>
@@ -175,10 +182,62 @@
       </div>
       <div class="sub-box" style="" *ngIf='activeTab.main == 2'>
         <div class="sub-box-inner" style="height: calc(94vh - 151px); padding-bottom: 0px; overflow-y: hidden; overflow-x: hidden;">
-          <div class="" style="border: 1px solid rgba(0,0,0,0.25); width: 100%; height: 30%; float: left;"><p class="col-xs-12">Synopsis</p><textarea class="scrollbar" style="height: calc(100% - 20px); max-height: calc(100% - 20px); min-height: calc(100% - 20px); min-width: 100%; max-width: 100%; width: 100%" [(ngModel)] = 'this.currentPastPerformance.synopsis'></textarea></div>
-          <div class="" style="border: 1px solid rgba(0,0,0,0.25); width: 50%; height: 40%; float: left;"><p class="col-xs-12">Technical Challenge, approach and outcome</p><textarea class="scrollbar" style="height: calc(100% - 20px); max-height: calc(100% - 20px); min-height: calc(100% - 20px); min-width: 100%; max-width: 100%; width: 100%" [(ngModel)] = 'this.currentPastPerformance.technical'></textarea></div>
-          <div class="" style="border: 1px solid rgba(0,0,0,0.25); width: 50%; height: 40%; float: left;"><p class="col-xs-12">Management Challenge, approach and outcome</p><textarea class="scrollbar" style="height: calc(100% - 20px); max-height: calc(100% - 20px); min-height: calc(100% - 20px); min-width: 100%; max-width: 100%; width: 100%" [(ngModel)] = 'this.currentPastPerformance.management'></textarea></div>
-          <div class="" style="margin-bottom: 0px; border: 1px solid rgba(0,0,0,0.25); width: 100%; height: 30%; float: left;"><p class="col-xs-12">Other</p><textarea class="scrollbar" style="height: calc(100% - 20px); max-height: calc(100% - 20px); min-height: calc(100% - 20px); min-width: 100%; max-width: 100%; width: 100%" [(ngModel)] = 'this.currentPastPerformance.other'></textarea></div>
+          <div class="" style="border: 1px solid rgba(0,0,0,0.25); width: 100%; height: calc(30vh - 50px); float: left;">
+            <p class="col-xs-12" style="border-bottom: 1px solid rgba(0,0,0,0.25)">Synopsis</p>
+            <!-- <textarea class="scrollbar" placeholder="Write Here" style="height: calc(100% - 20px); max-height: calc(100% - 20px); min-height: calc(100% - 20px); min-width: 100%; max-width: 100%; width: 100%" [(ngModel)] = 'this.currentPastPerformance.synopsis'></textarea> -->
+            <ckeditor class="scrollbar" placeholder="Write Here" style="width: 100%"
+              [(ngModel)]="this.currentPastPerformance.synopsis"
+              [config]="{height: 'calc(30vh - 114px)'}"
+              [readonly]="false"
+              (change)="onChange($event)"
+              (ready)="onReady($event)"
+              (focus)="onFocus($event)"
+              (blur)="onBlur($event)"
+              debounce="500">
+            </ckeditor>
+          </div>
+          <div class="" style="border: 1px solid rgba(0,0,0,0.25); width: 50%; height: calc(34vh - 51px); float: left;">
+            <p class="col-xs-12" style="border-bottom: 1px solid rgba(0,0,0,0.25)">Technical Challenge, approach and outcome</p>
+            <ckeditor class="scrollbar" placeholder="Write Here" style="width: 100%;"
+              [(ngModel)]="this.currentPastPerformance.technical"
+              [config]="{height: 'calc(34vh - 115px)'}"
+              [readonly]="false"
+              (change)="onChange($event)"
+              (ready)="onReady($event)"
+              (focus)="onFocus($event)"
+              (blur)="onBlur($event)"
+              debounce="500">
+            </ckeditor>
+            <!-- <textarea class="scrollbar" placeholder="Write Here" style="height: calc(100% - 20px); max-height: calc(100% - 20px); min-height: calc(100% - 20px); min-width: 100%; max-width: 100%; width: 100%" [(ngModel)] = 'this.currentPastPerformance.technical'></textarea> -->
+          </div>
+          <div class="" style="border: 1px solid rgba(0,0,0,0.25); width: 50%; height: calc(34vh - 51px); float: left;">
+            <p class="col-xs-12" style="border-bottom: 1px solid rgba(0,0,0,0.25)">Management Challenge, approach and outcome</p>
+            <ckeditor class="scrollbar" placeholder="Write Here" style="width: 100%;"
+              [(ngModel)]="this.currentPastPerformance.management"
+              [config]="{height: 'calc(34vh - 115px)'}"
+              [readonly]="false"
+              (change)="onChange($event)"
+              (ready)="onReady($event)"
+              (focus)="onFocus($event)"
+              (blur)="onBlur($event)"
+              debounce="500">
+            </ckeditor>
+            <!-- <textarea class="scrollbar" placeholder="Write Here" style="height: calc(100% - 20px); max-height: calc(100% - 20px); min-height: calc(100% - 20px); min-width: 100%; max-width: 100%; width: 100%" [(ngModel)] = 'this.currentPastPerformance.management'></textarea> -->
+          </div>
+          <div class="" style="margin-bottom: 0px; border: 1px solid rgba(0,0,0,0.25); width: 100%; height: calc(30vh - 51px); float: left;">
+            <p class="col-xs-12" style="border-bottom: 1px solid rgba(0,0,0,0.25)">Other</p>
+            <ckeditor class="scrollbar" placeholder="Write Here" style="width: 100%"
+              [(ngModel)]="this.currentPastPerformance.other"
+              [config]="{height: 'calc(30vh - 117px)'}"
+              [readonly]="false"
+              (change)="onChange($event)"
+              (ready)="onReady($event)"
+              (focus)="onFocus($event)"
+              (blur)="onBlur($event)"
+              debounce="500">
+            </ckeditor>
+            <!-- <textarea class="scrollbar" placeholder="Write Here" style="height: calc(100% - 20px); max-height: calc(100% - 20px); min-height: calc(100% - 20px); min-width: 100%; max-width: 100%; width: 100%" [(ngModel)] = 'this.currentPastPerformance.other'></textarea> -->
+          </div>
         </div>
       </div>
 

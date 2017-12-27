@@ -75,6 +75,14 @@ export class ProfileEditComponent implements OnInit {
       years: 8
     },
     {
+      name: "Juris Doctorate",
+      years: 7
+    },
+    {
+      name: "Non-Degree",
+      years: 2
+    },
+    {
       name: 'Other',
       years: 2
     },
@@ -392,10 +400,14 @@ export class ProfileEditComponent implements OnInit {
                   d.DegreeType[0].Name = "Associate"
                 } else if (degreeName.indexOf('bachelor') >= 0 || degreeName == 'ba' || degreeName == 'b.a.') {
                   d.DegreeType[0].Name = "Bachelor's"
-                } else if (degreeName.indexOf('master') >= 0) {
+                } else if (degreeName.indexOf('master') >= 0 || degreeName == "mba") {
                   d.DegreeType[0].Name = "Master's"
+                } else if (degreeName.indexOf('juris') >= 0 || degreeName == "jd") {
+                  d.DegreeType[0].Name = "Jurus Doctorate"
                 } else if (degreeName.indexOf('doctor') >= 0 || degreeName == "phd" || degreeName == 'ph.d.') {
                   d.DegreeType[0].Name = "Ph.D."
+                } else if (degreeName.indexOf('non-degree') >= 0) {
+                  d.DegreeType[0].Name = "Non-Degree"
                 } else {
                   d.DegreeType[0].Name = 'Other'
                 }

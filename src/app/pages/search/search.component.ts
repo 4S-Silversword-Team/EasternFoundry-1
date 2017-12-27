@@ -1,3 +1,4 @@
+import {Http} from '@angular/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -28,6 +29,8 @@ export class SearchComponent implements OnInit {
   users: User[] = [];
   pastPerformances: PastPerformance[] = [];
   agencies: Agency[] = [];
+  certs: any[] = []
+  clearances: string[] = ['', 'Confidential', 'Secret', 'Top Secret']
   promiseFinished: boolean = false;
   searchTerms = {
     company: false,
@@ -57,6 +60,7 @@ export class SearchComponent implements OnInit {
   constructor(
     private router: Router,
     private companyService: CompanyService,
+    private http: Http,
     private auth: AuthService,
     private userService: UserService,
     private pastPerformanceService: PastperformanceService,
@@ -76,7 +80,16 @@ export class SearchComponent implements OnInit {
          this.pastPerformances = pp;
          this.agencyService.getAgencies().then(a => {
            this.agencies = a;
-           this.promiseFinished = true;
+           this.http.get('../../../assets/certs.json')
+           .map((res: any) => res.json())
+           .subscribe(
+             (data: any) => {
+               this.certs = data;
+               this.promiseFinished = true;
+               window.scrollTo(0, 0)
+             },
+             err => console.log(err), // error
+           );
          });
        });
      });
@@ -94,6 +107,9 @@ export class SearchComponent implements OnInit {
 
   autocompleListFormatter (data: any) {
     return data.agency;
+  }
+  certListFormatter (data: any) {
+    return data.name;
   }
 
   subagencyListFormatter (data: any) {
@@ -517,7 +533,7 @@ export class SearchComponent implements OnInit {
           }
           if (resultValid){
             if (newCompany.public) {
-              newCompany.expand = false;
+              newCompany.expand = true;
               this.searchResults.companies.push(newCompany);
             } else {
               this.searchResults.privateCompanies++;
@@ -699,7 +715,7 @@ export class SearchComponent implements OnInit {
           console.log(resultValid)
           if (resultValid){
             if (person.public) {
-              newPerson.expand = false;
+              newPerson.expand = true;
               this.searchResults.people.push(newPerson);
             } else {
               this.searchResults.privatePeople++;
@@ -730,7 +746,7 @@ export class SearchComponent implements OnInit {
 
           if (resultValid) {
             if (newPP.public) {
-              newPP.expand = false;
+              newPP.expand = true;
               this.searchResults.pastPerformances.push(newPP);
             } else {
               this.searchResults.privatePP++;

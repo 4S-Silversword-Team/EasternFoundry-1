@@ -135,7 +135,7 @@ export class ProfileCreateComponent implements OnInit {
                   reset: false
                 }
                 this.tokenService.createToken(token).toPromise().then((res) => {
-                  var verifyLink = "http://13.58.193.226:4200/verify/" + hash
+                  var verifyLink = "http://forge.federal-foundry.com/verify/" + hash
                   // var resetLink = "http://localhost:4200/password-reset/" + resetHash
                   var mail = ({
                     senderEmail: 'federalfoundryforge@gmail.com',

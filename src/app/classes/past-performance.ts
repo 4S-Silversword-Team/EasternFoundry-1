@@ -23,6 +23,7 @@ export class PastPerformance {
             stillWith: boolean
         }
     ]
+    contractType: string
     synopsis: string
     technical: string
     management: string
