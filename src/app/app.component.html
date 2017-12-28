@@ -13,16 +13,30 @@
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
           <li class="active"><a href="search">Search</a></li>
+          <li class="active when-big"><a href="browse">Browse</a></li>
           <li *ngIf='this.promiseFinished'><a href="user-profile/{{this.currentUser._id}}">{{this.currentUser.firstName}} {{this.currentUser.lastName}}</a></li>
           <li *ngIf='!this.promiseFinished'><a href="user-profile/{{this.id}}">Profile</a></li>
-          <li class="dropdown ">
+          <li class="dropdown when-big">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">My Companies <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li *ngFor="let company of this.myCompanies"><a href="corporate-profile/{{company.id}}">{{company.name}}</a></li>
+              <li><a href="corporate-profile-create">Create New Company</a></li>
+            </ul>
+          </li>
+          <li class="dropdown shrunk">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Companies <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li *ngFor="let company of this.myCompanies"><a href="corporate-profile/{{company.id}}">{{company.name}}</a></li>
               <li><a href="corporate-profile-create">Create New Company</a></li>
             </ul>
           </li>
-          <li class="dropdown " *ngIf="this.myPastPerformances.length > 0">
+          <li class="dropdown when-big" *ngIf="this.myPastPerformances.length > 0">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">My Past Performances <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li *ngFor="let pp of this.myPastPerformances"><a href="past-performance/{{pp.id}}">{{pp.name}}</a></li>
+            </ul>
+          </li>
+          <li class="dropdown shrunk" *ngIf="this.myPastPerformances.length > 0">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Past Performances <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li *ngFor="let pp of this.myPastPerformances"><a href="past-performance/{{pp.id}}">{{pp.name}}</a></li>

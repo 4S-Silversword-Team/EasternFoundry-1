@@ -13,6 +13,7 @@ import { PastPerformanceEditComponent } from './pages/past-performance-edit/past
 import { NoContentComponent } from './pages/no-content/no-content.component';
 import { MyPastPerformancesComponent } from './pages/my-pastperformances/my-pastperformances.component'
 import { SearchComponent } from './pages/search/search.component'
+import { BrowseComponent } from './pages/browse/browse.component'
 import { MessageComponent } from './pages/message/message.component'
 import { VerifyComponent } from './pages/verify/verify.component'
 import { AdminComponent } from './pages/admin/admin.component'
@@ -40,6 +41,7 @@ export const ROUTES: Routes = [
   { path: 'corporate-profile-create', component: CorporateProfileEditComponent },
   { path: 'past-performance-create', component: PastPerformanceEditComponent},
   { path: 'search', component: SearchComponent},
+  { path: 'browse', component: BrowseComponent},
   { path: 'mailbox', component: MessageComponent},
   { path: 'bugreport', component: MessageComponent},
   { path: 'admin', component: AdminComponent},

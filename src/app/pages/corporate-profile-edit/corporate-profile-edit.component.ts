@@ -812,12 +812,13 @@ export class CorporateProfileEditComponent implements OnInit {
     service.skills.splice(i,1)
   }
 
-  addFeature(service){
-    service.feature.push({title: '', problem: {category: '', description: ''}, story: [], score: 0})
+  addFeature(product){
+    product.feature.push({title: '', problem: {category: '', description: ''}, story: [], score: 0})
   }
 
-  deleteFeature(service, i) {
-    service.feature.splice(i,1)
+  deleteFeature(product, i) {
+    product.feature.splice(i,1)
+    this.productFeatureScoreChange(product)
   }
 
   addVehicle() {

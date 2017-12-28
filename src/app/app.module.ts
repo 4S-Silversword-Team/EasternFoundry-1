@@ -20,6 +20,7 @@ import { PastPerformanceEditComponent } from './pages/past-performance-edit/past
 import { NoContentComponent } from './pages/no-content/no-content.component';
 import { MyPastPerformancesComponent } from './pages/my-pastperformances/my-pastperformances.component';
 import { SearchComponent } from './pages/search/search.component';
+import { BrowseComponent } from './pages/browse/browse.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { MessageComponent } from './pages/message/message.component';
 import { VerifyComponent } from './pages/verify/verify.component';
@@ -71,6 +72,7 @@ import { Angulartics2Clicky } from 'angulartics2/clicky';
     BarchartComponent,
     AvailablebarComponent, SelectorComponent, CompaniesComponent, CorporateProfileEditComponent, MyPastPerformancesComponent,
     SearchComponent,
+    BrowseComponent,
     ComponentNameComponent,
     MessageComponent,
     VerifyComponent

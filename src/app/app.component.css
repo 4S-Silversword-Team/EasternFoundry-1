@@ -14,9 +14,15 @@ a.navbar-brand {
   /*color: rgba(255,255,255,0.9);
   font-size: 14px;*/
 }
+.shrunk {
+  display: none;
+}
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1050px) {
   .when-big {
     display: none;
+  }
+  .shrunk {
+    display: block;
   }
 }

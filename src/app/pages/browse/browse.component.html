@@ -1,0 +1,65 @@
+<div class="container" *ngIf='!this.promiseFinished'>
+  <div class="loader"></div>
+  <!-- <p class="loading">Loading</p> -->
+</div>
+<div class="container" *ngIf='this.promiseFinished'>
+  <div class="col-xs-12 search-results-box">
+    <h3 style="text-align: center">Browse</h3>
+    <div class="search-results-interior">
+      <div class="profile-navbar">
+        <div class="profile-navbar-tab" style="width: 50%" (click)="this.activeTab.main = 0" [ngClass]="{'profile-navbar-tab-active': this.activeTab.main == 0}">
+          Companies
+        </div>
+        <div class="profile-navbar-tab" style="width: 50%" (click)="this.activeTab.main = 1" [ngClass]="{'profile-navbar-tab-active': this.activeTab.main == 1}">
+          People
+        </div>
+      </div>
+      <div class="search-results-interior-2 scrollbar">
+        <div class="" *ngIf='this.searchRunning'>
+          <div class="loader"></div>
+        </div>
+        <div class="" *ngIf='!this.searchRunning'>
+          <div class="" *ngIf='this.noResults'>
+            <h1 style="text-align: center">No Results Found</h1>
+          </div>
+          <div class="" *ngIf='this.companies.length > 0 && this.activeTab.main == 0'>
+            <div class="" *ngFor='let c of this.companies'>
+              <div class="search-item" *ngIf="c.public" style="margin-bottom: 2px; border: 1px solid rgba(0,0,0,0.1);">
+                <div class="search-item-not-expand">
+                  <div class="avatar">
+                    <img src="{{c.avatar}}" alt="" class="search-item-avatar">
+                  </div>
+                  <div class="search-item-header">{{c.name}}</div>
+                  <div class="search-item-subheader">A company with {{c.userProfileProxies.length}} employees</div>
+                  <div class="search-item-link" style="margin-bottom: -5px">
+                    <a href="corporate-profile/{{c._id}}">Visit {{c.name}}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="search-item" *ngIf='searchResults.privateCompanies > 0'>
+              <div class="search-item-subheader">{{searchResults.privateCompanies}} private companies</div>
+            </div>
+          </div>
+          <div class="" *ngIf='this.users.length > 0 && this.activeTab.main == 1'>
+            <div class="" *ngFor='let p of this.users'>
+              <div class="col-md-6 col-xs-12 search-item" *ngIf='p.public' style="margin-bottom: 2px; border: 1px solid rgba(0,0,0,0.1);">
+                <div class="search-item-not-expand">
+                  <div class="avatar">
+                    <img src="{{p.avatar}}" alt="" class="search-item-avatar">
+                  </div>
+                  <div class="search-item-header">{{p.firstName}} {{p.lastName}}</div>
+                  <div class="search-item-subheader" *ngIf='p.companyUserProxies[0]'>Works at {{p.companyUserProxies[0].company.name}}</div>
+                  <div class="search-item-subheader" *ngIf='!p.companyUserProxies[0]'>Freelancer</div>
+                  <div class="search-item-link col-xs-12" style="margin-bottom: -5px">
+                    <a href="user-profile/{{p._id}}">Visit {{p.firstName}} {{p.lastName}}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
