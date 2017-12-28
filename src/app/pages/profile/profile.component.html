@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="basic-info-top">
-        <div class="" style="width: 100%; height: 150px;">
+        <div class="" style="width: calc(100% - 150px); height: 150px; float: left;">
           <div class="col-xs-12 basic-info-header">
             <p>{{this.currentUser.firstName}} {{this.currentUser.lastName}}</p>
           </div>
@@ -52,8 +52,10 @@
           <div class="col-xs-12 basic-info-sub-2" *ngIf='this.topClearance'>
             <p>{{this.topClearance}} Clearance</p>
           </div>
+        </div>
+        <div class="" style="width: 150px; height: 150px; float: left; text-align: center;">
           <div class="col-xs-12 basic-info-sub audiowide" style="font-size: 22px;">
-            <a href="user-profile/{{this.currentUser._id}}/resume">See {{ this.currentUser.firstName }} {{this.currentUser.lastName}}'s Resume</a>
+            <a href="user-profile/{{this.currentUser._id}}/resume">Generate Resume</a>
           </div>
         </div>
       </div>
@@ -93,14 +95,28 @@
             <p class=" basic-info-text-2">{{ this.currentUser.phone[0].Number }}</p>
             <p class="basic-info-text-2">{{ this.currentUser.username }}</p>
           </div>
-          <div style="width: 100%; margin-top: 20px;">
-            <p class="basic-info-text-2">{{ this.currentUser.education[0].DegreeType[0].Name }}</p>
-            <p class="basic-info-text-2">{{ this.currentUser.education[0].MajorProgramName[0] }}, {{ this.currentUser.education[0].School }}</p>
-            <p class="basic-info-text-2">{{ this.currentUser.education[0].AttendanceEndDate.slice(0,4) }}</p>
+          <div class="" *ngIf="this.currentUser.education.length > 0">
+            <p style="font-weight: bold; margin-top: 20px; margin-bottom: 6px">Education:</p>
+            <div style="width: 100%; margin-bottom: 3px" *ngFor="let degree of this.currentUser.education">
+              <p class="basic-info-text-2">{{ degree.DegreeType[0].Name }}, {{ degree.MajorProgramName[0] }}</p>
+              <p class="basic-info-text-2">{{ degree.School }}, {{ degree.AttendanceEndDate.slice(0,4) }}</p>
+            </div>
+          </div>
+          <div class="" *ngIf="this.currentUser.certification.length > 0">
+            <p style="font-weight: bold; margin-top: 20px; margin-bottom: 4px">Certifications:</p>
+            <div style="width: 100%; margin-bottom: 4px" *ngFor="let cert of this.currentUser.certification">
+              <p class="basic-info-text-2">{{ cert.CertificationName }}, {{ cert.DateEarned }}</p>
+            </div>
+          </div>
+          <div class="" *ngIf="this.currentUser.award.length > 0">
+            <p style="font-weight: bold; margin-top: 20px; margin-bottom: 4px">Awards:</p>
+            <div style="width: 100%; margin-bottom: 4px" *ngFor="let award of this.currentUser.award">
+              <p class="basic-info-text-2">{{ award }}</p>
+            </div>
           </div>
         </div>
         <div id="user-contact" class="col-xs-7 scrollbar" style="overflow-y: auto; padding-top: .1vh; height: 100%;">
-          <div class="basic-info-career-panel" style="width: 100%; height: auto;" *ngFor='let p of this.currentUser.positionHistory'>
+          <div class="basic-info-career-panel" *ngFor='let p of this.currentUser.positionHistory'>
             <div class="basic-info-text-2">
               <div class="left">
                 {{ p.Employer }}
@@ -110,7 +126,8 @@
               </div>
             </div><br>
             <p class="basic-info-text-2 left">{{ p.PositionTitle }}</p>
-            <p class="basic-info-text-2 left" style="margin-bottom: 20px;">{{ p.Description.slice(0,50) }}...</p>
+            <p class="basic-info-text-2 left" style="margin-bottom: 20px;" *ngIf="!p.descExpanded" (click)='p.descExpanded = true'>{{ p.Description.slice(0,50) }}...</p>
+            <p class="basic-info-text-2 left" style="margin-bottom: 20px;" *ngIf="p.descExpanded" (click)='p.descExpanded = false'>{{ p.Description }}</p>
           </div>
             <!-- <div class="col-xs-12 basic-info-text" style="margin-top: 2px"><p class=" basic-info-text-2">{{ this.currentUser.phone[0].Number }}</p></div>
             <div class="col-xs-12 basic-info-text-2" style="margin-top: -10px">

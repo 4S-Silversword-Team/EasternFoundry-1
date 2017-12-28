@@ -43,12 +43,15 @@
   font-family: 'Audiowide', cursive;
   text-align: left;
 }
+.basic-info-career-panel {
+  width: 100%;
+  height: auto;
+}
 
-/*.basic-info-career-panel:hover {
-transition: 0s;
-background: rgba(0,0,0,0.05);
-color: #4373c3;
-}*/
+/* .basic-info-career-panel:hover {
+  transition: 0s;
+  background: rgba(0,0,0,0.05);
+} */
 .profile-navbar-tab {
   width: calc(100% / 5);
 }

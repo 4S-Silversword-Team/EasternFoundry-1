@@ -78,7 +78,7 @@
 .search-item {
   background: white;
   /* border-bottom: 4px solid rgba(0, 0, 0, 0.2); */
-  min-height: 40px;
+  height: 69px;
   overflow-x: hidden;
 }
 
