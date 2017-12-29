@@ -65,7 +65,7 @@
             <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentAccount.city' [ngClass]="{'empty-field': this.currentAccount.city.length < 1}">
             <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentAccount.state' [ngClass]="{'empty-field': !this.currentAccount.state}">
             <input class="" style="width: 100%;" type="number" max="99999" maxlength="5" [(ngModel)] = 'this.currentAccount.zip' [ngClass]="{'empty-field': !this.currentAccount.zip}">
-            <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentAccount.videoUrl' placeholder="Youtube URL for a video about your company>
+            <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentAccount.videoUrl' placeholder="Youtube URL for a video about your company">
             <div class="scrollbar"  style="width: 100%; margin-top: 8px; min-height: 39px; max-height: 210px; overflow-y: auto; border: 1px solid rgba(0,0,0,0.2); z-index: 99; float: left; position: relative; margin-bottom: 1px;">
               <div class="" style="width: 100%; height: 100%; background: green;">
                 <div class="" *ngFor="let vehicle of this.currentAccount.vehicles; let i = index" style="width: 100%; height: 38px; float: left; position: relative;">
@@ -394,11 +394,11 @@
                           <div class="" style="float: left; line-height: 47px; height: 47px">
                             , I have a
                           </div>
-                          <input class="" style="width: 160px; height: 32px; float: left; margin-left: 6px; margin-right: 2px;" type="text" [(ngModel)]='feature.story[0]'>
+                          <input class="" style="width: 160px; height: 32px; float: left; margin-left: 6px; margin-right: 2px;" type="text" [(ngModel)]='feature.story[1]'>
                           <div class="" style="float: left; line-height: 47px;; height: 47px">
                             , which can be solved by
                           </div>
-                          <input class="" style="width: 160px; height: 32px; float: left; margin-left: 6px; margin-right: 2px;" type="text" [(ngModel)]='feature.story[0]'>
+                          <input class="" style="width: 160px; height: 32px; float: left; margin-left: 6px; margin-right: 2px;" type="text" [(ngModel)]='feature.story[2]'>
                           </div>
                       </div>
                     </div>
