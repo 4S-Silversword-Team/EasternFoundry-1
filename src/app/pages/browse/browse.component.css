@@ -131,6 +131,13 @@
   padding: 3px;
 }
 
+.search-item-company {
+  height: 118px;
+  width: 100%;
+  position: relative;
+  padding: 3px;
+}
+
 .search-item-category {
   background: rgb(250, 250, 250);
   font-weight: bold;

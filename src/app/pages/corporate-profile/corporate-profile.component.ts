@@ -316,7 +316,7 @@ export class CorporateProfileComponent implements OnInit, AfterViewInit {
     var occupations = []
     var serviceData = []
     var catPointsTotal = 0
-    for(const i of this.currentAccount.userProfileProxies){
+    for(const i of this.currentAccount.userProfileProxies) {
       numPeop++;
       var member = i.userProfile;
       if (member) {

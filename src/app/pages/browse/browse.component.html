@@ -24,8 +24,8 @@
           </div>
           <div class="" *ngIf='this.companies.length > 0 && this.activeTab.main == 0'>
             <div class="" *ngFor='let c of this.companies'>
-              <div class="search-item" *ngIf="c.public" style="margin-bottom: 2px; border: 1px solid rgba(0,0,0,0.1);">
-                <div class="search-item-not-expand">
+              <div class="search-item" *ngIf="c.public" style="height: 120px; margin-bottom: 2px; border: 1px solid rgba(0,0,0,0.1);">
+                <div class="search-item-company">
                   <div class="avatar">
                     <img src="{{c.avatar}}" alt="" class="search-item-avatar">
                   </div>
@@ -35,7 +35,7 @@
                     </div>
                     <div class="search-item-subheader" style="text-align: left; margin-left: 65px;">A company with {{c.userProfileProxies.length}} employees</div>
                   </div>
-                  <div class="" style="float: left;" *ngIf="c.pastPerformanceProxies[0]">
+                  <!-- <div class="" style="float: left;" *ngIf="c.pastPerformanceProxies[0]">
                     <p class="search-item-header">Past Performances</p>
                     <div class="search-item-subheader" style="margin-left: 15px;">
                       <a href="past-performance/{{c.pastPerformanceProxies[0].pastPerformance._id}}">{{c.pastPerformanceProxies[0].pastPerformance.title}}</a>
@@ -43,7 +43,14 @@
                     <div class="search-item-subheader" style="margin-left: 15px;" *ngIf="c.pastPerformanceProxies[1]">
                       <a href="past-performance/{{c.pastPerformanceProxies[1].pastPerformance._id}}">{{c.pastPerformanceProxies[1].pastPerformance.title}}</a>
                     </div>
-                    <!-- <div class="search-item-subheader" style="text-align: left; margin-left: 65px;">A company with {{c.userProfileProxies.length}} employees</div> -->
+                  </div> -->
+                  <div class="" style="width: 200px; float: left;">
+                    <p class="search-item-subheader" style="margin-bottom: 0px;">Ability Profile</p>
+                    <div class="" id="service_chart"  style="width: 200px; height: 110px; margin: 0px; float: left;" [chart]="c.serviceChart"></div>
+                  </div>
+                  <div class="" style="width: 200px; float: left;">
+                    <p class="search-item-subheader">Agency Experience</p>
+                    <div class="" id="agency_chart" style="width: 200px; height: 110px; margin: 0px; float: left;" [chart]="c.agencyChart"></div>
                   </div>
                 </div>
               </div>
