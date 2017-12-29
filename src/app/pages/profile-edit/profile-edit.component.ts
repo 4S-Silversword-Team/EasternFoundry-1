@@ -1364,9 +1364,12 @@ export class ProfileEditComponent implements OnInit {
     delete model['_id']
     if(end) {
       model.finished = true;
-      this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => {console.log(result); this.currentUser = result});
-      window.scrollTo(0, 0);
-      this.router.navigate(['user-profile', this.route.snapshot.params['id']]);
+      this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => {
+        console.log(result);
+        this.currentUser = result;
+        window.scrollTo(0, 0);
+        this.router.navigate(['user-profile', this.route.snapshot.params['id']]);
+      });
     } else {
       this.userService.updateUser(this.route.snapshot.params['id'], model).toPromise().then(result => {console.log(result); this.currentUser = result; this.uneditedUser = result});
     }

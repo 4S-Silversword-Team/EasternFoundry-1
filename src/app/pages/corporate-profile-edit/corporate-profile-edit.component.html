@@ -62,10 +62,10 @@
             <input class="" style="width: 100%;" type="text" placeholder="The company's email address" [(ngModel)] = 'this.currentAccount.email' [ngClass]="{'empty-field': !this.currentAccount.email}">
             <input class="" style="width: 100%;" type="tel" maxlength="14" placeholder="The company's phone number" [(ngModel)] = 'this.currentAccount.contactNumber' (ngModelChange)="onPhoneChange(this.currentAccount.contactNumber)" (keydown.backspace)='onPhoneChange(this.currentAccount.contactNumber, true)' [ngClass]="{'empty-field': !this.currentAccount.contactNumber || this.currentAccount.contactNumber.length < 14}">
             <input class="" style="width: 100%;" type="text" [(ngModel)] = 'this.currentAccount.address' [ngClass]="{'empty-field': !this.currentAccount.address}">
-            <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentAccount.city' [ngClass]="{'empty-field': this.currentAccount.city.length < 1}">
-            <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentAccount.state' [ngClass]="{'empty-field': !this.currentAccount.state}">
+            <input class="" style="width: 100%;" type="text" [(ngModel)] = 'this.currentAccount.city' [ngClass]="{'empty-field': this.currentAccount.city.length < 1}">
+            <input class="" style="width: 100%;" type="text" [(ngModel)] = 'this.currentAccount.state' [ngClass]="{'empty-field': !this.currentAccount.state}">
             <input class="" style="width: 100%;" type="number" max="99999" maxlength="5" [(ngModel)] = 'this.currentAccount.zip' [ngClass]="{'empty-field': !this.currentAccount.zip}">
-            <input class="" style="width: 100%;" type="text"  [(ngModel)] = 'this.currentAccount.videoUrl' placeholder="Youtube URL for a video about your company">
+            <input class="" style="width: 100%;" type="text" [(ngModel)] = 'this.currentAccount.videoUrl' placeholder="Youtube URL for a video about your company">
             <div class="scrollbar"  style="width: 100%; margin-top: 8px; min-height: 39px; max-height: 210px; overflow-y: auto; border: 1px solid rgba(0,0,0,0.2); z-index: 99; float: left; position: relative; margin-bottom: 1px;">
               <div class="" style="width: 100%; height: 100%; background: green;">
                 <div class="" *ngFor="let vehicle of this.currentAccount.vehicles; let i = index" style="width: 100%; height: 38px; float: left; position: relative;">

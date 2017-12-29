@@ -29,10 +29,21 @@
                   <div class="avatar">
                     <img src="{{c.avatar}}" alt="" class="search-item-avatar">
                   </div>
-                  <div class="search-item-header">{{c.name}}</div>
-                  <div class="search-item-subheader">A company with {{c.userProfileProxies.length}} employees</div>
-                  <div class="search-item-link" style="margin-bottom: -5px">
-                    <a href="corporate-profile/{{c._id}}">Visit {{c.name}}</a>
+                  <div class="" style="float: left;">
+                    <div class="search-item-header" style="text-align: left; margin-left: 65px;">
+                      <a href="corporate-profile/{{c._id}}">{{c.name}}</a>
+                    </div>
+                    <div class="search-item-subheader" style="text-align: left; margin-left: 65px;">A company with {{c.userProfileProxies.length}} employees</div>
+                  </div>
+                  <div class="" style="float: left;" *ngIf="c.pastPerformanceProxies[0]">
+                    <p class="search-item-header">Past Performances</p>
+                    <div class="search-item-subheader" style="margin-left: 15px;">
+                      <a href="past-performance/{{c.pastPerformanceProxies[0].pastPerformance._id}}">{{c.pastPerformanceProxies[0].pastPerformance.title}}</a>
+                    </div>
+                    <div class="search-item-subheader" style="margin-left: 15px;" *ngIf="c.pastPerformanceProxies[1]">
+                      <a href="past-performance/{{c.pastPerformanceProxies[1].pastPerformance._id}}">{{c.pastPerformanceProxies[1].pastPerformance.title}}</a>
+                    </div>
+                    <!-- <div class="search-item-subheader" style="text-align: left; margin-left: 65px;">A company with {{c.userProfileProxies.length}} employees</div> -->
                   </div>
                 </div>
               </div>
